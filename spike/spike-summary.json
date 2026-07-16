@@ -1,0 +1,130 @@
+{
+  "fetched_utc": "2026-07-02T19:07:03+00:00",
+  "sources": {
+    "climate_pulse_status": {
+      "daily": 20260630,
+      "monthly": 202605,
+      "annual": 2025
+    }
+  },
+  "the_number": {
+    "warming_12mo_vs_1850_1900_C": 1.433,
+    "days_at_or_above_1.5C_last_365": 116,
+    "latest_day": {
+      "date": "2026-06-30",
+      "abs_C": 16.795,
+      "anom_vs_1991_2020": 0.628,
+      "anom_vs_1850_1900": 1.508
+    },
+    "preindustrial_offset_assumed": 0.88,
+    "series_start": "1940-01-01",
+    "n_days": 31593
+  },
+  "sst_60S_60N": {
+    "date": "2026-06-30",
+    "abs_C": 20.882,
+    "anom_vs_1991_2020": 0.53
+  },
+  "co2": {
+    "date": "2026-07-01",
+    "ppm": 427.51,
+    "ppm_1yr_ago": 425.42,
+    "yoy_delta": 2.09
+  },
+  "sea_ice": {
+    "arctic": {
+      "date": "2026-07-01",
+      "extent_Mkm2": 9.034
+    },
+    "antarctic": {
+      "date": "2026-07-01",
+      "extent_Mkm2": 14.036
+    }
+  },
+  "cities": {
+    "Delhi": {
+      "forecast_today": {
+        "date": "2026-07-03",
+        "tmax_C": 33.3,
+        "tmin_C": 26.1
+      },
+      "today_percentile_vs_1940_present_same_fortnight": 24.8,
+      "days_in_window_hotter_than_today": 972,
+      "window_n": 1292,
+      "warming_last10y_vs_1951_1980_C": -0.6,
+      "days_ge_35C_per_year": {
+        "1951_1980": 102.2,
+        "last_10y": 92.0
+      },
+      "warm_nights_ge_25C_per_year": {
+        "1951_1980": 109.3,
+        "last_10y": 124.8
+      },
+      "record_start": "1940-01-01",
+      "n_days": 31590
+    },
+    "Seville": {
+      "forecast_today": {
+        "date": "2026-07-03",
+        "tmax_C": 41.1,
+        "tmin_C": 24.4
+      },
+      "today_percentile_vs_1940_present_same_fortnight": 98.5,
+      "days_in_window_hotter_than_today": 19,
+      "window_n": 1292,
+      "warming_last10y_vs_1951_1980_C": 2.24,
+      "days_ge_35C_per_year": {
+        "1951_1980": 33.8,
+        "last_10y": 65.9
+      },
+      "warm_nights_ge_25C_per_year": {
+        "1951_1980": 0.5,
+        "last_10y": 7.1
+      },
+      "record_start": "1940-01-01",
+      "n_days": 31590
+    },
+    "Phoenix": {
+      "forecast_today": {
+        "date": "2026-07-03",
+        "tmax_C": 39.7,
+        "tmin_C": 25.2
+      },
+      "today_percentile_vs_1940_present_same_fortnight": 26.6,
+      "days_in_window_hotter_than_today": 948,
+      "window_n": 1292,
+      "warming_last10y_vs_1951_1980_C": 1.32,
+      "days_ge_35C_per_year": {
+        "1951_1980": 124.5,
+        "last_10y": 136.8
+      },
+      "warm_nights_ge_25C_per_year": {
+        "1951_1980": 68.5,
+        "last_10y": 89.1
+      },
+      "record_start": "1940-01-01",
+      "n_days": 31590
+    },
+    "Jakarta": {
+      "forecast_today": {
+        "date": "2026-07-03",
+        "tmax_C": 34.3,
+        "tmin_C": 25.7
+      },
+      "today_percentile_vs_1940_present_same_fortnight": 99.8,
+      "days_in_window_hotter_than_today": 3,
+      "window_n": 1292,
+      "warming_last10y_vs_1951_1980_C": 1.97,
+      "days_ge_35C_per_year": {
+        "1951_1980": 0.0,
+        "last_10y": 7.0
+      },
+      "warm_nights_ge_25C_per_year": {
+        "1951_1980": 0.3,
+        "last_10y": 27.2
+      },
+      "record_start": "1940-01-01",
+      "n_days": 31590
+    }
+  }
+}

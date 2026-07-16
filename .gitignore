@@ -1,0 +1,11 @@
+spike/cache/
+looks/
+_duel-*.html
+type-duel*.html
+three-looks.html
+newspaper*.html
+scroll-v2.html
+atmosphere.html
+mockup*.json
+compute_mockup.py
+.DS_Store

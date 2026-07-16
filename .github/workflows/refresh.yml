@@ -1,0 +1,23 @@
+name: nightly refresh
+on:
+  schedule:
+    - cron: "20 2 * * *"     # 02:20 UTC daily — after ERA5's day rolls over
+  workflow_dispatch: {}       # manual "run now" button
+permissions:
+  contents: write
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: run the pipeline (stdlib only, no installs)
+        run: python pipeline.py
+      - name: commit refreshed data + site
+        run: |
+          git config user.name "on-record pipeline"
+          git config user.email "agoshbaranwal@gmail.com"
+          git add data/ index.html onrecord-heat-mockup.html
+          git diff --cached --quiet || git commit -m "nightly refresh $(date -u +%F)"
+          git push

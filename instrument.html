@@ -1,0 +1,1073 @@
+<title>On Record — the living atmosphere</title>
+<style>
+/*__FONTS__*/
+/* ============================================================================
+   ON RECORD — THE ONE-SCREEN INSTRUMENT (voice B · Space Grotesk)
+   The sky fills the screen and IS the site. Six chambers are states of the
+   same atmosphere: SKY (the budget) · GROUND (Seville) · NIGHT (Delhi) ·
+   FIRST LIGHT (almost everyone) · MORNING (what moves) · BEDROCK (how we
+   know). No page scroll — the ladder, wheel, arrows or swipe change the
+   state; the whole screen recolours. One fact, one instrument, one receipt
+   per chamber; everything deeper lives in the receipts drawer.
+   ========================================================================== */
+:root{
+  --bone:#F2E7CC; --bone-2:rgba(242,231,204,.84); --bone-3:rgba(242,231,204,.72);
+  --bone-4:rgba(242,231,204,.58); --bone-hair:rgba(242,231,204,.18);
+  --ink:#3E1208; --ink-2:rgba(62,18,8,.8); --ink-3:rgba(62,18,8,.68); --ink-hair:rgba(62,18,8,.2);
+  --amber:#F0BC62; --ember:#D96C3A; --ember-hi:#E8886B; --slate:#9aa39e;
+  --sage:#82B8A6; --teal-hi:#7ED6C4; --act:#155048; --deep:#05171A;
+  --sg:"SpaceGroteskX",system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,"Cascadia Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--deep);color:var(--bone);font-family:var(--sg);font-size:15px;
+  line-height:1.5;-webkit-font-smoothing:antialiased;overflow:hidden}
+button{font:inherit;cursor:pointer;color:inherit;background:none;border:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--teal-hi);outline-offset:3px;border-radius:2px}
+.thm-ink :focus-visible{outline-color:var(--act)}
+.mono{font-family:var(--mono)}
+.num{font-variant-numeric:tabular-nums lining-nums}
+
+/* ================= stage & atmospheres ================= */
+#stage{position:relative;height:100svh;min-height:560px;overflow:hidden;isolation:isolate}
+.atmo{position:absolute;inset:0;opacity:0;transition:opacity 1.1s ease;pointer-events:none}
+.atmo.on{opacity:1}
+#atmo-sky{background:linear-gradient(180deg,#210710 0%,#2C0A10 7%,#6B1A18 20%,#B4501F 36%,
+  #E0A94E 49%,#F3E7C8 55.5%,#F8EED4 58.2%,#F8EED4 60.8%,#F2E6C6 62.5%,#8FB89C 67%,
+  #2A6F6C 75%,#0C3035 85%,#05191D 100%)}
+#atmo-ground{background:linear-gradient(180deg,#E8DBBB 0%,#BCC49E 7%,#8FB89C 16%,#4E8A7E 30%,
+  #2A6F6C 46%,#134247 68%,#0C3035 86%,#082226 100%)}
+#atmo-night{background:linear-gradient(180deg,#1A0B0E 0%,#0E1418 12%,#0A1B20 30%,#070E11 60%,#04080B 100%)}
+#atmo-firstlight{background:linear-gradient(180deg,#081B20 0%,#0C2B30 34%,#0E3A3A 58%,
+  #2A6F6C 78%,#C8B98B 96%,#EAD9B6 100%)}
+#atmo-morning{background:linear-gradient(180deg,#EAD9B6 0%,#F2E7CC 34%,#EFE2C2 100%)}
+#atmo-bedrock{background:linear-gradient(180deg,#15140F 0%,#0F110E 40%,#0B100F 100%)}
+.haze{position:absolute;border-radius:50%;pointer-events:none;transition:opacity 1.1s ease}
+#haze1{left:-18%;top:28%;width:76%;height:26%;filter:blur(30px);
+  background:radial-gradient(closest-side,rgba(255,238,208,.15),transparent 70%)}
+#haze2{right:-14%;top:64%;width:66%;height:30%;filter:blur(34px);
+  background:radial-gradient(closest-side,rgba(126,214,196,.10),transparent 70%)}
+@keyframes drift1{0%{transform:translateX(0)}50%{transform:translateX(4vw)}100%{transform:translateX(0)}}
+@keyframes drift2{0%{transform:translateX(0)}50%{transform:translateX(-3vw)}100%{transform:translateX(0)}}
+#haze1{animation:drift1 26s ease-in-out infinite}
+#haze2{animation:drift2 32s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){#haze1,#haze2{animation:none}.atmo{transition:none}}
+#grain{position:absolute;inset:0;opacity:.055;mix-blend-mode:overlay;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px 180px}
+#scrimT{position:absolute;left:0;right:0;top:0;height:180px;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(10,8,8,.5),rgba(10,8,8,0));transition:opacity 1.1s ease}
+#scrimB{position:absolute;left:0;right:0;bottom:0;height:200px;pointer-events:none;
+  background:linear-gradient(to top,rgba(3,10,12,.55),rgba(3,10,12,0));transition:opacity 1.1s ease}
+.thm-ink #scrimT,.thm-ink #scrimB{opacity:0}
+
+/* ================= global chrome ================= */
+#chrome{position:relative;z-index:4;height:100%;display:flex;flex-direction:column;
+  max-width:1400px;margin:0 auto;padding:22px 38px}
+#mast{display:flex;justify-content:space-between;align-items:flex-start;gap:30px}
+#mast .word{font-family:var(--mono);font-size:10px;letter-spacing:.34em;color:var(--bone-2);
+  text-transform:uppercase;margin-bottom:7px}
+#mast .plain{font-weight:500;font-size:clamp(15px,1.7vw,20px);letter-spacing:-.01em;
+  line-height:1.3;max-width:40ch;color:rgba(242,231,204,.95);text-shadow:0 1px 22px rgba(15,8,6,.55)}
+#vitals{text-align:right;font-family:var(--mono);font-size:9.5px;line-height:1.8;
+  color:var(--bone-3);text-shadow:0 1px 16px rgba(15,8,6,.6);flex:none}
+#vitals b{color:var(--bone);font-weight:500}
+.thm-ink #mast .plain{color:var(--ink);text-shadow:none}
+.thm-ink #mast .word{color:var(--ink-2)}
+.thm-ink #vitals{color:var(--ink-3);text-shadow:none}
+.thm-ink #vitals b{color:var(--ink)}
+
+/* ladder */
+#ladder{position:absolute;right:38px;top:50%;transform:translateY(-50%);display:flex;
+  flex-direction:column;gap:12px;text-align:right;z-index:6}
+.rung{display:flex;align-items:center;justify-content:flex-end;gap:10px;text-decoration:none}
+.rung .pill{background:rgba(3,16,18,.5);border:1px solid rgba(242,231,204,.14);border-radius:3px;
+  padding:5px 10px;backdrop-filter:blur(2px);transition:border-color .3s}
+.rung .lab{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--bone-2);display:block}
+.rung .fact{display:block;font-size:10.5px;color:var(--bone-3);margin-top:1px;letter-spacing:0}
+.rung .dot{width:7px;height:7px;border-radius:50%;border:1px solid var(--bone-3);flex:none;
+  background:rgba(3,16,18,.5)}
+.rung:hover .pill{border-color:rgba(242,231,204,.4)}
+.rung[aria-current=true] .lab,.rung[aria-current=true] .fact{color:var(--bone)}
+.rung[aria-current=true] .pill{border-color:rgba(240,188,98,.5)}
+.rung[aria-current=true] .dot{background:var(--amber);border-color:var(--amber);
+  box-shadow:0 0 10px rgba(240,188,98,.8)}
+
+/* panes */
+#panes{position:relative;flex:1;min-height:0;margin-top:14px}
+.pane{position:absolute;inset:0;display:none;flex-direction:column;min-height:0;
+  padding-right:172px}
+.pane.on{display:flex;animation:panein .7s ease}
+@keyframes panein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.pane.on{animation:none}}
+.pane h2{font-weight:500;font-size:clamp(21px,2.6vw,31px);line-height:1.12;letter-spacing:-.015em;
+  max-width:24ch;text-wrap:balance;color:var(--bone);text-shadow:0 1px 22px rgba(15,8,6,.5)}
+.thm-ink .pane h2{color:var(--ink);text-shadow:none}
+.pane .fact-line{margin-top:8px;font-size:13.5px;color:var(--bone-2);max-width:52ch;text-wrap:pretty}
+.thm-ink .pane .fact-line{color:var(--ink-2)}
+.receipt{font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;line-height:1.7;color:var(--bone-3)}
+.receipt b{color:var(--bone-2);font-weight:500}
+.thm-ink .receipt{color:var(--ink-3)}
+.thm-ink .receipt b{color:var(--ink-2)}
+.chip{display:inline-block;font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;
+  text-transform:uppercase;border:1px solid rgba(240,188,98,.55);color:var(--amber);
+  padding:2px 7px;border-radius:2px;vertical-align:2px}
+.drawbtn{margin-top:auto;align-self:flex-start;font-family:var(--mono);font-size:10px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--bone-3);border-bottom:1px dashed var(--bone-4);
+  padding:8px 0;min-height:40px}
+.drawbtn:hover{color:var(--bone)}
+.thm-ink .drawbtn{color:var(--ink-3);border-color:var(--ink-hair)}
+.thm-ink .drawbtn:hover{color:var(--ink)}
+.plate{background:rgba(3,14,16,.42);border:1px solid var(--bone-hair);border-radius:4px;
+  padding:14px 16px;backdrop-filter:blur(3px)}
+.thm-ink .plate{background:rgba(255,251,240,.5);border-color:var(--ink-hair)}
+svg{display:block;width:100%;height:auto}
+
+/* --- SKY pane --- */
+#p-sky .years{font-weight:500;font-size:clamp(60px,8.6vw,104px);line-height:.92;
+  letter-spacing:-.035em;color:var(--ink);font-variant-numeric:tabular-nums;
+  text-shadow:0 0 28px rgba(255,244,214,.55),0 3px 70px rgba(255,240,205,.4)}
+#p-sky .ylab{margin-top:8px;font-family:var(--mono);font-size:10px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--bone-2);text-shadow:0 1px 14px rgba(4,18,20,.85)}
+#p-sky .spent{margin-top:5px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;
+  color:var(--bone-3);text-shadow:0 1px 14px rgba(4,18,20,.85)}
+#p-sky .burnedtick{margin-top:4px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;
+  color:var(--amber);text-shadow:0 1px 14px rgba(4,18,20,.85);font-variant-numeric:tabular-nums}
+#skycount{position:absolute;left:0;top:56.5%}
+#hzn-hi,#hzn-lo{position:absolute;left:-38px;right:-38px;border-top:1px solid rgba(62,18,8,.5);pointer-events:none}
+.hl{position:absolute;right:210px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
+.hl b{color:var(--ink);font-weight:600}
+#hzn-hi .hl{bottom:5px}
+#hzn-lo .hl{top:5px}
+#dial{position:absolute;left:0;bottom:6px;width:min(400px,44vw)}
+#dial .dh{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
+#dial h3{font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--bone-2)}
+#dial .dv{font-family:var(--mono);font-size:9.5px;color:var(--bone-3);white-space:nowrap}
+#dial .dv b{font-family:var(--sg);font-size:22px;font-weight:500;color:var(--bone);
+  font-variant-numeric:tabular-nums;margin-right:3px}
+#dial .dv em{font-style:normal;display:inline-block;min-width:9ch;margin-left:6px;color:var(--bone-2)}
+.dim{position:relative;height:36px;cursor:ew-resize;touch-action:none;outline-offset:5px}
+.dimTrack{position:absolute;left:0;right:0;top:17px;height:1px;background:var(--bone-4)}
+.dimFill{position:absolute;left:0;top:17px;height:1px;
+  background:linear-gradient(90deg,rgba(242,231,204,.2),rgba(242,231,204,.9))}
+.dimNow{position:absolute;top:11px;width:1px;height:13px;background:var(--bone-4)}
+.dimKnob{position:absolute;top:5px;width:2px;height:25px;margin-left:-1px;background:var(--bone);
+  box-shadow:0 0 14px rgba(242,231,204,.8)}
+.dim:focus-visible .dimKnob,.dim:hover .dimKnob{height:31px;top:2px}
+.dimEnds{display:flex;justify-content:space-between;font-family:var(--mono);font-size:8.5px;
+  color:var(--bone-3);margin-top:3px}
+#dial .foot{margin-top:6px;font-family:var(--mono);font-size:9px;color:var(--bone-3)}
+#dial .foot button{color:var(--bone-2);border-bottom:1px solid var(--bone-4);letter-spacing:.05em;
+  margin-right:8px;min-height:30px}
+#tease{position:absolute;right:0;bottom:10px;max-width:300px;text-align:right}
+#tease .tl2{font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--bone-3);margin-bottom:5px}
+#tease .big{font-weight:500;font-size:24px;color:var(--bone);font-variant-numeric:tabular-nums}
+#tease .sub{font-size:12px;color:var(--bone-2);margin-top:3px}
+#tease button{margin-top:8px;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--amber);min-height:36px}
+#tease button::after{content:" ↓"}
+
+/* --- shared chamber layout (ground/night/firstlight) --- */
+.duo{display:grid;grid-template-columns:minmax(250px,330px) minmax(0,1fr);gap:26px;
+  flex:1;min-height:0;margin-top:12px;align-items:start}
+.duo .copy{display:flex;flex-direction:column;gap:10px;min-height:0}
+.duo .chart{min-height:0;display:flex;flex-direction:column}
+.duo .chart .plate{display:flex;flex-direction:column;min-height:0}
+.bignum{font-weight:500;font-size:clamp(40px,5vw,58px);line-height:1;letter-spacing:-.03em;
+  color:var(--bone);font-variant-numeric:tabular-nums}
+.bignum small{display:block;font-size:.38em;letter-spacing:0;color:var(--bone-2);font-weight:400;
+  line-height:1.3;margin-top:5px}
+.thm-ink .bignum{color:var(--ink)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:9px;
+  letter-spacing:.04em;color:var(--bone-3);margin-top:8px}
+.legend i{display:inline-block;width:13px;height:3px;border-radius:2px;margin-right:5px;vertical-align:2px}
+.legend i.dot{width:8px;height:8px;border-radius:50%}
+.legend i.dash{background:repeating-linear-gradient(90deg,currentColor 0 3px,transparent 3px 6px);height:2px}
+.finder{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--bone-2)}
+.finder input{font-family:var(--mono);font-size:13px;width:76px;padding:7px 9px;min-height:38px;
+  border:1px solid var(--bone-4);border-radius:3px;background:rgba(3,16,18,.4);color:var(--bone)}
+.finder .out{font-family:var(--mono);font-size:10px;color:var(--amber);min-height:2.6em;display:block}
+
+/* --- first light --- */
+#pgwrap{max-width:560px;width:100%}
+.place-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 12px}
+.place-tabs button{font-family:var(--mono);font-size:10px;letter-spacing:.06em;padding:8px 13px;
+  min-height:40px;border:1px solid var(--bone-4);border-radius:2px;color:var(--bone-2)}
+.place-tabs button[aria-pressed=true]{background:var(--bone);color:#0B2B31;border-color:var(--bone)}
+#pg-q{font-weight:500;font-size:15px;color:var(--bone);max-width:46ch}
+#pgwrap input[type=range]{width:100%;accent-color:var(--sage);height:40px}
+.guessrow{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--bone-3)}
+.revealbtn{margin-top:10px;background:var(--bone);color:#0B2B31;border-radius:2px;
+  padding:11px 18px;font-size:13px;font-weight:500;min-height:44px}
+.revealbtn[aria-disabled=true]{opacity:.45;cursor:default}
+.pgbars{margin-top:12px;visibility:hidden;height:0;overflow:hidden}
+.pgbars.show{visibility:visible;height:auto;overflow:visible}
+.pgbar{margin:9px 0}
+.pgbar .bl{display:flex;justify-content:space-between;font-size:11px;color:var(--bone-2);margin-bottom:4px}
+.pgbar .val{font-family:var(--mono);color:var(--bone)}
+.track{height:22px;background:rgba(3,16,18,.5);border-radius:2px;overflow:hidden;position:relative;
+  border:1px solid var(--bone-hair)}
+.fill{height:100%;transition:width .9s cubic-bezier(.2,.7,.2,1)}
+@media(prefers-reduced-motion:reduce){.fill{transition:none}}
+.fill--actual{background:linear-gradient(90deg,rgba(126,214,196,.55),var(--teal-hi))}
+.fill--guess{background:rgba(242,231,204,.32)}
+.fill--you{background:transparent;border-right:2px solid var(--amber)}
+.kick{font-size:14px;line-height:1.45;color:var(--bone);margin-top:12px;display:none;max-width:52ch;outline:none}
+.kick.show{display:block}
+.kick b{color:var(--amber);font-weight:500}
+.sep89{font-size:11px;color:var(--bone-2);margin-top:8px;display:none;max-width:52ch}
+.sep89.show{display:block}
+.sep89 b{color:var(--bone)}
+
+/* --- morning --- */
+#p-morning .ledger{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;
+  margin-top:14px;max-width:900px}
+#p-morning .li{border:1px solid var(--ink-hair);border-radius:3px;padding:12px 14px;
+  background:rgba(255,251,240,.5)}
+#p-morning .li .big{font-family:var(--mono);font-size:16px;color:var(--act);font-variant-numeric:tabular-nums}
+#p-morning .li .txt{font-size:11.5px;color:var(--ink-2);margin-top:4px;line-height:1.4}
+#p-morning .action{margin-top:16px;border:1px solid rgba(21,80,72,.5);border-radius:3px;
+  padding:16px 18px;background:rgba(255,251,240,.55);max-width:640px}
+#p-morning .leadline{font-weight:500;font-size:clamp(16px,1.9vw,21px);line-height:1.3;color:var(--ink);max-width:34ch}
+#p-morning .action p{font-size:12.5px;color:var(--ink-2);margin-top:8px;max-width:56ch}
+.sharecard{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}
+.sharecard .mini{height:26px;flex:1 1 180px;min-width:150px;border-radius:2px;overflow:hidden}
+.sharecard button{background:var(--act);color:#F2E7CC;border-radius:2px;padding:10px 16px;
+  font-size:12px;min-height:44px;font-weight:500}
+.sharefallback{display:none;width:100%;margin-top:8px}
+.sharefallback textarea{width:100%;font-family:var(--mono);font-size:10.5px;padding:9px;
+  border:1px solid var(--ink-hair);border-radius:3px;background:#FFFBF0;color:var(--ink);min-height:64px}
+
+/* --- bedrock (the archive chamber may scroll internally) --- */
+#p-bedrock .arch{flex:1;min-height:0;overflow-y:auto;margin-top:12px;padding-right:10px;
+  scrollbar-width:thin}
+#p-bedrock .hww{max-width:64ch;font-size:12.5px;line-height:1.6;color:var(--bone-2);margin-top:10px}
+#p-bedrock .hww b{color:var(--bone);font-weight:500}
+#p-bedrock .srcs{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px 24px;font-family:var(--mono);font-size:9.5px;line-height:1.7;color:var(--bone-3);max-width:940px}
+#p-bedrock .srcs b{display:block;color:var(--bone-2);letter-spacing:.1em;text-transform:uppercase;
+  font-size:8.5px;margin-bottom:3px}
+#p-bedrock .limits{margin-top:18px;max-width:64ch;font-size:11px;line-height:1.6;color:var(--bone-3)}
+#p-bedrock .limits b{color:var(--bone-2)}
+#p-bedrock .colophon{margin-top:18px;border-top:1px solid var(--bone-hair);padding-top:10px;
+  font-family:var(--mono);font-size:9px;line-height:1.7;color:var(--bone-3);max-width:74ch}
+
+/* ================= drawer ================= */
+#drawer{position:absolute;top:0;right:0;bottom:0;width:min(560px,92vw);z-index:9;
+  background:rgba(4,14,16,.96);border-left:1px solid var(--bone-hair);
+  transform:translateX(102%);transition:transform .45s ease;display:flex;flex-direction:column;
+  padding:20px 24px;color:var(--bone-2)}
+#drawer.open{transform:none}
+@media(prefers-reduced-motion:reduce){#drawer{transition:none}}
+#drawer header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  border-bottom:1px solid var(--bone-hair);padding-bottom:10px}
+#drawer header h3{font-weight:500;font-size:15px;color:var(--bone)}
+#drawer header .k{font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--bone-3)}
+#dclose{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--bone-3);
+  border:1px solid var(--bone-4);border-radius:2px;padding:7px 12px;min-height:38px}
+#dclose:hover{color:var(--bone)}
+#dbody{flex:1;overflow-y:auto;padding:14px 2px 20px;scrollbar-width:thin}
+#dbody h4{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--bone-3);margin:18px 0 8px}
+#dbody h4:first-child{margin-top:0}
+#dbody p{font-size:12.5px;line-height:1.6;max-width:58ch;margin-bottom:10px}
+#dbody p b{color:var(--bone);font-weight:500}
+#dbody .receipt{display:block;margin:6px 0 12px}
+.dtable{margin:8px 0 16px;max-height:300px;overflow:auto;border:1px solid var(--bone-hair)}
+.dtable table{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:10.5px;
+  font-variant-numeric:tabular-nums}
+.dtable th,.dtable td{padding:4px 10px;text-align:right;border-bottom:1px solid var(--bone-hair);color:var(--bone-2)}
+.dtable th{position:sticky;top:0;background:#0A2226;color:var(--bone-3);font-weight:500}
+.dtable td:first-child,.dtable th:first-child{text-align:left}
+.scalekey{margin:10px 0 16px;font-family:var(--mono);font-size:9px;color:var(--bone-3)}
+.scalekey .rampwrap{position:relative;width:260px;max-width:80%;padding-bottom:16px}
+.scalekey .tk{position:absolute;top:14px;transform:translateX(-50%);white-space:nowrap}
+
+/* ================= intro ================= */
+#intro{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;
+  background:rgba(5,13,15,.42);backdrop-filter:blur(3px);transition:opacity .8s ease}
+#intro.gone{opacity:0;pointer-events:none}
+#intro .box{text-align:center;max-width:34ch;padding:0 20px}
+#intro .l{font-weight:500;font-size:clamp(19px,2.6vw,27px);line-height:1.35;letter-spacing:-.01em;
+  color:var(--bone);opacity:0;transform:translateY(8px);text-shadow:0 2px 30px rgba(4,10,12,.8)}
+#intro .l.num .n{color:var(--amber)}
+#intro.play .l1{animation:lin .8s ease .3s forwards}
+#intro.play .l2{animation:lin .8s ease 1.7s forwards}
+#intro.play .l3{animation:lin .8s ease 3.1s forwards}
+@keyframes lin{to{opacity:1;transform:none}}
+#intro .l+.l{margin-top:14px}
+#intro .go{margin-top:26px;opacity:0}
+#intro.play .go{animation:lin .7s ease 4.1s forwards}
+#intro .go button{font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--bone);border:1px solid var(--bone-4);border-radius:2px;padding:12px 22px;min-height:44px;
+  background:rgba(3,16,18,.5)}
+#intro .go button:hover{border-color:var(--bone-2)}
+#intro .skip{position:absolute;right:22px;top:18px;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--bone-3);min-height:40px;padding:8px 10px}
+@media(prefers-reduced-motion:reduce){
+  #intro .l,#intro .go{opacity:1!important;transform:none!important;animation:none!important}}
+
+/* ================= responsive ================= */
+@media(max-width:940px){
+  #chrome{padding:16px 18px}
+  .pane{padding-right:0;overflow-y:auto}
+  #ladder{right:auto;left:50%;top:auto;bottom:10px;transform:translateX(-50%);
+    flex-direction:row;gap:8px}
+  .rung .pill{display:none}
+  .rung .dot{width:9px;height:9px}
+  .duo{grid-template-columns:1fr;gap:14px}
+  #skycount{top:52%}
+  #dial{bottom:64px;width:min(400px,86vw)}
+  #tease{display:none}
+  .hl{right:8px}
+  #p-sky .years{font-size:clamp(56px,15vw,96px)}
+  #mast .plain{font-size:13.5px}
+  #vitals{display:none}
+  #drawer{width:100vw;border-left:0}
+}
+</style>
+
+<div id="stage">
+  <div class="atmo on" id="atmo-sky"></div>
+  <div class="atmo" id="atmo-ground"></div>
+  <div class="atmo" id="atmo-night"></div>
+  <div class="atmo" id="atmo-firstlight"></div>
+  <div class="atmo" id="atmo-morning"></div>
+  <div class="atmo" id="atmo-bedrock"></div>
+  <div class="haze" id="haze1"></div><div class="haze" id="haze2"></div>
+  <div id="grain"></div><div id="scrimT"></div><div id="scrimB"></div>
+
+  <div id="chrome">
+    <header id="mast">
+      <div>
+        <p class="word">On Record</p>
+        <h1 class="plain">The world&rsquo;s remaining carbon budget, drawn as a living sky.</h1>
+      </div>
+      <div id="vitals" role="group" aria-label="Global vital signs"></div>
+    </header>
+
+    <div id="panes">
+
+      <!-- SKY -->
+      <section class="pane on" id="p-sky" aria-label="The sky — the remaining carbon budget">
+        <div id="hzn-hi"><span class="hl" id="hlab-hi"></span></div>
+        <div id="hzn-lo"><span class="hl" id="hlab-lo"></span></div>
+        <div id="skycount">
+          <p class="years num" id="years">–</p>
+          <p class="ylab">years of sky left <span id="atrate"></span></p>
+          <p class="spent num" id="spent"></p>
+          <p class="burnedtick num" id="burned" aria-live="off"></p>
+        </div>
+        <div id="dial">
+          <div class="dh"><h3>Rate of burn</h3>
+            <p class="dv"><b id="rate" class="num">42</b> GtCO₂/yr <em id="delta">today&rsquo;s rate</em></p></div>
+          <div class="dim" id="dim" tabindex="0" role="slider"
+               aria-label="World emission rate, gigatonnes of CO₂ per year"
+               aria-valuemin="8" aria-valuemax="63" aria-valuenow="42">
+            <span class="dimTrack"></span><span class="dimFill" id="dimFill"></span>
+            <span class="dimNow" id="dimNow"></span><span class="dimKnob" id="dimKnob"></span>
+          </div>
+          <div class="dimEnds" aria-hidden="true"><span>8 · deep cuts</span><span>63 · +50%</span></div>
+          <p class="foot"><button type="button" id="reset">reset to today</button>
+            drag or use arrow keys — the horizon answers</p>
+        </div>
+        <div id="tease">
+          <p class="tl2">Beneath this sky</p>
+          <p class="big num" id="tease-temp">–</p>
+          <p class="sub" id="tease-sub">Seville, measured against its own record.</p>
+          <button type="button" data-go="ground">descend to ground</button>
+        </div>
+      </section>
+
+      <!-- GROUND -->
+      <section class="pane" id="p-ground" aria-label="Ground — Seville on its own record" hidden>
+        <h2 tabindex="-1">Down here, the budget becomes afternoons.</h2>
+        <div class="duo">
+          <div class="copy">
+            <p class="bignum" id="g-today">– <small>forecast today <span class="chip">provisional</span></small></p>
+            <p class="fact-line" id="g-fact"></p>
+            <p class="fact-line" id="g-freq" style="font-size:12px"></p>
+            <div class="finder">
+              <label for="yr">Type a year you remember:</label>
+              <input type="number" id="yr" min="1940" max="2025" placeholder="1985" inputmode="numeric">
+            </div>
+            <span class="out mono finder" id="yr-out" aria-live="polite"></span>
+            <p class="receipt" id="g-receipt"></p>
+            <button class="drawbtn" data-drawer="ground">Receipts &amp; the full record</button>
+          </div>
+          <div class="chart"><div class="plate">
+            <div id="recwin"></div>
+            <div class="legend">
+              <span><i style="background:#5FA8DC"></i>1951–80 avg</span>
+              <span><i style="background:#E8886B"></i>last-30-yr avg</span>
+              <span><i class="dash" style="color:var(--bone-4)"></i>hottest ever</span>
+              <span><i style="background:#F2E7CC"></i>2026</span>
+              <span><i class="dot" style="background:#F0BC62"></i>today</span>
+            </div>
+          </div></div>
+        </div>
+      </section>
+
+      <!-- NIGHT -->
+      <section class="pane" id="p-night" aria-label="Night — Delhi, the honest test" hidden>
+        <h2 tabindex="-1">The heat to fear most never lifts at night.</h2>
+        <div class="duo">
+          <div class="copy">
+            <p class="bignum" id="n-big">– <small>more hot nights a year<br>than the 1951–80 average</small></p>
+            <p class="fact-line">Delhi&rsquo;s nights stopped cooling. A body that cannot cool after
+            dark never fully recovers — the pattern heat-health research warns about most.</p>
+            <p class="fact-line" style="font-size:12px" id="n-honest"></p>
+            <p class="receipt" id="delhi-receipt"></p>
+            <button class="drawbtn" data-drawer="night">Receipts &amp; why the split</button>
+          </div>
+          <div class="chart"><div class="plate">
+            <div id="delhi"></div>
+            <div class="legend">
+              <span><i style="background:var(--slate)"></i>days ≥&#8202;35&#8202;°C — edging down</span>
+              <span><i style="background:var(--ember)"></i>nights ≥&#8202;25&#8202;°C — climbing</span>
+            </div>
+          </div></div>
+        </div>
+      </section>
+
+      <!-- FIRST LIGHT -->
+      <section class="pane" id="p-firstlight" aria-label="First light — almost everyone" hidden>
+        <h2 tabindex="-1">Under this same sky, almost everyone agrees with you.</h2>
+        <p class="fact-line">Across 125 countries people were asked: would you give <b>1% of your
+        household income, every month</b>, to fight climate change? Guess your country before you look.</p>
+        <div id="pgwrap">
+          <div class="place-tabs" id="pg-tabs" role="group" aria-label="Choose a country"></div>
+          <p id="pg-q"></p>
+          <input type="range" id="pg-slider" min="0" max="100" value="40" aria-label="Your guess, percent">
+          <div class="guessrow"><span>0%</span><span>your guess: <b class="num" id="pg-guessval">40%</b></span><span>100%</span></div>
+          <button class="revealbtn" id="pg-reveal" type="button">Reveal what&rsquo;s actually true</button>
+          <div class="pgbars" id="pg-bars">
+            <div class="pgbar"><div class="bl"><span>Say they would</span><span class="val" id="pg-a-val"></span></div>
+              <div class="track"><div class="fill fill--actual" id="pg-a-fill" style="width:0"></div></div></div>
+            <div class="pgbar"><div class="bl"><span>What people there guess</span><span class="val" id="pg-g-val"></span></div>
+              <div class="track"><div class="fill fill--guess" id="pg-g-fill" style="width:0"></div></div></div>
+            <div class="pgbar"><div class="bl"><span>Your guess</span><span class="val num" id="pg-y-val"></span></div>
+              <div class="track"><div class="fill fill--you" id="pg-y-fill" style="width:0"></div></div></div>
+            <p class="kick" id="pg-kick" aria-live="polite" tabindex="-1"></p>
+            <p class="sep89" id="pg-sep"></p>
+          </div>
+        </div>
+        <button class="drawbtn" data-drawer="firstlight">Receipts &amp; the study</button>
+      </section>
+
+      <!-- MORNING -->
+      <section class="pane" id="p-morning" aria-label="Morning — what moves" hidden>
+        <h2 tabindex="-1">None of this sky is fixed in place.</h2>
+        <p class="fact-line" style="color:var(--ink-2)">Every hard number here has a true counterweight — a measurement, not a comfort:</p>
+        <div class="ledger">
+          <div class="li"><div class="big">33.8% &gt; 33.0%</div><div class="txt">Renewables outgenerated coal worldwide in 2025 — first time since 1919.</div></div>
+          <div class="li"><div class="big">~1 in 4</div><div class="txt">Of new cars sold in 2025 were electric — China ~55%, US ~10%.</div></div>
+          <div class="li"><div class="big">3.6 → 2.6 °C</div><div class="txt">Expected warming on current policies, 2015 → now. Still unsafe. Also falling.</div></div>
+          <div class="li"><div class="big">healing</div><div class="txt">The ozone layer is recovering — a binding global treaty worked.</div></div>
+        </div>
+        <div class="action">
+          <p class="leadline">The most useful first act is the quietest: say the true number out loud.</p>
+          <p>Support for cutting emissions is a large majority that believes it is a minority.
+          You, telling one person, is what closes that gap — measurably, with no backfire
+          documented in these studies.</p>
+          <div class="sharecard">
+            <div class="mini" id="share-mini" aria-hidden="true"></div>
+            <button id="share-btn" type="button">Copy Seville&rsquo;s record to share</button>
+            <div class="sharefallback" id="share-fallback">
+              <label class="receipt" for="share-text">Couldn&rsquo;t reach the clipboard — select and copy:</label>
+              <textarea id="share-text" readonly></textarea>
+            </div>
+          </div>
+        </div>
+        <button class="drawbtn" data-drawer="morning" style="color:var(--ink-3);border-color:var(--ink-hair)">Sources &amp; the honest caveats</button>
+      </section>
+
+      <!-- BEDROCK -->
+      <section class="pane" id="p-bedrock" aria-label="Bedrock — how we know" hidden>
+        <h2 tabindex="-1">The ground this page stands on.</h2>
+        <div class="arch">
+          <div class="hww" id="hww"></div>
+          <h2 style="font-size:15px;margin-top:18px">The sky&rsquo;s two horizons — brought to one date</h2>
+          <p class="hww" id="budget-notes" style="margin-top:6px"></p>
+          <div class="dtable" id="t-budget" tabindex="0"></div>
+          <div class="srcs" id="srcs"></div>
+          <div class="limits" id="limits"></div>
+          <p class="colophon" id="colophon"></p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ladder -->
+  <nav id="ladder" aria-label="Chambers"></nav>
+
+  <!-- drawer -->
+  <aside id="drawer" aria-label="Receipts and methods" aria-hidden="true">
+    <header><div><p class="k" id="d-k">Receipts</p><h3 id="d-title"></h3></div>
+      <button id="dclose" type="button">close ✕</button></header>
+    <div id="dbody"></div>
+  </aside>
+
+  <!-- intro -->
+  <div id="intro" class="play" role="dialog" aria-label="Introduction">
+    <button class="skip" id="intro-skip" type="button">skip</button>
+    <div class="box">
+      <p class="l l1">This sky is the world&rsquo;s remaining carbon budget — the CO₂ we can
+      still emit with even odds of holding warming to 1.5&nbsp;°C.</p>
+      <p class="l l2 num">At today&rsquo;s burn rate it lasts about <span class="n" id="intro-years">–</span>.</p>
+      <p class="l l3">You can change the rate — and see what the sky already did to one city on
+      the ground.</p>
+      <p class="go"><button id="intro-go" type="button">Enter the sky</button></p>
+    </div>
+  </div>
+</div>
+
+<noscript><p style="max-width:60ch;margin:20px auto;font-family:monospace;font-size:12px;color:#F2E7CC;padding:0 20px">/*__NOSCRIPT__*/</p></noscript>
+
+<script>
+window.D = /*__DATA__*/ null;
+(function(){
+"use strict";
+var D=window.D,Q=new URLSearchParams(location.search);
+function el(id){return document.getElementById(id);}
+var NS="http://www.w3.org/2000/svg";
+function E(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+function mean(s,a,b){var v=s.filter(function(r){return r.year>=a&&r.year<=b;}).map(function(r){return r.n;});
+ return v.reduce(function(x,y){return x+y;},0)/v.length;}
+var STOPS=[[-2.5,5,48,97],[-1.5,33,102,172],[-1,67,147,195],[-0.5,146,197,222],[-0.15,209,229,240],
+[0,244,244,241],[0.15,253,219,199],[0.5,244,165,130],[1,214,96,77],[1.5,178,24,43],[2.2,140,26,23],[3.2,103,0,13]];
+var T_MIN=-2.5,T_MAX=3.2,T_SPAN=T_MAX-T_MIN;
+function tcol(a){if(a<=STOPS[0][0])a=STOPS[0][0];if(a>=STOPS[STOPS.length-1][0])a=STOPS[STOPS.length-1][0];
+ for(var i=0;i<STOPS.length-1;i++){var s=STOPS[i],t=STOPS[i+1];if(a>=s[0]&&a<=t[0]){var f=(a-s[0])/(t[0]-s[0]);
+  return "rgb("+Math.round(s[1]+f*(t[1]-s[1]))+","+Math.round(s[2]+f*(t[2]-s[2]))+","+Math.round(s[3]+f*(t[3]-s[3]))+")";}}
+ return "rgb(244,244,241)";}
+function table(id,headers,rows){var box=el(id);if(!box)return;box.innerHTML="";var t=document.createElement("table");
+ t.innerHTML="<thead><tr>"+headers.map(function(h){return "<th>"+h+"</th>";}).join("")+"</tr></thead><tbody>"+
+ rows.map(function(r){return "<tr>"+r.map(function(c){return "<td>"+c+"</td>";}).join("")+"</tr>";}).join("")+"</tbody>";
+ box.appendChild(t);}
+function tableHTML(headers,rows){return '<div class="dtable" tabindex="0"><table><thead><tr>'+
+ headers.map(function(h){return "<th>"+h+"</th>";}).join("")+"</tr></thead><tbody>"+
+ rows.map(function(r){return "<tr>"+r.map(function(c){return "<td>"+c+"</td>";}).join("")+"</tr>";}).join("")+
+ "</tbody></table></div>";}
+
+/* ============ shared data — budget re-anchored LIVE to the visitor's clock ============ */
+var B=D.budget;
+var nowD=new Date();
+var NOW=nowD.getFullYear()+((Date.UTC(nowD.getFullYear(),nowD.getMonth(),nowD.getDate())-
+ Date.UTC(nowD.getFullYear(),0,1))/864e5)/365.25;
+B.estimates.forEach(function(e){
+ e.elapsed_gt=Math.round(B.rate_now_gt*(NOW-e.anchor_dec)*10)/10;
+ e.remaining_now_gt=Math.round((e.gt-e.elapsed_gt)*10)/10;
+ e.years_at_now=Math.round(e.remaining_now_gt/B.rate_now_gt*100)/100;});
+B.estimates.sort(function(a,b){return a.remaining_now_gt-b.remaining_now_gt;});
+var LO=B.estimates[0],HIe=B.estimates[1],RNOW=B.rate_now_gt;
+var F=D.seville_frequency,RW=D.seville_record_window,S=D.seville_stripes,G=D.seville_generational;
+var DH=D.delhi_honesty,P=D.perception_gap,N=D.the_number;
+var dr=DH.receipts;
+function yearsStr(rate){var a=(LO.remaining_now_gt/rate),b=(HIe.remaining_now_gt/rate);
+ var s1=a.toFixed(1),s2=b.toFixed(1);return s1===s2?s1:s1+"–"+s2;}
+/* today's state — seeded from the build-time snapshot, upgraded by the live fetch */
+function dLabel(iso){var p=iso.split("-");
+ return (+p[2])+" "+["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+p[1]-1];}
+var TS={mode:"snapshot",tmax:(D.today_snapshot&&D.today_snapshot.tmax_C),
+ dateISO:(D.today_snapshot&&D.today_snapshot.date)||D._meta.today,
+ fetched:(D.today_snapshot&&D.today_snapshot.fetched)||D._meta.today,
+ rec:F.same_date_record_C,recy:F.same_date_record_year,n:F.jul3_n_years,
+ pct:F.forecast_percentile,h40a:F.ge40_early.hit,h40b:F.ge40_recent.hit,bias:F.bias_C||-0.38};
+TS.dateLabel=dLabel(TS.dateISO);
+var applyToday=null; /* assigned by groundInit; live module re-calls it */
+
+/* ============ chambers & navigation ============ */
+var LF=DH.days_ge35_per_year[DH.days_ge35_per_year.length-1].year; // last complete year in the data
+var CH=[
+ {id:"sky",lab:"Sky",fact:yearsStr(RNOW)+" years left",ink:false},
+ {id:"ground",lab:"Ground",fact:"Seville · "+(TS.tmax!=null?TS.tmax.toFixed(1)+"° today":"on its own record"),ink:false},
+ {id:"night",lab:"Night",fact:"Delhi · +"+Math.round(dr.warm_nights_now-dr.warm_nights_then)+" hot nights",ink:false},
+ {id:"firstlight",lab:"First light",fact:P.global_want_action_pct+"% want action",ink:false},
+ {id:"morning",lab:"Morning",fact:"what's already turning",ink:true},
+ {id:"bedrock",lab:"Bedrock",fact:"every source, shown",ink:false}
+];
+var cur=0,lock=0;
+var ladder=el("ladder");
+CH.forEach(function(c,i){
+ var b=document.createElement("button");b.className="rung";b.type="button";
+ b.setAttribute("aria-current",i===0);
+ b.innerHTML='<span class="pill"><span class="lab">'+c.lab+'</span><span class="fact">'+c.fact+'</span></span><span class="dot"></span>';
+ b.addEventListener("click",function(){go(i,true);});
+ ladder.appendChild(b);});
+function go(i,focusH2){
+ if(i<0||i>=CH.length||i===cur&&document.querySelector(".pane.on"))i=Math.max(0,Math.min(CH.length-1,i));
+ var c=CH[i],prev=CH[cur];
+ cur=i;
+ document.querySelectorAll(".atmo").forEach(function(a){a.classList.toggle("on",a.id==="atmo-"+c.id);});
+ document.getElementById("stage").classList.toggle("thm-ink",!!c.ink);
+ document.querySelectorAll(".pane").forEach(function(p){
+  var on=p.id==="p-"+c.id;
+  p.classList.toggle("on",on);
+  if(on)p.removeAttribute("hidden");else p.setAttribute("hidden","");});
+ Array.prototype.forEach.call(ladder.children,function(b,j){b.setAttribute("aria-current",j===i);});
+ if(location.hash!=="#"+c.id)try{history.replaceState(null,"","#"+c.id);}catch(e){}
+ if(focusH2){var h=document.querySelector("#p-"+c.id+" h2");if(h)h.focus({preventScroll:true});}
+ closeDrawer();
+}
+function step(d){var t=Date.now();if(t-lock<850)return;lock=t;go(Math.max(0,Math.min(CH.length-1,cur+d)),false);}
+window.addEventListener("wheel",function(e){
+ if(el("drawer").classList.contains("open"))return;
+ if(!el("intro").classList.contains("gone"))return;
+ var p=document.querySelector(".pane.on");
+ if(p&&p.scrollHeight>p.clientHeight+8){ // internally scrollable pane (bedrock/mobile)
+  var atTop=p.scrollTop<=0,atBot=p.scrollTop+p.clientHeight>=p.scrollHeight-2;
+  if((e.deltaY>0&&!atBot)||(e.deltaY<0&&!atTop))return;}
+ var ar=document.querySelector("#p-bedrock .arch");
+ if(CH[cur].id==="bedrock"&&ar){var t1=ar.scrollTop<=0,b1=ar.scrollTop+ar.clientHeight>=ar.scrollHeight-2;
+  if((e.deltaY>0&&!b1)||(e.deltaY<0&&!t1))return;}
+ if(Math.abs(e.deltaY)<25)return;
+ step(e.deltaY>0?1:-1);},{passive:true});
+window.addEventListener("keydown",function(e){
+ var t=e.target;
+ if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"||t.id==="dim"))return;
+ if(el("drawer").classList.contains("open")){if(e.key==="Escape")closeDrawer();return;}
+ if(!el("intro").classList.contains("gone")){if(e.key==="Enter"||e.key===" "||e.key==="Escape")endIntro();return;}
+ if(e.key==="ArrowDown"||e.key==="PageDown"){step(1);e.preventDefault();}
+ else if(e.key==="ArrowUp"||e.key==="PageUp"){step(-1);e.preventDefault();}});
+var ty=null;
+window.addEventListener("touchstart",function(e){ty=e.touches[0].clientY;},{passive:true});
+window.addEventListener("touchend",function(e){
+ if(ty==null)return;var dy=ty-e.changedTouches[0].clientY;ty=null;
+ if(el("drawer").classList.contains("open")||!el("intro").classList.contains("gone"))return;
+ var p=document.querySelector(".pane.on");
+ if(p&&p.scrollHeight>p.clientHeight+8)return;
+ if(Math.abs(dy)>70)step(dy>0?1:-1);},{passive:true});
+document.querySelectorAll("[data-go]").forEach(function(b){
+ b.addEventListener("click",function(){var id=b.getAttribute("data-go");
+  go(CH.findIndex(function(c){return c.id===id;}),true);});});
+
+/* ============ intro ============ */
+el("intro-years").textContent=yearsStr(RNOW)+" years";
+function endIntro(){el("intro").classList.add("gone");}
+el("intro-go").addEventListener("click",endIntro);
+el("intro-skip").addEventListener("click",endIntro);
+el("intro").addEventListener("click",function(e){if(e.target===el("intro"))endIntro();});
+if(!reduce)setTimeout(function(){/* auto-dissolve shortly after the last line if untouched */
+ if(!el("intro").classList.contains("gone"))endIntro();},7500);
+if(Q.get("intro")==="0")endIntro();
+
+/* ============ vitals + masthead ============ */
+el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air · NOAA</p>"+
+ "<p><b>"+B.human_induced.c.toFixed(2)+" °C</b> human-made warming · IGCC 2025</p>"+
+ "<p><b>"+RNOW+" Gt/yr</b> the world's burn rate · GCP</p>";
+
+/* ============ SKY ============ */
+(function(){
+ var RMIN=8,RMAX=63,YMAX=25;
+ var target=RNOW;
+ var stage=el("stage");
+ function frac(y){return Math.max(.02,Math.min(1,Math.pow(Math.min(y,YMAX)/YMAX,.5)));}
+ // horizons as % of stage height: sky band base sits at ~61% (matches gradient); scale with years
+ var BASE_LO=.608,BASE_HI=.582; // gradient's cream band edges at today's rate
+ function sync(){
+  var yLo=LO.remaining_now_gt/target,yHi=HIe.remaining_now_gt/target;
+  // map years to vertical position: more years = horizons higher up the screen
+  // travel band: 25 yrs → 30% from top · ~0 yrs → 72% (leaves room for count+dial below)
+  var fLo=frac(yLo),fHi=frac(yHi);
+  var pLo=Math.max(.24,Math.min(.72,.72-(fLo*.42)))*100;
+  var pHi=Math.max(.22,Math.min(.70,.72-(fHi*.42)-.024))*100;
+  el("hzn-lo").style.top=pLo+"%";el("hzn-hi").style.top=pHi+"%";
+  // rebuild the sky gradient so the cream band follows the horizons
+  el("atmo-sky").style.background="linear-gradient(180deg,#210710 0%,#2C0A10 "+(pHi*.12).toFixed(1)+
+   "%,#6B1A18 "+(pHi*.34).toFixed(1)+"%,#B4501F "+(pHi*.62).toFixed(1)+"%,#E0A94E "+(pHi*.84).toFixed(1)+
+   "%,#F3E7C8 "+(pHi-1.5).toFixed(1)+"%,#F8EED4 "+pHi.toFixed(1)+"%,#F8EED4 "+pLo.toFixed(1)+
+   "%,#F2E6C6 "+(pLo+1.7).toFixed(1)+"%,#8FB89C "+(pLo+6).toFixed(1)+"%,#2A6F6C "+(pLo+14).toFixed(1)+
+   "%,#0C3035 "+(pLo+24).toFixed(1)+"%,#05191D 100%)";
+  el("years").textContent=yearsStr(target);
+  var rs=target<10?target.toFixed(1):String(Math.round(target));
+  el("rate").textContent=rs;el("atrate").textContent="· at "+rs+" GtCO₂ a year";
+  var yA=Math.round(NOW+yLo),yB=Math.round(NOW+yHi);
+  el("spent").textContent="spent around "+(yA===yB?yA:yA+"–"+yB)+" · coin-flip odds of holding 1.5 °C · no cliff, rising risk";
+  var d=Math.round((target-RNOW)/RNOW*100);
+  el("delta").textContent=Math.abs(d)<1?"today's rate":(d>0?"+":"−")+Math.abs(d)+"% vs today";
+  el("hlab-lo").innerHTML="<b>"+Math.round(LO.remaining_now_gt)+" Gt</b> · IGCC 2025 · runs out ~"+yA;
+  el("hlab-hi").innerHTML="<b>"+Math.round(HIe.remaining_now_gt)+" Gt</b> · GCB 2025 · same answer";
+  var skc=el("skycount");skc.style.top=(pLo+3.2)+"%";
+  var dim=el("dim");
+  dim.setAttribute("aria-valuenow",target.toFixed(1));
+  dim.setAttribute("aria-valuetext",Math.round(target)+" gigatonnes per year — "+yearsStr(target)+" years of budget left");
+  var p=(target-RMIN)/(RMAX-RMIN);
+  el("dimKnob").style.left=el("dimFill").style.width=(p*100).toFixed(2)+"%";
+ }
+ el("dimNow").style.left=((RNOW-RMIN)/(RMAX-RMIN)*100).toFixed(2)+"%";
+ function setRate(v){target=Math.max(RMIN,Math.min(RMAX,v));sync();}
+ var dim=el("dim");
+ function fromX(cx){var r=dim.getBoundingClientRect();
+  setRate(RMIN+Math.max(0,Math.min(1,(cx-r.left)/Math.max(1,r.width)))*(RMAX-RMIN));}
+ dim.addEventListener("pointerdown",function(e){dim.setPointerCapture(e.pointerId);dim.focus();fromX(e.clientX);e.preventDefault();});
+ dim.addEventListener("pointermove",function(e){if(dim.hasPointerCapture(e.pointerId))fromX(e.clientX);});
+ dim.addEventListener("keydown",function(e){var s=e.shiftKey?5:1,k=e.key;
+  if(k==="ArrowLeft"||k==="ArrowDown")setRate(target-s);
+  else if(k==="ArrowRight"||k==="ArrowUp")setRate(target+s);
+  else if(k==="Home")setRate(RMIN);else if(k==="End")setRate(RMAX);
+  else return;e.preventDefault();e.stopPropagation();});
+ el("reset").addEventListener("click",function(){setRate(RNOW);dim.focus();});
+ var qr=parseFloat(Q.get("rate"));if(isFinite(qr))target=Math.max(RMIN,Math.min(RMAX,qr));
+ sync();
+ /* the live burn ticker — plain arithmetic: rate spread over real elapsed time */
+ (function(){var t0=Date.now(),tps=RNOW*1e9/31557600,tk=el("burned");
+  function upd(){var t=Math.max(0,(Date.now()-t0)/1000)*tps;
+   tk.textContent="burned while you've been here: "+Math.round(t).toLocaleString("en")+" tonnes of CO₂";}
+  upd();setInterval(upd,reduce?1000:120);})();
+})();
+
+/* ============ GROUND ============ */
+var groundDrawerExtra="";
+(function(){
+ var thenN=mean(G.days_ge35_per_year,1951,1980),nowN=mean(G.days_ge35_per_year,LF-9,LF);
+ var wnThen=mean(G.warm_nights_ge25_per_year,1951,1980),wnNow=mean(G.warm_nights_ge25_per_year,LF-9,LF);
+
+ /* record-window chart */
+ var W=940,Hh=400,mL=38,mR=14,mT=12,mB=24,n=RW.labels.length;
+ function sc(d0,d1,r0,r1){return function(v){return r0+(v-d0)/(d1-d0)*(r1-r0);};}
+ var x=sc(0,n-1,mL,W-mR),y=sc(18,45,Hh-mB,mT);
+ var MONO="ui-monospace,Menlo,monospace",AXc="rgba(242,231,204,.62)";
+ function txt(a,s,halo){var t=E("text",a);t.textContent=s;
+  if(halo){t.setAttribute("paint-order","stroke");t.setAttribute("stroke","#12333A");
+   t.setAttribute("stroke-width","3.2");t.setAttribute("stroke-linejoin","round");}return t;}
+ var svg=E("svg",{viewBox:"0 0 "+W+" "+Hh,role:"img",
+  "aria-label":"Seville early-summer daily highs, one line per year since 1940 — the band has lifted and today's forecast sits at the top."});
+ [20,25,30,35,40,45].forEach(function(t){
+  svg.appendChild(E("line",{x1:mL,x2:W-mR,y1:y(t),y2:y(t),stroke:"rgba(242,231,204,.1)"}));
+  svg.appendChild(txt({x:mL-5,y:y(t)+3,"text-anchor":"end","font-size":11,fill:AXc,"font-family":MONO},t));});
+ for(var o=0;o<n;o+=10)svg.appendChild(txt({x:x(o),y:Hh-7,"text-anchor":"middle","font-size":11,fill:AXc,"font-family":MONO},RW.labels[o]));
+ function path(arr){var d="",st=false;for(var i=0;i<arr.length;i++){if(arr[i]==null){st=false;continue;}
+  d+=(st?"L":"M")+x(i).toFixed(1)+" "+y(arr[i]).toFixed(1)+" ";st=true;}return d;}
+ Object.keys(RW.spaghetti).forEach(function(yr){if(yr==="2026")return;
+  svg.appendChild(E("path",{d:path(RW.spaghetti[yr]),fill:"none",stroke:"#F2E7CC","stroke-width":.8,"stroke-opacity":.1}));});
+ svg.appendChild(E("path",{d:path(RW.record_envelope),fill:"none",stroke:"rgba(242,231,204,.55)","stroke-width":1.1,"stroke-dasharray":"2 3"}));
+ svg.appendChild(E("path",{d:path(RW.old_normal_1951_1980),fill:"none",stroke:"#5FA8DC","stroke-width":2.4}));
+ svg.appendChild(E("path",{d:path(RW.new_normal_last30),fill:"none",stroke:"#E8886B","stroke-width":2.4}));
+ var CY=TS.dateISO.slice(0,4);
+ var s26=RW.spaghetti[CY]||[],lastObs=-1;
+ for(var i=0;i<s26.length;i++)if(s26[i]!=null)lastObs=i;
+ if(s26.length)svg.appendChild(E("path",{d:path(s26),fill:"none",stroke:"#F2E7CC","stroke-width":2.4,"stroke-linejoin":"round"}));
+ /* today's marker — created once, positioned by applyToday (moves when the live fetch lands) */
+ var todayBridge=E("path",{d:"",fill:"none",stroke:"#F0BC62","stroke-width":1.5,"stroke-dasharray":"4 3","stroke-opacity":0});
+ var todayDot=E("circle",{cx:0,cy:0,r:5,fill:"#F0BC62",stroke:"#12333A","stroke-width":1.5,opacity:0});
+ var todayLbl=txt({x:0,y:0,"text-anchor":"end","font-size":12,fill:"#F0BC62","font-family":MONO,"font-weight":600},"",true);
+ todayLbl.setAttribute("opacity",0);
+ svg.appendChild(todayBridge);svg.appendChild(todayDot);svg.appendChild(todayLbl);
+ var hiP=E("path",{d:"",fill:"none",stroke:"#F0BC62","stroke-width":2,"stroke-opacity":0});
+ svg.appendChild(hiP);
+ el("recwin").appendChild(svg);
+
+ function peak(yr){var sp=RW.spaghetti[String(yr)];if(!sp)return null;
+  var m=null;sp.forEach(function(v){if(v!=null&&(m==null||v>m))m=v;});return m;}
+ function setYear(yr){yr=+yr;var i=yr-S.year0;
+  if(!(i>=0&&i<S.anom.length)){hiP.setAttribute("stroke-opacity",0);el("yr-out").textContent="";return;}
+  var sp=RW.spaghetti[String(yr)];
+  if(sp){hiP.setAttribute("d",path(sp));hiP.setAttribute("stroke-opacity",1);}
+  var a=S.anom[i],pk=peak(yr);
+  el("yr-out").textContent=yr+" — that summer ran "+(a>=0?"+":"")+a.toFixed(2)+" °C vs 1951–80"+
+   (pk!=null?(" · hottest day "+pk.toFixed(1)+" °C · traced in amber"):"");}
+ el("yr").addEventListener("input",function(){var v=+this.value;
+  if(v>=1940&&v<=2025)setYear(v);else{hiP.setAttribute("stroke-opacity",0);el("yr-out").textContent="";}});
+ var qy=parseInt(Q.get("yr"),10);if(isFinite(qy)){el("yr").value=qy;setYear(qy);}
+
+ /* drawer content for ground: stripes + key + tables */
+ var stripes='<svg viewBox="0 0 860 64" preserveAspectRatio="none" role="img" aria-label="Warming stripes, one per year 1940 to 2025">';
+ S.anom.forEach(function(a,i){stripes+='<rect x="'+(i*10).toFixed(0)+'" y="0" width="10.4" height="64" fill="'+tcol(a)+'"/>';});
+ stripes+='</svg>';
+ var key='<div class="scalekey"><div class="rampwrap"><svg viewBox="0 0 260 10" width="100%" height="10" preserveAspectRatio="none"><defs><linearGradient id="tg" x1="0" x2="1">';
+ [-2.5,-1.5,-.5,0,.5,1.5,2.5,3.2].forEach(function(a){key+='<stop offset="'+(((a-T_MIN)/T_SPAN)*100).toFixed(1)+'%" stop-color="'+tcol(a)+'"/>';});
+ key+='</linearGradient></defs><rect width="260" height="10" fill="url(#tg)"/></svg>';
+ [[-2.5,"−2.5°"],[0,"0 · 1951–80 avg"],[2,"+2°"],[3.2,"+3.2°"]].forEach(function(t){
+  key+='<span class="tk" style="left:'+(((t[0]-T_MIN)/T_SPAN)*100).toFixed(1)+'%">'+t[1]+'</span>';});
+ key+='</div></div>';
+ groundDrawerExtra=
+  "<h4>The record, one stripe per year</h4>"+stripes+key+
+  "<p class=\"receipt\">annual mean daily-high (Tmax) anomaly vs 1951–1980 · palette after Ed Hawkins, #ShowYourStripes · scale −2.5 to +3.2 °C, set to span this record</p>"+
+  "<h4>Every year, numerically</h4>"+
+  tableHTML(["Year","Anomaly vs 1951–80 (°C)","Hottest early-summer day (°C)"],
+   S.anom.map(function(a,i){var yr=S.year0+i,pk=peak(yr);
+    return [String(yr),(a>=0?"+":"")+a.toFixed(2),pk!=null?pk.toFixed(1):"—"];}))+
+  "<h4>The chart, day by day</h4>"+
+  tableHTML(["Calendar day","1951–80 avg",RW.new_normal_label+" avg","Hottest ever"],
+   RW.labels.map(function(l,i){function f(v){return v==null?"—":v.toFixed(1);}
+    return [l,f(RW.old_normal_1951_1980[i]),f(RW.new_normal_last30[i]),f(RW.record_envelope[i])];}));
+
+ /* ---- everything today-dependent renders through here (snapshot now, live later) ---- */
+ applyToday=function(t){
+  var isRec=t.tmax!=null&&t.comparable!=null&&t.rec!=null&&t.comparable>t.rec;
+  var lr=ladder.children[1]&&ladder.children[1].querySelector(".fact");
+  if(lr)lr.textContent="Seville · "+(t.tmax!=null?t.tmax.toFixed(1)+"° today":"on its own record");
+  el("tease-temp").textContent=t.tmax!=null?t.tmax.toFixed(1)+" °C":"—";
+  el("tease-sub").textContent="Seville, "+t.dateLabel+" — "+(isRec?
+   ("set to pass every "+t.dateLabel+" in the record ("+t.rec.toFixed(1)+"°, "+t.recy+")."):
+   (t.pct!=null?(t.pct+"th percentile of "+t.n+" years of this date."):
+    ("measured against "+t.n+" years of this date.")));
+  el("g-today").innerHTML=(t.tmax!=null?t.tmax.toFixed(1)+"°":"—")+
+   "<small> forecast, "+t.dateLabel+" <span class=\"chip\">"+
+   (t.mode==="live"?"live · provisional":"snapshot · built "+t.fetched)+"</span></small>";
+  el("g-fact").innerHTML="In "+t.n+" years, no "+t.dateLabel+" here has passed <b class=\"mono\">"+
+   t.rec.toFixed(1)+" °C</b> ("+t.recy+")."+(isRec?" <b>Today's forecast would pass it.</b>":"")+
+   " Days at or above 35 °C: <b>"+thenN.toFixed(0)+" → "+nowN.toFixed(0)+"</b> a year. "+
+   "Nights that never cool below 25 °C: <b>"+wnThen.toFixed(1)+" → "+wnNow.toFixed(1)+"</b>.";
+  el("g-freq").textContent=(t.h40a||t.h40b)?
+   ("A 40 °C day within two weeks of this date came "+t.h40a+" summers in 30 (1951–80). "+
+    "In the last thirty years: "+t.h40b+" in 30."):"";
+  el("g-receipt").innerHTML=(t.pct!=null?(t.pct+"th percentile of the two weeks around "+t.dateLabel+" since 1940 · "):"")+
+   "ERA5 reanalysis via Open-Meteo · forecast adjusted "+(t.bias<0?"+":"−")+Math.abs(t.bias).toFixed(1)+
+   " °C for the measured reanalysis offset · newest observation "+F.newest_obs+
+   " · baselines 1951–80 vs "+(LF-9)+"–"+LF;
+  var off=(function(){var d=new Date(t.dateISO+"T00:00:00Z");
+   return Math.round((d.getTime()-Date.UTC(+t.dateISO.slice(0,4),5,8))/864e5);})();
+  if(t.tmax!=null&&off>=0&&off<RW.labels.length){
+   var txp=x(off),typ=y(t.tmax);
+   todayDot.setAttribute("cx",txp);todayDot.setAttribute("cy",typ);todayDot.setAttribute("opacity",1);
+   todayLbl.setAttribute("x",txp-8);todayLbl.setAttribute("y",typ-9);
+   todayLbl.textContent=t.tmax.toFixed(0)+"° today ("+(t.mode==="live"?"live forecast":"forecast")+")";
+   todayLbl.setAttribute("opacity",1);
+   if(lastObs>=0&&s26[lastObs]!=null){
+    todayBridge.setAttribute("d","M"+x(lastObs).toFixed(1)+" "+y(s26[lastObs]).toFixed(1)+
+     " L"+txp.toFixed(1)+" "+typ.toFixed(1));
+    todayBridge.setAttribute("stroke-opacity",.85);}
+  }else{todayDot.setAttribute("opacity",0);todayLbl.setAttribute("opacity",0);
+   todayBridge.setAttribute("stroke-opacity",0);}
+ };
+ TS.comparable=TS.tmax!=null?Math.round((TS.tmax-TS.bias)*10)/10:null;
+ applyToday(TS);
+})();
+
+/* ============ NIGHT ============ */
+(function(){
+ el("n-big").innerHTML="+"+Math.round(dr.warm_nights_now-dr.warm_nights_then)+
+  "<small> more hot nights a year<br>than the 1951–80 average</small>";
+ el("n-honest").innerHTML="And the part most sites would bury: Delhi&rsquo;s afternoons didn&rsquo;t follow — "+
+  "they <b>cooled</b>, about "+Math.round(dr.days_ge35_then-dr.days_ge35_now)+" fewer 35 °C days a year. "+
+  "We show the line that fell; that is why you can trust the ones that climb.";
+ el("delhi-receipt").innerHTML="days ≥35 °C: <b>"+dr.days_ge35_then+"→"+dr.days_ge35_now+"</b>/yr · nights ≥25 °C: <b>"+
+  dr.warm_nights_then+"→"+dr.warm_nights_now+"</b>/yr · 1951–80 avg vs "+(LF-9)+"–"+LF+" avg · ERA5 · 11-yr rolling mean bold · descriptive, not attribution";
+ var days=DH.days_ge35_per_year.filter(function(r){return r.year<=2025;});
+ var nights=DH.warm_nights_ge25_per_year.filter(function(r){return r.year<=2025;});
+ var host=el("delhi"),MONO="ui-monospace,Menlo,monospace",lastB="";
+ function sc(d0,d1,r0,r1){return function(v){return r0+(v-d0)/(d1-d0)*(r1-r0);};}
+ function txt(a,s,halo){var t=E("text",a);t.textContent=s;
+  if(halo){t.setAttribute("paint-order","stroke");t.setAttribute("stroke","#0A1216");
+   t.setAttribute("stroke-width","3.2");t.setAttribute("stroke-linejoin","round");}return t;}
+ function roll(s,w){var h=Math.floor(w/2);return s.map(function(_,i){
+  var t=0,c=0;for(var j=Math.max(0,i-h);j<=Math.min(s.length-1,i+h);j++){t+=s[j].n;c++;}
+  return {year:s[i].year,n:t/c};});}
+ function render(){
+  var narrow=host.clientWidth<620&&host.clientWidth>0,b=narrow?"n":"w";
+  if(b===lastB)return;lastB=b;host.innerHTML="";
+  var W=narrow?520:940,Hh=340,mL=narrow?30:36,mR=12,mT=12,mB=26,fs=narrow?15:11;
+  var yrs=days.map(function(r){return r.year;});
+  var x=sc(yrs[0],yrs[yrs.length-1],mL,W-mR),y=sc(0,180,Hh-mB,mT);
+  var svg=E("svg",{viewBox:"0 0 "+W+" "+Hh,role:"img","aria-label":"Delhi hot days edge down while hot nights climb, 1940 to 2025."});
+  [0,45,90,135,180].forEach(function(t){
+   svg.appendChild(E("line",{x1:mL,x2:W-mR,y1:y(t),y2:y(t),stroke:"rgba(242,231,204,.12)"}));
+   svg.appendChild(txt({x:mL-5,y:y(t)+3,"text-anchor":"end","font-size":fs,fill:"rgba(242,231,204,.62)","font-family":MONO},t));});
+  (narrow?[1950,1990]:[1950,1970,1990,2010]).forEach(function(yr){
+   svg.appendChild(txt({x:x(yr),y:Hh-8,"text-anchor":"middle","font-size":fs,fill:"rgba(242,231,204,.62)","font-family":MONO},yr));});
+  function line(s,c,w,op){var p="";s.forEach(function(r,i){p+=(i?"L":"M")+x(r.year).toFixed(1)+" "+y(r.n).toFixed(1)+" ";});
+   svg.appendChild(E("path",{d:p,fill:"none",stroke:c,"stroke-width":w,"stroke-opacity":op||1,"stroke-linejoin":"round"}));}
+  line(days,"#9aa39e",.75,.18);line(nights,"#D96C3A",.75,.2);
+  line(roll(days,11),"#9aa39e",narrow?3:2.6,1);line(roll(nights,11),"#D96C3A",narrow?3.6:3,1);
+  if(!narrow){
+   svg.appendChild(txt({x:x(2010),y:y(70),"text-anchor":"middle","font-size":12,fill:"#B9C2BC","font-family":MONO},"hot days — edging down",true));
+   svg.appendChild(txt({x:x(2004),y:y(150),"text-anchor":"middle","font-size":12,fill:"#E8886B","font-family":MONO},"hot nights — climbing",true));}
+  host.appendChild(svg);}
+ render();
+ if(window.ResizeObserver)new ResizeObserver(render).observe(host);
+})();
+
+/* ============ FIRST LIGHT ============ */
+(function(){
+ var curc=0,revealed=false,tabs=el("pg-tabs"),btn=el("pg-reveal"),slider=el("pg-slider");
+ P.countries.forEach(function(c,i){var b=document.createElement("button");b.type="button";
+  b.textContent=c.place;b.setAttribute("aria-pressed",i===0);
+  b.addEventListener("click",function(){curc=i;render();});tabs.appendChild(b);});
+ function render(){var c=P.countries[curc];
+  Array.prototype.forEach.call(tabs.children,function(b,i){b.setAttribute("aria-pressed",i===curc);});
+  el("pg-q").textContent="In "+c.place+": what share would say yes?";
+  el("pg-bars").classList.remove("show");el("pg-kick").classList.remove("show");el("pg-sep").classList.remove("show");
+  btn.removeAttribute("aria-disabled");revealed=false;
+  ["pg-a-fill","pg-g-fill","pg-y-fill"].forEach(function(id){el(id).style.width="0";});}
+ slider.addEventListener("input",function(){el("pg-guessval").textContent=slider.value+"%";});
+ function maj(c){return c.actual>=75?"about four in five":(c.actual>=60?"roughly two in three":"a majority");}
+ function kick(c,yours){
+  if(yours<c.actual-5)return "You guessed a minority. The measured number: <b>"+c.actual+"%</b> — "+maj(c)+
+   " — while people there guess just <b>"+c.guess+"%</b>. Almost everyone underestimates their neighbours. You just did it too.";
+  if(yours>c.actual+5)return "You guessed higher than most people there do — the average local guess is only <b>"+c.guess+
+   "%</b>. The measured number: <b>"+c.actual+"%</b> — "+maj(c)+", each thinking they&rsquo;re nearly alone.";
+  return "You called it — <b>"+c.actual+"%</b>. That makes you rare: the average guess there is <b>"+c.guess+
+   "%</b>. "+maj(c).charAt(0).toUpperCase()+maj(c).slice(1)+" are on the same side, each thinking they&rsquo;re nearly alone.";}
+ function reveal(preset){if(revealed)return;revealed=true;
+  var c=P.countries[curc],yours=+slider.value;
+  el("pg-bars").classList.add("show");btn.setAttribute("aria-disabled","true");
+  el("pg-a-val").textContent=c.actual+"%";el("pg-g-val").textContent=c.guess+"%";el("pg-y-val").textContent=yours+"%";
+  setTimeout(function(){el("pg-a-fill").style.width=c.actual+"%";
+   el("pg-g-fill").style.width=c.guess+"%";el("pg-y-fill").style.width=yours+"%";},40);
+  setTimeout(function(){el("pg-kick").innerHTML=kick(c,yours);el("pg-kick").classList.add("show");
+   el("pg-sep").innerHTML="A separate question, same study: <b>"+P.global_want_action_pct+
+    "%</b> worldwide want their government to do more.";
+   el("pg-sep").classList.add("show");if(!preset)el("pg-kick").focus();},90);}
+ btn.addEventListener("click",function(){if(btn.getAttribute("aria-disabled")!=="true")reveal(false);});
+ render();
+ if(Q.get("pg")==="reveal"){slider.value=35;el("pg-guessval").textContent="35%";
+  ["pg-a-fill","pg-g-fill","pg-y-fill"].forEach(function(id){el(id).style.transition="none";});
+  reveal(true);var c=P.countries[0];
+  el("pg-a-fill").style.width=c.actual+"%";el("pg-g-fill").style.width=c.guess+"%";el("pg-y-fill").style.width="35%";}
+})();
+
+/* ============ MORNING ============ */
+(function(){
+ var svg=E("svg",{viewBox:"0 0 "+S.anom.length+" 10",preserveAspectRatio:"none"});
+ svg.setAttribute("width","100%");svg.setAttribute("height","26");
+ S.anom.forEach(function(a,i){svg.appendChild(E("rect",{x:i,y:0,width:1.02,height:10,fill:tcol(a)}));});
+ el("share-mini").appendChild(svg);
+ var shareText="Seville, on record: days at or above 35°C went from "+
+  mean(G.days_ge35_per_year,1951,1980).toFixed(0)+" a year (1951–80) to "+
+  mean(G.days_ge35_per_year,2016,2025).toFixed(0)+" now. Nights that never drop below 25°C: "+
+  mean(G.warm_nights_ge25_per_year,1951,1980).toFixed(1)+" → "+
+  mean(G.warm_nights_ge25_per_year,2016,2025).toFixed(1)+" a year. Source: ERA5 reanalysis. — On Record";
+ var btn=el("share-btn"),orig=btn.textContent;
+ function ok(){btn.textContent="Copied ✓";setTimeout(function(){btn.textContent=orig;},2000);}
+ function fail(){el("share-text").value=shareText;el("share-fallback").style.display="block";
+  btn.textContent="Couldn't copy — select below";setTimeout(function(){btn.textContent=orig;},3000);}
+ btn.addEventListener("click",function(){
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(shareText).then(ok,fail);
+  else fail();});
+})();
+
+/* ============ BEDROCK ============ */
+(function(){
+ var h=D.how_we_know,b=h.seville_forecast_vs_reanalysis_bias_C;
+ el("hww").innerHTML="<b>What the record is.</b> "+h.what_is_era5+
+  " It is a <b>reanalysis</b> — a reconstruction, not a single thermometer — and we say so wherever it appears. "+
+  "For today we compare a live forecast against it; here the forecast runs ~"+Math.abs(b.mean_C).toFixed(1)+
+  " °C "+(b.mean_C<0?"cooler":"warmer")+" (measured over "+b.n_days+" days), so we adjust and label today provisional. "+
+  "Next, shown per place: a cross-check against the nearest long-running weather station.";
+ el("budget-notes").innerHTML=B.notes.join(" · ");
+ table("t-budget",
+  ["Estimate","Published GtCO₂","Counted from","Emitted since","Remaining, "+B.now_label,"Years @ "+RNOW,"Odds of holding 1.5 °C"],
+  B.estimates.map(function(e){return [e.label,String(e.gt),e.anchor.replace("counted from ",""),
+   String(e.elapsed_gt),String(e.remaining_now_gt),e.years_at_now.toFixed(2),e.odds];}));
+ el("srcs").innerHTML=
+  "<div><b>The sky</b>IGCC 2025 — Forster et al., ESSD (130 Gt from 2026)<br>Global Carbon Budget 2025 — GCP (170 Gt from 2025; 42.2 Gt/yr)<br>US EPA 2023 — social cost of carbon (~$190/t, 2% discount)</div>"+
+  "<div><b>The ground</b>ERA5 via Open-Meteo (CC-BY), daily, 1940→<br>forecast: Open-Meteo, quantile-adjusted<br>NOAA GML — CO₂ ("+Math.round(N.co2_ppm)+" ppm, "+N.co2_date+")</div>"+
+  "<div><b>The people</b>Andre, Boneva, Chopra &amp; Falk 2024, Nature Climate Change<br>per-country via Our World in Data (CC-BY)</div>"+
+  "<div><b>The cohort &amp; the night</b>Thiery et al. 2021, Science<br>Padma Kumari et al. 2007, GRL — aerosol dimming<br>attribution: WWA · ClimaMeter · Climate Central</div>"+
+  "<div><b>The counterweights</b>Ember GER 2026 · IEA EV Outlook 2026<br>Climate Action Tracker · WMO/UNEP Ozone — all “verify at build”</div>";
+ el("limits").innerHTML="<b>Limitations, plainly.</b> ERA5's ~30 km grid smooths valley heat — day-counts are "+
+  "model-dependent, presented as a descriptive reanalysis record, not station ground-truth. The 0.88 °C "+
+  "pre-industrial offset is a stated assumption. Carbon budgets are revised yearly; each is published against "+
+  "its own start date, so we subtract emissions elapsed since that date (2025 rate held — an assumption, flagged) "+
+  "to bring both to one day. The dial is arithmetic, not a pathway model; linking it to this city's future "+
+  "summers needs a projection layer that hasn't shipped. Local readings are descriptive, never causal — for "+
+  "“is this climate change?” we point to WWA, ClimaMeter, Climate Central. Corrections will be listed here, dated.";
+ el("colophon").innerHTML="A worked mockup of On Record — place data frozen at 3 July 2026 while the form is "+
+  "decided; the live build refreshes daily. Every figure traces to the sources above or is flagged “verify at "+
+  "build”. Nothing hand-typed or model-guessed. English first; Hindi from launch. Made by Agosh Baranwal · agoshbaranwal@gmail.com";
+})();
+
+/* ============ DRAWER ============ */
+var DRAWERS={
+ sky:{t:"The sky's arithmetic",h:function(){
+  return "<h4>Two ledgers, one date</h4><p>"+B.notes.join(" ")+"</p>"+
+   tableHTML(["Estimate","Published","From","Emitted since","Remaining","Years @ "+RNOW],
+    B.estimates.map(function(e){return [e.label,e.gt+" Gt",e.anchor.replace("counted from ",""),
+     e.elapsed_gt+" Gt",e.remaining_now_gt+" Gt",e.years_at_now.toFixed(2)];}))+
+   "<p class=\"receipt\">50% odds of holding 1.5 °C · budgets revised yearly · held-rate assumption flagged · full method in Bedrock</p>"+
+   "<h4>For the balance-sheet reader</h4><p>The U.S. EPA's central social cost of carbon is ~$"+B.scc.usd_per_t+
+   "/tCO₂ (Dec 2023, "+B.scc.discount+" — higher rates give much lower values). At "+RNOW+
+   " Gt/yr that prices a year of world emissions in the trillions — an illustration of scale, not a damage estimate. "+
+   "Scope 1/2/3, SBTi and IFRS S2 all draw on this same finite budget.</p>";}},
+ ground:{t:"Seville — the full record",h:function(){return groundDrawerExtra;}},
+ night:{t:"Delhi — why the split",h:function(){
+  return "<h4>Two directions, one city</h4><p>Studies of the Indo-Gangetic Plain link the daytime damping mainly to "+
+   "<b>aerosol haze</b> reflecting sunlight before it can heat the ground (Padma Kumari et al. 2007, GRL), with a "+
+   "debated contribution from irrigation. Why the nights climb is a question we leave to attribution science — "+
+   "this page claims only the record itself.</p>"+
+   "<p class=\"receipt\">counts are our own calculation from ERA5, shown descriptively · direction confirmed in published literature</p>"+
+   "<h4>Every year</h4>"+
+   tableHTML(["Year","Days ≥35 °C","Nights ≥25 °C"],
+    DH.days_ge35_per_year.filter(function(r){return r.year<=2025;}).map(function(r,i){
+     return [String(r.year),String(r.n),String(DH.warm_nights_ge25_per_year[i].n)];}));}},
+ firstlight:{t:"The study",h:function(){
+  return "<h4>Construct, precisely</h4><p>Andre, Boneva, Chopra &amp; Falk 2024 (<b>Nature Climate Change</b>): "+
+   "~130,000 people, 125 countries. The question: would you contribute <b>1% of your household income, every "+
+   "month</b>, to fight climate change? Stated willingness, not observed behaviour — and the exact item wording "+
+   "is re-verified at build. The separate 89% figure is demand for stronger <i>government</i> action.</p>"+
+   "<h4>The numbers</h4>"+
+   tableHTML(["Place","Say they would (%)","Average guess (%)"],
+    P.countries.map(function(c){return [c.place,String(c.actual),String(c.guess)];}))+
+   "<p class=\"receipt\">per-country via Our World in Data (CC-BY) · correcting this misperception measurably moves people (no backfire documented in these studies)</p>";}},
+ morning:{t:"The counterweights, sourced",h:function(){
+  return "<h4>Each claim, its source</h4><p><b>Renewables &gt; coal, 2025</b> — Ember, Global Electricity Review 2026. "+
+   "Won by growth, not coal collapse.</p><p><b>~1 in 4 new cars electric</b> — IEA, Global EV Outlook 2026. "+
+   "China ~55%, US ~10%: an honest, uneven spread.</p><p><b>3.6 → 2.6 °C</b> — Climate Action Tracker: expected "+
+   "warming if today's policies continue, 2015 vs now. Far past safe; genuinely lower.</p><p><b>Ozone healing</b> — "+
+   "WMO/UNEP Ozone Assessment: recovery on schedule; a binding global treaty worked.</p>"+
+   "<p class=\"receipt\">all four flagged “verify at build” until re-checked against the named releases</p>";}}
+};
+var lastFocus=null;
+function openDrawer(key){var d=DRAWERS[key];if(!d)return;
+ el("d-title").textContent=d.t;el("dbody").innerHTML=d.h();
+ var dw=el("drawer");dw.classList.add("open");dw.setAttribute("aria-hidden","false");
+ lastFocus=document.activeElement;el("dclose").focus();}
+function closeDrawer(){var dw=el("drawer");
+ if(!dw.classList.contains("open"))return;
+ dw.classList.remove("open");dw.setAttribute("aria-hidden","true");
+ if(lastFocus&&lastFocus.focus)lastFocus.focus();}
+el("dclose").addEventListener("click",closeDrawer);
+document.querySelectorAll("[data-drawer]").forEach(function(b){
+ b.addEventListener("click",function(){openDrawer(b.getAttribute("data-drawer"));});});
+
+/* ============ LIVE — the visitor's own browser asks the sky what today is ============ */
+(function(){
+ if(!window.fetch)return;
+ if(Q.get("live")==="0")return;   // verification: force snapshot mode
+ Promise.all([
+  fetch("https://api.open-meteo.com/v1/forecast?latitude=37.39&longitude=-5.99&daily=temperature_2m_max&forecast_days=1&timezone=auto")
+   .then(function(r){if(!r.ok)throw new Error("om "+r.status);return r.json();}),
+  fetch("data/perday-seville.json").then(function(r){if(!r.ok)throw new Error("pd "+r.status);return r.json();})
+ ]).then(function(rs){
+  var fc=rs[0],pd=rs[1];
+  var iso=fc.daily.time[0],t=fc.daily.temperature_2m_max[0];
+  if(t==null||!iso)return;
+  var day=pd.days[iso.slice(5)];if(!day)return;
+  var comp=Math.round((t-TS.bias)*10)/10;
+  var q=day.q,le=0;for(var i=0;i<q.length;i++)if(q[i]<=comp)le++;
+  TS.mode="live";TS.tmax=t;TS.comparable=comp;
+  TS.dateISO=iso;TS.dateLabel=dLabel(iso);
+  TS.rec=day.rec;TS.recy=day.recy;TS.n=day.n;
+  TS.pct=Math.min(100,Math.round(100*le/q.length));
+  TS.h40a=day.h40a;TS.h40b=day.h40b;
+  if(applyToday)applyToday(TS);
+ }).catch(function(e){ /* no network (e.g. the artifact sandbox) — the labelled snapshot stands */ });
+})();
+
+/* ============ boot state from URL ============ */
+var startCh=Q.get("chamber")||location.hash.replace("#","");
+var si=CH.findIndex(function(c){return c.id===startCh;});
+if(si>0){go(si,false);endIntro();}
+if(Q.get("drawer")){openDrawer(Q.get("drawer"));endIntro();}
+if(Q.get("debug")){setTimeout(function(){
+ var vw=window.innerWidth,bad=[];
+ document.querySelectorAll("body *").forEach(function(nn){
+  var r=nn.getBoundingClientRect();
+  if(r.right>vw+1&&!el("drawer").contains(nn)){
+   var c=(nn.className&&nn.className.baseVal!==undefined)?"(svg)":String(nn.className).split(" ")[0];
+   bad.push(nn.tagName+"."+c+" r"+Math.round(r.right));}});
+ var d=document.createElement("pre");d.id="debug-out";
+ d.textContent="vw="+vw+" docW="+document.documentElement.scrollWidth+" || "+bad.slice(0,20).join(" | ");
+ d.style.cssText="position:fixed;left:4px;bottom:4px;z-index:99;background:#000;color:#0f0;font-size:9px;max-width:96vw;white-space:pre-wrap";
+ document.body.appendChild(d);},1200);}
+})();
+</script>

@@ -1,0 +1,92 @@
+{
+  "Seville": {
+    "rain_3day": {
+      "current_mm": 0.0,
+      "dates": "2026-06-30 \u2192 2026-07-02",
+      "percentile_vs_same_fortnight_since_1940": 82.8,
+      "fortnight_n": 1292,
+      "fortnight_share_zero": 90,
+      "wettest_3day_ever_mm": 144.7,
+      "wettest_3day_ever_end": "2024-10-14",
+      "wettest_3day_this_season_mm": 16.5,
+      "wettest_3day_this_season_end": "1982-07-04"
+    },
+    "dry_spell": {
+      "current_run_days": 53,
+      "longest_per_year_1951_1980": 82.7,
+      "longest_per_year_last10": 92.6,
+      "record_days": 158,
+      "record_year": 1954
+    },
+    "heavy_days_ge20mm_per_year": {
+      "1951_1980": 6.0,
+      "last_10y": 6.5
+    },
+    "forecast_vs_era5_tmax_bias": {
+      "n_days": 70,
+      "mean_C": -0.38,
+      "median_C": -0.3,
+      "p90_abs_C": 1.5
+    }
+  },
+  "Delhi": {
+    "rain_3day": {
+      "current_mm": 13.0,
+      "dates": "2026-06-30 \u2192 2026-07-02",
+      "percentile_vs_same_fortnight_since_1940": 66.8,
+      "fortnight_n": 1292,
+      "fortnight_share_zero": 21,
+      "wettest_3day_ever_mm": 468.1,
+      "wettest_3day_ever_end": "1964-07-06",
+      "wettest_3day_this_season_mm": 468.1,
+      "wettest_3day_this_season_end": "1964-07-06"
+    },
+    "dry_spell": {
+      "current_run_days": 0,
+      "longest_per_year_1951_1980": 80.1,
+      "longest_per_year_last10": 70.9,
+      "record_days": 132,
+      "record_year": 1977
+    },
+    "heavy_days_ge20mm_per_year": {
+      "1951_1980": 8.2,
+      "last_10y": 7.4
+    },
+    "forecast_vs_era5_tmax_bias": {
+      "n_days": 70,
+      "mean_C": 0.25,
+      "median_C": 0.0,
+      "p90_abs_C": 1.2
+    }
+  },
+  "Jakarta": {
+    "rain_3day": {
+      "current_mm": 2.0,
+      "dates": "2026-06-30 \u2192 2026-07-02",
+      "percentile_vs_same_fortnight_since_1940": 38.2,
+      "fortnight_n": 1292,
+      "fortnight_share_zero": 18,
+      "wettest_3day_ever_mm": 172.1,
+      "wettest_3day_ever_end": "1973-02-26",
+      "wettest_3day_this_season_mm": 117.7,
+      "wettest_3day_this_season_end": "1998-06-26"
+    },
+    "dry_spell": {
+      "current_run_days": 0,
+      "longest_per_year_1951_1980": 13.5,
+      "longest_per_year_last10": 11.7,
+      "record_days": 40,
+      "record_year": 1941
+    },
+    "heavy_days_ge20mm_per_year": {
+      "1951_1980": 10.4,
+      "last_10y": 22.2
+    },
+    "forecast_vs_era5_tmax_bias": {
+      "n_days": 69,
+      "mean_C": 0.18,
+      "median_C": 0.0,
+      "p90_abs_C": 1.0
+    }
+  }
+}
