@@ -134,7 +134,7 @@ svg{display:block;width:100%;height:auto}
   text-transform:uppercase;color:var(--bone-2);text-shadow:0 1px 14px rgba(4,18,20,.85)}
 #p-sky .spent{margin-top:5px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;
   color:var(--bone-3);text-shadow:0 1px 14px rgba(4,18,20,.85)}
-#p-sky .burnedtick{margin-top:4px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;
+#p-sky .burnedtick{margin-top:7px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;
   color:var(--amber);text-shadow:0 1px 14px rgba(4,18,20,.85);font-variant-numeric:tabular-nums}
 #skycount{position:absolute;left:0;top:56.5%}
 #hzn-hi,#hzn-lo{position:absolute;left:-38px;right:-38px;border-top:1px solid rgba(62,18,8,.5);pointer-events:none}
@@ -362,7 +362,6 @@ svg{display:block;width:100%;height:auto}
           <p class="years num" id="years">–</p>
           <p class="ylab">years of sky left <span id="atrate"></span></p>
           <p class="spent num" id="spent"></p>
-          <p class="burnedtick num" id="burned" aria-live="off"></p>
         </div>
         <div id="dial">
           <div class="dh"><h3>Rate of burn</h3>
@@ -374,6 +373,7 @@ svg{display:block;width:100%;height:auto}
             <span class="dimNow" id="dimNow"></span><span class="dimKnob" id="dimKnob"></span>
           </div>
           <div class="dimEnds" aria-hidden="true"><span>8 · deep cuts</span><span>63 · +50%</span></div>
+          <p class="burnedtick num" id="burned" aria-live="off"></p>
           <p class="foot"><button type="button" id="reset">reset to today</button>
             drag or use arrow keys — the horizon answers</p>
         </div>
