@@ -67,26 +67,18 @@ a{color:inherit}
 .thm-ink #scrimT,.thm-ink #scrimB{opacity:0}
 
 /* ================= the constellation that is actually up tonight ================= */
-#zodiac{position:absolute;right:20%;bottom:6%;width:23%;max-width:300px;aspect-ratio:1/1;
-  z-index:2;pointer-events:none;opacity:0;transition:opacity 1.4s ease}
-#zodiac.on{opacity:.92}
-#zodiac svg{width:100%;height:100%;overflow:visible;animation:zin 1.3s ease}
-#zodiac .zline{stroke:rgba(206,224,255,.30);stroke-width:.45;fill:none;
-  stroke-dasharray:200;stroke-dashoffset:200;animation:ztrace 2.6s ease forwards}
-#zodiac .zstar{fill:#EAF1FF;animation:ztwinkle 4s ease-in-out infinite}
-#zodiac .zglow{fill:rgba(210,228,255,.14)}
-#zodiac .zname{fill:rgba(220,232,255,.62);font-family:var(--mono);font-size:3.4px;
+/* the real sky over Delhi — a 2D canvas above the atmosphere, below the content */
+#skymap{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;
+  opacity:0;transition:opacity 1.6s ease}   /* canvas is a replaced element — inset alone won't stretch it */
+#skymap.on{opacity:1}
+#skycap{position:absolute;right:6%;bottom:5%;z-index:2;pointer-events:none;text-align:right;
+  opacity:0;transition:opacity 1.6s ease}
+#skycap.on{opacity:1}
+#skycap .zname{display:block;color:rgba(220,232,255,.66);font-family:var(--mono);font-size:11px;
   letter-spacing:.34em;text-transform:uppercase}
-#zodiac .zsub{fill:rgba(220,232,255,.40);font-family:var(--mono);font-size:2.5px;letter-spacing:.06em}
-@keyframes ztrace{to{stroke-dashoffset:0}}
-@keyframes ztwinkle{0%,100%{opacity:.55}50%{opacity:1}}
-.zfade{animation:zout .85s ease forwards}
-@keyframes zout{to{opacity:0}}
-@keyframes zin{from{opacity:0}to{opacity:1}}
-@media(prefers-reduced-motion:reduce){
-  #zodiac .zline{animation:none;stroke-dashoffset:0}
-  #zodiac .zstar{animation:none;opacity:.85}
-  #zodiac{transition:none}}
+#skycap .zsub{display:block;margin-top:5px;color:rgba(220,232,255,.38);font-family:var(--mono);
+  font-size:9px;letter-spacing:.06em}
+@media(prefers-reduced-motion:reduce){#skymap,#skycap{transition:none}}
 
 /* ================= sound ================= */
 #soundbtn{position:absolute;right:38px;top:92px;z-index:7;display:flex;align-items:center;gap:8px;
@@ -425,7 +417,7 @@ svg{display:block;width:100%;height:auto}
   #skycount{top:52%}
   #dial{bottom:64px;width:min(400px,86vw)}
   #tease{display:none}
-  #zodiac{right:5%;bottom:11%;top:auto;width:42%}
+  #skycap{right:5%;bottom:11%}
   #soundbtn{right:14px;bottom:auto;top:12px;padding:8px 10px}   /* vitals hide here — corner is free */
   .hl{right:8px}
   #p-sky .years{font-size:clamp(56px,15vw,96px)}
@@ -445,7 +437,8 @@ svg{display:block;width:100%;height:auto}
   <div class="atmo" id="atmo-bedrock"></div>
   <div class="haze" id="haze1"></div><div class="haze" id="haze2"></div>
   <div id="grain"></div><div id="scrimT"></div><div id="scrimB"></div>
-  <div id="zodiac" aria-hidden="true"></div>
+  <canvas id="skymap" aria-hidden="true"></canvas>
+  <div id="skycap" aria-hidden="true"><span class="zname" id="skyname"></span><span class="zsub" id="skysub"></span></div>
   <button id="soundbtn" type="button" aria-pressed="false"
           title="Ambient sound — synthesised from the chamber you're in">
     <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span id="soundlab">sound off</span>
@@ -779,7 +772,8 @@ var __ATMO=(function(){
 "   float tw2=.35+.65*sin(uT*(.7+fract(dh*9.))+dh*40.);\n"+       // each mote catches the light in its own time
 "   c+=vec3(.90,.87,.80)*exp(-sd2*sd2*70.)*.085*max(tw2,0.)*dustA;}}\n"+
 " if(uMetT0>0.){\n"+                                              // a meteor, when the night grants one
-"  float mp=(uT-uMetT0)/1.6;\n"+
+"  float mdur=.8+fract(uMetSeed*3.9)*.7;\n"+                      // each meteor its own speed: .8-1.5s, the real range
+"  float mp=(uT-uMetT0)/mdur;\n"+
 "  if(mp>0.&&mp<1.4){\n"+                                         // train outlives the head by ~.6s
 "   float sx=.16+fract(uMetSeed*7.13)*.24,sy=.04+fract(uMetSeed*3.71)*.10;\n"+ // enters in the clear high sky, left of centre
 "   vec2 dir=normalize(vec2(.62+fract(uMetSeed*11.7)*.26,.20+fract(uMetSeed*5.9)*.22));\n"+ // always west->east, gently down
@@ -844,9 +838,10 @@ var __ATMO=(function(){
   ground:function(){return {r:ramp8([[0,"#E8DBBB"],[.07,"#BCC49E"],[.16,"#8FB89C"],[.30,"#4E8A7E"],
    [.46,"#2A6F6C"],[.68,"#134247"],[.86,"#0C3035"],[1,"#082226"]]),prm:[-.06,.20,0,.30],sun:C("#FBF4D8"),aux:[.14,.42,0,0],lif:[.85,0,.05,0]};},
   night:function(){return {r:ramp8([[0,"#1A0B0E"],[.12,"#0E1418"],[.30,"#0A1B20"],[.55,"#070E11"],
-   [.75,"#05090C"],[.88,"#04080B"],[.95,"#03070A"],[1,"#02060A"]]),prm:[1.10,.20,1,.20],sun:C("#F28C40"),aux:[.92,.10,0,0],lif:[0,0,.05,0]};},
+   [.75,"#05090C"],[.88,"#04080B"],[.95,"#03070A"],[1,"#02060A"]]),prm:[1.10,.20,.28,.20],sun:C("#F28C40"),aux:[.92,.10,0,0],lif:[0,0,.05,0]};},  // shader stars faint: the REAL catalog leads at night
   firstlight:function(){return {r:ramp8([[0,"#081B20"],[.34,"#0C2B30"],[.58,"#0E3A3A"],[.78,"#2A6F6C"],
-   [.90,"#7FA08D"],[.955,"#C8B98B"],[.985,"#EAD9B6"],[1,"#F2E2BE"]]),prm:[1.06,1.0,.30,.50],sun:C("#FFD9A0"),aux:[.90,.30,.85,0],lif:[0,0,.07,0]};},
+   [.90,"#7FA08D"],[.955,"#C8B98B"],[.985,"#EAD9B6"],[1,"#F2E2BE"]]),prm:[1.06,1.0,.30,.50],sun:C("#FFD9A0"),
+   aux:[.90,.30,(typeof VENUS_MORNING!=="undefined"&&VENUS_MORNING)?.85:0,0],lif:[0,0,.07,0]};},  // Venus only when she truly rises before the sun
   morning:function(){return {r:ramp8([[0,"#E2CDA0"],[.20,"#EAD9B6"],[.45,"#F2E7CC"],[.65,"#F1E5C8"],
    [.80,"#EBDFBE"],[.90,"#DFD6AE"],[.96,"#D2CCA6"],[1,"#C9CBA4"]]),prm:[.13,.70,0,.32],sun:C("#FFE9B8"),aux:[.86,.34,0,0],lif:[.25,0,.05,0]};},
   bedrock:function(){return {r:ramp8([[0,"#15140F"],[.22,"#121310"],[.40,"#0F110E"],[.58,"#0D0F0D"],
@@ -914,7 +909,7 @@ var __ATMO=(function(){
   if(reduce)expB=to;wake();}
  function meteor(){if(reduce)return 0;
   metT0=((performance.now()-t0)/1000)%3600;metSeed=Math.random()*97.3;
-  wake();return 1600;}                       // flight time in ms, for the sound to match
+  wake();return (0.8+((metSeed*3.9)%1)*0.7)*1000;}  // same seed formula as the shader — flight .8-1.5s
  el("stage").classList.add("gl");
  size();draw();wake();
  return {ok:true,setState:setState,
@@ -960,7 +955,7 @@ function go(i,focusH2){
  }
  el("panes").classList.toggle("up",i<prevI);
  /* the night gets its constellation and its meteors; every chamber gets its own air */
- if(__ZOD){if(c.id==="night")__ZOD.enter();else __ZOD.leave();}
+ if(__SKY){if(c.id==="night")__SKY.enter();else __SKY.leave();}
  if(__MET){if(c.id==="night")__MET.start();else __MET.stop();}
  if(__SND)__SND.chamber(c.id);
  document.querySelectorAll(".atmo").forEach(function(a){a.classList.toggle("on",a.id==="atmo-"+c.id);});
@@ -1443,7 +1438,8 @@ var groundDrawerExtra="";
   "<div><b>The ground</b>ERA5 via Open-Meteo (CC-BY), daily, 1940→<br>forecast: Open-Meteo, quantile-adjusted<br>NOAA GML — CO₂ ("+Math.round(N.co2_ppm)+" ppm, "+N.co2_date+")</div>"+
   "<div><b>The people</b>Andre, Boneva, Chopra &amp; Falk 2024, Nature Climate Change<br>per-country via Our World in Data (CC-BY)</div>"+
   "<div><b>The cohort &amp; the night</b>Thiery et al. 2021, Science<br>Padma Kumari et al. 2007, GRL — aerosol dimming<br>attribution: WWA · ClimaMeter · Climate Central</div>"+
-  "<div><b>The counterweights</b>Ember GER 2026 · IEA EV Outlook 2026<br>Climate Action Tracker · WMO/UNEP Ozone — all “verify at build”</div>";
+  "<div><b>The counterweights</b>Ember GER 2026 · IEA EV Outlook 2026<br>Climate Action Tracker · WMO/UNEP Ozone — all “verify at build”</div>"+
+  "<div><b>The night sky</b>Yale Bright Star Catalogue via d3-celestial (BSD-3, O. Frohn)<br>alt/az computed client-side for Delhi — IAU 1982 sidereal time; Sun/Moon/Venus per Schlyter (display-grade)</div>";
  el("limits").innerHTML="<b>Limitations, plainly.</b> ERA5's ~30 km grid smooths valley heat — day-counts are "+
   "model-dependent, presented as a descriptive reanalysis record, not station ground-truth. The 0.88 °C "+
   "pre-industrial offset is a stated assumption. Carbon budgets are revised yearly; each is published against "+
@@ -1478,7 +1474,14 @@ var DRAWERS={
    "<h4>Every year</h4>"+
    tableHTML(["Year","Days ≥35 °C","Nights ≥25 °C"],
     DH.days_ge35_per_year.filter(function(r){return r.year<=2025;}).map(function(r,i){
-     return [String(r.year),String(r.n),String(DH.warm_nights_ge25_per_year[i].n)];}));}},
+     return [String(r.year),String(r.n),String(DH.warm_nights_ge25_per_year[i].n)];}))+
+   "<h4>The sky itself</h4><p>The stars behind this chart are the real sky over Delhi at your clock: "+
+   "positions from the <b>Yale Bright Star Catalogue</b> (via d3-celestial, BSD-3, O.&nbsp;Frohn), "+
+   "converted to Delhi&rsquo;s horizon in your browser — sidereal time per the IAU 1982 expression, "+
+   "Sun/Moon/Venus from Schlyter&rsquo;s low-precision elements (display-grade, arcminute class). "+
+   "The procession names the constellations that genuinely cross Delhi&rsquo;s meridian tonight, with "+
+   "computed times — thirteen, because the ecliptic truly crosses <b>Ophiuchus</b>. The moon is drawn "+
+   "at its true phase. Meteor paths are physical; their frequency is theatre, and we say so.</p>";}},
  firstlight:{t:"The study",h:function(){
   return "<h4>Construct, precisely</h4><p>Andre, Boneva, Chopra &amp; Falk 2024 (<b>Nature Climate Change</b>): "+
    "~130,000 people, 125 countries. The question: would you contribute <b>1% of your household income, every "+
@@ -1533,67 +1536,177 @@ document.querySelectorAll("[data-drawer]").forEach(function(b){
  }).catch(function(e){ /* no network (e.g. the artifact sandbox) — the labelled snapshot stands */ });
 })();
 
-/* ═══════════ THE ZODIAC THAT IS ACTUALLY UP TONIGHT ═══════════
-   Patterns are schematic (not an astronomical projection) — but WHICH one leads
-   is real: the constellation opposite the sun's current sign is the one riding
-   the midnight sky. It then drifts along the zodiac, as the year does. */
-var __ZOD=(function(){
- var Z=[
-  {n:"Aries",p:[[30,60],[42,52],[54,48],[62,52]],e:[[0,1],[1,2],[2,3]]},
-  {n:"Taurus",p:[[20,78],[34,62],[46,52],[40,42],[30,32],[54,60],[62,68]],
-   e:[[0,1],[1,2],[2,3],[3,4],[2,5],[5,6]]},
-  {n:"Gemini",p:[[32,20],[34,36],[30,52],[26,68],[52,24],[52,40],[48,56],[44,72]],
-   e:[[0,1],[1,2],[2,3],[4,5],[5,6],[6,7],[1,5]]},
-  {n:"Cancer",p:[[44,30],[46,46],[36,60],[58,58]],e:[[0,1],[1,2],[1,3]]},
-  {n:"Leo",p:[[20,74],[22,60],[28,48],[36,42],[44,47],[42,58],[62,66],[50,72]],
-   e:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,7],[7,6],[0,7]]},
-  {n:"Virgo",p:[[24,32],[36,38],[46,46],[40,58],[52,66],[60,44],[66,34]],
-   e:[[0,1],[1,2],[2,5],[5,6],[2,3],[3,4]]},
-  {n:"Libra",p:[[34,40],[52,34],[62,50],[44,58],[30,64]],e:[[0,1],[1,2],[2,3],[3,0],[3,4]]},
-  {n:"Scorpius",p:[[30,20],[38,22],[45,26],[50,34],[53,45],[55,56],[58,66],[64,74],[72,78],[78,71]],
-   e:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9]]},
-  {n:"Sagittarius",p:[[28,62],[36,54],[44,50],[54,54],[60,64],[52,70],[40,70]],
-   e:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,1],[3,5]]},
-  {n:"Capricornus",p:[[26,42],[56,34],[66,56],[40,64]],e:[[0,1],[1,2],[2,3],[3,0]]},
-  {n:"Aquarius",p:[[24,34],[34,28],[44,36],[54,30],[50,46],[58,58],[48,66],[62,72]],
-   e:[[0,1],[1,2],[2,3],[2,4],[4,5],[5,6],[5,7]]},
-  {n:"Pisces",p:[[22,66],[34,56],[46,50],[58,44],[68,36],[72,28],[64,24],[60,32]],
-   e:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,4]]}
- ];
- /* the sun's sign for a date → the opposite sign is what's overhead at midnight */
- var B=[[3,21],[4,20],[5,21],[6,21],[7,23],[8,23],[9,23],[10,23],[11,22],[12,22],[1,20],[2,19]];
- function sunSign(d){
-  var doy=Math.floor((Date.UTC(2001,d.getMonth(),d.getDate())-Date.UTC(2001,0,1))/864e5);
-  var bd=B.map(function(s){return Math.floor((Date.UTC(2001,s[0]-1,s[1])-Date.UTC(2001,0,1))/864e5);});
-  for(var k=0;k<12;k++){var a=bd[k],b=bd[(k+1)%12];
-   if(a<b){if(doy>=a&&doy<b)return k;}else if(doy>=a||doy<b)return k;}
-  return 11;}
- /* The sky turns 15°/hour, so consecutive signs cross the meridian about two hours apart.
-    The sign opposite the sun is highest at local midnight; we walk the four that genuinely
-    take their turn tonight, in the order they take it — the change is the fact, not decoration. */
- var host=el("zodiac"),anti=(sunSign(new Date())+6)%12,OFF=[-2,-1,0,1,2,3],step=0,timer=0,live=false;
- function hourFor(off){var h=(24+2*off)%24;return (h<10?"0":"")+h+":00";}
- function render(k){
-  var off=OFF[k],z=Z[(anti+off+12)%12],svg='<svg viewBox="0 0 100 100" aria-hidden="true">';
-  z.e.forEach(function(pair){var a=z.p[pair[0]],b=z.p[pair[1]];
-   svg+='<line class="zline" x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b[0]+'" y2="'+b[1]+'"/>';});
-  z.p.forEach(function(pt,k){
-   svg+='<circle class="zglow" cx="'+pt[0]+'" cy="'+pt[1]+'" r="2.1"/>';
-   svg+='<circle class="zstar" cx="'+pt[0]+'" cy="'+pt[1]+'" r="'+(0.62+(k%3)*0.24).toFixed(2)+
-        '" style="animation-delay:'+(k*0.42).toFixed(2)+'s"/>';});
-  svg+='<text class="zname" x="4" y="94">'+z.n+'</text>';
-  svg+='<text class="zsub" x="4" y="98.6">highest around '+hourFor(off)+
-       ' tonight · pattern schematic</text></svg>';
-  host.innerHTML=svg;}
- function show(){if(!live)return;render(step);host.classList.add("on");}
- function cycle(){if(!live)return;
-  var s=host.firstChild;if(s)s.classList.add("zfade");
-  setTimeout(function(){if(!live)return;step=(step+1)%OFF.length;render(step);},900);}
- return {enter:function(){live=true;show();
-   if(!reduce&&!timer)timer=setInterval(cycle,5000);},   // the night's procession, one sign every 5s
-  leave:function(){live=false;host.classList.remove("on");
-   if(timer){clearInterval(timer);timer=0;}}};
+/* ═══════════ THE REAL SKY — Delhi's night, computed, not decorated ═══════════
+   Stars: Yale Bright Star Catalogue via d3-celestial (BSD-3), mag ≤ 5.
+   Geometry: GMST per the IAU 1982 expression (Meeus, Astronomical Algorithms);
+   Sun, Moon and Venus from Paul Schlyter's low-precision elements (arcminute
+   class — display-grade, and we say so in the receipts). Everything is drawn
+   in horizontal coordinates for Delhi (28.61 N, 77.21 E), facing due south,
+   at the visitor's clock. ?at=ISO overrides the clock for verification. */
+var VENUS_MORNING=false;
+var __SKY=(function(){
+ if(!D.sky||!window.CanvasRenderingContext2D)return null;
+ var LAT=28.61,LON=77.21,TZ="Asia/Kolkata",R=Math.PI/180;
+ var cv=el("skymap"),cx=cv.getContext("2d"),cap=el("skycap");
+ var tOverride=null;(function(){var a=Q.get("at");if(a){var d=new Date(a);if(!isNaN(+d))tOverride=+d;}})();
+ function nowMs(){return tOverride!=null?tOverride:Date.now();}
+ function jd(ms){return ms/864e5+2440587.5;}
+ function gmstDeg(j){var g=280.46061837+360.98564736629*(j-2451545.0);return ((g%360)+360)%360;}
+ function lstDeg(j){return (gmstDeg(j)+LON)%360;}
+ function altaz(raD,decD,j){
+  var H=(lstDeg(j)-raD)*R,dec=decD*R,lat=LAT*R;
+  var sa=Math.sin(dec)*Math.sin(lat)+Math.cos(dec)*Math.cos(lat)*Math.cos(H);
+  sa=Math.max(-1,Math.min(1,sa));var alt=Math.asin(sa);
+  var az=Math.atan2(-Math.cos(dec)*Math.sin(H),(Math.sin(dec)-sa*Math.sin(lat))/Math.cos(lat));
+  return [alt/R,((az/R)%360+360)%360];}                       // az: 0=N 90=E 180=S
+ function sunEcl(j){var d=j-2451543.5;
+  var w=282.9404+4.70935e-5*d,e=.016709-1.151e-9*d,M=((356.0470+.9856002585*d)%360+360)%360;
+  var Mr=M*R,E=(M+e/R*Math.sin(Mr)*(1+e*Math.cos(Mr)))*R;
+  var x=Math.cos(E)-e,y=Math.sin(E)*Math.sqrt(1-e*e);
+  return {lon:(((Math.atan2(y,x)/R+w)%360)+360)%360,r:Math.sqrt(x*x+y*y)};}
+ function ecl2eq(lon,lat,j){var o=(23.4393-3.563e-7*(j-2451543.5))*R,lr=lon*R,br=lat*R;
+  var xe=Math.cos(lr)*Math.cos(br),ye=Math.sin(lr)*Math.cos(br),ze=Math.sin(br);
+  var yq=ye*Math.cos(o)-ze*Math.sin(o),zq=ye*Math.sin(o)+ze*Math.cos(o);
+  return [((Math.atan2(yq,xe)/R)+360)%360,Math.atan2(zq,Math.sqrt(xe*xe+yq*yq))/R];}
+ function sunAlt(j){var s=sunEcl(j),p=ecl2eq(s.lon,0,j);return altaz(p[0],p[1],j)[0];}
+ function kepler(M,e){var E=M+e*Math.sin(M)*(1+e*Math.cos(M));
+  for(var k=0;k<4;k++)E=E-(E-e*Math.sin(E)-M)/(1-e*Math.cos(E));return E;}
+ function orbXYZ(N,i,w,a,e,M){var E=kepler(M,e);
+  var x=a*(Math.cos(E)-e),y=a*Math.sqrt(1-e*e)*Math.sin(E);
+  var v=Math.atan2(y,x),r=Math.sqrt(x*x+y*y);
+  return [r*(Math.cos(N)*Math.cos(v+w)-Math.sin(N)*Math.sin(v+w)*Math.cos(i)),
+          r*(Math.sin(N)*Math.cos(v+w)+Math.cos(N)*Math.sin(v+w)*Math.cos(i)),
+          r*Math.sin(v+w)*Math.sin(i)];}
+ function moon(j){var d=j-2451543.5;
+  var N=(125.1228-.0529538083*d)*R,i=5.1454*R,w=(318.0634+.1643573223*d)*R;
+  var Mdeg=((115.3654+13.0649929509*d)%360+360)%360;
+  var p=orbXYZ(N,i,w,60.2666,.0549,Mdeg*R);
+  var lon=Math.atan2(p[1],p[0])/R,lat=Math.atan2(p[2],Math.sqrt(p[0]*p[0]+p[1]*p[1]))/R;
+  var Ms=((356.0470+.9856002585*d)%360+360)%360,ws=282.9404+4.70935e-5*d;
+  var Ls=(Ms+ws)%360,Lm=(N/R+w/R+Mdeg)%360;
+  var D2=((Lm-Ls)%360+360)%360,F=((Lm-N/R)%360+360)%360,Mm=Mdeg;
+  lon+=-1.274*Math.sin((Mm-2*D2)*R)+.658*Math.sin(2*D2*R)-.186*Math.sin(Ms*R)
+       -.059*Math.sin((2*Mm-2*D2)*R)-.057*Math.sin((Mm-2*D2+Ms)*R)+.053*Math.sin((Mm+2*D2)*R)
+       +.046*Math.sin((2*D2-Ms)*R)+.041*Math.sin((Mm-Ms)*R)-.035*Math.sin(D2*R)-.031*Math.sin((Mm+Ms)*R);
+  lat+=-.173*Math.sin((F-2*D2)*R)-.055*Math.sin((Mm-F-2*D2)*R)-.046*Math.sin((Mm+F-2*D2)*R)
+       +.033*Math.sin((F+2*D2)*R)+.017*Math.sin((2*Mm+F)*R);
+  var eq=ecl2eq(lon,lat,j),sl=sunEcl(j).lon;
+  var elong=Math.acos(Math.max(-1,Math.min(1,Math.cos((lon-sl)*R)*Math.cos(lat*R))));
+  return {ra:eq[0],dec:eq[1],frac:(1-Math.cos(elong))/2,waxing:Math.sin((lon-sl)*R)>0};}
+ function venusGeoLon(j){var d=j-2451543.5;
+  var p=orbXYZ((76.6799+2.46590e-5*d)*R,(3.3946+2.75e-8*d)*R,(54.8910+1.38374e-5*d)*R,
+               .723330,.006773-1.302e-9*d,(((48.0052+1.6021302244*d)%360+360)%360)*R);
+  var s=sunEcl(j),xs=s.r*Math.cos(s.lon*R),ys=s.r*Math.sin(s.lon*R);
+  return ((Math.atan2(p[1]+ys,p[0]+xs)/R)+360)%360;}
+ /* Venus west of the sun rises before it: a true morning star */
+ (function(){var j=jd(nowMs());var e=(venusGeoLon(j)-sunEcl(j).lon+540)%360-180;VENUS_MORNING=e<0;})();
+ /* -------- the view: facing due south, 100 degrees of azimuth -------- */
+ var AZ0=130,AZ1=230,ALT0=-2,ALT1=72,W=0,H=0,dpr=1;
+ function size(){dpr=Math.min(window.devicePixelRatio||1,1.5);
+  var w=Math.round(cv.clientWidth*dpr),h=Math.round(cv.clientHeight*dpr);
+  if(!w||!h)return false;
+  if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;}
+  W=cv.width;H=cv.height;return true;}
+ function proj(alt,az){return [(az-AZ0)/(AZ1-AZ0)*W,(1-(alt-ALT0)/(ALT1-ALT0))*H];}
+ function inView(alt,az){return az>=AZ0-3&&az<=AZ1+3&&alt>=ALT0-2&&alt<=ALT1+3;}
+ function bvCol(bv){return bv<.1?"200,220,255":bv<.5?"228,238,255":bv<.9?"255,246,234":
+  bv<1.4?"255,226,198":"255,206,172";}
+ /* -------- tonight's procession: real meridian transits between dusk and dawn -------- */
+ var DEGPMS=360.98564736629/864e5;                            // sidereal rate
+ function raCentre(fig){var sx=0,sy=0;
+  fig.l.forEach(function(seg){seg.forEach(function(p){sx+=Math.cos(p[0]*R);sy+=Math.sin(p[0]*R);});});
+  return ((Math.atan2(sy,sx)/R)+360)%360;}
+ function darkWindow(ms){                                     // sun below -9 deg: stars own the sky
+  var t=ms,step=3e5,dusk=null,dawn=null;
+  if(sunAlt(jd(t))>=-9){while(sunAlt(jd(t))>=-9&&t<ms+864e5)t+=step;dusk=t;}
+  else{while(sunAlt(jd(t))<-9&&t>ms-864e5)t-=step;dusk=t+step;}
+  t=dusk+step;while(sunAlt(jd(t))<-9&&t<dusk+864e5)t+=step;dawn=t;
+  return [dusk,dawn];}
+ function transitAfter(raD,ms){var diff=((raD-lstDeg(jd(ms)))%360+360)%360;return ms+diff/DEGPMS;}
+ var tonight=[],feat=0,timer=0,refr=0,live=false,fadeT0=0,prevFeat=-1;
+ function computeTonight(){var wnd=darkWindow(nowMs());tonight=[];
+  D.sky.order.forEach(function(ab){var f=D.sky.zod[ab];if(!f)return;
+   var tt=transitAfter(raCentre(f),wnd[0]);
+   if(tt<=wnd[1])tonight.push({ab:ab,n:f.n,ms:tt});});
+  tonight.sort(function(a,b){return a.ms-b.ms;});
+  if(!tonight.length)tonight=[{ab:D.sky.order[0],n:D.sky.zod[D.sky.order[0]].n,ms:wnd[0]}];
+  feat=0;prevFeat=-1;
+  var nn=nowMs();                                             // start with the figure nearest this moment
+  for(var i2=1;i2<tonight.length;i2++)
+   if(Math.abs(tonight[i2].ms-nn)<Math.abs(tonight[feat].ms-nn))feat=i2;}
+ var fmtIST=new Intl.DateTimeFormat("en-GB",{timeZone:TZ,hour:"2-digit",minute:"2-digit"});
+ /* -------- drawing -------- */
+ function drawStar(x,y,mag,bv,a){
+  var r2=Math.max(.55,(5.2-mag)*.42)*dpr;
+  cx.fillStyle="rgba("+bvCol(bv)+","+a.toFixed(3)+")";
+  cx.beginPath();cx.arc(x,y,r2,0,6.2832);cx.fill();
+  if(mag<1.6){cx.fillStyle="rgba("+bvCol(bv)+","+(a*.16).toFixed(3)+")";
+   cx.beginPath();cx.arc(x,y,r2*3.2,0,6.2832);cx.fill();}}
+ function drawMoon(j){var m=moon(j),aa=altaz(m.ra,m.dec,j);
+  if(!inView(aa[0],aa[1]))return;
+  var p=proj(aa[0],aa[1]),x=p[0],y=p[1],r2=10*dpr;
+  var LIT="rgb(238,236,224)",DARK="rgb(30,32,34)";            // opaque: the moon hides the stars behind it
+  var lit=m.waxing?1:-1;                                      // facing south: the waxing moon lights its western (right) limb
+  var tw=r2*Math.abs(2*m.frac-1);
+  cx.save();
+  cx.fillStyle="rgba(240,240,230,.10)";cx.beginPath();cx.arc(x,y,r2*2.2,0,6.2832);cx.fill();
+  cx.beginPath();cx.arc(x,y,r2,0,6.2832);cx.clip();
+  cx.fillStyle=DARK;cx.fillRect(x-r2,y-r2,2*r2,2*r2);         // dark disc (earthshine tone)
+  cx.fillStyle=LIT;cx.fillRect(lit>0?x:x-r2,y-r2,r2,2*r2);    // the lit half
+  cx.beginPath();cx.ellipse(x,y,tw,r2,0,0,6.2832);            // the terminator ellipse:
+  cx.fillStyle=(m.frac>=.5)?LIT:DARK;cx.fill();               // bulges lit when gibbous, carves dark when crescent
+  cx.restore();}
+ function figureAlpha(k){                                     // crossfade between featured figures
+  var dt=(Date.now()-fadeT0)/1000;
+  if(reduce||dt>1.1)return k===feat?1:0;
+  var t=Math.min(1,dt);return k===feat?t:(k===prevFeat?1-t:0);}
+ function draw(){if(!size())return;
+  var j=jd(nowMs());cx.clearRect(0,0,W,H);
+  var st=D.sky.stars,i,s,aa,p2,a;
+  for(i=0;i<st.length;i++){s=st[i];aa=altaz(s[0],s[1],j);
+   if(!inView(aa[0],aa[1]))continue;
+   p2=proj(aa[0],aa[1]);
+   a=Math.max(.08,Math.min(1,(5.5-s[2])/4.0));
+   a*=1-.72*Math.exp(-(Math.max(aa[0],0)+.5)/7);              // atmospheric extinction near the horizon
+   drawStar(p2[0],p2[1],s[2],s[3],a);}
+  for(var k=0;k<tonight.length;k++){var fa=figureAlpha(k);if(fa<=0)continue;
+   var fig=D.sky.zod[tonight[k].ab];
+   cx.strokeStyle="rgba(206,224,255,"+(0.30*fa).toFixed(3)+")";cx.lineWidth=Math.max(1,.9*dpr);
+   fig.l.forEach(function(seg){cx.beginPath();var began=false;
+    seg.forEach(function(pt){var v=altaz(pt[0],pt[1],j);
+     if(v[0]<ALT0-8){began=false;return;}
+     var q=proj(v[0],v[1]);
+     if(!began){cx.moveTo(q[0],q[1]);began=true;}else cx.lineTo(q[0],q[1]);});
+    cx.stroke();});
+   fig.l.forEach(function(seg){seg.forEach(function(pt){var v=altaz(pt[0],pt[1],j);
+    if(!inView(v[0],v[1]))return;var q=proj(v[0],v[1]);
+    cx.fillStyle="rgba(224,236,255,"+(.5*fa).toFixed(3)+")";
+    cx.beginPath();cx.arc(q[0],q[1],1.7*dpr,0,6.2832);cx.fill();});});}
+  drawMoon(j);}
+ function caption(){var f=tonight[feat];if(!f)return;
+  el("skyname").textContent=f.n;
+  el("skysub").textContent="crosses Delhi's meridian at "+fmtIST.format(new Date(f.ms))+
+   " IST tonight · the real sky, computed at your clock · Yale BSC";}
+ function cycle(){if(!live)return;prevFeat=feat;feat=(feat+1)%tonight.length;fadeT0=Date.now();
+  caption();var t0=Date.now();
+  (function anim(){if(!live)return;draw();
+   if(Date.now()-t0<1150&&!reduce)requestAnimationFrame(anim);})();}
+ return {enter:function(){live=true;computeTonight();fadeT0=0;
+   if(!size()){var tries=0,rt=setInterval(function(){if(size()||++tries>40){clearInterval(rt);draw();}},50);}
+   draw();caption();cv.classList.add("on");cap.classList.add("on");
+   if(!reduce&&!timer)timer=setInterval(cycle,5000);        // the procession, one figure every 5s
+   if(!refr)refr=setInterval(function(){if(live)draw();},30000);},  // the sky itself turns
+  leave:function(){live=false;cv.classList.remove("on");cap.classList.remove("on");
+   if(timer){clearInterval(timer);timer=0;}
+   if(refr){clearInterval(refr);refr=0;}},
+  _dbg:function(raD,decD){var j=jd(nowMs());size();
+   var aa0=altaz(raD,decD,j);
+   return {W:W,H:H,cw:cv.clientWidth,ch:cv.clientHeight,proj:proj(aa0[0],aa0[1]),
+    lst:lstDeg(j),aa:altaz(raD,decD,j),
+   moon:moon(j),venusMorning:VENUS_MORNING,sunAlt:sunAlt(j),
+   tonight:tonight.map(function(t){return t.n+"@"+fmtIST.format(new Date(t.ms));})};}};
 })();
+window.__SKY=__SKY;
 
 /* ═══════════ METEORS — rare, unhurried, and they whisper ═══════════ */
 var __MET=(function(){

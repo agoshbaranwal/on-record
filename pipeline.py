@@ -273,6 +273,52 @@ out["budget"] = {
  ],
  "_verify": "figures, anchors and the held-rate assumption re-verified against the named releases annually"}
 
+# ---------------- the real night sky ----------------
+# Star positions from the Yale Bright Star Catalogue and IAU constellation figures,
+# via d3-celestial (Olaf Frohn, BSD-3-Clause). The browser computes alt/az for Delhi
+# at the visitor's clock — the night chamber's sky is a simulation, not decoration.
+# The procession holds 13 constellations: the ecliptic genuinely crosses Ophiuchus.
+def fetch_sky():
+    def cached(url, name):
+        cf = CACHE / name
+        try:
+            txt = fetch(url); cf.write_text(txt)
+        except Exception as e:
+            if not cf.exists(): raise
+            print(f"  !! sky fetch failed ({e}) — using cached {name}")
+            txt = cf.read_text()
+        return json.loads(txt)
+    stars = cached("https://raw.githubusercontent.com/ofrohn/d3-celestial/master/data/stars.6.json",
+                   "sky_stars6.json")
+    lines = cached("https://raw.githubusercontent.com/ofrohn/d3-celestial/master/data/constellations.lines.json",
+                   "sky_clines.json")
+    ss = []
+    for f in stars["features"]:
+        m = f["properties"].get("mag")
+        if m is None or m > 5.0: continue
+        ra, dec = f["geometry"]["coordinates"]
+        try: bv = float(f["properties"].get("bv") or 0.0)
+        except (TypeError, ValueError): bv = 0.0
+        ss.append([round(ra % 360.0, 2), round(dec, 2), round(m, 1), round(bv, 2)])
+    ss.sort(key=lambda s: s[2])
+    ZOD = ["Ari","Tau","Gem","Cnc","Leo","Vir","Lib","Sco","Oph","Sgr","Cap","Aqr","Psc"]
+    NAMES = {"Ari":"Aries","Tau":"Taurus","Gem":"Gemini","Cnc":"Cancer","Leo":"Leo","Vir":"Virgo",
+             "Lib":"Libra","Sco":"Scorpius","Oph":"Ophiuchus","Sgr":"Sagittarius","Cap":"Capricornus",
+             "Aqr":"Aquarius","Psc":"Pisces"}
+    figs = {}
+    for f in lines["features"]:
+        if f["id"] not in ZOD: continue
+        figs[f["id"]] = {"n": NAMES[f["id"]],
+                         "l": [[[round(a % 360.0, 2), round(d, 2)] for a, d in seg]
+                               for seg in f["geometry"]["coordinates"]]}
+    missing = [z for z in ZOD if z not in figs]
+    if missing: raise RuntimeError(f"constellation lines missing: {missing}")
+    return {"stars": ss, "zod": figs, "order": ZOD,
+            "src": "Yale Bright Star Catalogue via d3-celestial (Olaf Frohn, BSD-3-Clause); "
+                   "alt/az computed in-browser for Delhi (Meeus / Schlyter low-precision algorithms)"}
+out["sky"] = fetch_sky()
+print(f"  sky: {len(out['sky']['stars'])} stars ≤ mag 5.0 · {len(out['sky']['zod'])} zodiacal figures (incl. Ophiuchus)")
+
 (DATA / "site-data.json").write_text(json.dumps(out, separators=(",", ":")))
 print(f"  site-data.json written ({(DATA/'site-data.json').stat().st_size:,} B)")
 
