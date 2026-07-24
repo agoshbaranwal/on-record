@@ -174,6 +174,19 @@ a{color:inherit}
 .pane{position:absolute;inset:0;display:none;flex-direction:column;min-height:0;
   padding-right:172px}
 .pane.on{display:flex}
+/* beats: each chapter tells its story one idea at a time. The pane scrolls and
+   snaps beat to beat; the wheel travels to the next chapter only at the edges. */
+.beats{flex:1;min-height:0;overflow-y:auto;scroll-snap-type:y mandatory;
+  scrollbar-width:none;-ms-overflow-style:none}
+.beats::-webkit-scrollbar{display:none}
+.beat{min-height:100%;display:flex;flex-direction:column;justify-content:center;
+  scroll-snap-align:start;scroll-snap-stop:always;padding:7vh 0 9vh}
+.beat .lead{font-size:clamp(16px,1.6vw,19px);line-height:1.5;color:var(--bone-2);
+  max-width:56ch;text-wrap:pretty;text-shadow:var(--halo)}
+.thm-ink .beat .lead{color:var(--ink-2);text-shadow:none}
+.beat-cue{margin-top:auto;padding-top:24px;font-weight:500;font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--bone-3);text-shadow:var(--halo)}
+.thm-ink .beat-cue{color:var(--ink-3);text-shadow:none}
 .pane.out{display:flex;pointer-events:none;animation:paneout .3s cubic-bezier(.55,0,.85,.45) both}
 /* arriving facts land one by one — direction encodes travel */
 .pane.on>*{animation:rise .62s cubic-bezier(.16,.84,.28,1) both;
@@ -214,7 +227,7 @@ a{color:inherit}
 svg{display:block;width:100%;height:auto}
 
 /* --- SKY pane --- */
-#p-sky .years{font-weight:500;font-size:clamp(50px,7vw,88px);line-height:.92;
+#p-sky .years{font-weight:500;font-size:clamp(56px,8.5vw,110px);line-height:.92;
   letter-spacing:-.035em;color:var(--ink);font-variant-numeric:tabular-nums;
   text-shadow:0 0 22px rgba(255,244,214,.45),0 2px 3px rgba(255,248,228,.85),0 1px 1px rgba(255,248,228,.9)}
 /* the caption cluster lives on shifting light — it gets its own dark glass, like the pills */
@@ -225,7 +238,7 @@ svg{display:block;width:100%;height:auto}
   color:var(--bone);text-shadow:var(--halo2)}
 #p-sky .burnedtick{margin-top:7px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;
   color:var(--amber);text-shadow:var(--halo);font-variant-numeric:tabular-nums}
-#skycount{position:absolute;left:0;top:56.5%}
+#skycount{margin-top:18px}
 #hzn-hi,#hzn-lo{position:absolute;left:-38px;right:-38px;border-top:1px solid rgba(62,18,8,.5);pointer-events:none}
 /* the century axis: altitude is time, and the axis is drawn, not implied */
 #skyaxis{position:absolute;inset:0;pointer-events:none}
@@ -239,11 +252,11 @@ svg{display:block;width:100%;height:auto}
 .hl b{color:var(--ink);font-weight:600}
 #hzn-hi .hl{bottom:5px}
 #hzn-lo .hl{top:5px}
-#dial{position:absolute;left:0;bottom:6px;width:min(400px,44vw)}
+#dial{position:static;width:min(560px,94%);margin-top:26px}
 #dial .dh{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
-#dial h3{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.3em;
-  text-transform:uppercase;color:var(--bone-2);text-shadow:var(--halo)}
-#dial .dv{font-family:var(--mono);font-size:10.5px;color:var(--bone-3);white-space:nowrap;text-shadow:var(--halo)}
+#dial h3{font-weight:500;font-size:13px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--bone);text-shadow:var(--halo)}
+#dial .dv{font-family:var(--mono);font-size:12px;color:var(--bone-2);white-space:nowrap;text-shadow:var(--halo)}
 #dial .dv b{font-family:var(--sg);font-size:22px;font-weight:500;color:var(--bone);
   font-variant-numeric:tabular-nums;margin-right:3px;text-shadow:var(--halo)}
 #dial .dv em{font-style:normal;display:inline-block;min-width:9ch;margin-left:6px;color:var(--bone-2)}
@@ -257,10 +270,18 @@ svg{display:block;width:100%;height:auto}
 .dim:focus-visible .dimKnob,.dim:hover .dimKnob{height:31px;top:2px}
 .dimEnds{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;
   color:var(--bone-3);margin-top:3px;text-shadow:var(--halo)}
-#dial .foot{margin-top:6px;font-family:var(--mono);font-size:10.5px;color:var(--bone-3);text-shadow:var(--halo)}
+#dial .foot{margin-top:8px;font-family:var(--mono);font-size:10.5px;color:var(--bone-3);text-shadow:var(--halo)}
+.presets{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px}
+.presets button{font-weight:500;font-size:11.5px;letter-spacing:.08em;color:var(--bone-2);
+  background:none;border:0;border-bottom:1px solid rgba(242,231,204,.30);border-radius:0;
+  padding:8px 2px;min-height:36px;transition:color .3s,border-color .3s;text-shadow:var(--halo)}
+.presets button:hover{color:var(--bone);border-color:var(--amber)}
+.verdict{margin-top:14px;font-size:15px;line-height:1.5;color:var(--bone);max-width:52ch;
+  text-wrap:pretty;text-shadow:var(--halo)}
+.verdict b{color:var(--amber);font-weight:500}
 #dial .foot button{color:var(--bone-2);border-bottom:1px solid var(--bone-4);letter-spacing:.05em;
   margin-right:8px;min-height:30px}
-#tease{position:absolute;right:0;bottom:10px;max-width:300px;text-align:right}
+#tease{position:static;max-width:none;text-align:left;margin-top:22px}
 #tease .tl2{font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;
   color:var(--bone-3);margin-bottom:5px;text-shadow:var(--halo)}
 #tease .big{font-weight:500;font-size:24px;color:var(--bone);font-variant-numeric:tabular-nums;text-shadow:var(--halo)}
@@ -501,10 +522,7 @@ svg{display:block;width:100%;height:auto}
     clip-path:inset(50%);padding:0;border:0}          /* name survives for screen readers */
   .rung .dot{position:static;width:9px;height:9px;border-radius:50%}
   .duo{grid-template-columns:1fr;grid-template-rows:auto auto;flex:none;height:auto;gap:14px}
-  #skycount{top:44%}
-  #axisnote{display:none}                             /* dense mobile: the drawer keeps the mapping */
-  #dial{bottom:52px;width:min(400px,86vw)}
-  #tease{display:none}
+  #dial{width:100%}
   #skycap{right:12px;bottom:72px}
   #skycap .zname{font-size:10px}
   #skycap .zsub{font-size:9px;max-width:60vw}
@@ -553,42 +571,71 @@ svg{display:block;width:100%;height:auto}
 
       <!-- SKY -->
       <section class="pane on" id="p-sky" aria-label="The sky — the remaining carbon budget">
+        <!-- fixtures: these describe the atmosphere itself and stay put while beats scroll -->
         <div id="hzn-hi"><span class="hl" id="hlab-hi"></span></div>
         <div id="hzn-lo"><span class="hl" id="hlab-lo"></span></div>
         <div id="skyaxis" aria-hidden="true"></div>
         <div id="band" tabindex="0" aria-describedby="band-whisper">
           <span class="whisper" id="band-whisper"></span></div>
         <div id="ghost" aria-hidden="true"><span id="ghost-lab"></span></div>
-        <div id="skycount">
-          <p class="years num" id="years">–</p>
-          <div class="capplate">
-            <p class="ylab">years of sky left <span id="atrate"></span></p>
-            <p class="spent num" id="spent"></p>
-            <p class="spent" id="axisnote">up is the century ahead &mdash; the colour of each height is the
-              warming that year carries at this rate</p>
-            <p id="odometer"></p>
+
+        <div class="beats">
+          <!-- BEAT 1 — the plain thesis, and the number that carries the page -->
+          <div class="beat">
+            <h2 tabindex="-1" id="sky-h2">The world has a carbon budget.<br>This sky is what&rsquo;s left of it.</h2>
+            <p class="lead" id="sky-lead">Burn more than about <b class="num" id="lead-gt">–</b> billion
+              tonnes of CO&#8322; and even a coin-flip chance of holding warming to
+              1.5&nbsp;&deg;C is gone. At today&rsquo;s pace, that budget lasts about</p>
+            <div id="skycount">
+              <p class="years num" id="years">–</p>
+              <div class="capplate">
+                <p class="ylab">years of sky left <span id="atrate"></span></p>
+                <p class="spent num" id="spent"></p>
+                <p id="odometer"></p>
+              </div>
+            </div>
+            <p class="beat-cue">scroll &mdash; you can change this sky &darr;</p>
           </div>
-        </div>
-        <div id="dial">
-          <div class="dh"><h3>Rate of burn</h3>
-            <p class="dv"><b id="rate" class="num">42</b> GtCO₂/yr <em id="delta">today&rsquo;s rate</em></p></div>
-          <div class="dim" id="dim" tabindex="0" role="slider"
-               aria-label="World emission rate, gigatonnes of CO₂ per year"
-               aria-valuemin="8" aria-valuemax="63" aria-valuenow="42">
-            <span class="dimTrack"></span><span class="dimFill" id="dimFill"></span>
-            <span class="dimNow" id="dimNow"></span><span class="dimKnob" id="dimKnob"></span>
+
+          <!-- BEAT 2 — the dial: the one control that rewrites the future -->
+          <div class="beat">
+            <h2 id="dial-h2">Change how fast the world burns.<br>Watch the century answer.</h2>
+            <p class="lead">Up is the century ahead: the horizon is today, the top of the sky is 2100,
+              and the colour at each height is how hot that year gets. Drag the dial.</p>
+            <div id="dial">
+              <div class="dh"><h3>The world&rsquo;s rate of burn</h3>
+                <p class="dv"><b id="rate" class="num">42</b> GtCO₂/yr <em id="delta">today&rsquo;s rate</em></p></div>
+              <div class="dim" id="dim" tabindex="0" role="slider"
+                   aria-label="World emission rate, gigatonnes of CO₂ per year"
+                   aria-valuemin="8" aria-valuemax="63" aria-valuenow="42">
+                <span class="dimTrack"></span><span class="dimFill" id="dimFill"></span>
+                <span class="dimNow" id="dimNow"></span><span class="dimKnob" id="dimKnob"></span>
+              </div>
+              <div class="dimEnds" aria-hidden="true"><span>8 &middot; deep cuts</span><span>63 &middot; +50% faster</span></div>
+              <div class="presets" role="group" aria-label="Three futures">
+                <button type="button" data-rate="8">a world that cuts hard</button>
+                <button type="button" data-rate="42" id="preset-today">today&rsquo;s world</button>
+                <button type="button" data-rate="63">a world that speeds up</button>
+              </div>
+              <p class="verdict" id="verdict" aria-live="polite"></p>
+              <p class="burnedtick num" id="burned" aria-live="off"></p>
+              <p class="foot"><button type="button" id="reset">reset to today</button><button
+                type="button" id="copysky">copy this sky</button></p>
+            </div>
           </div>
-          <div class="dimEnds" aria-hidden="true"><span>8 · deep cuts</span><span>63 · +50%</span></div>
-          <p class="burnedtick num" id="burned" aria-live="off"></p>
-          <p class="foot"><button type="button" id="reset">reset to today</button><button
-            type="button" id="copysky">copy this sky</button>
-            drag or use arrow keys — the horizon answers</p>
-        </div>
-        <div id="tease">
-          <p class="tl2">Beneath this sky</p>
-          <p class="big num" id="tease-temp">–</p>
-          <p class="sub" id="tease-sub">Seville, measured against its own record.</p>
-          <button type="button" data-go="ground">descend to ground</button>
+
+          <!-- BEAT 3 — the bridge down to the ground -->
+          <div class="beat">
+            <h2>That was the whole world.<br>Now stand somewhere real.</h2>
+            <p class="lead">The budget up there becomes afternoons down here. Next: your own city,
+              measured against its own record, back to 1940.</p>
+            <div id="tease">
+              <p class="tl2">Beneath this sky</p>
+              <p class="big num" id="tease-temp">–</p>
+              <p class="sub" id="tease-sub">Seville, measured against its own record.</p>
+              <button type="button" data-go="ground">descend to ground</button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -812,8 +859,8 @@ var SKYW=(function(){
    if(w<=b[0]){var f=(w-a[0])/(b[0]-a[0]),ca=pc(a[1]),cb=pc(b[1]);
     return [ca[0]+(cb[0]-ca[0])*f,ca[1]+(cb[1]-ca[1])*f,ca[2]+(cb[2]-ca[2])*f];}}
   return pc(A[A.length-1][1]);}
- function pos(yrs){return Math.max(.035,.58-.52*Math.sqrt(Math.min(yrs,74)/74));}
- function yrAt(p){var f=Math.max(0,(.58-p)/.52);return Math.min(74,74*f*f);}
+ function pos(yrs){return Math.max(.04,.68-.61*Math.sqrt(Math.min(yrs,74)/74));}
+ function yrAt(p){var f=Math.max(0,(.68-p)/.61);return Math.min(74,74*f*f);}
  function shade(c,f){return [c[0]*f,c[1]*f,c[2]*f];}
  function mix(ha,hb,f){var a=pc(ha),b=pc(hb);
   return hx([a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,a[2]+(b[2]-a[2])*f]);}
@@ -1166,6 +1213,14 @@ window.addEventListener("keydown",function(e){
  var t=e.target;
  if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"||t.id==="dim"))return;
  if(el("drawer").classList.contains("open")){if(e.key==="Escape")closeDrawer();return;}
+ if(e.key==="ArrowDown"||e.key==="ArrowUp"){
+  var bp=document.querySelector(".pane.on .beats")||document.querySelector(".pane.on");
+  if(bp&&bp.scrollHeight>bp.clientHeight+8){
+   var down=e.key==="ArrowDown";
+   var aTop=bp.scrollTop<=0,aBot=bp.scrollTop+bp.clientHeight>=bp.scrollHeight-2;
+   if((down&&!aBot)||(!down&&!aTop)){
+    bp.scrollBy({top:(down?1:-1)*bp.clientHeight,behavior:"smooth"});
+    e.preventDefault();return;}}}
  if(!el("intro").classList.contains("gone")){if(e.key==="Enter"||e.key===" "||e.key==="Escape")endIntro();return;}
  if(e.key==="ArrowDown"||e.key==="PageDown"){step(1);e.preventDefault();}
  else if(e.key==="ArrowUp"||e.key==="PageUp"){step(-1);e.preventDefault();}});
@@ -1232,8 +1287,8 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
   var yLo=LO.remaining_now_gt/target,yHi=HIe.remaining_now_gt/target;
   // the budget horizons sit at their spend-YEARS on the century axis
   var fLo=frac(yLo),fHi=frac(yHi);
-  var pLo=Math.max(.20,Math.min(.58,.58-(fLo*.52)))*100;
-  var pHi=Math.max(.18,Math.min(.56,.58-(fHi*.52)-.020))*100;
+  var pLo=Math.max(.30,Math.min(.68,.68-(fLo*.61)))*100;
+  var pHi=Math.max(.28,Math.min(.66,.68-(fHi*.61)-.020))*100;
   el("hzn-lo").style.top=pLo+"%";el("hzn-hi").style.top=pHi+"%";
   // rebuild the fallback sky from the same century mapping the shader uses
   (function(){function wch(pct,f){return SKYW.hex(SKYW.shade(
@@ -1252,10 +1307,13 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
   el("spent").textContent="spent around "+(yA===yB?yA:yA+"–"+yB)+" · coin-flip odds of holding 1.5 °C · no cliff, rising risk";
   var d=Math.round((target-RNOW)/RNOW*100);
   el("delta").textContent=Math.abs(d)<1?"today's rate":(d>0?"+":"−")+Math.abs(d)+"% vs today";
+  if(el("verdict")){var w21=SKYW.warm(target,74);
+   el("verdict").innerHTML="At this pace the budget is spent around <b>"+yA+
+    "</b>, and 2100 arrives about <b>"+w21.toFixed(1).replace(".",".")+"&nbsp;&deg;C</b> hotter than the 1800s"+
+    (target<=12?" — the calm blue future.":(target>=55?" — the sky you should fear.":"."));}
   el("hlab-lo").innerHTML="<b>"+Math.round(LO.remaining_now_gt)+" Gt</b> · IGCC 2025 · runs out ~"+yA;
+  if(el("lead-gt"))el("lead-gt").textContent=Math.round(LO.remaining_now_gt);
   el("hlab-hi").innerHTML="<b>"+Math.round(HIe.remaining_now_gt)+" Gt</b> · GCB 2025 · same answer";
-  // the count follows the horizon down — but never far enough to reach the dial
-  var skc=el("skycount");skc.style.top=Math.min(pLo+2.4,46)+"%";   // the plate grew an axis line — never reach the dial
   var dim=el("dim");
   dim.setAttribute("aria-valuenow",target.toFixed(1));
   dim.setAttribute("aria-valuetext",Math.round(target)+" gigatonnes per year — "+yearsStr(target)+" years of budget left");
@@ -1292,6 +1350,8 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
   else if(k==="Home")setRate(RMIN);else if(k==="End")setRate(RMAX);
   else return;e.preventDefault();e.stopPropagation();});
  el("reset").addEventListener("click",function(){setRate(RNOW);dim.focus();});
+ document.querySelectorAll(".presets button").forEach(function(b){
+  b.addEventListener("click",function(){setRate(parseFloat(b.getAttribute("data-rate"))||RNOW);});});
  var qr=parseFloat(Q.get("rate"));if(isFinite(qr))target=Math.max(RMIN,Math.min(RMAX,qr));
  sync();
  /* the live burn ticker — plain arithmetic: rate spread over real elapsed time */
