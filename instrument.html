@@ -250,9 +250,9 @@ svg{display:block;width:100%;height:auto}
   text-shadow:0 0 22px rgba(255,244,214,.45),0 2px 3px rgba(255,248,228,.85),0 1px 1px rgba(255,248,228,.9)}
 /* the caption cluster lives on shifting light — it gets its own dark glass, like the pills */
 #skycount .capplate{display:inline-block;position:relative;margin-top:9px;max-width:60ch}
-#p-sky .ylab{font-family:var(--mono);font-size:10px;letter-spacing:.22em;
+#p-sky .ylab{font-family:var(--mono);font-size:12px;letter-spacing:.18em;
   text-transform:uppercase;color:var(--bone);text-shadow:var(--halo2)}
-#p-sky .spent{margin-top:5px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;
+#p-sky .spent{margin-top:5px;font-family:var(--mono);font-size:12px;letter-spacing:.04em;
   color:var(--bone);text-shadow:var(--halo2)}
 #p-sky .burnedtick{margin-top:7px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;
   color:var(--amber);text-shadow:var(--halo);font-variant-numeric:tabular-nums}
@@ -507,7 +507,7 @@ svg{display:block;width:100%;height:auto}
 .dimKnob{animation:knobglow 3.6s ease-in-out infinite}
 @media(prefers-reduced-motion:reduce){.dimKnob{animation:none}}
 /* the live-decimal countdown under the big number */
-#odometer{margin-top:6px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+#odometer{margin-top:6px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;
   color:var(--bone);font-variant-numeric:tabular-nums;text-shadow:var(--halo2)}
 #odometer .dim3{opacity:.75}
 #odometer .rec{display:block;font-size:10px;letter-spacing:.05em;color:var(--bone);margin-top:2px;text-shadow:var(--halo2)}
@@ -934,7 +934,7 @@ var __ATMO=(function(){
     and quantised to 12fps so it reads as film, not video noise. */
  var FSH=""+
 "precision mediump float;\n"+
-"uniform vec2 uR;uniform float uT,uMix,uBurn,uExpo,uFr;\n"+
+"uniform vec2 uR;uniform float uT,uMix,uBurn,uExpo,uFr,uTextDim;\n"+
 "uniform vec3 uColA[8];uniform float uPosA[8];\n"+
 "uniform vec3 uColB[8];uniform float uPosB[8];\n"+
 "uniform vec4 uPrmA,uPrmB;uniform vec3 uSunA,uSunB;\n"+
@@ -1029,7 +1029,17 @@ var __ATMO=(function(){
 "    float hb=br*smoothstep(1.,.93,mp);\n"+
 "    c+=vec3(.90,1.,.96)*(exp(-hd*hd*80000.)*1.8*flare+exp(-hd*260.)*.09)*hb*stAmt;}}}\n"+
 " c*=uExpo;\n"+                                                   // chamber-arrival exposure
-" c=pow(max(c,vec3(0.)),vec3(1./2.2));\n"+                        // single gamma-out
+/* ---- the cinematography grade (pre-gamma, in the shader's working space) ---- */
+" float lcol=smoothstep(.62,.06,uv.x);\n"+                        // the left text column (covers the long lines)
+" float rcol=smoothstep(.80,.995,uv.x);\n"+                       // the right rail strip
+" float bgl=dot(c,vec3(.333));\n"+                                // brighter sky needs more darkening
+" float tdim=uTextDim*max(lcol,rcol*.92)*(.5+1.3*bgl);\n"+        // adaptive: strongest over the cream band
+" c*=1.-min(tdim,.88);\n"+                                        // reads as light falling off, never a box
+" vec2 vq=(uv-.5)*2.;vq.x*=asp;float vg=1./(1.+dot(vq,vq)*.16);\n"+ // natural cos^4-ish vignette
+" c*=mix(1.,vg,.55);\n"+
+" c=pow(max(c,vec3(0.)),vec3(1./2.2));\n"+                        // gamma-out
+" c=c*vec3(.978,.978,.972)+vec3(.016,.019,.024);\n"+             // faded-film floor: lifted, cool-tinted blacks
+" c=pow(c,vec3(1.05));\n"+                                        // restore midtone contrast after the lift
 " float gn=ign(gl_FragCoord.xy+uFr*vec2(13.7,7.3))-.5;\n"+
 " float lw=dot(c,vec3(.333));lw=4.*lw*(1.-lw);\n"+
 " c+=gn*.05*lw;\n"+                                               // film grain, shadows stay clean
@@ -1045,7 +1055,7 @@ var __ATMO=(function(){
  var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
  var ap=gl.getAttribLocation(prog,"p");gl.enableVertexAttribArray(ap);gl.vertexAttribPointer(ap,2,gl.FLOAT,false,0,0);
- ["uR","uT","uMix","uBurn","uExpo","uFr","uAuxA","uAuxB","uLifA","uLifB","uMetT0","uMetSeed","uMetP","uPrmA","uPrmB","uSunA","uSunB"].forEach(function(n){loc[n]=gl.getUniformLocation(prog,n);});
+ ["uR","uT","uMix","uBurn","uExpo","uFr","uTextDim","uAuxA","uAuxB","uLifA","uLifB","uMetT0","uMetSeed","uMetP","uPrmA","uPrmB","uSunA","uSunB"].forEach(function(n){loc[n]=gl.getUniformLocation(prog,n);});
  loc.uColA=gl.getUniformLocation(prog,"uColA[0]");loc.uPosA=gl.getUniformLocation(prog,"uPosA[0]");
  loc.uColB=gl.getUniformLocation(prog,"uColB[0]");loc.uPosB=gl.getUniformLocation(prog,"uPosB[0]");
  /* colours are delivered to the shader in LINEAR light */
@@ -1095,7 +1105,7 @@ var __ATMO=(function(){
    [.78,"#03070C"],[.88,"#02060B"],[.95,"#02050A"],[1,"#010409"]]),prm:[1.3,.06,.95,.12],sun:C("#7A5B3A"),aux:[.95,0,0,0],lif:[0,0,0,0]};}
  };
  var A=PRE.voidst(),Bs=PRE.voidst(),mixT=1,animT0=0,animDur=1400,t0=performance.now(),raf=0;
- var expA=1,expB=1,expT0=0,expDur=1,metT0=0,metSeed=0;
+ var expA=1,expB=1,expT0=0,expDur=1,metT0=0,metSeed=0,textDimCur=.5,textDimTgt=.5;
  function jsLerp(a,b,t){var r={r:{cols:new Float32Array(24),pos:new Float32Array(8)},prm:[0,0,0,0],sun:[0,0,0],aux:[0,0,0,0],lif:[0,0,0,0]};
   for(var i=0;i<24;i++)r.r.cols[i]=a.r.cols[i]+(b.r.cols[i]-a.r.cols[i])*t;
   for(i=0;i<8;i++)r.r.pos[i]=a.r.pos[i]+(b.r.pos[i]-a.r.pos[i])*t;
@@ -1125,6 +1135,7 @@ var __ATMO=(function(){
   gl.uniform1f(loc.uT,((performance.now()-t0)/1000)%3600);  // bounded for fp16 GPUs
   gl.uniform1f(loc.uFr,Math.floor(performance.now()/83)%64); // 12fps film-grain frame
   gl.uniform1f(loc.uMix,t);gl.uniform1f(loc.uBurn,burn);gl.uniform1f(loc.uExpo,ex);
+  gl.uniform1f(loc.uTextDim,textDimCur+(textDimTgt-textDimCur)*0.06);textDimCur+=(textDimTgt-textDimCur)*0.06;
   gl.uniform4f(loc.uAuxA,A.aux[0],A.aux[1],A.aux[2],A.aux[3]);
   gl.uniform4f(loc.uAuxB,Bs.aux[0],Bs.aux[1],Bs.aux[2],Bs.aux[3]);
   gl.uniform4f(loc.uLifA,A.lif[0],A.lif[1],A.lif[2],A.lif[3]);
@@ -1169,7 +1180,8 @@ var __ATMO=(function(){
          setSkyBand:function(h,l){skyHi=h/100;skyLo=l/100;},
          groundHeat:function(h){groundHeat=Math.max(0,Math.min(1,h));
           if(typeof cur!=="undefined"&&CH[cur]&&CH[cur].id==="ground")setState("ground",{dur:900});},
-         skyFollow:skyFollow,setBurn:setBurn,exposure:exposure,meteor:meteor};
+         skyFollow:skyFollow,setBurn:setBurn,exposure:exposure,meteor:meteor,
+         textDim:function(v){textDimTgt=v;wake();}};
 })();
 
 /* ============ chambers & navigation ============ */
@@ -1182,6 +1194,9 @@ var CH=[
  {id:"morning",lab:"Morning",fact:"what's already turning",ink:true},
  {id:"bedrock",lab:"Bedrock",fact:"every source, shown",ink:false}
 ];
+/* how hard the sky darkens behind the text column, per chapter — lighter sky needs more.
+   Morning is ink-on-pale (dark text) so it gets none; night/bedrock are already dark. */
+var TEXTDIM={sky:.62,ground:.56,night:.32,firstlight:.42,morning:0,bedrock:.28};
 var cur=0;
 var ladder=el("ladder");
 /* the rail: numbered chapters, each a real anchor into the one scroll */
@@ -1223,6 +1238,7 @@ function enterChamber(i){
  if(__SND){__SND.chamber(c.id);if(__SND.gust)__SND.gust();}
  document.querySelectorAll(".atmo").forEach(function(a){a.classList.toggle("on",a.id==="atmo-"+c.id);});
  el("stage").classList.toggle("thm-ink",!!c.ink);
+ if(__ATMO.textDim)__ATMO.textDim(TEXTDIM[c.id]!=null?TEXTDIM[c.id]:.45); // darken the sky behind the words, per chapter
  Array.prototype.forEach.call(ladder.children,function(b,j){b.setAttribute("aria-current",j===i?"true":"false");});
  if(location.hash!=="#p-"+c.id)try{history.replaceState(null,"","#p-"+c.id);}catch(e){}
  if(c.id==="ground"&&groundOverture)groundOverture();
