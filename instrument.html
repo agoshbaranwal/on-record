@@ -364,22 +364,40 @@ svg{display:block;width:100%;height:auto}
 #pg-sel:focus{outline:none;border-bottom-color:var(--amber)}
 #pg-guessed{font-family:var(--mono);font-size:10px;color:var(--bone-3);letter-spacing:.06em;text-shadow:var(--halo)}
 #pg-give b{color:var(--bone)}
-/* one hundred windows on the horizon — the lit ones are the people who said yes */
-#lamprow{position:relative;display:flex;gap:2px;height:54px;margin:18px 0 6px;align-items:flex-end}
-.lamp{flex:1;border-radius:1px 1px 0 0;background:rgba(242,231,204,.08);height:36%;
-  transition:background .7s ease,height .7s ease,box-shadow .7s ease;
-  transition-delay:calc(var(--i)*13ms)}
-.lamp.lit{background:linear-gradient(180deg,#FFE9B8,#F0A45C);height:100%;
-  box-shadow:0 0 9px rgba(255,214,140,.30)}
-#lampmark{position:absolute;top:-7px;bottom:-24px;width:0;border-left:1px dashed rgba(242,231,204,.7);
-  transition:left .9s cubic-bezier(.2,.7,.2,1)}
-#lampmark span{position:absolute;top:100%;white-space:nowrap;font-family:var(--mono);
-  font-size:10.5px;letter-spacing:.05em;color:var(--bone-2)}
-#lampmark[data-side=r] span{left:7px}
-#lampmark[data-side=l] span{right:7px}
-.lampleg{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;text-shadow:var(--halo);
-  color:var(--bone-3);margin-top:26px}
-@media(prefers-reduced-motion:reduce){.lamp,#lampmark{transition:none}}
+/* 125 threads at dawn: every country, from what people guess to what is true */
+#pgfield{position:relative;width:100%;max-width:640px;margin:16px 0 4px}
+#pgfield svg{display:block;width:100%;height:auto;overflow:visible}
+#pgfield .pgthread{stroke:rgba(242,231,204,.30);stroke-width:.5;
+  stroke-dasharray:var(--len);stroke-dashoffset:var(--len);
+  transition:stroke-dashoffset var(--dur,.9s) cubic-bezier(.2,.7,.2,1) var(--del,0s),
+             stroke .6s ease}
+#pgfield .pgguess{fill:rgba(206,224,255,.45)}
+#pgfield .pgtrue{fill:#F0A45C;opacity:0;
+  transition:opacity .5s ease var(--del,0s),r .4s ease var(--del,0s)}
+.beat.seen #pgfield .pgthread,#pgfield.lit .pgthread{stroke-dashoffset:0;stroke:rgba(240,164,92,.42)}
+.beat.seen #pgfield .pgtrue,#pgfield.lit .pgtrue{opacity:1;filter:drop-shadow(0 0 3px rgba(255,200,130,.5))}
+.beat.seen #pgfield .pgrow-you .pgthread,#pgfield.lit .pgrow-you .pgthread{stroke:rgba(255,214,140,.95)}
+#pgfield .pgrow-you .pgthread{stroke-width:1.3;stroke:rgba(255,214,140,.9)}
+#pgfield .pgrow-you .pgtrue{r:2.4}
+#pgfield .pgrow-you .pgguess{fill:rgba(206,224,255,.9)}
+/* SVG <text> font-size is in viewBox user-units, not screen px — keep it small */
+#pgfield .pglab{font-family:var(--mono);font-size:2.4px;letter-spacing:.02px;
+  fill:rgba(242,231,204,.62)}
+#pgfield .pglab-you{fill:#FFE9B8;font-weight:500}
+.pgaxis{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;
+  text-shadow:var(--halo);color:var(--bone-3);margin-top:8px;max-width:640px}
+.pgaxis span:nth-child(2){color:var(--bone-2)}
+@media(prefers-reduced-motion:reduce){#pgfield .pgthread,#pgfield .pgtrue{transition:none}}
+/* Ask one — the finding becomes an act */
+#pg-ask{margin-top:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#ask-btn{font-weight:500;font-size:14px;letter-spacing:.01em;color:var(--deep);
+  background:var(--amber);border:0;border-radius:3px;padding:11px 18px;min-height:44px;
+  transition:transform .2s ease,box-shadow .3s ease;box-shadow:0 2px 16px -6px rgba(240,188,98,.6)}
+#ask-btn:hover{transform:translateY(-1px);box-shadow:0 4px 22px -6px rgba(240,188,98,.8)}
+#ask-hint{font-size:11.5px;color:var(--bone-3);max-width:26ch;text-shadow:var(--halo)}
+#ask-fallback{display:none;width:100%;margin-top:8px}
+#ask-fallback textarea{width:100%;max-width:560px;min-height:70px;font-size:12px;
+  background:rgba(3,16,18,.4);color:var(--bone);border:1px solid var(--bone-4);border-radius:3px;padding:8px}
 .kick{font-size:14px;line-height:1.45;color:var(--bone);margin-top:12px;display:none;max-width:52ch;outline:none;text-shadow:var(--halo)}
 .kick.show{display:block}
 .kick b{color:var(--amber);font-weight:500}
@@ -394,14 +412,37 @@ svg{display:block;width:100%;height:auto}
   background:#FBF4E2;box-shadow:0 2px 14px rgba(62,18,8,.08)}
 #p-morning .li .big{font-family:var(--mono);font-size:16px;color:var(--act);font-variant-numeric:tabular-nums}
 #p-morning .li .txt{font-size:11.5px;color:var(--ink-2);margin-top:4px;line-height:1.4}
-/* each counterweight carries its measure: a quiet bar of the actual number */
-#p-morning .libar{position:relative;height:3px;margin-top:10px;background:rgba(21,80,72,.12);border-radius:2px}
-#p-morning .libar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--act);border-radius:2px;
-  transition:width 1.2s cubic-bezier(.2,.7,.2,1) .35s}
-#p-morning.on .libar i{width:var(--w)}
-#p-morning .libar em{position:absolute;top:-3px;bottom:-3px;width:1.5px;background:rgba(62,18,8,.55)}
-#p-morning .libar-fall i{background:#C0662B;opacity:.75}
-@media(prefers-reduced-motion:reduce){#p-morning .libar i{transition:none;width:var(--w)}}
+/* Every mark sits on a NAMED axis, so the bar can never be a mystery:
+   a share of a stated whole (electricity, cars), or a real scale (°C, years). */
+#p-morning .scale{position:relative;height:7px;margin-top:26px;border-radius:2px;
+  background:rgba(21,80,72,.14)}
+#p-morning .scale .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--act);
+  border-radius:2px;transition:width 1.1s cubic-bezier(.22,.61,.36,1) .15s}
+#p-morning .beat.seen .scale .fill{width:var(--w)}      /* reveals when the ledger scrolls in */
+#p-morning .scale .rest{position:absolute;top:0;bottom:0;right:0;border-radius:2px;
+  background:repeating-linear-gradient(90deg,rgba(21,80,72,.34) 0 2px,transparent 2px 6px)}
+#p-morning .scale .tick{position:absolute;top:-3px;bottom:-3px;width:1.5px;background:rgba(62,18,8,.5)}
+#p-morning .scale .thr{position:absolute;top:-5px;bottom:-5px;width:1.5px;background:rgba(62,18,8,.78)}
+#p-morning .scale .dot{position:absolute;top:50%;width:10px;height:10px;border-radius:50%;
+  background:var(--act);box-shadow:0 0 0 2px #FBF4E2;
+  transform:translate(-50%,-50%) scale(0);transition:transform .55s cubic-bezier(.2,1.3,.4,1) var(--d,.3s)}
+#p-morning .beat.seen .scale .dot{transform:translate(-50%,-50%) scale(1)}
+#p-morning .scale .dot.past{background:#C0662B;box-shadow:0 0 0 2px #FBF4E2}   /* the 'was' value, cooler */
+#p-morning .scale .redu{position:absolute;top:50%;height:1.5px;background:rgba(62,18,8,.4);
+  transform:translateY(-50%);opacity:0;transition:opacity .5s ease .8s}
+#p-morning .beat.seen .scale .redu{opacity:1}
+#p-morning .scale .redu::before{content:"";position:absolute;left:-1px;top:-2.5px;
+  border:3px solid transparent;border-right-color:rgba(62,18,8,.6)}   /* arrowhead, pointing left = falling */
+#p-morning .scale .mk{position:absolute;top:-16px;transform:translateX(-50%);white-space:nowrap;
+  font-family:var(--mono);font-size:8.5px;letter-spacing:.02em;color:var(--ink-2)}
+#p-morning .scale .mk.thrlab{color:rgba(62,18,8,.7)}
+#p-morning .axlab{display:flex;justify-content:space-between;gap:8px;margin-top:7px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.02em;color:var(--ink-3)}
+#p-morning .axlab .mid{color:var(--ink-2);text-align:center}
+@media(prefers-reduced-motion:reduce){
+  #p-morning .scale .fill{transition:none;width:var(--w)}
+  #p-morning .scale .dot{transition:none;transform:translate(-50%,-50%) scale(1)}
+  #p-morning .scale .redu{transition:none;opacity:1}}
 #p-morning .action{margin-top:16px;border:1px solid rgba(21,80,72,.5);border-radius:3px;
   padding:16px 18px;background:rgba(255,251,240,.55);max-width:640px}
 #p-morning .leadline{font-weight:500;font-size:clamp(16px,1.9vw,21px);line-height:1.3;color:var(--ink);max-width:34ch}
@@ -756,19 +797,27 @@ svg{display:block;width:100%;height:auto}
           </div>
           <!-- BEAT 2 — your country, the lamps, and where money helps -->
           <div class="beat">
-            <h2>See the true number for your country.</h2>
-            <p class="lead">In nearly every country measured, real support beats the guess &mdash; and
-              <b>89%</b> of people worldwide want their government to do more. Pick your country;
-              one lamp lights for every person in a hundred who would give.</p>
+            <h2>Not one country. All of them.</h2>
+            <p class="lead">Every surveyed country is a thread here, from what people <b>guess</b> (cold)
+              to what is <b>true</b> (gold). In all 125, the truth sits further right. Pick your country
+              to find its thread.</p>
             <div id="pgwrap">
               <div id="pg-pick">
                 <select id="pg-sel" aria-label="Choose a country"></select>
                 <span id="pg-guessed"></span>
               </div>
-              <div id="lamprow" role="img"></div>
-              <div class="lampleg"><span>0</span><span>100</span></div>
+              <div id="pgfield" role="img"></div>
+              <div class="pgaxis" aria-hidden="true"><span>0</span><span id="pg-axislab">would give 1% of their income</span><span>100</span></div>
               <p class="kick show" id="pg-kick"></p>
               <p class="sep89 show" id="pg-sep"></p>
+              <div id="pg-ask">
+                <button id="ask-btn" type="button">Ask one person &rarr;</button>
+                <span id="ask-hint">hand someone the true number &mdash; they land on their own country</span>
+                <div class="sharefallback" id="ask-fallback">
+                  <label class="receipt" for="ask-text">Couldn&rsquo;t reach the clipboard &mdash; select and copy:</label>
+                  <textarea id="ask-text" readonly></textarea>
+                </div>
+              </div>
               <p class="sep89 show" id="pg-give"></p>
             </div>
             <button class="drawbtn" data-drawer="firstlight">Receipts &amp; the study</button>
@@ -786,14 +835,40 @@ svg{display:block;width:100%;height:auto}
             <p class="lead">None of this is a promise. It is a ledger of what has already moved &mdash;
               each with a source, each still short of safe.</p>
             <div class="ledger">
-              <div class="li"><div class="big">33.8% &gt; 33.0%</div><div class="txt">Renewables outgenerated coal worldwide in 2025 &mdash; first time since 1919.</div>
-                <div class="libar" aria-hidden="true"><i style="--w:33.8%"></i><em style="left:33.0%" title="coal"></em></div></div>
-              <div class="li"><div class="big">~1 in 4</div><div class="txt">Of new cars sold in 2025 were electric &mdash; China ~55%, US ~10%.</div>
-                <div class="libar" aria-hidden="true"><i style="--w:25%"></i></div></div>
-              <div class="li"><div class="big">3.6 &rarr; 2.6 °C</div><div class="txt">Expected warming on current policies, 2015 &rarr; now. Still unsafe. Also falling.</div>
-                <div class="libar libar-fall" aria-hidden="true"><i style="--w:72%"></i><em style="left:100%"></em></div></div>
-              <div class="li"><div class="big">healing</div><div class="txt">The ozone layer is recovering &mdash; a binding global treaty worked.</div>
-                <div class="libar" aria-hidden="true"><i style="--w:88%"></i></div></div>
+              <!-- 1. a SHARE of a named whole: the world's electricity -->
+              <div class="li"><div class="big">33.8% &gt; 33.0%</div>
+                <div class="txt">Renewables outgenerated coal worldwide in 2025 &mdash; first time since 1919.</div>
+                <div class="scale" style="--w:33.8%" role="img" aria-label="Renewables reached 33.8% of world electricity, passing coal at 33.0%.">
+                  <div class="fill"></div>
+                  <span class="mk" style="left:33.0%">coal 33%</span>
+                  <div class="tick" style="left:33.0%"></div></div>
+                <div class="axlab"><span>0</span><span class="mid">share of the world&rsquo;s electricity &middot; Ember 2025</span><span>100%</span></div></div>
+              <!-- 2. a SHARE of a named whole: new cars sold -->
+              <div class="li"><div class="big">~1 in 4</div>
+                <div class="txt">Of all new cars sold in 2025 were electric &mdash; an uneven spread across the world.</div>
+                <div class="scale" style="--w:25%" role="img" aria-label="Electric cars were 25% of new cars sold worldwide; about 10% in the US, 55% in China.">
+                  <div class="fill"></div>
+                  <span class="mk" style="left:10%">US 10%</span><div class="tick" style="left:10%"></div>
+                  <span class="mk" style="left:55%">China 55%</span><div class="tick" style="left:55%"></div></div>
+                <div class="axlab"><span>0</span><span class="mid">share of new cars sold &middot; IEA 2025</span><span>100%</span></div></div>
+              <!-- 3. a real SCALE, not a share: expected warming in °C -->
+              <div class="li"><div class="big">3.6 &rarr; 2.6 °C</div>
+                <div class="txt">Expected warming if today&rsquo;s policies hold, 2015 &rarr; now. Still unsafe &mdash; but falling.</div>
+                <div class="scale" role="img" aria-label="Expected warming fell from 3.6°C in 2015 to 2.6°C now; both remain to the right of the 1.5°C safety line.">
+                  <div class="thr" style="left:37.5%"></div><span class="mk thrlab" style="left:37.5%">1.5&deg;</span>
+                  <div class="redu" style="left:65%;width:25%"></div>
+                  <div class="dot past" style="left:90%;--d:.15s"></div><span class="mk" style="left:90%">2015</span>
+                  <div class="dot" style="left:65%;--d:.55s"></div><span class="mk" style="left:65%">now</span></div>
+                <div class="axlab"><span>0&deg;C</span><span class="mid">expected warming &middot; Climate Action Tracker</span><span>4&deg;C</span></div></div>
+              <!-- 4. a real SCALE, not a share: the recovery timeline -->
+              <div class="li"><div class="big">on schedule</div>
+                <div class="txt">The ozone layer is healing &mdash; a binding global treaty is working, on time.</div>
+                <div class="scale" role="img" aria-label="Ozone recovery timeline: the Montreal Protocol in 1987, today about halfway, full recovery expected around 2066.">
+                  <div class="fill" style="--w:49%"></div>
+                  <div class="rest" style="left:49%"></div>
+                  <div class="tick" style="left:67%"></div><span class="mk" style="left:67%">~2040</span>
+                  <div class="dot" style="left:49%;--d:.5s"></div><span class="mk" style="left:49%">today</span></div>
+                <div class="axlab"><span>1987 &middot; Montreal</span><span class="mid">recovery &middot; WMO/UNEP</span><span>~2066</span></div></div>
             </div>
             <p class="beat-cue">the single most useful thing you can do &darr;</p>
           </div>
@@ -1728,52 +1803,91 @@ buildNight(null);
 if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRenderRef();})
  .observe(el("delhi"));
 
-/* ============ FIRST LIGHT — one hundred windows at dawn, every surveyed country ============ */
+/* ============ FIRST LIGHT — 125 of 125: the false minority, made planetary ============
+   Every surveyed country is one thread from what people GUESS (dim) to what is TRUE (gold).
+   In all 125, real support beats the guess. At dawn they ignite and sweep the same way. */
 (function(){
- var row=el("lamprow"),sel=el("pg-sel"),mark,i;
+ var sel=el("pg-sel"),field=el("pgfield");
  var ALL=(P.all&&P.all.length)?P.all:P.countries;
  var WORLD=P.world||null;
- var list=WORLD?[{place:"World",code:"OWID_WRL",actual:WORLD.actual,guess:WORLD.guess,govt:WORLD.govt}].concat(ALL):ALL.slice();
+ /* sorted high→low support: the eye reads the whole leaning field at once */
+ var rows=ALL.slice().sort(function(a,b){return b.actual-a.actual;});
+ var list=(WORLD?[{place:"World",code:"OWID_WRL",actual:WORLD.actual,guess:WORLD.guess,govt:WORLD.govt}]:[]).concat(rows);
  list.forEach(function(c,i2){var o=document.createElement("option");
   o.value=i2;o.textContent=c.place;sel.appendChild(o);});
- var start=0;                                                  // your country, guessed from the browser's own locale
+ /* your country, guessed from the browser locale (overridable) */
+ var start=0;
  try{var reg=(navigator.language||"").split("-")[1];
   if(reg){var nm=new Intl.DisplayNames(["en"],{type:"region"}).of(reg.toUpperCase());
-   for(i=0;i<list.length;i++)if(list[i].place===nm){start=i;
+   for(var q=0;q<list.length;q++)if(list[q].place===nm){start=q;
     el("pg-guessed").textContent="guessed from your browser · change freely";break;}}}catch(e){}
  sel.value=start;
- for(i=0;i<100;i++){var s=document.createElement("i");s.className="lamp";
-  s.style.setProperty("--i",i);row.appendChild(s);}
- mark=document.createElement("div");mark.id="lampmark";
- mark.appendChild(document.createElement("span"));row.appendChild(mark);
+ /* build the field */
+ var N=rows.length,VW=100,VH=Math.max(38,N*0.36),TOP=1.6,DY=(VH-TOP*2)/(N-1);
+ var svgNS="http://www.w3.org/2000/svg";
+ function svgEl(t,a){var e=document.createElementNS(svgNS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+ var svg=svgEl("svg",{viewBox:"0 0 "+VW+" "+VH,role:"img",
+  "aria-label":"Across "+N+" countries, real support for climate action beats the guess in every one."});
+ rows.forEach(function(c,i){var y=(TOP+i*DY).toFixed(2),g=c.guess,a=c.actual,len=Math.abs(a-g).toFixed(2);
+  var G=svgEl("g",{"class":"pgrow","data-place":c.place});
+  G.appendChild(svgEl("line",{"class":"pgthread",x1:g,y1:y,x2:a,y2:y,
+   style:"--len:"+len+";--dur:"+(0.5+Math.abs(a-g)/100*1.4).toFixed(2)+"s;--del:"+(i*3)+"ms"}));
+  G.appendChild(svgEl("circle",{"class":"pgguess",cx:g,cy:y,r:.5}));
+  G.appendChild(svgEl("circle",{"class":"pgtrue",cx:a,cy:y,r:.6,style:"--del:"+(i*3)+"ms"}));
+  c.__g=G;svg.appendChild(G);});
+ var youLabel=svgEl("text",{"class":"pglab pglab-you",x:0,y:0,"text-anchor":"end"});
+ svg.appendChild(youLabel);
+ field.appendChild(svg);
  function maj(a){return a>=75?"four in five":(a>=60?"two in three":(a>=50?"a majority":"a large share"));}
+ function highlight(){
+  rows.forEach(function(c){c.__g.classList.remove("pgrow-you");});
+  var c=list[+sel.value]||list[0];
+  var target=(c.code==="OWID_WRL")?null:rows.filter(function(r){return r.place===c.place;})[0];
+  if(target){target.__g.classList.add("pgrow-you");
+   var yi=rows.indexOf(target),yy=TOP+yi*DY;
+   youLabel.setAttribute("x",(Math.min(target.guess,target.actual)-2).toFixed(1));
+   youLabel.setAttribute("y",(yy+.4).toFixed(2));youLabel.textContent=c.place;
+   youLabel.style.display="";}
+  else youLabel.style.display="none";
+ }
  function render(){var c=list[+sel.value]||list[0];
   var A=Math.round(c.actual),G=Math.round(c.guess);
-  var lamps=row.querySelectorAll(".lamp");
-  lamps.forEach(function(l){l.classList.remove("lit");});
-  requestAnimationFrame(function(){requestAnimationFrame(function(){    // let the dark register, then dawn sweeps west to east
-   lamps.forEach(function(l,i2){if(i2<A)l.classList.add("lit");});});});
-  mark.style.left=G+"%";
-  mark.setAttribute("data-side",G<55?"r":"l");
-  mark.firstChild.textContent="people "+(c.place==="World"?"":"there ")+"think the light ends here — "+G;
-  row.setAttribute("aria-label","In "+c.place+", "+A+" of 100 people say yes to giving 1% of "+
-   "their income. The average local guess is only "+G+".");
-  el("pg-kick").innerHTML="In "+c.place+", <b>"+A+" of every 100</b> said yes — "+maj(A)+
-   ". People "+(c.place==="World"?"":"there ")+"guess <b>"+G+
-   "</b>. A majority that believes it is a minority stays quiet.";
+  highlight();
+  el("pg-kick").innerHTML="125 countries measured. In every one, people guessed too low. "+
+   "In <b>"+c.place+"</b>, <b>"+A+" of every 100</b> would give &mdash; "+maj(A)+
+   " &mdash; yet people "+(c.place==="World"?"":"there ")+"guess only <b>"+G+"</b>.";
   el("pg-sep").innerHTML=(c.govt!=null?
-   "Same study, separate question: <b>"+Math.round(c.govt)+"%</b> in "+c.place+
-    " want their government to do more"+((WORLD&&WORLD.govt&&c.place!=="World")?
-    " — worldwide, "+Math.round(WORLD.govt)+"%":"")+". ":
-   "A separate question, same study: <b>"+P.global_want_action_pct+
-    "%</b> worldwide want their government to do more. ")+
-   "Stated willingness, not behaviour — Andre et al. 2024 via Our World in Data.";}
+   "And <b>"+Math.round(c.govt)+"%</b> in "+c.place+" want their government to do more"+
+    ((WORLD&&WORLD.govt&&c.place!=="World")?" (worldwide, "+Math.round(WORLD.govt)+"%)":"")+". ":
+   "Worldwide, <b>"+P.global_want_action_pct+"%</b> want their government to do more. ")+
+   "Stated willingness, not behaviour &mdash; Andre et al. 2024 via Our World in Data.";
+  buildAsk(c);}
  sel.addEventListener("change",render);
- if(D.giving)el("pg-give").innerHTML="And the 1% has somewhere vetted to go: <b>"+
+ /* the field ignites when its beat scrolls in (.beat.seen in CSS); this is the reduced-motion path */
+ if(reduce)field.classList.add("lit");
+ if(D.giving)el("pg-give").innerHTML="Rather give than talk? The 1% has somewhere vetted to go: <b>"+
   D.giving.orgs.map(function(o){return o.n;}).join("</b> · <b>")+
   "</b> (Giving Green 2025&ndash;26), or the pooled <b>"+
-  D.giving.funds.map(function(f){return f.n;}).join("</b> / <b>")+"</b>. Names, links and the "+
-  "honest caveats are in the receipts.";
+  D.giving.funds.map(function(f){return f.n;}).join("</b> / <b>")+"</b>. Names and honest caveats in the receipts.";
+
+ /* ---- Ask one: the finding becomes an act, and propagates ---- */
+ var askText="";
+ function buildAsk(c){var A=Math.round(c.actual),G=Math.round(c.guess);
+  var url=location.origin+location.pathname+"?chamber=firstlight";
+  askText=(c.place==="World"?"Worldwide, ":"In "+c.place+", ")+A+"% of "+
+   (c.place==="World"?"people":"us")+" would give 1% of income to fight climate change. "+
+   "Most "+(c.place==="World"?"people":"of us")+" guess only "+G+"%. "+
+   (c.place==="World"?"":"I'm one of the "+A+"%. ")+
+   "See your own country: "+url;}
+ var ab=el("ask-btn"),origAsk=ab.textContent;
+ function askOk(){ab.textContent="Copied ✓";el("sr-status").textContent="The sentence is copied";
+  setTimeout(function(){ab.textContent=origAsk;},2200);}
+ function askFallback(){el("ask-text").value=askText;el("ask-fallback").style.display="block";
+  el("sr-status").textContent="A text field with the sentence is shown to copy";}
+ ab.addEventListener("click",function(){
+  if(navigator.share){navigator.share({text:askText}).catch(function(){});return;}
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(askText).then(askOk,askFallback);
+  else askFallback();});
  render();
 })();
 
