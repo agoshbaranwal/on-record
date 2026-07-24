@@ -258,6 +258,16 @@ svg{display:block;width:100%;height:auto}
   border:1px solid var(--bone-4);border-radius:3px;background:rgba(3,16,18,.4);color:var(--bone)}
 .finder .out{font-family:var(--mono);font-size:10px;color:var(--amber);min-height:2.6em;display:block}
 
+/* --- ground: any place on Earth --- */
+#gplace{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
+#gplace input{font-family:var(--mono);font-size:11px;width:190px;padding:8px 10px;min-height:38px;
+  border:1px solid var(--bone-4);border-radius:2px;background:rgba(3,16,18,.4);color:var(--bone)}
+#gplace button{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
+  padding:8px 11px;min-height:38px;border:1px solid var(--bone-4);border-radius:2px;
+  color:var(--bone-2);background:rgba(3,16,18,.35);transition:color .3s,border-color .3s}
+#gplace button:hover{color:var(--bone);border-color:var(--amber)}
+#gq-status{font-family:var(--mono);font-size:9.5px;color:var(--bone-3);letter-spacing:.05em;max-width:38ch}
+
 /* --- first light --- */
 #pgwrap{max-width:640px;width:100%}
 .place-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 12px}
@@ -522,6 +532,13 @@ svg{display:block;width:100%;height:auto}
       <!-- GROUND -->
       <section class="pane" id="p-ground" aria-label="Ground — Seville on its own record" hidden>
         <h2 tabindex="-1">Down here, the budget becomes afternoons.</h2>
+        <div id="gplace">
+          <input id="gq" type="search" placeholder="any city on Earth" aria-label="Search a place to draw its record">
+          <button type="button" id="gq-go">draw its record</button>
+          <button type="button" id="gq-mine">my ground</button>
+          <button type="button" id="gq-sev" hidden>back to Seville</button>
+          <span id="gq-status" aria-live="polite"></span>
+        </div>
         <div class="duo">
           <div class="copy">
             <p class="bignum" id="g-today">– <small>forecast today <span class="chip">provisional</span></small></p>
@@ -890,7 +907,7 @@ var __ATMO=(function(){
     {r: ramp, prm:[sunY, sunAmt, starAmt, hazeAmt], sun: colour,
      aux:[haze-pool y, cirrus, morning-star, spare],
      lif:[heat-shimmer floor, dust motes, light breathes, spare]} */
- var skyHi=.44,skyLo=.47,burn=.62;    // updated live by the dial
+ var skyHi=.44,skyLo=.47,burn=.62,groundHeat=.55;    // updated live by the dial / the chosen place
  /* the sky IS the century: each altitude is a year, its colour the warming
     that year carries at the chosen rate — see SKYW and the receipts */
  function skyRamp(){var h=skyHi,l=skyLo,rate=RMINR+burn*(RMAXR-RMINR);
@@ -905,8 +922,13 @@ var __ATMO=(function(){
     sun:C(SKYW.mix("#FFB877","#C7481C",Math.max(0,burn-.25)/.75)),          // the sun reddens as the air dirties
     aux:[skyLo,Math.max(0,Math.min(1,.55-(burn-.62)*1.1)),0,0],             // cirrus dies in a burning sky
     lif:[.30+burn*.45,0,.05,0]};},
-  ground:function(){return {r:ramp8([[0,"#E8DBBB"],[.07,"#BCC49E"],[.16,"#8FB89C"],[.30,"#4E8A7E"],
-   [.46,"#2A6F6C"],[.68,"#134247"],[.86,"#0C3035"],[1,"#082226"]]),prm:[-.06,.20,0,.30],sun:C("#FBF4D8"),aux:[.14,.42,0,0],lif:[.85,0,.05,0]};},
+  ground:function(){var gh=groundHeat;                 // today's percentile at the chosen place drives the air
+   var hotF=Math.max(0,gh-.55)*2.2,coolF=Math.max(0,.45-gh)*1.8;
+   var w1=SKYW.mix(SKYW.mix("#E8DBBB","#EFAE6B",hotF),"#DFE4DA",coolF),
+       w2=SKYW.mix(SKYW.mix("#BCC49E","#D9A96B",hotF),"#C2CEC2",coolF);
+   return {r:ramp8([[0,w1],[.07,w2],[.16,"#8FB89C"],[.30,"#4E8A7E"],
+   [.46,"#2A6F6C"],[.68,"#134247"],[.86,"#0C3035"],[1,"#082226"]]),prm:[-.06,.20,0,.30],sun:C("#FBF4D8"),aux:[.14,.42,0,0],
+   lif:[.35+gh*.9,0,.05,0]};},
   night:function(){return {r:ramp8([[0,"#1A0B0E"],[.12,"#0E1418"],[.30,"#0A1B20"],[.55,"#070E11"],
    [.75,"#05090C"],[.88,"#04080B"],[.95,"#03070A"],[1,"#02060A"]]),prm:[1.10,.20,.28,.20],sun:C("#F28C40"),aux:[.92,.10,0,0],lif:[0,0,.05,0]};},  // shader stars faint: the REAL catalog leads at night
   firstlight:function(){return {r:ramp8([[0,"#081B20"],[.34,"#0C2B30"],[.58,"#0E3A3A"],[.78,"#2A6F6C"],
@@ -987,6 +1009,8 @@ var __ATMO=(function(){
  size();draw();wake();
  return {ok:true,setState:setState,
          setSkyBand:function(h,l){skyHi=h/100;skyLo=l/100;},
+         groundHeat:function(h){groundHeat=Math.max(0,Math.min(1,h));
+          if(typeof cur!=="undefined"&&CH[cur]&&CH[cur].id==="ground")setState("ground",{dur:900});},
          skyFollow:skyFollow,setBurn:setBurn,exposure:exposure,meteor:meteor};
 })();
 
@@ -1244,36 +1268,42 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
 
 /* ============ GROUND ============ */
 var groundDrawerExtra="";
-(function(){
- var thenN=mean(G.days_ge35_per_year,1951,1980),nowN=mean(G.days_ge35_per_year,LF-9,LF);
- var wnThen=mean(G.warm_nights_ge25_per_year,1951,1980),wnNow=mean(G.warm_nights_ge25_per_year,LF-9,LF);
+function buildGround(V){
+ var CUSTOM=!!(V&&V.custom);
+ var RWc=CUSTOM?V.RW:RW,Sc=CUSTOM?V.S:S,Gc=CUSTOM?V.G:G;
+ var PLACE=CUSTOM?V.place:"Seville";
+ var THR=CUSTOM?V.thr:{hot:35,night:25,hotLabel:"at or above 35 °C",nightLabel:"below 25 °C"};
+ el("recwin").innerHTML="";
+ var thenN=mean(Gc.days_ge35_per_year,1951,1980),nowN=mean(Gc.days_ge35_per_year,LF-9,LF);
+ var wnThen=mean(Gc.warm_nights_ge25_per_year,1951,1980),wnNow=mean(Gc.warm_nights_ge25_per_year,LF-9,LF);
 
  /* record-window chart */
- var W=940,Hh=400,mL=38,mR=14,mT=12,mB=24,n=RW.labels.length;
+ var W=940,Hh=400,mL=38,mR=14,mT=12,mB=24,n=RWc.labels.length;
  function sc(d0,d1,r0,r1){return function(v){return r0+(v-d0)/(d1-d0)*(r1-r0);};}
- var x=sc(0,n-1,mL,W-mR),y=sc(18,45,Hh-mB,mT);
+ var yd=CUSTOM?V.ydom:[18,45];
+ var x=sc(0,n-1,mL,W-mR),y=sc(yd[0],yd[1],Hh-mB,mT);
  var MONO="ui-monospace,Menlo,monospace",AXc="rgba(242,231,204,.62)";
  function txt(a,s,halo){var t=E("text",a);t.textContent=s;
   if(halo){t.setAttribute("paint-order","stroke");t.setAttribute("stroke","#12333A");
    t.setAttribute("stroke-width","3.2");t.setAttribute("stroke-linejoin","round");}return t;}
  var svg=E("svg",{viewBox:"0 0 "+W+" "+Hh,role:"img",
-  "aria-label":"Seville early-summer daily highs, one line per year since 1940 — the band has lifted and today's forecast sits at the top."});
- [20,25,30,35,40,45].forEach(function(t){
+  "aria-label":PLACE+" daily highs across the window, one line per year since 1940 — old and recent normals drawn, today's forecast marked."});
+ (CUSTOM?V.ticks:[20,25,30,35,40,45]).forEach(function(t){
   svg.appendChild(E("line",{x1:mL,x2:W-mR,y1:y(t),y2:y(t),stroke:"rgba(242,231,204,.1)"}));
   svg.appendChild(txt({x:mL-5,y:y(t)+3,"text-anchor":"end","font-size":11,fill:AXc,"font-family":MONO},t));});
  for(var o=0;o<n;o+=10){if(x(o)>W-24)continue;                    // a label the frame would clip is worse than no label
-  svg.appendChild(txt({x:x(o),y:Hh-7,"text-anchor":"middle","font-size":11,fill:AXc,"font-family":MONO},RW.labels[o]));}
+  svg.appendChild(txt({x:x(o),y:Hh-7,"text-anchor":"middle","font-size":11,fill:AXc,"font-family":MONO},RWc.labels[o]));}
  function path(arr){var d="",st=false;for(var i=0;i<arr.length;i++){if(arr[i]==null){st=false;continue;}
   d+=(st?"L":"M")+x(i).toFixed(1)+" "+y(arr[i]).toFixed(1)+" ";st=true;}return d;}
  var CY=TS.dateISO.slice(0,4);
  var spagP=[];
- Object.keys(RW.spaghetti).forEach(function(yr){if(yr===CY)return;
-  var p0=E("path",{d:path(RW.spaghetti[yr]),fill:"none",stroke:"#F2E7CC","stroke-width":.8,"stroke-opacity":.1});
+ Object.keys(RWc.spaghetti).forEach(function(yr){if(yr===CY)return;
+  var p0=E("path",{d:path(RWc.spaghetti[yr]),fill:"none",stroke:"#F2E7CC","stroke-width":.8,"stroke-opacity":.1});
   svg.appendChild(p0);spagP.push(p0);});
- svg.appendChild(E("path",{d:path(RW.record_envelope),fill:"none",stroke:"rgba(242,231,204,.55)","stroke-width":1.1,"stroke-dasharray":"2 3"}));
- svg.appendChild(E("path",{d:path(RW.old_normal_1951_1980),fill:"none",stroke:"#5FA8DC","stroke-width":2.4,"class":"dr"}));
- svg.appendChild(E("path",{d:path(RW.new_normal_last30),fill:"none",stroke:"#E8886B","stroke-width":2.4,"class":"dr"}));
- var s26=RW.spaghetti[CY]||[],lastObs=-1;
+ svg.appendChild(E("path",{d:path(RWc.record_envelope),fill:"none",stroke:"rgba(242,231,204,.55)","stroke-width":1.1,"stroke-dasharray":"2 3"}));
+ svg.appendChild(E("path",{d:path(RWc.old_normal_1951_1980),fill:"none",stroke:"#5FA8DC","stroke-width":2.4,"class":"dr"}));
+ svg.appendChild(E("path",{d:path(RWc.new_normal_last30),fill:"none",stroke:"#E8886B","stroke-width":2.4,"class":"dr"}));
+ var s26=RWc.spaghetti[CY]||[],lastObs=-1;
  for(var i=0;i<s26.length;i++)if(s26[i]!=null)lastObs=i;
  if(s26.length)svg.appendChild(E("path",{d:path(s26),fill:"none",stroke:"#F2E7CC","stroke-width":2.4,"stroke-linejoin":"round","class":"dr"}));
  /* today's marker — created once, positioned by applyToday (moves when the live fetch lands) */
@@ -1286,13 +1316,13 @@ var groundDrawerExtra="";
  svg.appendChild(hiP);
  el("recwin").appendChild(svg);
 
- function peak(yr){var sp=RW.spaghetti[String(yr)];if(!sp)return null;
+ function peak(yr){var sp=RWc.spaghetti[String(yr)];if(!sp)return null;
   var m=null;sp.forEach(function(v){if(v!=null&&(m==null||v>m))m=v;});return m;}
- function setYear(yr){yr=+yr;var i=yr-S.year0;
-  if(!(i>=0&&i<S.anom.length)){hiP.setAttribute("stroke-opacity",0);el("yr-out").textContent="";return;}
-  var sp=RW.spaghetti[String(yr)];
+ function setYear(yr){yr=+yr;var i=yr-Sc.year0;
+  if(!(i>=0&&i<Sc.anom.length)){hiP.setAttribute("stroke-opacity",0);el("yr-out").textContent="";return;}
+  var sp=RWc.spaghetti[String(yr)];
   if(sp){hiP.setAttribute("d",path(sp));hiP.setAttribute("stroke-opacity",1);}
-  var a=S.anom[i],pk=peak(yr);
+  var a=Sc.anom[i],pk=peak(yr);
   el("yr-out").textContent=yr+" — that summer ran "+(a>=0?"+":"")+a.toFixed(2)+" °C vs 1951–80"+
    (pk!=null?(" · hottest day "+pk.toFixed(1)+" °C · traced in amber"):"");}
  el("yr").addEventListener("input",function(){var v=+this.value;
@@ -1301,7 +1331,7 @@ var groundDrawerExtra="";
 
  /* drawer content for ground: stripes + key + tables */
  var stripes='<svg viewBox="0 0 860 64" preserveAspectRatio="none" role="img" aria-label="Warming stripes, one per year 1940 to 2025">';
- S.anom.forEach(function(a,i){stripes+='<rect x="'+(i*10).toFixed(0)+'" y="0" width="10.4" height="64" fill="'+tcol(a)+'"/>';});
+ Sc.anom.forEach(function(a,i){stripes+='<rect x="'+(i*10).toFixed(0)+'" y="0" width="10.4" height="64" fill="'+tcol(a)+'"/>';});
  stripes+='</svg>';
  var key='<div class="scalekey"><div class="rampwrap"><svg viewBox="0 0 260 10" width="100%" height="10" preserveAspectRatio="none"><defs><linearGradient id="tg" x1="0" x2="1">';
  [-2.5,-1.5,-.5,0,.5,1.5,2.5,3.2].forEach(function(a){key+='<stop offset="'+(((a-T_MIN)/T_SPAN)*100).toFixed(1)+'%" stop-color="'+tcol(a)+'"/>';});
@@ -1313,21 +1343,21 @@ var groundDrawerExtra="";
   "<h4>The record, one stripe per year</h4>"+stripes+key+
   "<p class=\"receipt\">annual mean daily-high (Tmax) anomaly vs 1951–1980 · palette after Ed Hawkins, #ShowYourStripes · scale −2.5 to +3.2 °C, set to span this record</p>"+
   "<h4>Every year, numerically</h4>"+
-  tableHTML(["Year","Anomaly vs 1951–80 (°C)","Hottest early-summer day (°C)"],
-   S.anom.map(function(a,i){var yr=S.year0+i,pk=peak(yr);
+  tableHTML(["Year","Anomaly vs 1951–80 (°C)","Hottest day in the window (°C)"],
+   Sc.anom.map(function(a,i){var yr=Sc.year0+i,pk=peak(yr);
     return [String(yr),(a>=0?"+":"")+a.toFixed(2),pk!=null?pk.toFixed(1):"—"];}))+
   "<h4>The chart, day by day</h4>"+
-  tableHTML(["Calendar day","1951–80 avg",RW.new_normal_label+" avg","Hottest ever"],
-   RW.labels.map(function(l,i){function f(v){return v==null?"—":v.toFixed(1);}
-    return [l,f(RW.old_normal_1951_1980[i]),f(RW.new_normal_last30[i]),f(RW.record_envelope[i])];}));
+  tableHTML(["Calendar day","1951–80 avg",RWc.new_normal_label+" avg","Hottest ever"],
+   RWc.labels.map(function(l,i){function f(v){return v==null?"—":v.toFixed(1);}
+    return [l,f(RWc.old_normal_1951_1980[i]),f(RWc.new_normal_last30[i]),f(RWc.record_envelope[i])];}));
 
  /* ---- everything today-dependent renders through here (snapshot now, live later) ---- */
  applyToday=function(t){
   var isRec=t.tmax!=null&&t.comparable!=null&&t.rec!=null&&t.comparable>t.rec;
   var lr=ladder.children[1]&&ladder.children[1].querySelector(".fact");
-  if(lr)lr.textContent="Seville · "+(t.tmax!=null?t.tmax.toFixed(1)+"° today":"on its own record");
+  if(lr)lr.textContent=PLACE+" · "+(t.tmax!=null?t.tmax.toFixed(1)+"° today":"on its own record");
   el("tease-temp").textContent=t.tmax!=null?t.tmax.toFixed(1)+" °C":"—";
-  el("tease-sub").textContent="Seville, "+t.dateLabel+" — "+(isRec?
+  el("tease-sub").textContent=PLACE+", "+t.dateLabel+" — "+(isRec?
    ("set to pass every "+t.dateLabel+" in the record ("+t.rec.toFixed(1)+"°, "+t.recy+")."):
    (t.pct!=null?(t.pct+"th percentile of "+t.n+" years of this date."):
     ("measured against "+t.n+" years of this date.")));
@@ -1336,18 +1366,21 @@ var groundDrawerExtra="";
    (t.mode==="live"?"live · provisional":"snapshot · built "+t.fetched)+"</span></small>";
   el("g-fact").innerHTML="In "+t.n+" years, no "+t.dateLabel+" here has passed <b class=\"mono\">"+
    t.rec.toFixed(1)+"</b> °C ("+t.recy+")."+(isRec?" <b>Today's forecast would pass it.</b>":"")+
-   " Days at or above 35 °C: <b>"+thenN.toFixed(0)+" → "+nowN.toFixed(0)+"</b> a year. "+
-   "Nights that never cool below 25 °C: <b>"+wnThen.toFixed(1)+" → "+wnNow.toFixed(1)+"</b>.";
+   " Days "+THR.hotLabel+": <b>"+thenN.toFixed(0)+" → "+nowN.toFixed(0)+"</b> a year. "+
+   "Nights that never cool "+THR.nightLabel+": <b>"+wnThen.toFixed(1)+" → "+wnNow.toFixed(1)+"</b>.";
   el("g-freq").textContent=(t.h40a||t.h40b)?
    ("A 40 °C day within two weeks of this date came "+t.h40a+" summers in 30 (1951–80). "+
     "In the last thirty years: "+t.h40b+" in 30."):"";
   el("g-receipt").innerHTML=(t.pct!=null?(t.pct+"th percentile of the two weeks around "+t.dateLabel+" since 1940 · "):"")+
-   "ERA5 reanalysis via Open-Meteo · forecast adjusted "+(t.bias<0?"+":"−")+Math.abs(t.bias).toFixed(1)+
-   " °C for the measured reanalysis offset · newest observation "+F.newest_obs+
+   "ERA5 reanalysis via Open-Meteo · "+(CUSTOM?
+    "forecast provisional, unadjusted (forecast and reanalysis differ slightly)":
+    "forecast adjusted "+(t.bias<0?"+":"−")+Math.abs(t.bias).toFixed(1)+
+    " °C for the measured reanalysis offset · newest observation "+F.newest_obs)+
    " · baselines 1951–80 vs "+(LF-9)+"–"+LF;
   var off=(function(){var d=new Date(t.dateISO+"T00:00:00Z");
-   return Math.round((d.getTime()-Date.UTC(+t.dateISO.slice(0,4),5,8))/864e5);})();
-  if(t.tmax!=null&&off>=0&&off<RW.labels.length){
+   var a=CUSTOM?new Date(V.anchorISO+"T00:00:00Z"):new Date(Date.UTC(+t.dateISO.slice(0,4),5,8));
+   return Math.round((d.getTime()-a.getTime())/864e5);})();
+  if(t.tmax!=null&&off>=0&&off<RWc.labels.length){
    var txp=x(off),typ=y(t.tmax);
    todayDot.setAttribute("cx",txp);todayDot.setAttribute("cy",typ);todayDot.setAttribute("opacity",1);
    todayLbl.setAttribute("x",txp-8);todayLbl.setAttribute("y",typ-9);
@@ -1379,10 +1412,10 @@ var groundDrawerExtra="";
   function nearest(e){
    var r=svg.getBoundingClientRect();if(!r.width)return null;
    var vx=(e.clientX-r.left)/r.width*940,vy=(e.clientY-r.top)/r.height*400;
-   var i=Math.round((vx-38)/((940-14-38)/(RW.labels.length-1)));
-   if(i<0||i>=RW.labels.length)return null;
+   var i=Math.round((vx-38)/((940-14-38)/(RWc.labels.length-1)));
+   if(i<0||i>=RWc.labels.length)return null;
    var best=null,bd=11;
-   Object.keys(RW.spaghetti).forEach(function(yr){var sp=RW.spaghetti[yr];
+   Object.keys(RWc.spaghetti).forEach(function(yr){var sp=RWc.spaghetti[yr];
     if(!sp||sp[i]==null)return;
     var dd=Math.abs(y(sp[i])-vy);
     if(dd<bd){bd=dd;best=yr;}});
@@ -1392,7 +1425,7 @@ var groundDrawerExtra="";
   svg.addEventListener("pointermove",function(e){if(pend)return;pend=true;
    requestAnimationFrame(function(){pend=false;
     if(document.activeElement===el("yr"))return;
-    var b=nearest(e),sp=b&&RW.spaghetti[b];
+    var b=nearest(e),sp=b&&RWc.spaghetti[b];
     if(sp){hiP.setAttribute("d",path(sp));hiP.setAttribute("stroke-opacity",.85);}});});
   svg.addEventListener("click",function(e){var b=nearest(e);
    if(b){el("yr").value=b;setYear(b);}});
@@ -1401,7 +1434,8 @@ var groundDrawerExtra="";
    if(v>=1940&&v<=2025)setYear(v);
    else hiP.setAttribute("stroke-opacity",0);});
  })();
-})();
+}
+buildGround(null);
 
 /* ============ NIGHT ============ */
 (function(){
@@ -1660,9 +1694,128 @@ document.querySelectorAll("[data-drawer]").forEach(function(b){
   TS.rec=day.rec;TS.recy=day.recy;TS.n=day.n;
   TS.pct=Math.min(100,Math.round(100*le/q.length));
   TS.h40a=day.h40a;TS.h40b=day.h40b;
-  if(applyToday)applyToday(TS);
+  if(applyToday&&!(window.__PLACE&&__PLACE.active()))applyToday(TS);   // a custom place owns the ground while chosen
  }).catch(function(e){ /* no network (e.g. the artifact sandbox) — the labelled snapshot stands */ });
 })();
+
+/* ═══════════ ANY GROUND ON EARTH — the record engine, in your browser ═══════════
+   Pick a place and the browser fetches its full ERA5 daily record (1940→ today,
+   Open-Meteo, CC-BY) and computes the same statistics we compute for Seville —
+   window traces, both normals, the record envelope, per-year counts against the
+   place's OWN old-normal 95th percentiles, today's forecast percentile — all
+   client-side. Nothing about you is sent anywhere except the open weather API. */
+var __PLACE=(function(){
+ if(!window.fetch||typeof buildGround!=="function")return null;
+ var act=false;
+ function status(s){var e=el("gq-status");if(e)e.textContent=s||"";}
+ function qtile(sorted,p){if(!sorted.length)return null;
+  return sorted[Math.min(sorted.length-1,Math.floor(p/100*(sorted.length-1)))];}
+ var MONS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+ function compute(aj,fc,name){
+  var d=aj.daily,N=d.time.length,date=d.time,tx=d.temperature_2m_max,tn=d.temperature_2m_min;
+  var md={},annual={},oldTx=[],oldTn=[],i,y;
+  for(i=0;i<N;i++){if(tx[i]==null)continue;y=+date[i].slice(0,4);
+   var k=date[i].slice(5);(md[k]=md[k]||[]).push([y,tx[i]]);
+   (annual[y]=annual[y]||[]).push(tx[i]);
+   if(y>=1951&&y<=1980){oldTx.push(tx[i]);if(tn[i]!=null)oldTn.push(tn[i]);}}
+  if(oldTx.length<3650)throw new Error("record too thin");
+  oldTx.sort(function(a,b){return a-b;});oldTn.sort(function(a,b){return a-b;});
+  var thrHot=Math.round(qtile(oldTx,95)*10)/10,thrNight=Math.round(qtile(oldTn,95)*10)/10;
+  var cH={},cN={};
+  for(i=0;i<N;i++){y=+date[i].slice(0,4);
+   if(tx[i]!=null&&tx[i]>=thrHot)cH[y]=(cH[y]||0)+1;
+   if(tn[i]!=null&&tn[i]>=thrNight)cN[y]=(cN[y]||0)+1;}
+  function series(c){var out=[];for(var y2=1940;y2<=LF;y2++)out.push({year:y2,n:c[y2]||0});return out;}
+  /* the window: 25 days back to 25 days ahead of today */
+  var WN=51,anchorMs=Date.now()-25*864e5,anchorISO=new Date(anchorMs).toISOString().slice(0,10);
+  var labels=[],keys=[];
+  for(i=0;i<WN;i++){var dd=new Date(anchorMs+i*864e5);
+   labels.push(MONS[dd.getUTCMonth()]+" "+dd.getUTCDate());keys.push(dd.toISOString().slice(5,10));}
+  var spag={},oldB=[],newB=[],env=[],lo=99,hi=-99;
+  for(i=0;i<WN;i++){var rows=md[keys[i]]||[],olds=[],news=[],all=[];
+   for(var r=0;r<rows.length;r++){var yy=rows[r][0],v=rows[r][1];
+    var s=spag[yy];if(!s){s=spag[yy]=[];for(var z=0;z<WN;z++)s.push(null);}
+    s[i]=Math.round(v*10)/10;all.push(v);
+    if(yy>=1951&&yy<=1980)olds.push(v);
+    if(yy>=LF-29&&yy<=LF)news.push(v);
+    if(v<lo)lo=v;if(v>hi)hi=v;}
+   function m2(a){if(!a.length)return null;var t2=0;for(var j=0;j<a.length;j++)t2+=a[j];
+    return Math.round(t2/a.length*10)/10;}
+   oldB.push(m2(olds));newB.push(m2(news));
+   env.push(all.length?Math.round(Math.max.apply(null,all)*10)/10:null);}
+  var ydom=[Math.floor((lo-2)/5)*5,Math.ceil((hi+2)/5)*5],ticks=[];
+  for(i=ydom[0];i<=ydom[1];i+=5)ticks.push(i);
+  /* annual anomaly vs the 1951-80 mean of annual means */
+  var base=[],anom=[];
+  for(y=1951;y<=1980;y++)if(annual[y]){var t3=0;
+   for(i=0;i<annual[y].length;i++)t3+=annual[y][i];base.push(t3/annual[y].length);}
+  var bmean=base.length?base.reduce(function(a,b){return a+b;},0)/base.length:0;
+  for(y=1940;y<=LF;y++){if(annual[y]&&annual[y].length>300){var t4=0;
+    for(i=0;i<annual[y].length;i++)t4+=annual[y][i];
+    anom.push(Math.round((t4/annual[y].length-bmean)*100)/100);}else anom.push(0);}
+  /* today against its own date */
+  var todayISO=new Date().toISOString().slice(0,10),tk=todayISO.slice(5);
+  var exact=md[tk]||[],rec=null,recy=null;
+  for(i=0;i<exact.length;i++)if(rec==null||exact[i][1]>rec){rec=exact[i][1];recy=exact[i][0];}
+  var wvals=[];
+  for(i=-7;i<=7;i++){var wd=new Date(Date.now()+i*864e5).toISOString().slice(5,10);
+   (md[wd]||[]).forEach(function(rv){wvals.push(rv[1]);});}
+  wvals.sort(function(a,b){return a-b;});
+  var pct=null;if(fc!=null&&wvals.length){var le=0;
+   for(i=0;i<wvals.length;i++)if(wvals[i]<=fc)le++;
+   pct=Math.min(100,Math.round(100*le/wvals.length));}
+  return {V:{custom:true,place:name,anchorISO:anchorISO,ydom:ydom,ticks:ticks,
+    RW:{labels:labels,spaghetti:spag,old_normal_1951_1980:oldB,new_normal_last30:newB,
+        record_envelope:env,new_normal_label:(LF-29)+"–"+LF},
+    S:{year0:1940,anom:anom},
+    G:{days_ge35_per_year:series(cH),warm_nights_ge25_per_year:series(cN)},
+    thr:{hot:thrHot,night:thrNight,
+     hotLabel:"above its own old-normal 95th percentile ("+thrHot.toFixed(1)+" °C)",
+     nightLabel:"below its night 95th percentile ("+thrNight.toFixed(1)+" °C)"}},
+   t:{mode:"live",tmax:fc,comparable:fc,dateISO:todayISO,dateLabel:dLabel(todayISO),
+      fetched:todayISO,rec:rec!=null?rec:0,recy:recy||"—",n:exact.length,pct:pct,
+      bias:0,h40a:0,h40b:0}};}
+ function jf(r){if(!r.ok)throw new Error("http "+r.status);return r.json();}
+ function pick(lat,lon,name){
+  status("fetching "+name+" — 86 years of days…");
+  var end=new Date(Date.now()-6*864e5).toISOString().slice(0,10);
+  Promise.all([
+   fetch("https://archive-api.open-meteo.com/v1/archive?latitude="+lat+"&longitude="+lon+
+    "&start_date=1940-01-01&end_date="+end+"&daily=temperature_2m_max,temperature_2m_min&timezone=auto").then(jf),
+   fetch("https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+
+    "&daily=temperature_2m_max&forecast_days=1&timezone=auto").then(jf)
+  ]).then(function(rr){
+   var fc=(rr[1]&&rr[1].daily&&rr[1].daily.temperature_2m_max)?rr[1].daily.temperature_2m_max[0]:null;
+   var out=compute(rr[0],fc,name);
+   act=true;buildGround(out.V);applyToday(out.t);
+   var sv=el("gq-sev");if(sv)sv.hidden=false;
+   if(__ATMO.ok&&__ATMO.groundHeat&&out.t.pct!=null)__ATMO.groundHeat(out.t.pct/100);
+   status(name+" — its own ERA5 record, computed in your browser");
+  }).catch(function(e){status("couldn't draw that place ("+e.message+") — try another");});}
+ function search(){var qv=(el("gq").value||"").trim();if(qv.length<2)return;
+  status("searching…");
+  fetch("https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(qv)+
+   "&count=1&language=en&format=json").then(jf).then(function(g){
+   if(!g.results||!g.results.length){status("no such place found");return;}
+   var p=g.results[0];
+   pick(p.latitude,p.longitude,p.name+(p.country_code?", "+p.country_code:""));
+  }).catch(function(){status("search failed — try again");});}
+ (function(){var go=el("gq-go"),mi=el("gq-mine"),sv=el("gq-sev"),qi=el("gq");
+  if(!go)return;
+  go.addEventListener("click",search);
+  qi.addEventListener("keydown",function(e){if(e.key==="Enter")search();});
+  mi.addEventListener("click",function(){
+   if(!navigator.geolocation){status("no location in this browser");return;}
+   status("asking your browser for your position — it goes only to the weather API");
+   navigator.geolocation.getCurrentPosition(function(pos){
+    pick(Math.round(pos.coords.latitude*100)/100,Math.round(pos.coords.longitude*100)/100,"your ground");},
+    function(){status("location declined");});});
+  sv.addEventListener("click",function(){act=false;sv.hidden=true;
+   buildGround(null);TS.comparable=TS.tmax!=null?Math.round((TS.tmax-TS.bias)*10)/10:null;
+   applyToday(TS);if(__ATMO.ok&&__ATMO.groundHeat)__ATMO.groundHeat(.55);status("");});})();
+ return {active:function(){return act;}};
+})();
+window.__PLACE=__PLACE;
 
 /* ═══════════ THE REAL SKY — Delhi's night, computed, not decorated ═══════════
    Stars: Yale Bright Star Catalogue via d3-celestial (BSD-3), mag ≤ 5.
