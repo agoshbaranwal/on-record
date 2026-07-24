@@ -195,6 +195,13 @@ svg{display:block;width:100%;height:auto}
   color:var(--amber);text-shadow:0 1px 14px rgba(4,18,20,.85);font-variant-numeric:tabular-nums}
 #skycount{position:absolute;left:0;top:56.5%}
 #hzn-hi,#hzn-lo{position:absolute;left:-38px;right:-38px;border-top:1px solid rgba(62,18,8,.5);pointer-events:none}
+/* the century axis: altitude is time, and the axis is drawn, not implied */
+#skyaxis{position:absolute;inset:0;pointer-events:none}
+#skyaxis .rung{position:absolute;right:24%;display:flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:rgba(242,231,204,.46);
+  text-shadow:0 1px 4px rgba(3,16,18,.55)}
+#skyaxis .rung i{display:block;width:26px;border-top:1px solid rgba(242,231,204,.30);
+  box-shadow:0 1px 3px rgba(3,16,18,.35)}
 .hl{position:absolute;right:210px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;
   text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
 .hl b{color:var(--ink);font-weight:600}
@@ -470,6 +477,7 @@ svg{display:block;width:100%;height:auto}
       <section class="pane on" id="p-sky" aria-label="The sky — the remaining carbon budget">
         <div id="hzn-hi"><span class="hl" id="hlab-hi"></span></div>
         <div id="hzn-lo"><span class="hl" id="hlab-lo"></span></div>
+        <div id="skyaxis" aria-hidden="true"></div>
         <div id="band" tabindex="0" aria-describedby="band-whisper">
           <span class="whisper" id="band-whisper"></span></div>
         <div id="ghost" aria-hidden="true"><span id="ghost-lab"></span></div>
@@ -478,6 +486,8 @@ svg{display:block;width:100%;height:auto}
           <div class="capplate">
             <p class="ylab">years of sky left <span id="atrate"></span></p>
             <p class="spent num" id="spent"></p>
+            <p class="spent" id="axisnote">up is the century ahead &mdash; the colour of each height is the
+              warming that year carries at this rate</p>
             <p id="odometer"></p>
           </div>
         </div>
@@ -544,6 +554,7 @@ svg{display:block;width:100%;height:auto}
             <p class="fact-line" style="font-size:12px" id="n-honest"></p>
             <p class="receipt" id="delhi-receipt"></p>
             <button class="drawbtn" data-drawer="night">Receipts &amp; why the split</button>
+        <p class="receipt" id="showerbox" style="max-width:46ch;margin-top:14px"></p>
           </div>
           <div class="chart"><div class="plate">
             <div id="delhi"></div>
@@ -685,6 +696,36 @@ var DH=D.delhi_honesty,P=D.perception_gap,N=D.the_number;
 var dr=DH.receipts;
 function yearsStr(rate){var a=(LO.remaining_now_gt/rate),b=(HIe.remaining_now_gt/rate);
  var s1=a.toFixed(1),s2=b.toFixed(1);return s1===s2?s1:s1+"–"+s2;}
+
+/* ═══════════ THE CENTURY-SKY MAPPING ═══════════
+   Altitude is time: the horizon is today, the zenith is 2100, on a declared
+   square-root scale (year rungs are drawn, so the axis is visible, not implied).
+   Colour is the warming expected at that year if the chosen rate simply holds:
+     warming(year) = 1.37 °C + rate × years × TCRE / 1000
+   Held-rate arithmetic, not a pathway model; TCRE per IPCC AR6 (0.45 °C per
+   1000 GtCO₂, likely 0.27–0.63). Anchor colours step at the conventional
+   thresholds — 1.5 / 1.8 / 2.2 / 2.7 / 3.2 °C. All of it is in the receipts. */
+var RMINR=8,RMAXR=63;
+var SKYW=(function(){
+ var TCRE=(B.tcre&&B.tcre.c_per_1000gt)||.45,HUM=B.human_induced.c;
+ var A=[[HUM,"#27454E"],[1.5,"#2F6E68"],[1.8,"#9A7A3A"],[2.2,"#A55226"],
+        [2.7,"#7C2B14"],[3.2,"#471410"],[4.2,"#220A0C"]];
+ function pc(h){return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];}
+ function hx(c){function q(v){v=Math.max(0,Math.min(255,Math.round(v)));
+  return (v<16?"0":"")+v.toString(16);}return "#"+q(c[0])+q(c[1])+q(c[2]);}
+ function warm(rate,yrs){return HUM+rate*yrs*TCRE/1000;}
+ function col(w){if(w<=A[0][0])return pc(A[0][1]);
+  for(var i=0;i<A.length-1;i++){var a=A[i],b=A[i+1];
+   if(w<=b[0]){var f=(w-a[0])/(b[0]-a[0]),ca=pc(a[1]),cb=pc(b[1]);
+    return [ca[0]+(cb[0]-ca[0])*f,ca[1]+(cb[1]-ca[1])*f,ca[2]+(cb[2]-ca[2])*f];}}
+  return pc(A[A.length-1][1]);}
+ function pos(yrs){return Math.max(.035,.58-.52*Math.sqrt(Math.min(yrs,74)/74));}
+ function yrAt(p){var f=Math.max(0,(.58-p)/.52);return Math.min(74,74*f*f);}
+ function shade(c,f){return [c[0]*f,c[1]*f,c[2]*f];}
+ function mix(ha,hb,f){var a=pc(ha),b=pc(hb);
+  return hx([a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,a[2]+(b[2]-a[2])*f]);}
+ return {warm:warm,col:col,hex:hx,pos:pos,yrAt:yrAt,shade:shade,mix:mix,tcre:TCRE,hum:HUM};
+})();
 /* today's state — seeded from the build-time snapshot, upgraded by the live fetch */
 function dLabel(iso){var p=iso.split("-");
  return (+p[2])+" "+["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+p[1]-1];}
@@ -721,6 +762,7 @@ var __ATMO=(function(){
 "uniform vec4 uPrmA,uPrmB;uniform vec3 uSunA,uSunB;\n"+
 "uniform vec4 uAuxA,uAuxB;\n"+          // x: haze-pool y · y: cirrus · z: morning star · w: spare
 "uniform vec4 uLifA,uLifB;\n"+          // x: heat-shimmer floor · y: dust motes · z: light breathes · w: spare
+"uniform vec4 uMetP;\n"+                // meteor path from the shower radiant: start xy · direction xy
 "uniform float uMetT0;uniform float uMetSeed;\n"+
 "float ign(vec2 p){p=fract(p*vec2(.06711056,.00583715));return fract(52.9829189*(p.x+p.y));}\n"+
 "float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}\n"+
@@ -786,8 +828,8 @@ var __ATMO=(function(){
 "  float mdur=.8+fract(uMetSeed*3.9)*.7;\n"+                      // each meteor its own speed: .8-1.5s, the real range
 "  float mp=(uT-uMetT0)/mdur;\n"+
 "  if(mp>0.&&mp<1.4){\n"+                                         // train outlives the head by ~.6s
-"   float sx=.16+fract(uMetSeed*7.13)*.24,sy=.04+fract(uMetSeed*3.71)*.10;\n"+ // enters in the clear high sky, left of centre
-"   vec2 dir=normalize(vec2(.62+fract(uMetSeed*11.7)*.26,.20+fract(uMetSeed*5.9)*.22));\n"+ // always west->east, gently down
+"   float sx=uMetP.x,sy=uMetP.y;\n"+                              // the path radiates from the shower's true radiant
+"   vec2 dir=normalize(vec2(uMetP.z,uMetP.w));\n"+
 "   float len=.44+fract(uMetSeed*5.3)*.22;\n"+
 "   vec2 st=vec2(sx,sy),ba=vec2(dir.x*len*asp,dir.y*len);\n"+
 "   vec2 pa=vec2((uv.x-st.x)*asp,uv.y-st.y);\n"+
@@ -825,7 +867,7 @@ var __ATMO=(function(){
  var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
  var ap=gl.getAttribLocation(prog,"p");gl.enableVertexAttribArray(ap);gl.vertexAttribPointer(ap,2,gl.FLOAT,false,0,0);
- ["uR","uT","uMix","uBurn","uExpo","uFr","uAuxA","uAuxB","uLifA","uLifB","uMetT0","uMetSeed","uPrmA","uPrmB","uSunA","uSunB"].forEach(function(n){loc[n]=gl.getUniformLocation(prog,n);});
+ ["uR","uT","uMix","uBurn","uExpo","uFr","uAuxA","uAuxB","uLifA","uLifB","uMetT0","uMetSeed","uMetP","uPrmA","uPrmB","uSunA","uSunB"].forEach(function(n){loc[n]=gl.getUniformLocation(prog,n);});
  loc.uColA=gl.getUniformLocation(prog,"uColA[0]");loc.uPosA=gl.getUniformLocation(prog,"uPosA[0]");
  loc.uColB=gl.getUniformLocation(prog,"uColB[0]");loc.uPosB=gl.getUniformLocation(prog,"uPosB[0]");
  /* colours are delivered to the shader in LINEAR light */
@@ -840,12 +882,20 @@ var __ATMO=(function(){
      aux:[haze-pool y, cirrus, morning-star, spare],
      lif:[heat-shimmer floor, dust motes, light breathes, spare]} */
  var skyHi=.44,skyLo=.47,burn=.62;    // updated live by the dial
- function skyRamp(){var h=skyHi,l=skyLo;return ramp8([[0,"#210710"],[h*.34,"#6B1A18"],[h*.62,"#B4501F"],
-  [h*.85,"#E0A94E"],[h,"#F3E6C6"],[l,"#F3E6C6"],[Math.min(l+.07,1),"#8FB89C"],[1,"#05191D"]]);}
+ /* the sky IS the century: each altitude is a year, its colour the warming
+    that year carries at the chosen rate — see SKYW and the receipts */
+ function skyRamp(){var h=skyHi,l=skyLo,rate=RMINR+burn*(RMAXR-RMINR);
+  function wc(p,f){return SKYW.hex(SKYW.shade(SKYW.col(SKYW.warm(rate,SKYW.yrAt(p))),f));}
+  var p1=h*.42,p2=h*.80;
+  return ramp8([[0,wc(.035,.60)],[p1,wc(p1,.85)],[p2,wc(p2,1)],
+   [Math.max(p2+.01,h-.045),SKYW.mix(wc(p2,1),"#F3E6C6",.55)],
+   [h,"#F3E6C6"],[l,"#F3E6C6"],[Math.min(l+.07,1),"#8FB89C"],[1,"#05191D"]]);}
  var PRE={
   sky:function(){var sunk=skyHi*.93+(burn-.62)*.30;   // burning faster sinks the sun toward the data horizon
-   return {r:skyRamp(),prm:[sunk,.55+(burn-.62)*.35,0,.42+(burn-.62)*.55],  // more burn = thicker, sun-lit air
-    sun:C("#FFB877"),aux:[skyLo,.55-(burn-.62)*.4,0,0],lif:[.30+burn*.45,0,.05,0]};},
+   return {r:skyRamp(),prm:[sunk,.60-(burn-.62)*.30,0,Math.max(.06,.14+(burn-.62)*.80)],  // calm air at today's rate; smoke as you push
+    sun:C(SKYW.mix("#FFB877","#C7481C",Math.max(0,burn-.25)/.75)),          // the sun reddens as the air dirties
+    aux:[skyLo,Math.max(0,Math.min(1,.55-(burn-.62)*1.1)),0,0],             // cirrus dies in a burning sky
+    lif:[.30+burn*.45,0,.05,0]};},
   ground:function(){return {r:ramp8([[0,"#E8DBBB"],[.07,"#BCC49E"],[.16,"#8FB89C"],[.30,"#4E8A7E"],
    [.46,"#2A6F6C"],[.68,"#134247"],[.86,"#0C3035"],[1,"#082226"]]),prm:[-.06,.20,0,.30],sun:C("#FBF4D8"),aux:[.14,.42,0,0],lif:[.85,0,.05,0]};},
   night:function(){return {r:ramp8([[0,"#1A0B0E"],[.12,"#0E1418"],[.30,"#0A1B20"],[.55,"#070E11"],
@@ -892,6 +942,7 @@ var __ATMO=(function(){
   gl.uniform4f(loc.uLifA,A.lif[0],A.lif[1],A.lif[2],A.lif[3]);
   gl.uniform4f(loc.uLifB,Bs.lif[0],Bs.lif[1],Bs.lif[2],Bs.lif[3]);
   gl.uniform1f(loc.uMetT0,metT0);gl.uniform1f(loc.uMetSeed,metSeed);
+  gl.uniform4f(loc.uMetP,metP[0],metP[1],metP[2],metP[3]);
   gl.uniform3fv(loc.uColA,A.r.cols);gl.uniform1fv(loc.uPosA,A.r.pos);
   gl.uniform3fv(loc.uColB,Bs.r.cols);gl.uniform1fv(loc.uPosB,Bs.r.pos);
   gl.uniform4f(loc.uPrmA,A.prm[0],A.prm[1],A.prm[2],A.prm[3]);
@@ -918,7 +969,9 @@ var __ATMO=(function(){
  function setBurn(b){burn=Math.max(0,Math.min(1,b));wake();}
  function exposure(from,to,dur){expA=from;expB=to;expT0=performance.now();expDur=reduce?0:dur;
   if(reduce)expB=to;wake();}
- function meteor(){if(reduce)return 0;
+ var metP=[.24,.10,.75,.30];                // default path if no plan is supplied
+ function meteor(plan){if(reduce)return 0;
+  if(plan&&plan.length===4)metP=plan;
   metT0=((performance.now()-t0)/1000)%3600;metSeed=Math.random()*97.3;
   wake();return (0.8+((metSeed*3.9)%1)*0.7)*1000;}  // same seed formula as the shader — flight .8-1.5s
  el("stage").classList.add("gl");
@@ -1063,26 +1116,33 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
 
 /* ============ SKY ============ */
 (function(){
- var RMIN=8,RMAX=63,YMAX=25,ghostRem=null;
+ var RMIN=RMINR,RMAX=RMAXR,ghostRem=null;
  var target=RNOW;
  var stage=el("stage");
- function frac(y){return Math.max(.02,Math.min(1,Math.pow(Math.min(y,YMAX)/YMAX,.5)));}
- // horizons as % of stage height: sky band base sits at ~61% (matches gradient); scale with years
- var BASE_LO=.608,BASE_HI=.582; // gradient's cream band edges at today's rate
+ (function(){var ax=el("skyaxis");if(!ax)return;var Y0=Math.round(NOW);   // the year rungs of the century
+  [2030,2040,2060,2100].forEach(function(yr){var ys=yr-Y0;if(ys<=1)return;
+   var s=document.createElement("span");s.className="rung";
+   s.style.top=(SKYW.pos(ys)*100).toFixed(1)+"%";
+   s.innerHTML="<i></i>"+yr;ax.appendChild(s);});})();
+ /* the axis is time now: position(years ahead) on the declared sqrt century scale */
+ function frac(y){return Math.max(.02,Math.min(1,Math.sqrt(Math.min(y,74)/74)));}
  function sync(){
   var yLo=LO.remaining_now_gt/target,yHi=HIe.remaining_now_gt/target;
-  // map years to vertical position: more years = horizons higher up the screen
-  // travel band: horizons ride 33%–58% so the count block always clears the dial below
+  // the budget horizons sit at their spend-YEARS on the century axis
   var fLo=frac(yLo),fHi=frac(yHi);
-  var pLo=Math.max(.22,Math.min(.58,.58-(fLo*.34)))*100;
-  var pHi=Math.max(.20,Math.min(.56,.58-(fHi*.34)-.024))*100;
+  var pLo=Math.max(.20,Math.min(.58,.58-(fLo*.52)))*100;
+  var pHi=Math.max(.18,Math.min(.56,.58-(fHi*.52)-.020))*100;
   el("hzn-lo").style.top=pLo+"%";el("hzn-hi").style.top=pHi+"%";
-  // rebuild the sky gradient so the cream band follows the horizons
-  el("atmo-sky").style.background="linear-gradient(180deg,#210710 0%,#2C0A10 "+(pHi*.12).toFixed(1)+
-   "%,#6B1A18 "+(pHi*.34).toFixed(1)+"%,#B4501F "+(pHi*.62).toFixed(1)+"%,#E0A94E "+(pHi*.84).toFixed(1)+
-   "%,#F3E7C8 "+(pHi-1.5).toFixed(1)+"%,#F8EED4 "+pHi.toFixed(1)+"%,#F8EED4 "+pLo.toFixed(1)+
-   "%,#F2E6C6 "+(pLo+1.7).toFixed(1)+"%,#8FB89C "+(pLo+6).toFixed(1)+"%,#2A6F6C "+(pLo+14).toFixed(1)+
-   "%,#0C3035 "+(pLo+24).toFixed(1)+"%,#05191D 100%)";
+  // rebuild the fallback sky from the same century mapping the shader uses
+  (function(){function wch(pct,f){return SKYW.hex(SKYW.shade(
+    SKYW.col(SKYW.warm(target,SKYW.yrAt(pct/100))),f));}
+   var p1=pHi*.42,p2=pHi*.80;
+   el("atmo-sky").style.background="linear-gradient(180deg,"+
+    wch(3.5,.60)+" 0%,"+wch(p1,.85)+" "+p1.toFixed(1)+"%,"+wch(p2,1)+" "+p2.toFixed(1)+
+    "%,"+SKYW.mix(wch(p2,1),"#F3E6C6",.55)+" "+Math.max(p2+1,pHi-4.5).toFixed(1)+
+    "%,#F3E6C6 "+pHi.toFixed(1)+"%,#F3E6C6 "+pLo.toFixed(1)+
+    "%,#F2E6C6 "+(pLo+1.7).toFixed(1)+"%,#8FB89C "+(pLo+6).toFixed(1)+"%,#2A6F6C "+(pLo+14).toFixed(1)+
+    "%,#0C3035 "+(pLo+24).toFixed(1)+"%,#05191D 100%)";})();
   el("years").textContent=yearsStr(target);
   var rs=target<10?target.toFixed(1):String(Math.round(target));
   el("rate").textContent=rs;el("atrate").textContent="· at "+rs+" GtCO₂ a year";
@@ -1474,6 +1534,15 @@ var DRAWERS={
     B.estimates.map(function(e){return [e.label,e.gt+" Gt",e.anchor.replace("counted from ",""),
      e.elapsed_gt+" Gt",e.remaining_now_gt+" Gt",e.years_at_now.toFixed(2)];}))+
    "<p class=\"receipt\">50% odds of holding 1.5 °C · budgets revised yearly · held-rate assumption flagged · full method in Bedrock</p>"+
+   "<h4>How this sky is drawn</h4><p>Altitude is time: the horizon is today, the zenith is 2100, on a "+
+   "square-root scale with the year rungs drawn. The colour at each height is the warming that year carries "+
+   "if your chosen rate simply holds: <b>1.37&nbsp;°C + rate &times; years &times; "+SKYW.tcre+
+   " / 1000</b> — the last factor is TCRE, the IPCC's assessed warming per 1000 GtCO₂ burned (AR6: best 0.45, "+
+   "likely 0.27–0.63). Held-rate arithmetic, not a pathway model — and CO₂ only. Cross-checks: at today's ~"+RNOW+
+   " Gt/yr it reads ~2.8 °C by 2100, inside Climate Action Tracker's current-policies range (2.1–3.3, Nov 2025) "+
+   "and AR6's SSP2-4.5 (2.7). At 8 Gt/yr: ~1.6 °C, the SSP1 family. At 63: ~3.5 °C, resembling SSP3-7.0. "+
+   "Colour steps at the conventional 1.5 / 1.8 / 2.2 / 2.7 / 3.2 °C thresholds. The cream band is the 1.5 °C "+
+   "budget horizon — the last of the old light. Above it, the century keeps going.</p>"+
    "<h4>For the balance-sheet reader</h4><p>The U.S. EPA's central social cost of carbon is ~$"+B.scc.usd_per_t+
    "/tCO₂ (Dec 2023, "+B.scc.discount+" — higher rates give much lower values). At "+RNOW+
    " Gt/yr that prices a year of world emissions in the trillions — an illustration of scale, not a damage estimate. "+
@@ -1496,7 +1565,12 @@ var DRAWERS={
    "expression, Sun/Moon/Venus from Schlyter&rsquo;s low-precision elements (display-grade, arcminute class). "+
    "The named figures are the zodiacal constellations actually above that horizon as you watch; thirteen "+
    "take part across the year, because the ecliptic truly crosses <b>Ophiuchus</b>. The moon is drawn at its "+
-   "true phase. Meteor paths are physical; their frequency is theatre, and we say so.</p>"+
+   "true phase.</p><h4>The meteors</h4><p>Only showers genuinely active on the date appear — windows, peaks, "+
+   "radiants and rates from the <b>IMO Meteor Shower Calendar 2026</b> (ed. J. Rendtel), parent bodies per the "+
+   "IMO working list. Streaks radiate from each shower's true radiant. Two declared approximations: activity "+
+   "between the window edges and the peak is a quadratic ramp on the IMO peak ZHR (the calendar gives no "+
+   "per-date profile), and display time is compressed — roughly a dark-sky hour per minute — because a "+
+   "patient real night is more than a webpage can ask. No active shower means no meteors.</p>"+
    (window.__SKY?"<p>Crossing the meridian tonight: "+__SKY.night()+".</p>":"")+
    "<p class=\"receipt\">&ldquo;my sky&rdquo; uses your browser&rsquo;s own position request — coordinates "+
    "are rounded and never leave this device</p>";}},
@@ -1735,6 +1809,56 @@ var __SKY=(function(){
   caption();var t0=Date.now();
   (function anim(){if(!live)return;draw();
    if(Date.now()-t0<1150&&!reduce)requestAnimationFrame(anim);})();}
+ /* -------- meteor showers: only the real ones, from the IMO calendar -------- */
+ function doyMD(md){var p=md.split("-");
+  return Math.floor((Date.UTC(2001,(+p[0])-1,+p[1])-Date.UTC(2001,0,1))/864e5);}
+ function doyNow(){var d=new Date(viewT||nowMs());
+  return Math.floor((Date.UTC(2001,d.getMonth(),d.getDate())-Date.UTC(2001,0,1))/864e5);}
+ function strength(s){                                         // 0..1: quadratic ramp to the peak, declared approx
+  var a=doyMD(s.a),b=doyMD(s.b),p=doyMD(s.peak.slice(5)),d=doyNow();
+  if(b<a){b+=365;if(d<a)d+=365;if(p<a)p+=365;}                 // windows that cross new year
+  if(d<a||d>b)return 0;
+  var f=d<=p?(d-a)/Math.max(1,p-a):(b-d)/Math.max(1,b-p);
+  return f*f;}
+ function activeShowers(){if(!D.showers)return [];
+  return D.showers.list.filter(function(s){return strength(s)>0;});}
+ function meteorMean(){var sum=0,j=jd(viewT||nowMs());
+  activeShowers().forEach(function(s){
+   if(altaz(s.ra,s.dec,j)[0]>-3)sum+=s.zhr*strength(s);});
+  if(sum<=0)return 0;
+  return Math.max(8000,Math.min(90000,600000/sum));}          // ~ZHR x 0.25 visible x 24 time-compression
+ function meteorPlan(){var j=jd(viewT||nowMs());
+  var up=activeShowers().map(function(s){return {s:s,aa:altaz(s.ra,s.dec,j)};})
+   .filter(function(x){return x.aa[0]>-3;});
+  if(!up.length||!size())return null;
+  var tot=0;up.forEach(function(x){tot+=x.s.zhr*strength(x.s);});
+  var r=Math.random()*tot,pick=up[0];
+  for(var i=0;i<up.length;i++){r-=up[i].s.zhr*strength(up[i].s);if(r<=0){pick=up[i];break;}}
+  for(var tr=0;tr<8;tr++){                                     // find a start that lands in clear sky
+   var rp=proj(pick.aa[0],pick.aa[1]),ang=Math.random()*6.2832;
+   var L=(.10+Math.random()*.20)*H;
+   var su=(rp[0]+Math.cos(ang)*L)/W,sv=(rp[1]+Math.sin(ang)*L)/H;
+   if(su<.05||su>.88||sv<.03||sv>.60)continue;
+   var asp=W/H;
+   return {p:[su,sv,Math.cos(ang),Math.sin(ang)*asp],name:pick.s.name,parent:pick.s.parent};}
+  return null;}
+ function fmtPeak(iso){var p=iso.split("-");
+  return (+p[2])+" "+["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+p[1]-1];}
+ function nextShower(){var d=doyNow(),best=null,gap=1e9;
+  D.showers.list.forEach(function(s){var a=doyMD(s.a),g=a-d;if(g<0)g+=365;
+   if(g<gap){gap=g;best=s;}});return best;}
+ function showerHTML(){if(!D.showers)return "";
+  var act=activeShowers();
+  if(act.length){var lead=act.slice().sort(function(x,y){
+    return y.zhr*strength(y)-x.zhr*strength(x);})[0];
+   return "The meteors here are real: "+act.map(function(s){
+     return "<b>"+s.name+"</b> ("+s.parent+")";}).join(" · ")+
+    " are active on this date. Strongest now: "+lead.name+", peaking "+fmtPeak(lead.peak)+
+    " at up to ~"+lead.zhr+"/hr under ideal dark skies. Streaks radiate from the true radiants; "+
+    "display time is compressed — details in the receipts.";}
+  var nx=nextShower();
+  return "No major shower is active on this date, so this sky stays still. Next: <b>"+nx.name+
+   "</b> ("+nx.parent+"), peaking "+fmtPeak(nx.peak)+" — up to ~"+nx.zhr+"/hr under dark skies.";}
  /* -------- place -------- */
  function setPlace(loc,persist){LOC=loc;LAT=loc.lat;LON=loc.lon;
   try{if(persist)localStorage.setItem("onrecord_skyloc",JSON.stringify({lat:loc.lat,lon:loc.lon}));
@@ -1756,6 +1880,7 @@ var __SKY=(function(){
  return {enter:function(){live=true;computeTonight();fadeT0=0;
    if(!size()){var tries=0,rt=setInterval(function(){if(size()||++tries>40){clearInterval(rt);draw();}},50);}
    draw();caption();cv.classList.add("on");cap.classList.add("on");
+   var sb=el("showerbox");if(sb)sb.innerHTML=showerHTML();
    if(!reduce&&!timer)timer=setInterval(cycle,5000);        // the procession, one figure every 5s
    if(!refr)refr=setInterval(function(){if(!live)return;    // the sky itself turns
     var k=tonight[feat]&&tonight[feat].ab;computeTonight();
@@ -1765,6 +1890,7 @@ var __SKY=(function(){
    if(timer){clearInterval(timer);timer=0;}
    if(refr){clearInterval(refr);refr=0;}},
   night:function(){return fullNight.map(function(t){return t.n+" — highest "+fmtT(t.ms);}).join(" · ");},
+  meteorPlan:meteorPlan,meteorMean:meteorMean,showerHTML:showerHTML,
   place:function(){var la=Math.abs(LAT).toFixed(2)+"°"+(LAT<0?"S":"N"),
    lo=Math.abs(LON).toFixed(2)+"°"+(LON<0?"W":"E");
    return (LOC===DELHI?"Delhi":"your location")+" ("+la+", "+lo+")";},
@@ -1777,22 +1903,31 @@ var __SKY=(function(){
 })();
 window.__SKY=__SKY;
 
-/* ═══════════ METEORS — rare, unhurried, and they whisper ═══════════ */
+/* ═══════════ METEORS — only the showers that are genuinely active ═══════════
+   No shower on this date (or radiant below the horizon) means no meteors:
+   the sky stays honestly still, and the shower box says when to come back. */
 var __MET=(function(){
  var t=0,first=true;
  function fire(){
   if(CH[cur]&&CH[cur].id==="night"&&!document.hidden&&__ATMO.ok){
-   __ATMO.meteor();if(window.__SND&&__SND.whoosh)__SND.whoosh();}}
+   var plan=window.__SKY&&__SKY.meteorPlan&&__SKY.meteorPlan();
+   if(!plan)return false;
+   __ATMO.meteor(plan.p);if(window.__SND&&__SND.whoosh)__SND.whoosh();return true;}
+  return false;}
  function schedule(){if(t)clearTimeout(t);
-  var wait=first?(350+Math.random()*450)                             // one within a second of arrival,
-   :(22000+Math.random()*Math.random()*68000);                       // then rare: 22-90s, skewed, never a metronome
+  var mean=(window.__SKY&&__SKY.meteorMean)?__SKY.meteorMean():0;
+  if(!mean){t=setTimeout(schedule,60000);return;}                    // nothing active — check again in a while
+  var wait=first?(1500+Math.random()*2500)                           // a first sighting soon after arrival
+   :Math.max(6000,Math.min(120000,-Math.log(Math.random())*mean));   // then Poisson, like the real thing
   first=false;
   t=setTimeout(function(){fire();schedule();},wait);}
  return {start:function(){if(!reduce&&!t)schedule();},
          stop:function(){if(t){clearTimeout(t);t=0;}first=true;},
          fire:fire};
 })();
-if(Q.get("met")==="1")setTimeout(function(){__MET.fire();},300);   // verification hook
+if(Q.get("met")==="1")setTimeout(function(){                          // verification hook
+ var p=window.__SKY&&__SKY.meteorPlan&&__SKY.meteorPlan();
+ __ATMO.meteor(p&&p.p);},300);
 
 /* ═══════════ THE SOUND OF EACH CHAMBER — synthesised, nothing downloaded ═══════════
    Not noise for its own sake: each chamber gets a quiet tonal ground (two slowly

@@ -263,6 +263,10 @@ out["budget"] = {
  "estimates": _est,
  "human_induced": {"c": 1.37, "per_decade": 0.27,
                    "src": "IGCC 2025 (Forster et al.) — human-induced warming vs 1850-1900"},
+ "tcre": {"c_per_1000gt": 0.45, "likely_lo": 0.27, "likely_hi": 0.63,
+          "src": "IPCC AR6 WG1 — transient climate response to cumulative CO2 emissions, "
+                 "best estimate 0.45 C per 1000 GtCO2 (likely 0.27-0.63)",
+          "_verify": "re-check against AR6 WG1 SPM / Ch.5 wording at build"},
  "scc": {"usd_per_t": 190, "discount": "2% discount rate",
          "src": "US EPA, Dec 2023 — 2% discount rate; assumption-dependent range"},
  "notes": [
@@ -318,6 +322,25 @@ def fetch_sky():
                    "alt/az computed in-browser for Delhi (Meeus / Schlyter low-precision algorithms)"}
 out["sky"] = fetch_sky()
 print(f"  sky: {len(out['sky']['stars'])} stars ≤ mag 5.0 · {len(out['sky']['zod'])} zodiacal figures (incl. Ophiuchus)")
+
+# Major annual meteor showers — IMO 2026 Meteor Shower Calendar (Rendtel ed., IMO_INFO(3-25),
+# DOI 10.13140/RG.2.2.36179.08480); parent bodies per the IMO working list. Radiant RA/Dec in
+# degrees at maximum (J2000); ZHR = zenithal hourly rate at peak under ideal dark skies.
+# Peak dates are exact for 2026 only — re-enter from the new IMO calendar each year.
+out["showers"] = {
+ "src": "IMO Meteor Shower Calendar 2026, ed. J. Rendtel — imo.net; parents per IMO working list",
+ "_verify": "windows, 2026 peaks, radiants and ZHRs re-checked against the IMO calendar annually",
+ "list": [
+  {"code":"QUA","name":"Quadrantids","a":"12-28","b":"01-12","peak":"2026-01-03","ra":230,"dec":49,"zhr":80,"parent":"asteroid 2003 EH1"},
+  {"code":"LYR","name":"Lyrids","a":"04-14","b":"04-30","peak":"2026-04-22","ra":271,"dec":34,"zhr":18,"parent":"comet Thatcher, C/1861 G1"},
+  {"code":"ETA","name":"eta Aquariids","a":"04-19","b":"05-28","peak":"2026-05-06","ra":338,"dec":-1,"zhr":50,"parent":"comet 1P/Halley"},
+  {"code":"SDA","name":"Southern delta Aquariids","a":"07-12","b":"08-23","peak":"2026-07-31","ra":340,"dec":-16,"zhr":25,"parent":"comet 96P/Machholz, probable"},
+  {"code":"CAP","name":"alpha Capricornids","a":"07-03","b":"08-15","peak":"2026-07-31","ra":307,"dec":-10,"zhr":5,"parent":"comet 169P/NEAT"},
+  {"code":"PER","name":"Perseids","a":"07-17","b":"08-24","peak":"2026-08-13","ra":48,"dec":58,"zhr":100,"parent":"comet 109P/Swift-Tuttle"},
+  {"code":"ORI","name":"Orionids","a":"10-02","b":"11-07","peak":"2026-10-21","ra":95,"dec":16,"zhr":20,"parent":"comet 1P/Halley"},
+  {"code":"LEO","name":"Leonids","a":"11-06","b":"11-30","peak":"2026-11-17","ra":152,"dec":22,"zhr":15,"parent":"comet 55P/Tempel-Tuttle"},
+  {"code":"GEM","name":"Geminids","a":"12-04","b":"12-20","peak":"2026-12-14","ra":112,"dec":33,"zhr":150,"parent":"asteroid 3200 Phaethon"},
+  {"code":"URS","name":"Ursids","a":"12-17","b":"12-26","peak":"2026-12-22","ra":217,"dec":76,"zhr":10,"parent":"comet 8P/Tuttle"}]}
 
 (DATA / "site-data.json").write_text(json.dumps(out, separators=(",", ":")))
 print(f"  site-data.json written ({(DATA/'site-data.json').stat().st_size:,} B)")
