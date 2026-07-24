@@ -1599,7 +1599,7 @@ var __MET=(function(){
   if(CH[cur]&&CH[cur].id==="night"&&!document.hidden&&__ATMO.ok){
    __ATMO.meteor();if(window.__SND&&__SND.whoosh)__SND.whoosh();}}
  function schedule(){if(t)clearTimeout(t);
-  var wait=first?(1800+Math.random()*1700):(7000+Math.random()*9000);
+  var wait=first?(350+Math.random()*450):(3500+Math.random()*3500);  // one within a second, then every few seconds
   first=false;
   t=setTimeout(function(){fire();schedule();},wait);}  // never on a metronome
  return {start:function(){if(!reduce&&!t)schedule();},
