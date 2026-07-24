@@ -100,7 +100,7 @@ a{color:inherit}
 @media(prefers-reduced-motion:reduce){#skymap,#skycap{transition:none}}
 
 /* ================= sound ================= */
-#soundbtn{position:fixed;right:38px;top:92px;z-index:7;display:flex;align-items:center;gap:8px;
+#soundbtn{position:fixed;right:38px;top:114px;z-index:7;display:flex;align-items:center;gap:8px;
   font-weight:500;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
   color:var(--bone-2);background:none;border:0;border-bottom:1px solid rgba(242,231,204,.30);
   border-radius:0;padding:9px 2px;min-height:40px;transition:border-color .3s,color .3s;
@@ -120,7 +120,24 @@ a{color:inherit}
 /* ================= global chrome ================= */
 #chrome{position:relative;z-index:2}
 /* the masthead is a fixed header over the scrolling story */
-#mast{position:fixed;top:0;left:0;right:0;z-index:5;pointer-events:none;
+/* the persistent budget band — the 1.5 °C clock rides the top of every chapter; a caret follows you through the story */
+#budget-band{position:fixed;top:0;left:0;right:0;z-index:6;pointer-events:none;height:22px;
+  display:flex;align-items:center;gap:16px;max-width:1400px;margin:0 auto;padding:0 38px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;color:var(--bone-3);text-shadow:var(--halo)}
+#bb-label{white-space:nowrap;flex:none}
+#bb-label b{color:var(--bone);font-weight:500}
+#bb-rail{position:relative;flex:1;max-width:180px;height:2px;background:rgba(242,231,204,.16);border-radius:2px}
+#bb-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(240,188,98,.45);border-radius:2px;
+  transition:width .7s cubic-bezier(.3,.6,.2,1)}
+#bb-you{position:absolute;top:50%;left:0;width:5px;height:5px;border-radius:50%;background:var(--amber);
+  transform:translate(-50%,-50%);box-shadow:0 0 5px rgba(240,188,98,.7);transition:left .7s cubic-bezier(.3,.6,.2,1)}
+.thm-ink #budget-band{color:var(--ink-3);text-shadow:none}
+.thm-ink #bb-label b{color:var(--ink)}
+.thm-ink #bb-rail{background:rgba(62,18,8,.16)}
+.thm-ink #bb-fill,.thm-ink #bb-you{background:var(--act)}
+@media(max-width:640px){#budget-band{font-size:9px;padding:0 20px}#bb-rail{max-width:88px}}
+@media(prefers-reduced-motion:reduce){#bb-fill,#bb-you{transition:none}}
+#mast{position:fixed;top:22px;left:0;right:0;z-index:5;pointer-events:none;
   display:flex;justify-content:space-between;align-items:flex-start;gap:30px;
   max-width:1400px;margin:0 auto;padding:22px 38px}
 #mast a,#mast button{pointer-events:auto}
@@ -308,6 +325,32 @@ svg{display:block;width:100%;height:auto}
   border-bottom:1px solid rgba(242,231,204,.30);border-radius:0;text-shadow:0 1px 5px rgba(3,16,18,.55),0 0 12px rgba(3,16,18,.4);letter-spacing:.2em;
   text-transform:uppercase;color:var(--amber);min-height:36px}
 #tease button::after{content:" ↓"}
+/* fire-day: the labelled wildfire-smoke illustration — the one sky the dial can't paint */
+#fd-controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:22px}
+#fd-raise{font-weight:500;font-size:14px;letter-spacing:.01em;color:var(--deep);
+  background:var(--amber);border:0;border-radius:3px;padding:11px 18px;min-height:44px;
+  transition:transform .2s ease,box-shadow .3s ease;box-shadow:0 2px 18px -6px rgba(240,188,98,.6)}
+#fd-raise:hover{transform:translateY(-1px);box-shadow:0 5px 24px -6px rgba(240,188,98,.85)}
+#fd-clear{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--bone-2);background:none;border:0;border-bottom:1px solid var(--bone-4);border-radius:0;
+  min-height:36px;text-shadow:var(--halo)}
+#fd-clear:hover{color:var(--bone)}
+#fd-sublabel{font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--bone-3);
+  max-width:30ch;line-height:1.5;text-shadow:var(--halo)}
+.fd-chip{font-family:var(--mono);font-size:11px;letter-spacing:.03em;color:var(--bone-2);
+  margin-top:14px;max-width:58ch;line-height:1.55;text-shadow:var(--halo)}
+.fd-chip b{color:var(--amber);font-weight:500}
+#fd-reveal{margin-top:12px;max-width:58ch}
+.fd-caption{font-size:14px;line-height:1.55;color:var(--bone);text-shadow:var(--halo);text-wrap:pretty}
+.fd-caption b{color:var(--amber);font-weight:500}
+.fd-freq{margin-top:12px;font-size:13px;line-height:1.5;color:var(--bone-2);text-shadow:var(--halo)}
+.fd-freq,.fd-off{max-width:56ch}
+.fd-off{margin-top:14px;margin-bottom:2px}
+.fd-off button{font-weight:500;font-size:12.5px;letter-spacing:.01em;color:var(--amber);
+  background:none;border:0;border-bottom:1px solid rgba(240,188,98,.4);border-radius:0;
+  padding:0 0 2px;min-height:36px;text-align:left;line-height:1.4;text-shadow:var(--halo)}
+.fd-off button:hover{border-color:var(--amber)}
+#fd-receipt{margin-top:14px}
 
 .chartwrap{max-width:1000px;margin-top:14px}
 /* --- shared chamber layout (ground/night/firstlight) --- */
@@ -514,7 +557,7 @@ svg{display:block;width:100%;height:auto}
 #intro .box{background:rgba(4,10,12,.52);backdrop-filter:blur(6px);border-radius:8px;
   border:1px solid rgba(242,231,204,.10);padding:34px 30px!important}
 /* while the intro speaks, the instrument waits in the wings */
-.introing #panes,.introing #ladder,.introing #mast{opacity:.12;transition:opacity .7s ease}
+.introing #panes,.introing #ladder,.introing #mast,.introing #budget-band{opacity:.12;transition:opacity .7s ease}
 @keyframes landpulse{0%{text-shadow:0 0 0 rgba(240,188,98,0)}
  35%{text-shadow:0 0 26px rgba(240,188,98,.85)}100%{text-shadow:0 0 8px rgba(240,188,98,.25)}}
 #intro-years.landed{animation:landpulse 1s ease both}
@@ -629,6 +672,10 @@ svg{display:block;width:100%;height:auto}
   </button>
 
   <div id="chrome">
+    <div id="budget-band" aria-hidden="true">
+      <span id="bb-label"></span>
+      <span id="bb-rail"><i id="bb-fill"></i><i id="bb-you"></i></span>
+    </div>
     <header id="mast">
       <div>
         <p class="word">On Record</p>
@@ -686,7 +733,36 @@ svg{display:block;width:100%;height:auto}
             </div>
           </div>
 
-          <!-- BEAT 3 — the bridge down to the ground -->
+          <!-- BEAT 3 — the one sky the dial can't paint: a labelled wildfire-smoke illustration -->
+          <div class="beat" id="fireday">
+            <h2 id="fd-h2">One sky you can&rsquo;t recolour<br>&mdash; only make rarer.</h2>
+            <p class="lead" id="fd-lead">Carbon dioxide is invisible; it can&rsquo;t colour the air. Smoke can.
+              This is the one sky the dial never paints &mdash; it only changes how often it arrives.</p>
+            <div id="fd-controls">
+              <button type="button" id="fd-raise">Raise the smoke <span aria-hidden="true">&rarr;</span></button>
+              <button type="button" id="fd-clear" hidden>Let it clear <span aria-hidden="true">&#8635;</span></button>
+              <span id="fd-sublabel">a labelled illustration, calibrated to real smoke-aerosol levels</span>
+            </div>
+            <p class="fd-chip" id="fd-chip" hidden></p>
+            <div id="fd-reveal" hidden>
+              <p class="fd-caption">What you&rsquo;re seeing is smoke, not carbon &mdash; this sky is rendered at the
+                measured optics of a heavy fire day. Emissions don&rsquo;t change the colour of clean air; they change
+                how often skies like this arrive. Human-caused warming has roughly <b>doubled</b> the forest area burned
+                across the western US over 1984&ndash;2015 (Abatzoglou &amp; Williams, PNAS 2016), and since 2016 wildfire
+                smoke has erased about <b>a quarter</b> of two decades of clean-air progress across most US states
+                (Burke et al., Nature 2023). No single day can be blamed on the total. The trend can.</p>
+              <p class="fd-freq">The dial changes the odds, never the colour &mdash; at today&rsquo;s pace, more seasons like 2020.</p>
+              <p class="fd-off"><button type="button" data-go="morning" id="fd-morning">Fewer seasons like this is what the
+                dial is really choosing. See what&rsquo;s already turning <span aria-hidden="true">&rarr;</span></button></p>
+              <p class="receipt" id="fd-receipt">A labelled illustration &mdash; an event, on demand and reversible, not a
+                permanent state. The sky is rendered at a measured <b>aerosol optical depth</b> &mdash; how much light the
+                smoke blocks &mdash; calibrated to named sources (AERONET, NASA, NOAA); descriptive, not a claim that
+                CO&#8322; colours the air on any given day.</p>
+            </div>
+            <button class="drawbtn" data-drawer="sky">Receipts &amp; why this is smoke, not carbon</button>
+          </div>
+
+          <!-- BEAT 4 — the bridge down to the ground -->
           <div class="beat">
             <h2>That was the whole world.<br>Now stand somewhere real.</h2>
             <p class="lead">The budget up there becomes afternoons down here. Next: your own city,
@@ -982,6 +1058,10 @@ var DH=D.delhi_honesty,P=D.perception_gap,N=D.the_number;
 var dr=DH.receipts;
 function yearsStr(rate){var a=(LO.remaining_now_gt/rate),b=(HIe.remaining_now_gt/rate);
  var s1=a.toFixed(1),s2=b.toFixed(1);return s1===s2?s1:s1+"–"+s2;}
+/* the persistent budget band: the 1.5 °C clock (range, never a countdown) + a caret that follows you through the chapters */
+(function(){var lab=el("bb-label");if(lab)lab.innerHTML="≈<b>"+yearsStr(RNOW)+"</b> yrs of the 1.5 °C budget · today’s pace";
+ window.__BAND={at:function(i,n){var p=(n>1)?(Math.max(0,Math.min(n-1,i))/(n-1)*100):0;
+  var y=el("bb-you"),f=el("bb-fill");if(y)y.style.left=p.toFixed(1)+"%";if(f)f.style.width=p.toFixed(1)+"%";}};})();
 
 /* ═══════════ THE CENTURY-SKY MAPPING ═══════════
    Altitude is time: the horizon is today, the zenith is 2100, on a declared
@@ -1042,7 +1122,7 @@ var __ATMO=(function(){
     and quantised to 12fps so it reads as film, not video noise. */
  var FSH=""+
 "precision mediump float;\n"+
-"uniform vec2 uR;uniform float uT,uMix,uBurn,uExpo,uFr,uTextDim;\n"+
+"uniform vec2 uR;uniform float uT,uMix,uBurn,uExpo,uFr,uTextDim,uTau;\n"+
 "uniform vec3 uColA[8];uniform float uPosA[8];\n"+
 "uniform vec3 uColB[8];uniform float uPosB[8];\n"+
 "uniform vec4 uPrmA,uPrmB;uniform vec3 uSunA,uSunB;\n"+
@@ -1064,10 +1144,19 @@ var __ATMO=(function(){
 " float cirAmt=mix(uAuxA.y,uAuxB.y,uMix),venAmt=mix(uAuxA.z,uAuxB.z,uMix);\n"+
 " float dustA=mix(uLifA.y,uLifB.y,uMix),brth=mix(uLifA.z,uLifB.z,uMix);\n"+
 " sunAmt*=1.+((sunY>1.)?.07:brth)*sin(uT*.7);\n"+                 // every light breathes, below-horizon glows most
-" float yq=uv.y;\n"+                                             // the colour axis is undistorted — the budget horizon is data, not decoration
+" float airm=1./max(.30+.70*clamp(sunY,0.,1.),.05);\n"+          // ---- uTau: the LABELLED wildfire-smoke veil (aerosol optical depth), fully independent of the CO2 dial ----
+" vec3 tauRGB=uTau*vec3(.825,1.,1.31);\n"+                       // per-channel: blue extinguishes ~1.6x faster than red (Angstrom a=1.6, smoke; 620/550/465nm)
+" vec3 Tdir=exp(-airm*tauRGB);\n"+                               // Beer-Lambert direct-beam transmission -> reddens then extinguishes the sun; EXACTLY 1 when uTau=0 (the clean-sky sun is untouched in every chamber)
+" float yq=uv.y;\n"+                                             // the budget colour axis is DATA, never decoration — undistorted except while the labelled smoke physically flattens the sky's gradient
+" yq=hzY+(yq-hzY)*exp(-.6*uTau);\n"+                             // smoke destroys the zenith->horizon gradient (the real, eeriest cue); exact no-op when uTau=0
 " vec3 c=mix(uColA[0],uColB[0],uMix);float pp=mix(uPosA[0],uPosB[0],uMix);\n"+
 " for(int i=1;i<8;i++){float pi=mix(uPosA[i],uPosB[i],uMix);vec3 ci=mix(uColA[i],uColB[i],uMix);\n"+
 "  c=mix(c,ci,smoothstep(pp,max(pi,pp+1e-4),yq));pp=pi;}\n"+
+" if(uTau>.002){\n"+                                             // the smoke sky: a flat, reddened, multiply-scattered dome that dims as it thickens
+"  vec3 tint=vec3(1.,.90,.74)*(.30+.70*(Tdir/max(Tdir.r,1e-3)));\n"+ // hue = reddened transmitted light, red-normalised so it never blacks out; warm-tan at low tau -> deep orange high
+"  float smoke=1.-exp(-.8*uTau);\n"+                             // 0 clear -> ~1 full smoke
+"  float bright=mix(1.,.30+.45*dot(c,vec3(.333)),smoke);\n"+     // the murk dims and loses its gradient (only a faint memory of the original luminance survives)
+"  c=mix(c,tint*bright,smoke);}\n"+                              // crossfade the real sky into the flat orange dome
 " vec2 sp=vec2(.5,sunY);vec2 d=uv-sp;d.x*=asp;float ds=length(d);\n"+
 " float amp=exp(-abs(uv.y-hzY)*6.)*hzAmt;\n"+                     // strata pooled at the horizon
 " if(amp>.004){\n"+                                               // skip 6 noise taps far from the pool
@@ -1085,8 +1174,12 @@ var __ATMO=(function(){
 "  float lit=clamp(hg(1.-clamp(ds*1.3,0.,2.),.6)*sunAmt*.6,0.,1.);\n"+
 "  c=mix(c,mix(c*1.42+vec3(.035),sunC*1.15,lit*.6),clamp(cl,0.,.85));}\n"+
 " c*=mix(vec3(1.),vec3(1.06,.82,.62),clamp(uBurn*.7*exp(-ds*2.),0.,1.));\n"+ // burn extinction — the dial visibly thickens the air
-" float glow=.00030/(ds*ds+.0016)+.13*exp(-ds*ds/.075);\n"+       // inv-square core + gaussian skirt
-" c+=sunC*sunAmt*(1.-exp(-glow));\n"+                             // filmic roll-off, never clips
+" float bloomd=1.;vec3 aur=vec3(0.);\n"+                          // smoke-only sun terms — skip their cost (incl. the aureole pow) entirely when the air is clear
+" if(uTau>.002){bloomd=exp(-1.5*max(uTau-.30,0.));\n"+           // smoke kills the soft bloom skirt first
+"  float cang=1.-clamp(ds*1.15,0.,2.);\n"+                       // angular distance from the sun, for the aureole
+"  aur=sunC*sunAmt*(1.-exp(-uTau))*pow(max(cang,0.),350./(1.+2.*uTau))*.7;}\n"+ // forward-scatter aureole: grows and broadens as the disc dims
+" float glow=.00030/(ds*ds+.0016)+.13*exp(-ds*ds/.075)*bloomd;\n"+ // inv-square core + gaussian skirt (skirt fades under smoke)
+" c+=(sunC*sunAmt*(1.-exp(-glow))+aur)*Tdir;\n"+                  // disc + aureole; at uTau=0 aur=0, bloomd=1, Tdir=1 -> exactly the original clean-sky sun
 " c+=sunC*sunAmt*exp(-abs(uv.y-sunY)*30.)*exp(-abs(uv.x-.5)*2.2)*.10;\n"+ // anamorphic streak — light has a source
 " if(stAmt>.002){\n"+
 "  vec2 g=vec2(uv.x*asp,uv.y)*58.;vec2 id=floor(g),f=fract(g);\n"+
@@ -1163,7 +1256,7 @@ var __ATMO=(function(){
  var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
  var ap=gl.getAttribLocation(prog,"p");gl.enableVertexAttribArray(ap);gl.vertexAttribPointer(ap,2,gl.FLOAT,false,0,0);
- ["uR","uT","uMix","uBurn","uExpo","uFr","uTextDim","uAuxA","uAuxB","uLifA","uLifB","uMetT0","uMetSeed","uMetP","uPrmA","uPrmB","uSunA","uSunB"].forEach(function(n){loc[n]=gl.getUniformLocation(prog,n);});
+ ["uR","uT","uMix","uBurn","uExpo","uFr","uTextDim","uTau","uAuxA","uAuxB","uLifA","uLifB","uMetT0","uMetSeed","uMetP","uPrmA","uPrmB","uSunA","uSunB"].forEach(function(n){loc[n]=gl.getUniformLocation(prog,n);});
  loc.uColA=gl.getUniformLocation(prog,"uColA[0]");loc.uPosA=gl.getUniformLocation(prog,"uPosA[0]");
  loc.uColB=gl.getUniformLocation(prog,"uColB[0]");loc.uPosB=gl.getUniformLocation(prog,"uPosB[0]");
  /* colours are delivered to the shader in LINEAR light */
@@ -1213,7 +1306,7 @@ var __ATMO=(function(){
    [.78,"#03070C"],[.88,"#02060B"],[.95,"#02050A"],[1,"#010409"]]),prm:[1.3,.06,.95,.12],sun:C("#7A5B3A"),aux:[.95,0,0,0],lif:[0,0,0,0]};}
  };
  var A=PRE.voidst(),Bs=PRE.voidst(),mixT=1,animT0=0,animDur=1400,t0=performance.now(),raf=0;
- var expA=1,expB=1,expT0=0,expDur=1,metT0=0,metSeed=0,textDimCur=.5,textDimTgt=.5;
+ var expA=1,expB=1,expT0=0,expDur=1,metT0=0,metSeed=0,textDimCur=.5,textDimTgt=.5,tauCur=0,tauTgt=0;
  function jsLerp(a,b,t){var r={r:{cols:new Float32Array(24),pos:new Float32Array(8)},prm:[0,0,0,0],sun:[0,0,0],aux:[0,0,0,0],lif:[0,0,0,0]};
   for(var i=0;i<24;i++)r.r.cols[i]=a.r.cols[i]+(b.r.cols[i]-a.r.cols[i])*t;
   for(i=0;i<8;i++)r.r.pos[i]=a.r.pos[i]+(b.r.pos[i]-a.r.pos[i])*t;
@@ -1244,6 +1337,7 @@ var __ATMO=(function(){
   gl.uniform1f(loc.uFr,Math.floor(performance.now()/83)%64); // 12fps film-grain frame
   gl.uniform1f(loc.uMix,t);gl.uniform1f(loc.uBurn,burn);gl.uniform1f(loc.uExpo,ex);
   gl.uniform1f(loc.uTextDim,textDimCur+(textDimTgt-textDimCur)*0.06);textDimCur+=(textDimTgt-textDimCur)*0.06;
+  tauCur+=(tauTgt-tauCur)*0.06;gl.uniform1f(loc.uTau,tauCur);   // smoke fades in/out; never snaps
   gl.uniform4f(loc.uAuxA,A.aux[0],A.aux[1],A.aux[2],A.aux[3]);
   gl.uniform4f(loc.uAuxB,Bs.aux[0],Bs.aux[1],Bs.aux[2],Bs.aux[3]);
   gl.uniform4f(loc.uLifA,A.lif[0],A.lif[1],A.lif[2],A.lif[3]);
@@ -1289,7 +1383,8 @@ var __ATMO=(function(){
          groundHeat:function(h){groundHeat=Math.max(0,Math.min(1,h));
           if(typeof cur!=="undefined"&&CH[cur]&&CH[cur].id==="ground")setState("ground",{dur:900});},
          skyFollow:skyFollow,setBurn:setBurn,exposure:exposure,meteor:meteor,
-         textDim:function(v){textDimTgt=v;wake();}};
+         textDim:function(v){textDimTgt=v;if(reduce)textDimCur=v;wake();},
+         tau:function(v){tauTgt=Math.max(0,Math.min(6,v));if(reduce)tauCur=tauTgt;wake();}}; // the labelled smoke veil — independent of the dial
 })();
 
 /* ============ chambers & navigation ============ */
@@ -1328,11 +1423,13 @@ function scrollToChamber(i){var a=chamberAnchor(i);
  if(a)a.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});}
 /* the side-effects of arriving in a chapter — the sky answers where you have scrolled */
 var chamberSettled=-1;
+var fdReset=null;   // the fire-day beat exposes its reset here so leaving Sky can re-arm it
 function enterChamber(i){
  i=Math.max(0,Math.min(CH.length-1,i));
  if(i===chamberSettled)return;
  var c=CH[i],prevI=chamberSettled<0?i:chamberSettled,prev=CH[prevI];
  chamberSettled=i;cur=i;
+ if(c.id!=="sky"){if(__ATMO.tau)__ATMO.tau(0);if(fdReset)fdReset();}  // the labelled smoke is a Sky-only event — clear it (and reset its UI) on the way out
  var steps=Math.abs(i-prevI)||1;
  if(__ATMO.ok){
   __ATMO.setState(c.id,{dur:Math.min(2100,1200+300*(steps-1))});
@@ -1348,6 +1445,7 @@ function enterChamber(i){
  el("stage").classList.toggle("thm-ink",!!c.ink);
  if(__ATMO.textDim)__ATMO.textDim(TEXTDIM[c.id]!=null?TEXTDIM[c.id]:.45); // darken the sky behind the words, per chapter
  Array.prototype.forEach.call(ladder.children,function(b,j){b.setAttribute("aria-current",j===i?"true":"false");});
+ if(window.__BAND)__BAND.at(i,CH.length);                            // the budget-band caret follows you through the story
  if(location.hash!=="#p-"+c.id)try{history.replaceState(null,"","#p-"+c.id);}catch(e){}
  if(c.id==="ground"&&groundOverture)groundOverture();
 }
@@ -1383,6 +1481,33 @@ var __sections=[];
 document.querySelectorAll("[data-go]").forEach(function(b){
  b.addEventListener("click",function(){var id=b.getAttribute("data-go");
   scrollToChamber(CH.findIndex(function(c){return c.id===id;}));});});
+
+/* ============ fire-day — the labelled wildfire-smoke illustration (Sky only) ============
+   Two honest stages: a normal bad fire day (AOD 0.77), then the 2020 record (AOD~5).
+   Always reversible; the number driving the pixels is the number printed in the chip. */
+(function(){
+ var raise=el("fd-raise"),clear=el("fd-clear"),chip=el("fd-chip"),reveal=el("fd-reveal"),
+     sub=el("fd-sublabel"),beat=el("fireday"),status=el("sr-status"),level=0;
+ var AR='<span aria-hidden="true">&rarr;</span>';                 // decorative arrow, kept out of the button's accessible name
+ if(!raise||!beat||!chip||!clear||!reveal||!__ATMO||!__ATMO.tau){if(beat)beat.style.display="none";return;} // no WebGL -> no smoke to render: retire the beat rather than offer a dead control
+ var STOPS=[
+  {t:0},
+  {t:0.77,say:"Smoke raised to a heavy fire day — aerosol optical depth about 0.77.",next:"Push it to the record "+AR,
+   chip:"aerosol optical depth <b>&tau; &asymp; 0.77</b> (550&nbsp;nm) &middot; mean of heavy-smoke days, 2020 US fire season &middot; AERONET"},
+  {t:5,say:"Smoke raised to the September 2020 record — aerosol optical depth about 5.",
+   chip:"<b>&tau; &asymp; 5</b> &middot; San Francisco&rsquo;s &lsquo;orange noon,&rsquo; 9 Sep 2020 &middot; satellite &amp; AERONET retrievals 3&ndash;7"}];
+ function apply(){var s=STOPS[level];__ATMO.tau(s.t);
+  if(level===0){chip.hidden=true;reveal.hidden=true;clear.hidden=true;
+   raise.hidden=false;raise.innerHTML="Raise the smoke "+AR;if(sub)sub.hidden=false;}
+  else{chip.hidden=false;reveal.hidden=false;clear.hidden=false;chip.innerHTML=s.chip;if(sub)sub.hidden=true;
+   if(s.next){raise.hidden=false;raise.innerHTML=s.next;}
+   else{if(document.activeElement===raise)clear.focus();raise.hidden=true;}}  // hiding the focused control -> move focus to Clear (WCAG 2.4.3)
+  if(__ATMO.textDim)__ATMO.textDim(level?.82:(TEXTDIM.sky!=null?TEXTDIM.sky:.63)); // smoke: darken the text column harder so the caption stays legible over the murk
+  if(status)status.textContent=(level===0)?"The sky cleared.":s.say;}
+ raise.addEventListener("click",function(){if(level<STOPS.length-1)level++;apply();});
+ clear.addEventListener("click",function(){level=0;apply();});
+ fdReset=function(){if(level!==0){level=0;apply();}};   // leaving Sky re-arms the beat
+})();
 
 /* ============ intro — a day is born, then you learn it's a countdown ============ */
 (function(){
@@ -1935,7 +2060,8 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
   "<div><b>The counterweights</b>Ember GER 2026 · IEA EV Outlook 2026<br>Climate Action Tracker · WMO/UNEP Ozone — all “verify at build”</div>"+
   "<div><b>The night sky</b>Yale Bright Star Catalogue via d3-celestial (BSD-3, O. Frohn)<br>alt/az computed client-side for Delhi — IAU 1982 sidereal time; Sun/Moon/Venus per Schlyter (display-grade)</div>"+
   "<div><b>The meteors</b>IMO Meteor Shower Calendar 2026, ed. J. Rendtel — imo.net<br>parent bodies per the IMO working list · display compression declared</div>"+
-  "<div><b>The giving</b>Giving Green Top Climate Nonprofits 2025–26<br>Founders Pledge Climate Fund · framings quoted with their caveats</div>";
+  "<div><b>The giving</b>Giving Green Top Climate Nonprofits 2025–26<br>Founders Pledge Climate Fund · framings quoted with their caveats</div>"+
+  "<div><b>The fire-day sky</b>Abatzoglou &amp; Williams 2016, PNAS 113(42):11770 — anthropogenic warming ≈doubled western-US forest area burned, 1984–2015<br>Burke et al. 2023, Nature 622:761 — wildfire smoke reversing US clean-air gains since 2016<br>Childs et al. 2022, Environ. Sci. Technol. 56(19):13607 — ~25M people had ≥1 smoke-PM2.5 day &gt;100 µg/m³ in 2020<br>optics calibrated to AERONET &amp; NASA aerosol-optical-depth ranges (AOD&gt;3 “Sun obscured”) — a labelled render, never a per-day attribution</div>";
  document.querySelectorAll("#srcs>div").forEach(function(d,i){   // catalogue numbers: this is an archive
   d.setAttribute("data-cat","REC "+("0"+(i+1)).slice(-2));});
  el("limits").innerHTML="<b>Limitations, plainly.</b> ERA5's ~30 km grid smooths valley heat — day-counts are "+
@@ -1947,7 +2073,9 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
   "“is this climate change?” we point to WWA, ClimaMeter, Climate Central. The atmospheres on these pages are "+
   "<b>instruments</b> — declared renderings of the data, not weather simulations — with one exception: the night "+
   "chamber's star field is the real sky, computed from catalogue positions for its place and moment. "+
-  "Corrections will be listed here, dated.";
+  "The fire-day sky is the mirror case: a labelled render at measured aerosol optical depth — a real phenomenon "+
+  "shown as illustration, on demand and reversible; the dial speaks only in frequency and never claims CO₂ "+
+  "colours the air on any given day. Corrections will be listed here, dated.";
  el("colophon").innerHTML="A worked mockup of On Record — place data frozen at 3 July 2026 while the form is "+
   "decided; the live build refreshes daily. Every figure traces to the sources above or is flagged “verify at "+
   "build”. Nothing hand-typed or model-guessed. English first; Hindi from launch. Made by Agosh Baranwal · agoshbaranwal@gmail.com";
@@ -1973,7 +2101,25 @@ var DRAWERS={
    "<h4>For the balance-sheet reader</h4><p>The U.S. EPA's central social cost of carbon is ~$"+B.scc.usd_per_t+
    "/tCO₂ (Dec 2023, "+B.scc.discount+" — higher rates give much lower values). At "+RNOW+
    " Gt/yr that prices a year of world emissions in the trillions — an illustration of scale, not a damage estimate. "+
-   "Scope 1/2/3, SBTi and IFRS S2 all draw on this same finite budget.</p>";}},
+   "Scope 1/2/3, SBTi and IFRS S2 all draw on this same finite budget.</p>"+
+   "<h4>The fire-day sky — why it’s smoke, not carbon</h4><p>Carbon dioxide is invisible; it cannot colour clean "+
+   "air. The orange sky is <b>smoke</b> — a labelled render at real aerosol optical depth (AOD, the light a column "+
+   "of aerosol blocks at 550&nbsp;nm). The first press sits at <b>AOD ≈ 0.77</b>, the mean of heavy-smoke days in "+
+   "the 2020 US fire season (AERONET); the record press at <b>AOD ≈ 5</b>, San Francisco’s ‘orange noon’ of "+
+   "9 Sep 2020 (satellite &amp; AERONET retrievals put that day at 3–7; NASA calls AOD&gt;3 “Sun obscured”). Blue "+
+   "light is scattered out ~1.6× faster than red, so the disc reddens then vanishes and the sky’s gradient "+
+   "collapses — the real optics, computed, not painted.</p><p>The dial changes how <i>often</i> such skies arrive, "+
+   "never their colour. Human-caused warming has roughly <b>doubled</b> western-US forest area burned over "+
+   "1984&ndash;2015 (Abatzoglou &amp; Williams, PNAS 2016; ≈4.2 Mha added, ~55% of the fuel-aridity rise); since 2016 "+
+   "wildfire smoke has erased about <b>a quarter</b> of two decades of clean-air progress across most US states "+
+   "(over half in several western states; Burke et al., Nature 2023); and "+
+   "the number of Americans hit by ≥1 day of extreme smoke (&gt;100 µg/m³) rose <b>27-fold</b> in a decade — about "+
+   "<b>25 million</b> people in 2020 (Childs et al., Environ. Sci. Technol. 2022). Recent modelling attributes "+
+   "roughly half of western-US surface smoke to human-caused warming (Feng et al., PNAS 2025). All western-US and "+
+   "trend-level; no single day’s sky is attributable.</p>"+
+   "<p class=\"receipt\">A labelled illustration — an event, on demand and reversible, not a permanent state. "+
+   "AOD calibrated to named sources (AERONET · NASA · NOAA); descriptive, not a claim that CO₂ colours the air on "+
+   "any given day. The dial never drives it.</p>";}},
  ground:{t:"Seville — the full record",h:function(){return groundDrawerExtra;}},
  night:{t:"Delhi — why the split",h:function(){
   return "<h4>Two directions, one city</h4><p>Studies of the Indo-Gangetic Plain link the daytime damping mainly to "+
@@ -2501,6 +2647,8 @@ var __MET=(function(){
 if(Q.get("met")==="1")setTimeout(function(){                          // verification hook
  var p=window.__SKY&&__SKY.meteorPlan&&__SKY.meteorPlan();
  __ATMO.meteor(p&&p.p);},300);
+if(Q.get("tau")!==null&&__ATMO&&__ATMO.tau)setTimeout(function(){     // verification hook: force the smoke veil (?tau=0.77)
+ __ATMO.tau(parseFloat(Q.get("tau"))||0);},600);
 
 /* ═══════════ THE SOUND OF EACH CHAMBER — synthesised, nothing downloaded ═══════════
    Not noise for its own sake: each chamber gets a quiet tonal ground (two slowly
