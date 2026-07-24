@@ -591,7 +591,7 @@ svg{display:block;width:100%;height:auto}
     <header id="mast">
       <div>
         <p class="word">On Record</p>
-        <h1 class="plain">The world&rsquo;s remaining carbon budget, drawn as a living sky.</h1>
+        <h1 class="plain" id="mast-tag">Every number measured. Every source shown.</h1>
       </div>
       <div id="vitals" role="group" aria-label="Global vital signs"></div>
     </header>
@@ -714,82 +714,115 @@ svg{display:block;width:100%;height:auto}
       </section>
 
       <!-- NIGHT -->
-      <section class="pane" id="p-night" aria-label="Night — Delhi, the honest test" hidden>
-        <h2 tabindex="-1">The heat to fear most never lifts at night.</h2>
-        <div class="duo">
-          <div class="copy">
-            <p class="bignum" id="n-big">– <small>more hot nights a year<br>than the 1951–80 average</small></p>
-            <p class="fact-line">Delhi&rsquo;s nights stopped cooling. A body that cannot cool after
-            dark never fully recovers — the pattern heat-health research warns about most.</p>
-            <p class="fact-line" style="font-size:12px" id="n-honest"></p>
+      <section class="pane" id="p-night" aria-label="Night — the danger after dark">
+        <div class="beats">
+          <!-- BEAT 1 — the danger people miss, and the number -->
+          <div class="beat">
+            <h2 tabindex="-1">Hot nights are the danger most people miss.</h2>
+            <p class="lead">Your body recovers at night, and it needs the cool to do it. When nights
+              stop cooling down, a hot spell stops giving people a break. That is what heat-and-health
+              research warns about most.</p>
+            <p class="bignum" id="n-big">– <small>more hot nights a year<br>than the 1951&ndash;80 average</small></p>
+            <p class="beat-cue">why you can trust that number &darr;</p>
+          </div>
+          <!-- BEAT 2 — the honesty test: the line that fell -->
+          <div class="beat">
+            <h2 id="n-h2">Delhi&rsquo;s hot days fell. Its hot nights rose.</h2>
+            <p class="lead" id="n-honest"></p>
+            <div class="chartwrap"><div class="plate">
+              <div id="delhi"></div>
+              <div class="legend">
+                <span><i style="background:var(--slate)"></i><em id="n-leg-d">days &mdash; edging down</em></span>
+                <span><i style="background:var(--ember)"></i><em id="n-leg-n">nights &mdash; climbing</em></span>
+              </div>
+            </div></div>
             <p class="receipt" id="delhi-receipt"></p>
             <button class="drawbtn" data-drawer="night">Receipts &amp; why the split</button>
-        <p class="receipt" id="showerbox" style="max-width:46ch;margin-top:14px"></p>
+            <p class="beat-cue">one more count before the good news &mdash; the people on your side &darr;</p>
           </div>
-          <div class="chart"><div class="plate">
-            <div id="delhi"></div>
-            <div class="legend">
-              <span><i style="background:var(--slate)"></i><em id="n-leg-d">days ≥&#8202;35&#8202;°C — edging down</em></span>
-              <span><i style="background:var(--ember)"></i><em id="n-leg-n">nights ≥&#8202;25&#8202;°C — climbing</em></span>
-            </div>
-          </div></div>
         </div>
       </section>
 
       <!-- FIRST LIGHT -->
-      <section class="pane" id="p-firstlight" aria-label="First light — the majority that thinks it is a minority" hidden>
-        <h2 tabindex="-1">The world&rsquo;s largest majority thinks it&rsquo;s a minority.</h2>
-        <p class="fact-line">Across 125 countries, people were asked: would you give <b>1% of your
-        household income, every month</b>, to fight climate change? And then: how many of your
-        neighbours would say yes?</p>
-        <div id="pgwrap">
-          <div id="pg-pick">
-            <select id="pg-sel" aria-label="Choose a country"></select>
-            <span id="pg-guessed"></span>
+      <section class="pane" id="p-firstlight" aria-label="First light — the majority that thinks it is a minority">
+        <div class="beats">
+          <!-- BEAT 1 — the plain finding -->
+          <div class="beat">
+            <h2 tabindex="-1">Most people back climate action.<br>They just think most people don&rsquo;t.</h2>
+            <p class="lead">Researchers asked people in 125 countries whether they would give
+              <b>1% of their income</b> to fight warming. Worldwide, <b>69%</b> said yes. Then they
+              were asked to guess how many others would say yes. The average answer was <b>43%</b>.</p>
+            <p class="beat-cue">now find your own country &darr;</p>
           </div>
-          <div id="lamprow" role="img"></div>
-          <div class="lampleg"><span>0</span><span>100</span></div>
-          <p class="kick show" id="pg-kick"></p>
-          <p class="sep89 show" id="pg-sep"></p>
-          <p class="sep89 show" id="pg-give"></p>
+          <!-- BEAT 2 — your country, the lamps, and where money helps -->
+          <div class="beat">
+            <h2>See the true number for your country.</h2>
+            <p class="lead">In nearly every country measured, real support beats the guess &mdash; and
+              <b>89%</b> of people worldwide want their government to do more. Pick your country;
+              one lamp lights for every person in a hundred who would give.</p>
+            <div id="pgwrap">
+              <div id="pg-pick">
+                <select id="pg-sel" aria-label="Choose a country"></select>
+                <span id="pg-guessed"></span>
+              </div>
+              <div id="lamprow" role="img"></div>
+              <div class="lampleg"><span>0</span><span>100</span></div>
+              <p class="kick show" id="pg-kick"></p>
+              <p class="sep89 show" id="pg-sep"></p>
+              <p class="sep89 show" id="pg-give"></p>
+            </div>
+            <button class="drawbtn" data-drawer="firstlight">Receipts &amp; the study</button>
+            <p class="beat-cue">time for the numbers moving the right way &mdash; daylight &darr;</p>
+          </div>
         </div>
-        <button class="drawbtn" data-drawer="firstlight">Receipts &amp; the study</button>
       </section>
 
       <!-- MORNING -->
-      <section class="pane" id="p-morning" aria-label="Morning — what moves" hidden>
-        <h2 tabindex="-1">None of this sky is fixed in place.</h2>
-        <p class="fact-line" style="color:var(--ink-2)">Every hard number here has a true counterweight — a measurement, not a comfort:</p>
-        <div class="ledger">
-          <div class="li"><div class="big">33.8% &gt; 33.0%</div><div class="txt">Renewables outgenerated coal worldwide in 2025 — first time since 1919.</div>
-            <div class="libar" aria-hidden="true"><i style="--w:33.8%"></i><em style="left:33.0%" title="coal"></em></div></div>
-          <div class="li"><div class="big">~1 in 4</div><div class="txt">Of new cars sold in 2025 were electric — China ~55%, US ~10%.</div>
-            <div class="libar" aria-hidden="true"><i style="--w:25%"></i></div></div>
-          <div class="li"><div class="big">3.6 → 2.6 °C</div><div class="txt">Expected warming on current policies, 2015 → now. Still unsafe. Also falling.</div>
-            <div class="libar libar-fall" aria-hidden="true"><i style="--w:72%"></i><em style="left:100%"></em></div></div>
-          <div class="li"><div class="big">healing</div><div class="txt">The ozone layer is recovering — a binding global treaty worked.</div>
-            <div class="libar" aria-hidden="true"><i style="--w:88%"></i></div></div>
-        </div>
-        <div class="action">
-          <p class="leadline">The most useful first act is the quietest: say the true number out loud.</p>
-          <p>Support for cutting emissions is a large majority that believes it is a minority.
-          You, telling one person, is what closes that gap — measurably, with no backfire
-          documented in these studies.</p>
-          <div class="sharecard">
-            <div class="mini" id="share-mini" aria-hidden="true"></div>
-            <button id="share-btn" type="button">Copy Seville&rsquo;s record to share</button>
-            <div class="sharefallback" id="share-fallback">
-              <label class="receipt" for="share-text">Couldn&rsquo;t reach the clipboard — select and copy:</label>
-              <textarea id="share-text" readonly></textarea>
+      <section class="pane" id="p-morning" aria-label="Morning — what is already moving">
+        <div class="beats">
+          <!-- BEAT 1 — the measured good news -->
+          <div class="beat">
+            <h2 tabindex="-1">The record also holds good news,<br>all of it measured.</h2>
+            <p class="lead">None of this is a promise. It is a ledger of what has already moved &mdash;
+              each with a source, each still short of safe.</p>
+            <div class="ledger">
+              <div class="li"><div class="big">33.8% &gt; 33.0%</div><div class="txt">Renewables outgenerated coal worldwide in 2025 &mdash; first time since 1919.</div>
+                <div class="libar" aria-hidden="true"><i style="--w:33.8%"></i><em style="left:33.0%" title="coal"></em></div></div>
+              <div class="li"><div class="big">~1 in 4</div><div class="txt">Of new cars sold in 2025 were electric &mdash; China ~55%, US ~10%.</div>
+                <div class="libar" aria-hidden="true"><i style="--w:25%"></i></div></div>
+              <div class="li"><div class="big">3.6 &rarr; 2.6 °C</div><div class="txt">Expected warming on current policies, 2015 &rarr; now. Still unsafe. Also falling.</div>
+                <div class="libar libar-fall" aria-hidden="true"><i style="--w:72%"></i><em style="left:100%"></em></div></div>
+              <div class="li"><div class="big">healing</div><div class="txt">The ozone layer is recovering &mdash; a binding global treaty worked.</div>
+                <div class="libar" aria-hidden="true"><i style="--w:88%"></i></div></div>
             </div>
+            <p class="beat-cue">the single most useful thing you can do &darr;</p>
+          </div>
+          <!-- BEAT 2 — the one act that works -->
+          <div class="beat">
+            <h2>The most useful act is a conversation.</h2>
+            <p class="lead">Most people underestimate how many of their neighbours want climate action.
+              Studies find that simply telling someone the true numbers closes that gap &mdash; and no
+              study has found it pushes people the other way. So tell one person what you just saw.</p>
+            <div class="sharecard">
+              <div class="mini" id="share-mini" aria-hidden="true"></div>
+              <button id="share-btn" type="button">Share Seville&rsquo;s record with one person</button>
+              <div class="sharefallback" id="share-fallback">
+                <label class="receipt" for="share-text">Couldn&rsquo;t reach the clipboard &mdash; select and copy:</label>
+                <textarea id="share-text" readonly></textarea>
+              </div>
+            </div>
+            <button class="drawbtn" data-drawer="morning" style="color:var(--ink-3);border-color:var(--ink-hair)">Sources &amp; the honest caveats</button>
+            <p class="beat-cue">one chapter left &mdash; every source shown, every limit admitted &darr;</p>
           </div>
         </div>
-        <button class="drawbtn" data-drawer="morning" style="color:var(--ink-3);border-color:var(--ink-hair)">Sources &amp; the honest caveats</button>
       </section>
 
       <!-- BEDROCK -->
-      <section class="pane" id="p-bedrock" aria-label="Bedrock — how we know" hidden>
+      <section class="pane" id="p-bedrock" aria-label="Bedrock — how we know">
         <h2 tabindex="-1">The ground this page stands on.</h2>
+        <p class="lead" style="max-width:60ch;margin-bottom:8px">Everything above rests on what is here.
+          Every dataset, every paper, every line of arithmetic is named so you can check it yourself.
+          A claim you cannot check is an opinion. Everything here can be checked.</p>
         <div class="arch">
           <div class="hww" id="hww"></div>
           <h2 style="font-size:15px;margin-top:18px">The sky&rsquo;s two horizons — brought to one date</h2>
@@ -1196,7 +1229,7 @@ var CH=[
 ];
 /* how hard the sky darkens behind the text column, per chapter — lighter sky needs more.
    Morning is ink-on-pale (dark text) so it gets none; night/bedrock are already dark. */
-var TEXTDIM={sky:.62,ground:.56,night:.32,firstlight:.42,morning:0,bedrock:.28};
+var TEXTDIM={sky:.63,ground:.56,night:.32,firstlight:.42,morning:0,bedrock:.28};
 var cur=0;
 var ladder=el("ladder");
 /* the rail: numbered chapters, each a real anchor into the one scroll */
@@ -1340,7 +1373,7 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
   var rs=target<10?target.toFixed(1):String(Math.round(target));
   el("rate").textContent=rs;el("atrate").textContent="· at "+rs+" GtCO₂ a year";
   var yA=Math.round(NOW+yLo),yB=Math.round(NOW+yHi);
-  el("spent").textContent="spent around "+(yA===yB?yA:yA+"–"+yB)+" · coin-flip odds of holding 1.5 °C · no cliff, rising risk";
+  el("spent").textContent="spent around "+(yA===yB?yA:yA+"–"+yB)+" · a coin-flip chance of holding 1.5 °C";
   var d=Math.round((target-RNOW)/RNOW*100);
   el("delta").textContent=Math.abs(d)<1?"today's rate":(d>0?"+":"−")+Math.abs(d)+"% vs today";
   if(el("verdict")){var w21=SKYW.warm(target,74);
@@ -1399,8 +1432,7 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
  (function(){var t0=Date.now(),od=el("odometer");
   function upd(){var yl=LO.remaining_now_gt/target-(Date.now()-t0)/1000/31557600;
    var s=yl.toFixed(7),head=s.slice(0,-3),tail=s.slice(-3);
-   od.innerHTML=head+'<span class="dim3">'+tail+'</span> years'+
-    '<span class="rec">counting at the current rate · digits past the first are arithmetic, not measurement</span>';}
+   od.innerHTML=head+'<span class="dim3">'+tail+'</span> years';}  // dimmed digits already say "not measurement"
   upd();setInterval(upd,reduce?1000:250);})();
  /* the sky remembers you — ghost horizon of your first visit (this device only) */
  (function(){try{
@@ -1625,15 +1657,18 @@ var buildNight=function(NV){
  var dayFell=dNow<dThen-1,thrHs=CUSTOM?thrH.toFixed(1):"35",thrNs=CUSTOM?thrN.toFixed(1):"25";
  var dN=Math.round(nNow-nThen);
  el("n-big").innerHTML=(dN>=0?"+":"&minus;")+Math.abs(dN)+
-  "<small> "+(dN>=0?"more":"fewer")+" hot nights a year<br>than the 1951–80 average</small>";
- el("n-honest").innerHTML=CUSTOM?
-  (dayFell?("And the honest part: "+place+"&rsquo;s afternoons didn&rsquo;t follow — hot days <b>fell</b>, about "+
-    Math.round(dThen-dNow)+" fewer a year. We show the line that fell; that is why you can trust the ones that climb."):
-   ("Here the days climbed too: days over "+thrHs+" °C went <b>"+dThen.toFixed(0)+" → "+dNow.toFixed(0)+
-    "</b> a year alongside the nights. Both lines are drawn, whichever way they run.")):
-  "And the part most sites would bury: Delhi&rsquo;s afternoons didn&rsquo;t follow — "+
-  "they <b>cooled</b>, about "+Math.round(dThen-dNow)+" fewer 35 °C days a year. "+
-  "We show the line that fell; that is why you can trust the ones that climb.";
+  "<small> "+(dN>=0?"more":"fewer")+" hot nights a year<br>than the 1951&ndash;80 average</small>";
+ if(el("n-h2"))el("n-h2").innerHTML=dayFell?
+  (place+"&rsquo;s hot days fell. Its hot nights rose."):
+  ("In "+place+", the nights climbed.");
+ el("n-honest").innerHTML=
+  "A hot night here means one warmer than 95% of nights in the 1951&ndash;80 record. "+
+  place+" now has <b>"+Math.abs(dN)+" more</b> of them a year. "+
+  (dayFell?
+   ("Its hot days actually <b>fell</b> over the same years &mdash; haze blocks sunlight and holds the "+
+    "daytime highs down. We draw that falling line too. That is why you can trust the rising one."):
+   ("Here the days climbed too, from about "+dThen.toFixed(0)+" to "+dNow.toFixed(0)+
+    " a year. Both lines are drawn, whichever way they run."));
  el("delhi-receipt").innerHTML="days ≥"+thrHs+" °C: <b>"+(+dThen).toFixed(1)+"→"+(+dNow).toFixed(1)+
   "</b>/yr · nights ≥"+thrNs+" °C: <b>"+(+nThen).toFixed(1)+"→"+(+nNow).toFixed(1)+"</b>/yr · "+
   (CUSTOM?"thresholds are the place&rsquo;s own 1951–80 95th percentiles · ":"")+
