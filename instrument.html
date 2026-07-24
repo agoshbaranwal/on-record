@@ -814,9 +814,9 @@ var __ATMO=(function(){
 " float stAmt=mix(uPrmA.z,uPrmB.z,uMix),hzAmt=mix(uPrmA.w,uPrmB.w,uMix);\n"+
 " float hzY=mix(uAuxA.x,uAuxB.x,uMix);vec3 sunC=mix(uSunA,uSunB,uMix);\n"+
 " float cirAmt=mix(uAuxA.y,uAuxB.y,uMix),venAmt=mix(uAuxA.z,uAuxB.z,uMix);\n"+
-" float shimF=mix(uLifA.x,uLifB.x,uMix),dustA=mix(uLifA.y,uLifB.y,uMix),brth=mix(uLifA.z,uLifB.z,uMix);\n"+
+" float dustA=mix(uLifA.y,uLifB.y,uMix),brth=mix(uLifA.z,uLifB.z,uMix);\n"+
 " sunAmt*=1.+((sunY>1.)?.07:brth)*sin(uT*.7);\n"+                 // every light breathes, below-horizon glows most
-" float yq=uv.y+sin(uv.x*170.+uT*6.5)*exp(-abs(uv.y-hzY)*28.)*(uBurn*.009+shimF*.005);\n"+ // heat shimmer at the horizon — worse the faster you burn
+" float yq=uv.y;\n"+                                             // the colour axis is undistorted — the budget horizon is data, not decoration
 " vec3 c=mix(uColA[0],uColB[0],uMix);float pp=mix(uPosA[0],uPosB[0],uMix);\n"+
 " for(int i=1;i<8;i++){float pi=mix(uPosA[i],uPosB[i],uMix);vec3 ci=mix(uColA[i],uColB[i],uMix);\n"+
 "  c=mix(c,ci,smoothstep(pp,max(pi,pp+1e-4),yq));pp=pi;}\n"+
