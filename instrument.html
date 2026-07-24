@@ -18,6 +18,14 @@
   --sage:#82B8A6; --teal-hi:#7ED6C4; --act:#155048; --deep:#05171A;
   --sg:"SpaceGroteskX",system-ui,-apple-system,sans-serif;
   --mono:ui-monospace,"SF Mono",Menlo,"Cascadia Mono",monospace;
+  /* the halo does the work the box used to: a crisp dark rim hugs each glyph so
+     light text reads on ANY sky — light sage or dark ember — with no box seam.
+     Invisible over dark backgrounds, so it is safe to apply to all light chrome. */
+  --halo:0 0 1px rgba(3,16,18,.92),0 1px 2px rgba(3,16,18,.85),0 0 8px rgba(3,16,18,.55);
+  --halo2:0 0 1px rgba(3,16,18,.98),0 0 2px rgba(3,16,18,.92),0 1px 2px rgba(3,16,18,.88),0 0 6px rgba(3,16,18,.62);
+  --halo-h:0 1px 2px rgba(3,16,18,.55),0 0 12px rgba(3,16,18,.5),0 0 34px rgba(15,8,6,.4);
+  /* on the ink (morning) chamber the light behind is pale, so dark text gets a light rim */
+  --halo-ink:0 0 1px rgba(251,247,232,.9),0 1px 3px rgba(251,247,232,.7);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
@@ -74,11 +82,11 @@ a{color:inherit}
 #skycap{position:absolute;right:6%;bottom:5%;z-index:2;pointer-events:none;text-align:right;
   opacity:0;transition:opacity 1.6s ease}
 #skycap.on{opacity:1}
-#skycap .zname{display:block;color:rgba(220,232,255,.66);font-family:var(--mono);font-size:11px;
+#skycap .zname{display:block;color:rgba(220,232,255,.82);font-family:var(--mono);font-size:11px;text-shadow:var(--halo);
   letter-spacing:.34em;text-transform:uppercase}
-#skycap .zsub{display:block;margin-top:5px;color:rgba(220,232,255,.38);font-family:var(--mono);
+#skycap .zsub{display:block;margin-top:5px;color:rgba(220,232,255,.55);font-family:var(--mono);text-shadow:var(--halo);
   font-size:10px;letter-spacing:.05em}
-#skycap #skyctx{margin:0 0 6px;color:rgba(220,232,255,.46)}
+#skycap #skyctx{margin:0 0 6px;color:rgba(220,232,255,.6)}
 #skyloc{margin-top:9px;display:flex;gap:6px;justify-content:flex-end;pointer-events:auto}
 #skyloc button{font-weight:500;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   padding:6px 3px;min-height:30px;border:0;border-bottom:1px solid rgba(220,232,255,.25);
@@ -110,14 +118,15 @@ a{color:inherit}
   max-width:1400px;margin:0 auto;padding:22px 38px}
 #mast{display:flex;justify-content:space-between;align-items:flex-start;gap:30px}
 #mast .word{font-family:var(--mono);font-size:10px;letter-spacing:.34em;color:var(--bone-2);
-  text-transform:uppercase;margin-bottom:7px}
+  text-transform:uppercase;margin-bottom:7px;text-shadow:var(--halo)}
 #mast .plain{font-weight:500;font-size:clamp(15px,1.7vw,20px);letter-spacing:-.01em;
-  line-height:1.3;max-width:40ch;color:rgba(242,231,204,.95);text-shadow:0 1px 22px rgba(15,8,6,.55)}
+  line-height:1.3;max-width:40ch;color:rgba(242,231,204,.95);text-shadow:var(--halo-h)}
 #vitals{text-align:right;font-family:var(--mono);font-size:10.5px;line-height:1.8;
-  color:var(--bone-3);text-shadow:0 1px 16px rgba(15,8,6,.6);flex:none}
+  color:var(--bone-3);text-shadow:var(--halo);flex:none}
 #vitals b{color:var(--bone);font-weight:500}
 .thm-ink #mast .plain{color:var(--ink);text-shadow:none}
-.thm-ink #mast .word{color:var(--ink-2)}
+.thm-ink #mast .word{color:var(--ink-2);text-shadow:none}
+.thm-ink #mast .plain{text-shadow:none}
 .thm-ink #vitals{color:var(--ink-3);text-shadow:none}
 .thm-ink #vitals b{color:var(--ink)}
 
@@ -179,11 +188,13 @@ a{color:inherit}
   .pane.on>*,#panes.up .pane.on>*{animation:none}
   .pane.out{animation:none;display:none}}
 .pane h2{font-weight:500;font-size:clamp(21px,2.6vw,31px);line-height:1.12;letter-spacing:-.015em;
-  max-width:24ch;text-wrap:balance;color:var(--bone);text-shadow:0 1px 22px rgba(15,8,6,.5)}
+  max-width:24ch;text-wrap:balance;color:var(--bone);text-shadow:var(--halo-h)}
 .thm-ink .pane h2{color:var(--ink);text-shadow:none}
-.pane .fact-line{margin-top:8px;font-size:13.5px;color:var(--bone-2);max-width:52ch;text-wrap:pretty}
+.pane .fact-line{margin-top:8px;font-size:13.5px;color:var(--bone-2);max-width:52ch;text-wrap:pretty;text-shadow:var(--halo)}
+.thm-ink .pane .fact-line{text-shadow:none}
 .thm-ink .pane .fact-line{color:var(--ink-2)}
-.receipt{font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;line-height:1.7;color:var(--bone-3)}
+.receipt{font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;line-height:1.7;color:var(--bone-3);text-shadow:var(--halo)}
+.thm-ink .receipt{text-shadow:none}
 .receipt b{color:var(--bone-2);font-weight:500}
 .thm-ink .receipt{color:var(--ink-3)}
 .thm-ink .receipt b{color:var(--ink-2)}
@@ -205,26 +216,22 @@ svg{display:block;width:100%;height:auto}
 /* --- SKY pane --- */
 #p-sky .years{font-weight:500;font-size:clamp(50px,7vw,88px);line-height:.92;
   letter-spacing:-.035em;color:var(--ink);font-variant-numeric:tabular-nums;
-  text-shadow:0 0 28px rgba(255,244,214,.55),0 3px 70px rgba(255,240,205,.4)}
+  text-shadow:0 0 22px rgba(255,244,214,.45),0 2px 3px rgba(255,248,228,.85),0 1px 1px rgba(255,248,228,.9)}
 /* the caption cluster lives on shifting light — it gets its own dark glass, like the pills */
-#skycount .capplate{display:inline-block;position:relative;padding:9px 26px 9px 12px;margin-top:9px;
-  background:linear-gradient(90deg,rgba(3,16,18,.50) 0%,rgba(3,16,18,.42) 72%,rgba(3,16,18,0) 100%);
-  -webkit-mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent);
-  mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent);
-  border:0;border-radius:0}
+#skycount .capplate{display:inline-block;position:relative;margin-top:9px;max-width:60ch}
 #p-sky .ylab{font-family:var(--mono);font-size:10px;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--bone)}
+  text-transform:uppercase;color:var(--bone);text-shadow:var(--halo2)}
 #p-sky .spent{margin-top:5px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;
-  color:var(--bone-2)}
+  color:var(--bone);text-shadow:var(--halo2)}
 #p-sky .burnedtick{margin-top:7px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;
-  color:var(--amber);text-shadow:0 1px 14px rgba(4,18,20,.85);font-variant-numeric:tabular-nums}
+  color:var(--amber);text-shadow:var(--halo);font-variant-numeric:tabular-nums}
 #skycount{position:absolute;left:0;top:56.5%}
 #hzn-hi,#hzn-lo{position:absolute;left:-38px;right:-38px;border-top:1px solid rgba(62,18,8,.5);pointer-events:none}
 /* the century axis: altitude is time, and the axis is drawn, not implied */
 #skyaxis{position:absolute;inset:0;pointer-events:none}
 #skyaxis .rung{position:absolute;right:24%;display:flex;align-items:center;gap:8px;
-  font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:rgba(242,231,204,.52);
-  text-shadow:0 1px 4px rgba(3,16,18,.55)}
+  font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:rgba(242,231,204,.62);
+  text-shadow:var(--halo)}
 #skyaxis .rung i{display:block;width:26px;border-top:1px solid rgba(242,231,204,.30);
   box-shadow:0 1px 3px rgba(3,16,18,.35)}
 .hl{position:absolute;right:210px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
@@ -235,10 +242,10 @@ svg{display:block;width:100%;height:auto}
 #dial{position:absolute;left:0;bottom:6px;width:min(400px,44vw)}
 #dial .dh{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
 #dial h3{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.3em;
-  text-transform:uppercase;color:var(--bone-2)}
-#dial .dv{font-family:var(--mono);font-size:10.5px;color:var(--bone-3);white-space:nowrap}
+  text-transform:uppercase;color:var(--bone-2);text-shadow:var(--halo)}
+#dial .dv{font-family:var(--mono);font-size:10.5px;color:var(--bone-3);white-space:nowrap;text-shadow:var(--halo)}
 #dial .dv b{font-family:var(--sg);font-size:22px;font-weight:500;color:var(--bone);
-  font-variant-numeric:tabular-nums;margin-right:3px}
+  font-variant-numeric:tabular-nums;margin-right:3px;text-shadow:var(--halo)}
 #dial .dv em{font-style:normal;display:inline-block;min-width:9ch;margin-left:6px;color:var(--bone-2)}
 .dim{position:relative;height:36px;cursor:ew-resize;touch-action:none;outline-offset:5px}
 .dimTrack{position:absolute;left:0;right:0;top:17px;height:1px;background:var(--bone-4)}
@@ -249,15 +256,15 @@ svg{display:block;width:100%;height:auto}
   box-shadow:0 0 14px rgba(242,231,204,.8)}
 .dim:focus-visible .dimKnob,.dim:hover .dimKnob{height:31px;top:2px}
 .dimEnds{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;
-  color:var(--bone-3);margin-top:3px}
-#dial .foot{margin-top:6px;font-family:var(--mono);font-size:10.5px;color:var(--bone-3)}
+  color:var(--bone-3);margin-top:3px;text-shadow:var(--halo)}
+#dial .foot{margin-top:6px;font-family:var(--mono);font-size:10.5px;color:var(--bone-3);text-shadow:var(--halo)}
 #dial .foot button{color:var(--bone-2);border-bottom:1px solid var(--bone-4);letter-spacing:.05em;
   margin-right:8px;min-height:30px}
 #tease{position:absolute;right:0;bottom:10px;max-width:300px;text-align:right}
 #tease .tl2{font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;
-  color:var(--bone-3);margin-bottom:5px}
-#tease .big{font-weight:500;font-size:24px;color:var(--bone);font-variant-numeric:tabular-nums}
-#tease .sub{font-size:12px;color:var(--bone-2);margin-top:3px}
+  color:var(--bone-3);margin-bottom:5px;text-shadow:var(--halo)}
+#tease .big{font-weight:500;font-size:24px;color:var(--bone);font-variant-numeric:tabular-nums;text-shadow:var(--halo)}
+#tease .sub{font-size:12px;color:var(--bone-2);margin-top:3px;text-shadow:var(--halo)}
 #tease button{margin-top:8px;font-weight:500;font-size:10.5px;background:none;border:0;
   border-bottom:1px solid rgba(242,231,204,.30);border-radius:0;text-shadow:0 1px 5px rgba(3,16,18,.55),0 0 12px rgba(3,16,18,.4);letter-spacing:.2em;
   text-transform:uppercase;color:var(--amber);min-height:36px}
@@ -270,16 +277,17 @@ svg{display:block;width:100%;height:auto}
 .duo .chart{min-height:0;display:flex;flex-direction:column}
 .duo .chart .plate{display:flex;flex-direction:column;min-height:0}
 .bignum{font-weight:500;font-size:clamp(40px,5vw,58px);line-height:1;letter-spacing:-.03em;
-  color:var(--bone);font-variant-numeric:tabular-nums}
+  color:var(--bone);font-variant-numeric:tabular-nums;text-shadow:var(--halo-h)}
 .bignum small{display:block;font-size:.38em;letter-spacing:0;color:var(--bone-2);font-weight:400;
-  line-height:1.3;margin-top:5px}
+  line-height:1.3;margin-top:5px;text-shadow:var(--halo)}
+.thm-ink .bignum small,.thm-ink .bignum{text-shadow:none}
 .thm-ink .bignum{color:var(--ink)}
 .legend{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;
   letter-spacing:.04em;color:var(--bone-3);margin-top:8px}
 .legend i{display:inline-block;width:13px;height:3px;border-radius:2px;margin-right:5px;vertical-align:2px}
 .legend i.dot{width:8px;height:8px;border-radius:50%}
 .legend i.dash{background:repeating-linear-gradient(90deg,currentColor 0 3px,transparent 3px 6px);height:2px}
-.finder{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--bone-2)}
+.finder{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--bone-2);text-shadow:var(--halo)}
 .finder input{font-family:var(--mono);font-size:13px;width:76px;padding:7px 4px;min-height:38px;
   border:0;border-bottom:1px solid rgba(242,231,204,.35);border-radius:0;
   background:rgba(3,16,18,.22);color:var(--bone)}
@@ -297,7 +305,7 @@ svg{display:block;width:100%;height:auto}
   padding:8px 3px;min-height:38px;border:0;border-bottom:1px solid rgba(242,231,204,.30);
   border-radius:0;color:var(--bone-2);background:none;transition:color .3s,border-color .3s;text-shadow:0 1px 5px rgba(3,16,18,.55),0 0 12px rgba(3,16,18,.4)}
 #gplace button:hover{color:var(--bone);border-color:var(--amber)}
-#gq-status{font-family:var(--mono);font-size:11px;color:var(--bone-2);letter-spacing:.04em;max-width:46ch;line-height:1.5}
+#gq-status{font-family:var(--mono);font-size:11px;color:var(--bone-2);letter-spacing:.04em;max-width:46ch;line-height:1.5;text-shadow:var(--halo)}
 #gq-status.err{color:var(--amber)}
 #p-ground.fetching .plate{opacity:.35;transition:opacity .4s ease}
 #p-ground.fetching #gq-go{opacity:.4}
@@ -314,7 +322,7 @@ svg{display:block;width:100%;height:auto}
   background:rgba(3,16,18,.22);color:var(--bone);border:0;
   border-bottom:1px solid rgba(242,231,204,.35);border-radius:0;max-width:300px}
 #pg-sel:focus{outline:none;border-bottom-color:var(--amber)}
-#pg-guessed{font-family:var(--mono);font-size:10px;color:var(--bone-3);letter-spacing:.06em}
+#pg-guessed{font-family:var(--mono);font-size:10px;color:var(--bone-3);letter-spacing:.06em;text-shadow:var(--halo)}
 #pg-give b{color:var(--bone)}
 /* one hundred windows on the horizon — the lit ones are the people who said yes */
 #lamprow{position:relative;display:flex;gap:2px;height:54px;margin:18px 0 6px;align-items:flex-end}
@@ -329,13 +337,13 @@ svg{display:block;width:100%;height:auto}
   font-size:10.5px;letter-spacing:.05em;color:var(--bone-2)}
 #lampmark[data-side=r] span{left:7px}
 #lampmark[data-side=l] span{right:7px}
-.lampleg{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;
+.lampleg{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;text-shadow:var(--halo);
   color:var(--bone-3);margin-top:26px}
 @media(prefers-reduced-motion:reduce){.lamp,#lampmark{transition:none}}
-.kick{font-size:14px;line-height:1.45;color:var(--bone);margin-top:12px;display:none;max-width:52ch;outline:none}
+.kick{font-size:14px;line-height:1.45;color:var(--bone);margin-top:12px;display:none;max-width:52ch;outline:none;text-shadow:var(--halo)}
 .kick.show{display:block}
 .kick b{color:var(--amber);font-weight:500}
-.sep89{font-size:11px;color:var(--bone-2);margin-top:8px;display:none;max-width:52ch}
+.sep89{font-size:11px;color:var(--bone-2);margin-top:8px;display:none;max-width:52ch;text-shadow:var(--halo)}
 .sep89.show{display:block}
 .sep89 b{color:var(--bone)}
 
@@ -460,9 +468,9 @@ svg{display:block;width:100%;height:auto}
 @media(prefers-reduced-motion:reduce){.dimKnob{animation:none}}
 /* the live-decimal countdown under the big number */
 #odometer{margin-top:6px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;
-  color:var(--bone);font-variant-numeric:tabular-nums}
+  color:var(--bone);font-variant-numeric:tabular-nums;text-shadow:var(--halo2)}
 #odometer .dim3{opacity:.75}
-#odometer .rec{display:block;font-size:8.5px;letter-spacing:.05em;color:var(--bone-2);margin-top:2px}
+#odometer .rec{display:block;font-size:10px;letter-spacing:.05em;color:var(--bone);margin-top:2px;text-shadow:var(--halo2)}
 /* the cream band IS the disagreement — hoverable */
 #band{position:absolute;left:0;right:0;cursor:help;pointer-events:auto}
 #band:focus-visible{outline:1px dashed var(--amber);outline-offset:-1px}
