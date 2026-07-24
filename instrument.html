@@ -80,7 +80,7 @@ a{color:inherit}
   font-size:9px;letter-spacing:.06em}
 #skycap #skyctx{margin:0 0 6px;color:rgba(220,232,255,.46)}
 #skyloc{margin-top:9px;display:flex;gap:6px;justify-content:flex-end;pointer-events:auto}
-#skyloc button{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+#skyloc button{font-weight:500;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
   padding:6px 10px;min-height:30px;border:1px solid rgba(220,232,255,.22);border-radius:2px;
   color:rgba(220,232,255,.55);background:rgba(3,16,18,.35);transition:color .3s,border-color .3s}
 #skyloc button:hover{color:rgba(232,240,255,.9);border-color:rgba(220,232,255,.5)}
@@ -89,7 +89,7 @@ a{color:inherit}
 
 /* ================= sound ================= */
 #soundbtn{position:absolute;right:38px;top:92px;z-index:7;display:flex;align-items:center;gap:8px;
-  font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  font-weight:500;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
   color:var(--bone-2);background:rgba(3,16,18,.55);border:1px solid rgba(242,231,204,.18);
   border-radius:3px;padding:9px 12px;min-height:40px;transition:border-color .3s,color .3s}
 #soundbtn:hover{color:var(--bone);border-color:rgba(242,231,204,.45)}
@@ -120,23 +120,33 @@ a{color:inherit}
 .thm-ink #vitals{color:var(--ink-3);text-shadow:none}
 .thm-ink #vitals b{color:var(--ink)}
 
-/* ladder */
-#ladder{position:absolute;right:38px;top:50%;transform:translateY(-50%);display:flex;
-  flex-direction:column;gap:12px;text-align:right;z-index:6}
-.rung{display:flex;align-items:center;justify-content:flex-end;gap:10px;text-decoration:none}
-.rung .pill{background:rgba(3,16,18,.68);border:1px solid rgba(242,231,204,.14);border-radius:3px;
-  padding:5px 10px;backdrop-filter:blur(2px);transition:border-color .3s}
-.thm-ink .rung .pill{background:rgba(3,16,18,.82)}
-.rung .lab{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--bone-2);display:block}
-.rung .fact{display:block;font-size:10.5px;color:var(--bone-3);margin-top:1px;letter-spacing:0}
-.rung .dot{width:7px;height:7px;border-radius:50%;border:1px solid var(--bone-3);flex:none;
-  background:rgba(3,16,18,.5)}
-.rung:hover .pill{border-color:rgba(242,231,204,.4)}
-.rung[aria-current=true] .lab,.rung[aria-current=true] .fact{color:var(--bone)}
-.rung[aria-current=true] .pill{border-color:rgba(240,188,98,.5)}
-.rung[aria-current=true] .dot{background:var(--amber);border-color:var(--amber);
-  box-shadow:0 0 10px rgba(240,188,98,.8)}
+/* ladder — an instrument rail: one scrim, one hairline, ticks. No boxes. */
+#ladder{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;
+  flex-direction:column;gap:2px;text-align:right;z-index:6;
+  padding:44px 38px 44px 110px;
+  background:linear-gradient(270deg,rgba(3,16,18,.50) 0%,rgba(3,16,18,.44) 55%,rgba(3,16,18,0) 100%);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 12%,#000 88%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0%,#000 12%,#000 88%,transparent 100%)}
+.thm-ink #ladder{background:linear-gradient(270deg,rgba(3,16,18,.62) 0%,rgba(3,16,18,.54) 55%,rgba(3,16,18,0) 100%)}
+#ladder::after{content:"";position:absolute;right:38px;top:30px;bottom:30px;width:1px;
+  background:rgba(242,231,204,.22)}                    /* the rail itself */
+.rung{display:flex;align-items:center;justify-content:flex-end;gap:0;text-decoration:none;
+  padding:9px 0;width:216px;position:relative}
+.rung .pill{background:none;border:0;border-radius:0;padding:0 16px 0 0;backdrop-filter:none}
+.thm-ink .rung .pill{background:none}
+.rung .lab{font-weight:500;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--bone-2);display:block;transition:color .3s}
+.rung .fact{display:block;font-size:12.5px;color:var(--bone-3);margin-top:3px;
+  letter-spacing:.01em;transition:color .3s}
+.rung .dot{position:absolute;right:-7px;width:14px;height:1px;border-radius:0;border:0;flex:none;
+  background:rgba(242,231,204,.30);
+  transition:background .3s,width .3s,box-shadow .3s}  /* a tick crossing the rail */
+.rung:hover .lab{color:var(--bone)}
+.rung:hover .dot{background:rgba(242,231,204,.6)}
+.rung[aria-current=true] .lab{color:var(--bone)}
+.rung[aria-current=true] .fact{color:var(--bone-2)}
+.rung[aria-current=true] .dot{background:var(--amber);width:26px;
+  box-shadow:0 0 8px rgba(240,188,98,.55)}
 
 /* panes */
 #panes{position:relative;flex:1;min-height:0;margin-top:14px}
@@ -161,14 +171,14 @@ a{color:inherit}
 .thm-ink .pane h2{color:var(--ink);text-shadow:none}
 .pane .fact-line{margin-top:8px;font-size:13.5px;color:var(--bone-2);max-width:52ch;text-wrap:pretty}
 .thm-ink .pane .fact-line{color:var(--ink-2)}
-.receipt{font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;line-height:1.7;color:var(--bone-3)}
+.receipt{font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;line-height:1.7;color:var(--bone-3)}
 .receipt b{color:var(--bone-2);font-weight:500}
 .thm-ink .receipt{color:var(--ink-3)}
 .thm-ink .receipt b{color:var(--ink-2)}
-.chip{display:inline-block;font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;
+.chip{display:inline-block;font-weight:500;font-size:9.5px;letter-spacing:.14em;
   text-transform:uppercase;border:1px solid rgba(240,188,98,.55);color:var(--amber);
   padding:2px 7px;border-radius:2px;vertical-align:2px}
-.drawbtn{margin-top:auto;align-self:flex-start;font-family:var(--mono);font-size:10px;
+.drawbtn{margin-top:auto;align-self:flex-start;font-weight:500;font-size:11px;
   letter-spacing:.18em;text-transform:uppercase;color:var(--bone-2);
   background:rgba(3,16,18,.48);border:1px solid rgba(242,231,204,.16);border-radius:3px;
   padding:9px 13px;min-height:40px;transition:border-color .3s}
@@ -262,11 +272,11 @@ svg{display:block;width:100%;height:auto}
 #gplace{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
 #gplace input{font-family:var(--mono);font-size:11px;width:190px;padding:8px 10px;min-height:38px;
   border:1px solid var(--bone-4);border-radius:2px;background:rgba(3,16,18,.4);color:var(--bone)}
-#gplace button{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
+#gplace button{font-weight:500;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
   padding:8px 11px;min-height:38px;border:1px solid var(--bone-4);border-radius:2px;
   color:var(--bone-2);background:rgba(3,16,18,.35);transition:color .3s,border-color .3s}
 #gplace button:hover{color:var(--bone);border-color:var(--amber)}
-#gq-status{font-family:var(--mono);font-size:9.5px;color:var(--bone-3);letter-spacing:.05em;max-width:38ch}
+#gq-status{font-family:var(--mono);font-size:10.5px;color:var(--bone-3);letter-spacing:.05em;max-width:38ch}
 
 /* --- first light --- */
 #pgwrap{max-width:640px;width:100%}
@@ -275,9 +285,9 @@ svg{display:block;width:100%;height:auto}
   min-height:40px;border:1px solid var(--bone-4);border-radius:2px;color:var(--bone-2)}
 .place-tabs button[aria-pressed=true]{background:var(--bone);color:#0B2B31;border-color:var(--bone)}
 #pg-pick{display:flex;align-items:center;gap:10px;margin:10px 0 12px;flex-wrap:wrap}
-#pg-sel{font-family:var(--mono);font-size:11px;letter-spacing:.05em;padding:9px 12px;min-height:40px;
+#pg-sel{font-size:12.5px;letter-spacing:.05em;padding:9px 12px;min-height:40px;
   background:rgba(3,16,18,.55);color:var(--bone);border:1px solid var(--bone-4);border-radius:2px;max-width:300px}
-#pg-guessed{font-family:var(--mono);font-size:9px;color:var(--bone-3);letter-spacing:.06em}
+#pg-guessed{font-family:var(--mono);font-size:10px;color:var(--bone-3);letter-spacing:.06em}
 #pg-give b{color:var(--bone)}
 /* one hundred windows on the horizon — the lit ones are the people who said yes */
 #lamprow{position:relative;display:flex;gap:2px;height:54px;margin:18px 0 6px;align-items:flex-end}
@@ -410,9 +420,8 @@ svg{display:block;width:100%;height:auto}
   #intro .l,#intro .go{opacity:1!important;transform:none!important;animation:none!important}}
 
 /* ================= v3 polish ================= */
-.rung .pill{transition:transform .28s cubic-bezier(.2,.7,.2,1),border-color .28s}
-.rung:hover .pill{transform:translateX(-3px);border-color:rgba(242,231,204,.45)}
-.rung[aria-current=true] .pill{border-left:2px solid var(--amber);padding-left:9px}
+.rung .pill{transition:transform .28s cubic-bezier(.2,.7,.2,1)}
+.rung:hover .pill{transform:translateX(-3px)}
 @keyframes knobglow{0%,100%{box-shadow:0 0 14px rgba(242,231,204,.8)}
  50%{box-shadow:0 0 24px rgba(242,231,204,1),0 0 54px rgba(240,188,98,.3)}}
 .dimKnob{animation:knobglow 3.6s ease-in-out infinite}
@@ -445,11 +454,12 @@ svg{display:block;width:100%;height:auto}
   #chrome{padding:16px 18px}
   .pane{padding-right:0;overflow-y:auto}
   #ladder{right:auto;left:50%;top:auto;bottom:10px;transform:translateX(-50%);
-    flex-direction:row;gap:2px}
-  .rung{padding:10px 8px}                             /* ≥29px hit target around each dot */
+    flex-direction:row;gap:2px;padding:0;background:none}
+  #ladder::after{display:none}
+  .rung{padding:10px 8px;width:auto}                  /* ≥29px hit target around each dot */
   .rung .pill{position:absolute;width:1px;height:1px;overflow:hidden;
     clip-path:inset(50%);padding:0;border:0}          /* name survives for screen readers */
-  .rung .dot{width:9px;height:9px}
+  .rung .dot{position:static;width:9px;height:9px;border-radius:50%}
   .duo{grid-template-columns:1fr;gap:14px}
   #skycount{top:52%}
   #dial{bottom:64px;width:min(400px,86vw)}
@@ -589,8 +599,8 @@ svg{display:block;width:100%;height:auto}
           <div class="chart"><div class="plate">
             <div id="delhi"></div>
             <div class="legend">
-              <span><i style="background:var(--slate)"></i>days ≥&#8202;35&#8202;°C — edging down</span>
-              <span><i style="background:var(--ember)"></i>nights ≥&#8202;25&#8202;°C — climbing</span>
+              <span><i style="background:var(--slate)"></i><em id="n-leg-d">days ≥&#8202;35&#8202;°C — edging down</em></span>
+              <span><i style="background:var(--ember)"></i><em id="n-leg-n">nights ≥&#8202;25&#8202;°C — climbing</em></span>
             </div>
           </div></div>
         </div>
@@ -946,8 +956,9 @@ var __ATMO=(function(){
   firstlight:function(){return {r:ramp8([[0,"#081B20"],[.34,"#0C2B30"],[.58,"#0E3A3A"],[.78,"#2A6F6C"],
    [.90,"#7FA08D"],[.955,"#C8B98B"],[.985,"#EAD9B6"],[1,"#F2E2BE"]]),prm:[1.06,1.0,.30,.50],sun:C("#FFD9A0"),
    aux:[.90,.30,(typeof VENUS_MORNING!=="undefined"&&VENUS_MORNING)?.85:0,0],lif:[0,0,.07,0]};},  // Venus only when she truly rises before the sun
-  morning:function(){return {r:ramp8([[0,"#E2CDA0"],[.20,"#EAD9B6"],[.45,"#F2E7CC"],[.65,"#F1E5C8"],
-   [.80,"#EBDFBE"],[.90,"#DFD6AE"],[.96,"#D2CCA6"],[1,"#C9CBA4"]]),prm:[.13,.70,0,.32],sun:C("#FFE9B8"),aux:[.86,.34,0,0],lif:[.25,0,.05,0]};},
+  morning:function(){return {r:ramp8([[0,"#9FBCC6"],[.15,"#B4CBCC"],[.32,"#D2DDD0"],[.50,"#EBE3C9"],
+   [.64,"#F6EAC6"],[.73,"#F4E2B6"],[.86,"#DCD6AC"],[1,"#C4C8A2"]]),                 // a believable mid-morning: blue above, warmth at the horizon
+   prm:[.60,.85,0,.20],sun:C("#FFF2CE"),aux:[.78,.5,0,0],lif:[.20,0,.06,0]};},
   bedrock:function(){return {r:ramp8([[0,"#15140F"],[.22,"#121310"],[.40,"#0F110E"],[.58,"#0D0F0D"],
    [.72,"#0C100F"],[.84,"#0B100F"],[.93,"#0A0E0D"],[1,"#090D0C"]]),prm:[0,0,.10,.25],sun:C("#000000"),aux:[.88,0,0,0],lif:[0,.9,0,0]};},
   voidst:function(){return {r:ramp8([[0,"#020409"],[.3,"#02050A"],[.5,"#02060B"],[.65,"#03070C"],
@@ -1450,16 +1461,41 @@ function buildGround(V){
 buildGround(null);
 
 /* ============ NIGHT ============ */
-(function(){
- el("n-big").innerHTML="+"+Math.round(dr.warm_nights_now-dr.warm_nights_then)+
-  "<small> more hot nights a year<br>than the 1951–80 average</small>";
- el("n-honest").innerHTML="And the part most sites would bury: Delhi&rsquo;s afternoons didn&rsquo;t follow — "+
-  "they <b>cooled</b>, about "+Math.round(dr.days_ge35_then-dr.days_ge35_now)+" fewer 35 °C days a year. "+
+var buildNight=function(NV){
+ var CUSTOM=!!(NV&&NV.custom),place,thrH,thrN,days,nights,dThen,dNow,nThen,nNow;
+ if(CUSTOM){place=NV.place;thrH=NV.thrHot;thrN=NV.thrNight;
+  days=NV.days.filter(function(r){return r.year<=LF;});
+  nights=NV.nights.filter(function(r){return r.year<=LF;});
+  dThen=mean(days,1951,1980);dNow=mean(days,LF-9,LF);
+  nThen=mean(nights,1951,1980);nNow=mean(nights,LF-9,LF);
+ }else{place="Delhi";thrH=35;thrN=25;
+  days=DH.days_ge35_per_year.filter(function(r){return r.year<=2025;});
+  nights=DH.warm_nights_ge25_per_year.filter(function(r){return r.year<=2025;});
+  dThen=dr.days_ge35_then;dNow=dr.days_ge35_now;
+  nThen=dr.warm_nights_then;nNow=dr.warm_nights_now;}
+ var dayFell=dNow<dThen-1,thrHs=CUSTOM?thrH.toFixed(1):"35",thrNs=CUSTOM?thrN.toFixed(1):"25";
+ var dN=Math.round(nNow-nThen);
+ el("n-big").innerHTML=(dN>=0?"+":"&minus;")+Math.abs(dN)+
+  "<small> "+(dN>=0?"more":"fewer")+" hot nights a year<br>than the 1951–80 average</small>";
+ el("n-honest").innerHTML=CUSTOM?
+  (dayFell?("And the honest part: "+place+"&rsquo;s afternoons didn&rsquo;t follow — hot days <b>fell</b>, about "+
+    Math.round(dThen-dNow)+" fewer a year. We show the line that fell; that is why you can trust the ones that climb."):
+   ("Here the days climbed too: days over "+thrHs+" °C went <b>"+dThen.toFixed(0)+" → "+dNow.toFixed(0)+
+    "</b> a year alongside the nights. Both lines are drawn, whichever way they run.")):
+  "And the part most sites would bury: Delhi&rsquo;s afternoons didn&rsquo;t follow — "+
+  "they <b>cooled</b>, about "+Math.round(dThen-dNow)+" fewer 35 °C days a year. "+
   "We show the line that fell; that is why you can trust the ones that climb.";
- el("delhi-receipt").innerHTML="days ≥35 °C: <b>"+dr.days_ge35_then+"→"+dr.days_ge35_now+"</b>/yr · nights ≥25 °C: <b>"+
-  dr.warm_nights_then+"→"+dr.warm_nights_now+"</b>/yr · 1951–80 avg vs "+(LF-9)+"–"+LF+" avg · ERA5 · 11-yr rolling mean bold · descriptive, not attribution";
- var days=DH.days_ge35_per_year.filter(function(r){return r.year<=2025;});
- var nights=DH.warm_nights_ge25_per_year.filter(function(r){return r.year<=2025;});
+ el("delhi-receipt").innerHTML="days ≥"+thrHs+" °C: <b>"+(+dThen).toFixed(1)+"→"+(+dNow).toFixed(1)+
+  "</b>/yr · nights ≥"+thrNs+" °C: <b>"+(+nThen).toFixed(1)+"→"+(+nNow).toFixed(1)+"</b>/yr · "+
+  (CUSTOM?"thresholds are the place&rsquo;s own 1951–80 95th percentiles · ":"")+
+  "1951–80 avg vs "+(LF-9)+"–"+LF+" avg · ERA5 · 11-yr rolling mean bold · descriptive, not attribution";
+ var dTrend=dayFell?"— edging down":(dNow>dThen+1?"— climbing":"— flat");
+ var nTrend=nNow>nThen+1?"— climbing":(nNow<nThen-1?"— edging down":"— flat");
+ if(el("n-leg-d"))el("n-leg-d").textContent="days ≥\u200a"+thrHs+"\u200a°C "+dTrend;
+ if(el("n-leg-n"))el("n-leg-n").textContent="nights ≥\u200a"+thrNs+"\u200a°C "+nTrend;
+ var lr2=ladder.children[2]&&ladder.children[2].querySelector(".fact");
+ if(lr2)lr2.textContent=place+" · "+(Math.round(nNow-nThen)>=0?"+":"−")+
+  Math.abs(Math.round(nNow-nThen))+" hot nights";
  var host=el("delhi"),MONO="ui-monospace,Menlo,monospace",lastB="";
  function sc(d0,d1,r0,r1){return function(v){return r0+(v-d0)/(d1-d0)*(r1-r0);};}
  function txt(a,s,halo){var t=E("text",a);t.textContent=s;
@@ -1468,14 +1504,19 @@ buildGround(null);
  function roll(s,w){var h=Math.floor(w/2);return s.map(function(_,i){
   var t=0,c=0;for(var j=Math.max(0,i-h);j<=Math.min(s.length-1,i+h);j++){t+=s[j].n;c++;}
   return {year:s[i].year,n:t/c};});}
+ var ymax=180;
+ if(CUSTOM){var mx=0;
+  days.concat(nights).forEach(function(r){if(r.n>mx)mx=r.n;});
+  ymax=Math.max(40,Math.ceil((mx+8)/40)*40);}
  function render(){
   var narrow=host.clientWidth<620&&host.clientWidth>0,b=narrow?"n":"w";
   if(b===lastB)return;lastB=b;host.innerHTML="";
   var W=narrow?520:940,Hh=340,mL=narrow?30:36,mR=12,mT=12,mB=26,fs=narrow?15:11;
   var yrs=days.map(function(r){return r.year;});
-  var x=sc(yrs[0],yrs[yrs.length-1],mL,W-mR),y=sc(0,180,Hh-mB,mT);
-  var svg=E("svg",{viewBox:"0 0 "+W+" "+Hh,role:"img","aria-label":"Delhi hot days edge down while hot nights climb, 1940 to 2025."});
-  [0,45,90,135,180].forEach(function(t){
+  var x=sc(yrs[0],yrs[yrs.length-1],mL,W-mR),y=sc(0,ymax,Hh-mB,mT);
+  var svg=E("svg",{viewBox:"0 0 "+W+" "+Hh,role:"img",
+   "aria-label":place+" hot days and hot nights per year since 1940 — 11-year means drawn bold."});
+  [0,.25,.5,.75,1].forEach(function(f){var t=Math.round(ymax*f);
    svg.appendChild(E("line",{x1:mL,x2:W-mR,y1:y(t),y2:y(t),stroke:"rgba(242,231,204,.12)"}));
    svg.appendChild(txt({x:mL-5,y:y(t)+3,"text-anchor":"end","font-size":fs,fill:"rgba(242,231,204,.62)","font-family":MONO},t));});
   (narrow?[1950,1990]:[1950,1970,1990,2010]).forEach(function(yr){
@@ -1485,14 +1526,22 @@ buildGround(null);
    if(cls)at["class"]=cls;
    svg.appendChild(E("path",at));}
   line(days,"#9aa39e",.75,.18);line(nights,"#D96C3A",.75,.2);
-  line(roll(days,11),"#9aa39e",narrow?3:2.6,1,"dr");line(roll(nights,11),"#D96C3A",narrow?3.6:3,1,"dr");
+  var rd=roll(days,11),rn=roll(nights,11);
+  line(rd,"#9aa39e",narrow?3:2.6,1,"dr");line(rn,"#D96C3A",narrow?3.6:3,1,"dr");
   if(!narrow){
-   svg.appendChild(txt({x:x(2010),y:y(70),"text-anchor":"middle","font-size":12,fill:"#B9C2BC","font-family":MONO},"hot days — edging down",true));
-   svg.appendChild(txt({x:x(2004),y:y(150),"text-anchor":"middle","font-size":12,fill:"#E8886B","font-family":MONO},"hot nights — climbing",true));}
+   var dv=rd[rd.length-8]||rd[rd.length-1],nv=rn[rn.length-8]||rn[rn.length-1];
+   svg.appendChild(txt({x:x(dv.year),y:y(dv.n)-12,"text-anchor":"middle","font-size":12,
+    fill:"#B9C2BC","font-family":MONO},"hot days "+dTrend,true));
+   svg.appendChild(txt({x:x(nv.year),y:y(nv.n)-14,"text-anchor":"middle","font-size":12,
+    fill:"#E8886B","font-family":MONO},"hot nights "+nTrend,true));}
   host.appendChild(svg);}
  render();
- if(window.ResizeObserver)new ResizeObserver(render).observe(host);
-})();
+ nightRenderRef=render;
+};
+var nightRenderRef=null;   // declared before the first build so the assignment above survives
+buildNight(null);
+if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRenderRef();})
+ .observe(el("delhi"));
 
 /* ============ FIRST LIGHT — one hundred windows at dawn, every surveyed country ============ */
 (function(){
@@ -1788,22 +1837,32 @@ var __PLACE=(function(){
       fetched:todayISO,rec:rec!=null?rec:0,recy:recy||"—",n:exact.length,pct:pct,
       bias:0,h40a:0,h40b:0}};}
  function jf(r){if(!r.ok)throw new Error("http "+r.status);return r.json();}
+ function fetchRetry(url,tries){                       // the archive 503s when busy — patience, not surrender
+  return fetch(url).then(jf).catch(function(e){
+   if(tries<=1)throw e;
+   return new Promise(function(res){setTimeout(res,1800*(4-tries));})
+    .then(function(){return fetchRetry(url,tries-1);});});}
  function pick(lat,lon,name){
   status("fetching "+name+" — 86 years of days…");
   var end=new Date(Date.now()-6*864e5).toISOString().slice(0,10);
   Promise.all([
-   fetch("https://archive-api.open-meteo.com/v1/archive?latitude="+lat+"&longitude="+lon+
-    "&start_date=1940-01-01&end_date="+end+"&daily=temperature_2m_max,temperature_2m_min&timezone=auto").then(jf),
-   fetch("https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+
-    "&daily=temperature_2m_max&forecast_days=1&timezone=auto").then(jf)
+   fetchRetry("https://archive-api.open-meteo.com/v1/archive?latitude="+lat+"&longitude="+lon+
+    "&start_date=1940-01-01&end_date="+end+"&daily=temperature_2m_max,temperature_2m_min&timezone=auto",3),
+   fetchRetry("https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+
+    "&daily=temperature_2m_max&forecast_days=1&timezone=auto",3)
   ]).then(function(rr){
    var fc=(rr[1]&&rr[1].daily&&rr[1].daily.temperature_2m_max)?rr[1].daily.temperature_2m_max[0]:null;
    var out=compute(rr[0],fc,name);
    act=true;buildGround(out.V);applyToday(out.t);
+   if(typeof buildNight==="function")buildNight({custom:true,place:name,   // the night follows the place too
+    days:out.V.G.days_ge35_per_year,nights:out.V.G.warm_nights_ge25_per_year,
+    thrHot:out.V.thr.hot,thrNight:out.V.thr.night});
    var sv=el("gq-sev");if(sv)sv.hidden=false;
    if(__ATMO.ok&&__ATMO.groundHeat&&out.t.pct!=null)__ATMO.groundHeat(out.t.pct/100);
    status(name+" — its own ERA5 record, computed in your browser");
-  }).catch(function(e){status("couldn't draw that place ("+e.message+") — try another");});}
+  }).catch(function(e){status(/503|502|429/.test(e.message)?
+   "the weather archive is busy right now — give it a minute, then try again":
+   "couldn't draw that place ("+e.message+") — try another");});}
  function search(){var qv=(el("gq").value||"").trim();if(qv.length<2)return;
   status("searching…");
   fetch("https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(qv)+
@@ -1824,7 +1883,8 @@ var __PLACE=(function(){
     function(){status("location declined");});});
   sv.addEventListener("click",function(){act=false;sv.hidden=true;
    buildGround(null);TS.comparable=TS.tmax!=null?Math.round((TS.tmax-TS.bias)*10)/10:null;
-   applyToday(TS);if(__ATMO.ok&&__ATMO.groundHeat)__ATMO.groundHeat(.55);status("");});})();
+   applyToday(TS);if(typeof buildNight==="function")buildNight(null);
+   if(__ATMO.ok&&__ATMO.groundHeat)__ATMO.groundHeat(.55);status("");});})();
  return {active:function(){return act;}};
 })();
 window.__PLACE=__PLACE;
