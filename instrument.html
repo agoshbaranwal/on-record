@@ -1198,7 +1198,7 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
   el("hlab-lo").innerHTML="<b>"+Math.round(LO.remaining_now_gt)+" Gt</b> · IGCC 2025 · runs out ~"+yA;
   el("hlab-hi").innerHTML="<b>"+Math.round(HIe.remaining_now_gt)+" Gt</b> · GCB 2025 · same answer";
   // the count follows the horizon down — but never far enough to reach the dial
-  var skc=el("skycount");skc.style.top=Math.min(pLo+2.4,52)+"%";
+  var skc=el("skycount");skc.style.top=Math.min(pLo+2.4,46)+"%";   // the plate grew an axis line — never reach the dial
   var dim=el("dim");
   dim.setAttribute("aria-valuenow",target.toFixed(1));
   dim.setAttribute("aria-valuetext",Math.round(target)+" gigatonnes per year — "+yearsStr(target)+" years of budget left");
