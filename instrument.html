@@ -77,7 +77,7 @@ a{color:inherit}
 #skycap .zname{display:block;color:rgba(220,232,255,.66);font-family:var(--mono);font-size:11px;
   letter-spacing:.34em;text-transform:uppercase}
 #skycap .zsub{display:block;margin-top:5px;color:rgba(220,232,255,.38);font-family:var(--mono);
-  font-size:9px;letter-spacing:.06em}
+  font-size:10px;letter-spacing:.05em}
 #skycap #skyctx{margin:0 0 6px;color:rgba(220,232,255,.46)}
 #skyloc{margin-top:9px;display:flex;gap:6px;justify-content:flex-end;pointer-events:auto}
 #skyloc button{font-weight:500;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
@@ -112,7 +112,7 @@ a{color:inherit}
   text-transform:uppercase;margin-bottom:7px}
 #mast .plain{font-weight:500;font-size:clamp(15px,1.7vw,20px);letter-spacing:-.01em;
   line-height:1.3;max-width:40ch;color:rgba(242,231,204,.95);text-shadow:0 1px 22px rgba(15,8,6,.55)}
-#vitals{text-align:right;font-family:var(--mono);font-size:9.5px;line-height:1.8;
+#vitals{text-align:right;font-family:var(--mono);font-size:10.5px;line-height:1.8;
   color:var(--bone-3);text-shadow:0 1px 16px rgba(15,8,6,.6);flex:none}
 #vitals b{color:var(--bone);font-weight:500}
 .thm-ink #mast .plain{color:var(--ink);text-shadow:none}
@@ -124,12 +124,23 @@ a{color:inherit}
 #ladder{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;
   flex-direction:column;gap:2px;text-align:right;z-index:6;
   padding:44px 38px 44px 110px;
-  background:linear-gradient(270deg,rgba(3,16,18,.50) 0%,rgba(3,16,18,.44) 55%,rgba(3,16,18,0) 100%);
-  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 12%,#000 88%,transparent 100%);
-  mask-image:linear-gradient(180deg,transparent 0%,#000 12%,#000 88%,transparent 100%)}
-.thm-ink #ladder{background:linear-gradient(270deg,rgba(3,16,18,.62) 0%,rgba(3,16,18,.54) 55%,rgba(3,16,18,0) 100%)}
-#ladder::after{content:"";position:absolute;right:38px;top:30px;bottom:30px;width:1px;
-  background:rgba(242,231,204,.22)}                    /* the rail itself */
+  background:linear-gradient(270deg,rgba(3,16,18,.16) 0%,rgba(3,16,18,.10) 55%,rgba(3,16,18,0) 100%);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 14%,#000 86%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0%,#000 14%,#000 86%,transparent 100%)}
+.thm-ink #ladder{background:linear-gradient(270deg,rgba(244,244,241,.20) 0%,rgba(244,244,241,.12) 55%,rgba(244,244,241,0) 100%)}
+#ladder::after{content:"";position:absolute;right:38px;top:44px;bottom:44px;width:1px;
+  background:rgba(242,231,204,.26)}                    /* the rail itself */
+.thm-ink #ladder::after{background:rgba(62,18,8,.30)}
+/* legibility comes from a halo, not a slab: dark chambers get a dark halo, ink chambers a light one */
+.rung .lab,.rung .fact{text-shadow:0 1px 5px rgba(3,16,18,.60),0 0 14px rgba(3,16,18,.45)}
+.thm-ink .rung .lab,.thm-ink .rung .fact{text-shadow:0 1px 5px rgba(244,244,241,.75),0 0 14px rgba(244,244,241,.6)}
+/* on the ink chambers the rail speaks in ink, not bone */
+.thm-ink .rung .lab{color:var(--ink-2)}
+.thm-ink .rung .fact{color:var(--ink-3)}
+.thm-ink .rung:hover .lab,.thm-ink .rung[aria-current=true] .lab{color:var(--ink)}
+.thm-ink .rung[aria-current=true] .fact{color:var(--ink-2)}
+.thm-ink .rung .dot{background:rgba(62,18,8,.35)}
+.thm-ink .rung:hover .dot{background:rgba(62,18,8,.6)}
 .rung{display:flex;align-items:center;justify-content:flex-end;gap:0;text-decoration:none;
   padding:9px 0;width:216px;position:relative}
 .rung .pill{background:none;border:0;border-radius:0;padding:0 16px 0 0;backdrop-filter:none}
@@ -175,7 +186,7 @@ a{color:inherit}
 .receipt b{color:var(--bone-2);font-weight:500}
 .thm-ink .receipt{color:var(--ink-3)}
 .thm-ink .receipt b{color:var(--ink-2)}
-.chip{display:inline-block;font-weight:500;font-size:9.5px;letter-spacing:.14em;
+.chip{display:inline-block;font-weight:500;font-size:10px;letter-spacing:.14em;
   text-transform:uppercase;border:1px solid rgba(240,188,98,.55);color:var(--amber);
   padding:2px 7px;border-radius:2px;vertical-align:2px}
 .drawbtn{margin-top:auto;align-self:flex-start;font-weight:500;font-size:11px;
@@ -208,20 +219,20 @@ svg{display:block;width:100%;height:auto}
 /* the century axis: altitude is time, and the axis is drawn, not implied */
 #skyaxis{position:absolute;inset:0;pointer-events:none}
 #skyaxis .rung{position:absolute;right:24%;display:flex;align-items:center;gap:8px;
-  font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:rgba(242,231,204,.46);
+  font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:rgba(242,231,204,.52);
   text-shadow:0 1px 4px rgba(3,16,18,.55)}
 #skyaxis .rung i{display:block;width:26px;border-top:1px solid rgba(242,231,204,.30);
   box-shadow:0 1px 3px rgba(3,16,18,.35)}
-.hl{position:absolute;right:210px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+.hl{position:absolute;right:210px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
   text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
 .hl b{color:var(--ink);font-weight:600}
 #hzn-hi .hl{bottom:5px}
 #hzn-lo .hl{top:5px}
 #dial{position:absolute;left:0;bottom:6px;width:min(400px,44vw)}
 #dial .dh{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
-#dial h3{font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.3em;
+#dial h3{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.3em;
   text-transform:uppercase;color:var(--bone-2)}
-#dial .dv{font-family:var(--mono);font-size:9.5px;color:var(--bone-3);white-space:nowrap}
+#dial .dv{font-family:var(--mono);font-size:10.5px;color:var(--bone-3);white-space:nowrap}
 #dial .dv b{font-family:var(--sg);font-size:22px;font-weight:500;color:var(--bone);
   font-variant-numeric:tabular-nums;margin-right:3px}
 #dial .dv em{font-style:normal;display:inline-block;min-width:9ch;margin-left:6px;color:var(--bone-2)}
@@ -233,17 +244,17 @@ svg{display:block;width:100%;height:auto}
 .dimKnob{position:absolute;top:5px;width:2px;height:25px;margin-left:-1px;background:var(--bone);
   box-shadow:0 0 14px rgba(242,231,204,.8)}
 .dim:focus-visible .dimKnob,.dim:hover .dimKnob{height:31px;top:2px}
-.dimEnds{display:flex;justify-content:space-between;font-family:var(--mono);font-size:8.5px;
+.dimEnds{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;
   color:var(--bone-3);margin-top:3px}
-#dial .foot{margin-top:6px;font-family:var(--mono);font-size:9px;color:var(--bone-3)}
+#dial .foot{margin-top:6px;font-family:var(--mono);font-size:10.5px;color:var(--bone-3)}
 #dial .foot button{color:var(--bone-2);border-bottom:1px solid var(--bone-4);letter-spacing:.05em;
   margin-right:8px;min-height:30px}
 #tease{position:absolute;right:0;bottom:10px;max-width:300px;text-align:right}
-#tease .tl2{font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;
+#tease .tl2{font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;
   color:var(--bone-3);margin-bottom:5px}
 #tease .big{font-weight:500;font-size:24px;color:var(--bone);font-variant-numeric:tabular-nums}
 #tease .sub{font-size:12px;color:var(--bone-2);margin-top:3px}
-#tease button{margin-top:8px;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;
+#tease button{margin-top:8px;font-weight:500;font-size:10.5px;letter-spacing:.2em;
   text-transform:uppercase;color:var(--amber);min-height:36px}
 #tease button::after{content:" ↓"}
 
@@ -258,7 +269,7 @@ svg{display:block;width:100%;height:auto}
 .bignum small{display:block;font-size:.38em;letter-spacing:0;color:var(--bone-2);font-weight:400;
   line-height:1.3;margin-top:5px}
 .thm-ink .bignum{color:var(--ink)}
-.legend{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:9px;
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;
   letter-spacing:.04em;color:var(--bone-3);margin-top:8px}
 .legend i{display:inline-block;width:13px;height:3px;border-radius:2px;margin-right:5px;vertical-align:2px}
 .legend i.dot{width:8px;height:8px;border-radius:50%}
@@ -276,7 +287,11 @@ svg{display:block;width:100%;height:auto}
   padding:8px 11px;min-height:38px;border:1px solid var(--bone-4);border-radius:2px;
   color:var(--bone-2);background:rgba(3,16,18,.35);transition:color .3s,border-color .3s}
 #gplace button:hover{color:var(--bone);border-color:var(--amber)}
-#gq-status{font-family:var(--mono);font-size:10.5px;color:var(--bone-3);letter-spacing:.05em;max-width:38ch}
+#gq-status{font-family:var(--mono);font-size:11px;color:var(--bone-2);letter-spacing:.04em;max-width:46ch;line-height:1.5}
+#gq-status.err{color:var(--amber)}
+#p-ground.fetching .plate{opacity:.35;transition:opacity .4s ease}
+#p-ground.fetching #gq-go{opacity:.4}
+#gplace button:disabled{opacity:.4;cursor:wait}
 
 /* --- first light --- */
 #pgwrap{max-width:640px;width:100%}
@@ -299,7 +314,7 @@ svg{display:block;width:100%;height:auto}
 #lampmark{position:absolute;top:-7px;bottom:-24px;width:0;border-left:1px dashed rgba(242,231,204,.7);
   transition:left .9s cubic-bezier(.2,.7,.2,1)}
 #lampmark span{position:absolute;top:100%;white-space:nowrap;font-family:var(--mono);
-  font-size:9.5px;letter-spacing:.05em;color:var(--bone-2)}
+  font-size:10.5px;letter-spacing:.05em;color:var(--bone-2)}
 #lampmark[data-side=r] span{left:7px}
 #lampmark[data-side=l] span{right:7px}
 .lampleg{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;
@@ -347,13 +362,13 @@ svg{display:block;width:100%;height:auto}
 #p-bedrock .hww{max-width:64ch;font-size:12.5px;line-height:1.6;color:var(--bone-2);margin-top:10px}
 #p-bedrock .hww b{color:var(--bone);font-weight:500}
 #p-bedrock .srcs{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-  gap:12px 24px;font-family:var(--mono);font-size:9.5px;line-height:1.7;color:var(--bone-3);max-width:940px}
+  gap:12px 24px;font-family:var(--mono);font-size:10.5px;line-height:1.7;color:var(--bone-3);max-width:940px}
 #p-bedrock .srcs b{display:block;color:var(--bone-2);letter-spacing:.1em;text-transform:uppercase;
-  font-size:8.5px;margin-bottom:3px}
+  font-size:10px;margin-bottom:3px}
 #p-bedrock .limits{margin-top:18px;max-width:64ch;font-size:11px;line-height:1.6;color:var(--bone-3)}
 #p-bedrock .limits b{color:var(--bone-2)}
 #p-bedrock .colophon{margin-top:18px;border-top:1px solid var(--bone-hair);padding-top:10px;
-  font-family:var(--mono);font-size:9px;line-height:1.7;color:var(--bone-3);max-width:74ch}
+  font-family:var(--mono);font-size:10.5px;line-height:1.7;color:var(--bone-3);max-width:74ch}
 
 /* ================= drawer ================= */
 #drawer{position:absolute;top:0;right:0;bottom:0;width:min(560px,92vw);z-index:9;
@@ -365,12 +380,12 @@ svg{display:block;width:100%;height:auto}
 #drawer header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
   border-bottom:1px solid var(--bone-hair);padding-bottom:10px}
 #drawer header h3{font-weight:500;font-size:15px;color:var(--bone)}
-#drawer header .k{font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--bone-3)}
+#drawer header .k{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--bone-3)}
 #dclose{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--bone-3);
   border:1px solid var(--bone-4);border-radius:2px;padding:7px 12px;min-height:38px}
 #dclose:hover{color:var(--bone)}
 #dbody{flex:1;overflow-y:auto;padding:14px 2px 20px;scrollbar-width:thin}
-#dbody h4{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+#dbody h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
   color:var(--bone-3);margin:18px 0 8px}
 #dbody h4:first-child{margin-top:0}
 #dbody p{font-size:12.5px;line-height:1.6;max-width:58ch;margin-bottom:10px}
@@ -382,7 +397,7 @@ svg{display:block;width:100%;height:auto}
 .dtable th,.dtable td{padding:4px 10px;text-align:right;border-bottom:1px solid var(--bone-hair);color:var(--bone-2)}
 .dtable th{position:sticky;top:0;background:#0A2226;color:var(--bone-3);font-weight:500}
 .dtable td:first-child,.dtable th:first-child{text-align:left}
-.scalekey{margin:10px 0 16px;font-family:var(--mono);font-size:9px;color:var(--bone-3)}
+.scalekey{margin:10px 0 16px;font-family:var(--mono);font-size:10.5px;color:var(--bone-3)}
 .scalekey .rampwrap{position:relative;width:260px;max-width:80%;padding-bottom:16px}
 .scalekey .tk{position:absolute;top:14px;transform:translateX(-50%);white-space:nowrap}
 
@@ -413,7 +428,7 @@ svg{display:block;width:100%;height:auto}
   color:var(--bone);border:1px solid var(--bone-4);border-radius:2px;padding:12px 22px;min-height:44px;
   background:rgba(3,16,18,.5)}
 #intro .go button:hover{border-color:var(--bone-2)}
-#intro .skip{position:absolute;right:22px;top:84px;font-family:var(--mono);font-size:9.5px;
+#intro .skip{position:absolute;right:22px;top:84px;font-weight:500;font-size:10.5px;
   letter-spacing:.18em;text-transform:uppercase;color:var(--bone-3);min-height:40px;padding:8px 10px;
   border:1px solid rgba(242,231,204,.22);border-radius:2px}
 @media(prefers-reduced-motion:reduce){
@@ -1488,7 +1503,8 @@ var buildNight=function(NV){
  el("delhi-receipt").innerHTML="days ≥"+thrHs+" °C: <b>"+(+dThen).toFixed(1)+"→"+(+dNow).toFixed(1)+
   "</b>/yr · nights ≥"+thrNs+" °C: <b>"+(+nThen).toFixed(1)+"→"+(+nNow).toFixed(1)+"</b>/yr · "+
   (CUSTOM?"thresholds are the place&rsquo;s own 1951–80 95th percentiles · ":"")+
-  "1951–80 avg vs "+(LF-9)+"–"+LF+" avg · ERA5 · 11-yr rolling mean bold · descriptive, not attribution";
+  "1951–80 avg vs "+(LF-9)+"–"+LF+" avg · ERA5 · 11-yr rolling mean bold · descriptive, not attribution"+
+  (CUSTOM?"":" · pick any city in Ground and this chapter follows it");
  var dTrend=dayFell?"— edging down":(dNow>dThen+1?"— climbing":"— flat");
  var nTrend=nNow>nThen+1?"— climbing":(nNow<nThen-1?"— edging down":"— flat");
  if(el("n-leg-d"))el("n-leg-d").textContent="days ≥\u200a"+thrHs+"\u200a°C "+dTrend;
@@ -1768,7 +1784,12 @@ document.querySelectorAll("[data-drawer]").forEach(function(b){
 var __PLACE=(function(){
  if(!window.fetch||typeof buildGround!=="function")return null;
  var act=false;
- function status(s){var e=el("gq-status");if(e)e.textContent=s||"";}
+ function status(s,err){var e=el("gq-status");if(!e)return;
+  e.textContent=s||"";e.classList.toggle("err",!!err);}
+ function busy(b){["gq-go","gq-mine","gq-sev"].forEach(function(id){
+   var e=el(id);if(e)e.disabled=!!b;});
+  var p=el("p-ground");if(p)p.classList.toggle("fetching",!!b);}
+ function idleHint(){if(!act)status("Seville is the worked example — type any city on Earth and the whole record redraws for it.");}
  function qtile(sorted,p){if(!sorted.length)return null;
   return sorted[Math.min(sorted.length-1,Math.floor(p/100*(sorted.length-1)))];}
  var MONS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -1843,7 +1864,8 @@ var __PLACE=(function(){
    return new Promise(function(res){setTimeout(res,1800*(4-tries));})
     .then(function(){return fetchRetry(url,tries-1);});});}
  function pick(lat,lon,name){
-  status("fetching "+name+" — 86 years of days…");
+  busy(true);
+  status("found "+name+" — fetching its 86 years of days (this takes a few seconds)…");
   var end=new Date(Date.now()-6*864e5).toISOString().slice(0,10);
   Promise.all([
    fetchRetry("https://archive-api.open-meteo.com/v1/archive?latitude="+lat+"&longitude="+lon+
@@ -1859,18 +1881,20 @@ var __PLACE=(function(){
     thrHot:out.V.thr.hot,thrNight:out.V.thr.night});
    var sv=el("gq-sev");if(sv)sv.hidden=false;
    if(__ATMO.ok&&__ATMO.groundHeat&&out.t.pct!=null)__ATMO.groundHeat(out.t.pct/100);
-   status(name+" — its own ERA5 record, computed in your browser");
-  }).catch(function(e){status(/503|502|429/.test(e.message)?
+   busy(false);
+   status(name+" — drawn from its own 86-year record, computed in your browser");
+  }).catch(function(e){busy(false);
+   status(/503|502|429/.test(e.message)?
    "the weather archive is busy right now — give it a minute, then try again":
-   "couldn't draw that place ("+e.message+") — try another");});}
+   "couldn't draw that place ("+e.message+") — try another",true);});}
  function search(){var qv=(el("gq").value||"").trim();if(qv.length<2)return;
   status("searching…");
   fetch("https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(qv)+
    "&count=1&language=en&format=json").then(jf).then(function(g){
-   if(!g.results||!g.results.length){status("no such place found");return;}
+   if(!g.results||!g.results.length){status("no such place found — try the nearest big town",true);return;}
    var p=g.results[0];
    pick(p.latitude,p.longitude,p.name+(p.country_code?", "+p.country_code:""));
-  }).catch(function(){status("search failed — try again");});}
+  }).catch(function(){status("search failed — try again",true);});}
  (function(){var go=el("gq-go"),mi=el("gq-mine"),sv=el("gq-sev"),qi=el("gq");
   if(!go)return;
   go.addEventListener("click",search);
@@ -1884,7 +1908,8 @@ var __PLACE=(function(){
   sv.addEventListener("click",function(){act=false;sv.hidden=true;
    buildGround(null);TS.comparable=TS.tmax!=null?Math.round((TS.tmax-TS.bias)*10)/10:null;
    applyToday(TS);if(typeof buildNight==="function")buildNight(null);
-   if(__ATMO.ok&&__ATMO.groundHeat)__ATMO.groundHeat(.55);status("");});})();
+   if(__ATMO.ok&&__ATMO.groundHeat)__ATMO.groundHeat(.55);idleHint();});
+  idleHint();})();
  return {active:function(){return act;}};
 })();
 window.__PLACE=__PLACE;
