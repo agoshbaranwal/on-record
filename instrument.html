@@ -264,6 +264,11 @@ svg{display:block;width:100%;height:auto}
 .place-tabs button{font-family:var(--mono);font-size:10px;letter-spacing:.06em;padding:8px 13px;
   min-height:40px;border:1px solid var(--bone-4);border-radius:2px;color:var(--bone-2)}
 .place-tabs button[aria-pressed=true]{background:var(--bone);color:#0B2B31;border-color:var(--bone)}
+#pg-pick{display:flex;align-items:center;gap:10px;margin:10px 0 12px;flex-wrap:wrap}
+#pg-sel{font-family:var(--mono);font-size:11px;letter-spacing:.05em;padding:9px 12px;min-height:40px;
+  background:rgba(3,16,18,.55);color:var(--bone);border:1px solid var(--bone-4);border-radius:2px;max-width:300px}
+#pg-guessed{font-family:var(--mono);font-size:9px;color:var(--bone-3);letter-spacing:.06em}
+#pg-give b{color:var(--bone)}
 /* one hundred windows on the horizon — the lit ones are the people who said yes */
 #lamprow{position:relative;display:flex;gap:2px;height:54px;margin:18px 0 6px;align-items:flex-end}
 .lamp{flex:1;border-radius:1px 1px 0 0;background:rgba(242,231,204,.08);height:36%;
@@ -573,11 +578,15 @@ svg{display:block;width:100%;height:auto}
         household income, every month</b>, to fight climate change? And then: how many of your
         neighbours would say yes?</p>
         <div id="pgwrap">
-          <div class="place-tabs" id="pg-tabs" role="group" aria-label="Choose a country"></div>
+          <div id="pg-pick">
+            <select id="pg-sel" aria-label="Choose a country"></select>
+            <span id="pg-guessed"></span>
+          </div>
           <div id="lamprow" role="img"></div>
           <div class="lampleg"><span>0</span><span>100</span></div>
           <p class="kick show" id="pg-kick"></p>
           <p class="sep89 show" id="pg-sep"></p>
+          <p class="sep89 show" id="pg-give"></p>
         </div>
         <button class="drawbtn" data-drawer="firstlight">Receipts &amp; the study</button>
       </section>
@@ -1439,32 +1448,52 @@ var groundDrawerExtra="";
  if(window.ResizeObserver)new ResizeObserver(render).observe(host);
 })();
 
-/* ============ FIRST LIGHT — one hundred windows at dawn ============ */
+/* ============ FIRST LIGHT — one hundred windows at dawn, every surveyed country ============ */
 (function(){
- var curc=0,tabs=el("pg-tabs"),row=el("lamprow"),mark,i;
- P.countries.forEach(function(c,i){var b=document.createElement("button");b.type="button";
-  b.textContent=c.place;b.setAttribute("aria-pressed",i===0);
-  b.addEventListener("click",function(){curc=i;render();});tabs.appendChild(b);});
+ var row=el("lamprow"),sel=el("pg-sel"),mark,i;
+ var ALL=(P.all&&P.all.length)?P.all:P.countries;
+ var WORLD=P.world||null;
+ var list=WORLD?[{place:"World",code:"OWID_WRL",actual:WORLD.actual,guess:WORLD.guess,govt:WORLD.govt}].concat(ALL):ALL.slice();
+ list.forEach(function(c,i2){var o=document.createElement("option");
+  o.value=i2;o.textContent=c.place;sel.appendChild(o);});
+ var start=0;                                                  // your country, guessed from the browser's own locale
+ try{var reg=(navigator.language||"").split("-")[1];
+  if(reg){var nm=new Intl.DisplayNames(["en"],{type:"region"}).of(reg.toUpperCase());
+   for(i=0;i<list.length;i++)if(list[i].place===nm){start=i;
+    el("pg-guessed").textContent="guessed from your browser · change freely";break;}}}catch(e){}
+ sel.value=start;
  for(i=0;i<100;i++){var s=document.createElement("i");s.className="lamp";
   s.style.setProperty("--i",i);row.appendChild(s);}
  mark=document.createElement("div");mark.id="lampmark";
  mark.appendChild(document.createElement("span"));row.appendChild(mark);
- function maj(c){return c.actual>=75?"four in five":(c.actual>=60?"two in three":"a majority");}
- function render(){var c=P.countries[curc];
-  Array.prototype.forEach.call(tabs.children,function(b,i){b.setAttribute("aria-pressed",i===curc);});
+ function maj(a){return a>=75?"four in five":(a>=60?"two in three":(a>=50?"a majority":"a large share"));}
+ function render(){var c=list[+sel.value]||list[0];
+  var A=Math.round(c.actual),G=Math.round(c.guess);
   var lamps=row.querySelectorAll(".lamp");
   lamps.forEach(function(l){l.classList.remove("lit");});
   requestAnimationFrame(function(){requestAnimationFrame(function(){    // let the dark register, then dawn sweeps west to east
-   lamps.forEach(function(l,i){if(i<c.actual)l.classList.add("lit");});});});
-  mark.style.left=c.guess+"%";
-  mark.setAttribute("data-side",c.guess<55?"r":"l");
-  mark.firstChild.textContent="people there think the light ends here — "+c.guess;
-  row.setAttribute("aria-label","In "+c.place+", "+c.actual+" of 100 people say yes to giving 1% of "+
-   "their income. The average local guess is only "+c.guess+".");
-  el("pg-kick").innerHTML="In "+c.place+", <b>"+c.actual+" of every 100</b> said yes — "+maj(c)+
-   ". People there guess <b>"+c.guess+"</b>. A majority that believes it is a minority stays quiet.";
-  el("pg-sep").innerHTML="A separate question, same study: <b>"+P.global_want_action_pct+
-   "%</b> worldwide want their government to do more. Stated willingness, not behaviour — Andre et al. 2024.";}
+   lamps.forEach(function(l,i2){if(i2<A)l.classList.add("lit");});});});
+  mark.style.left=G+"%";
+  mark.setAttribute("data-side",G<55?"r":"l");
+  mark.firstChild.textContent="people "+(c.place==="World"?"":"there ")+"think the light ends here — "+G;
+  row.setAttribute("aria-label","In "+c.place+", "+A+" of 100 people say yes to giving 1% of "+
+   "their income. The average local guess is only "+G+".");
+  el("pg-kick").innerHTML="In "+c.place+", <b>"+A+" of every 100</b> said yes — "+maj(A)+
+   ". People "+(c.place==="World"?"":"there ")+"guess <b>"+G+
+   "</b>. A majority that believes it is a minority stays quiet.";
+  el("pg-sep").innerHTML=(c.govt!=null?
+   "Same study, separate question: <b>"+Math.round(c.govt)+"%</b> in "+c.place+
+    " want their government to do more"+((WORLD&&WORLD.govt&&c.place!=="World")?
+    " — worldwide, "+Math.round(WORLD.govt)+"%":"")+". ":
+   "A separate question, same study: <b>"+P.global_want_action_pct+
+    "%</b> worldwide want their government to do more. ")+
+   "Stated willingness, not behaviour — Andre et al. 2024 via Our World in Data.";}
+ sel.addEventListener("change",render);
+ if(D.giving)el("pg-give").innerHTML="And the 1% has somewhere vetted to go: <b>"+
+  D.giving.orgs.map(function(o){return o.n;}).join("</b> · <b>")+
+  "</b> (Giving Green 2025&ndash;26), or the pooled <b>"+
+  D.giving.funds.map(function(f){return f.n;}).join("</b> / <b>")+"</b>. Names, links and the "+
+  "honest caveats are in the receipts.";
  render();
 })();
 
@@ -1575,14 +1604,21 @@ var DRAWERS={
    "<p class=\"receipt\">&ldquo;my sky&rdquo; uses your browser&rsquo;s own position request — coordinates "+
    "are rounded and never leave this device</p>";}},
  firstlight:{t:"The study",h:function(){
+  var rows=(P.all&&P.all.length)?P.all:P.countries;
   return "<h4>Construct, precisely</h4><p>Andre, Boneva, Chopra &amp; Falk 2024 (<b>Nature Climate Change</b>): "+
    "~130,000 people, 125 countries. The question: would you contribute <b>1% of your household income, every "+
    "month</b>, to fight climate change? Stated willingness, not observed behaviour — and the exact item wording "+
-   "is re-verified at build. The separate 89% figure is demand for stronger <i>government</i> action.</p>"+
-   "<h4>The numbers</h4>"+
-   tableHTML(["Place","Say they would (%)","Average guess (%)"],
-    P.countries.map(function(c){return [c.place,String(c.actual),String(c.guess)];}))+
-   "<p class=\"receipt\">per-country via Our World in Data (CC-BY) · correcting this misperception measurably moves people (no backfire documented in these studies)</p>";}},
+   "is re-verified at build. The government-action figure is a separate question in the same study.</p>"+
+   "<h4>Every surveyed country</h4>"+
+   tableHTML(["Place","Would give 1% (%)","Average guess (%)","Want gov to do more (%)"],
+    rows.map(function(c){return [c.place,String(c.actual),String(c.guess),
+     c.govt!=null?String(c.govt):"–"];}))+
+   "<p class=\"receipt\">"+(P.owid_attrib||"per-country via Our World in Data (CC-BY)")+
+   " · correcting this misperception measurably moves people (no backfire documented in these studies)</p>"+
+   (D.giving?("<h4>Where money moves</h4><p>"+
+    D.giving.orgs.map(function(o){return "<b>"+o.n+"</b> — "+o.w;}).join(". ")+
+    ". Pooled options: "+D.giving.funds.map(function(f){return "<b>"+f.n+"</b> ("+f.u+")";}).join(" · ")+
+    ".</p><p class=\"receipt\">"+D.giving.framing+" · "+D.giving.src+"</p>"):"");}},
  morning:{t:"The counterweights, sourced",h:function(){
   return "<h4>Each claim, its source</h4><p><b>Renewables &gt; coal, 2025</b> — Ember, Global Electricity Review 2026. "+
    "Won by growth, not coal collapse.</p><p><b>~1 in 4 new cars electric</b> — IEA, Global EV Outlook 2026. "+

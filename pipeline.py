@@ -320,6 +320,65 @@ def fetch_sky():
     return {"stars": ss, "zod": figs, "order": ZOD,
             "src": "Yale Bright Star Catalogue via d3-celestial (Olaf Frohn, BSD-3-Clause); "
                    "alt/az computed in-browser for Delhi (Meeus / Schlyter low-precision algorithms)"}
+# ---------------- perception gap: the full Andre et al. per-country dataset ----------------
+# Andre, Boneva, Chopra & Falk 2024 (Nature Climate Change) — processed by Our World in Data,
+# CC BY 4.0. One CSV holds actual + perceived willingness; a second the demand for government action.
+def fetch_owid_pg():
+    base = "https://ourworldindata.org/grapher/"
+    def cached_csv(slug, name):
+        cf = CACHE / name
+        try:
+            txt = fetch(base + slug + ".csv?v=1&csvType=full&useColumnShortNames=true")
+            cf.write_text(txt)
+        except Exception as e:
+            if not cf.exists(): raise
+            print(f"  !! OWID fetch failed ({e}) — using cached {name}")
+            txt = cf.read_text()
+        return list(csv.DictReader(io.StringIO(txt)))
+    will = cached_csv("willingness-climate-action", "owid_willingness.csv")
+    govt = cached_csv("support-political-climate-action", "owid_govt.csv")
+    gmap = {}
+    for r in govt:
+        try: gmap[r["code"]] = round(float(r["demand_political_action_climate"]), 1)
+        except (KeyError, ValueError, TypeError): pass
+    allc, world = [], None
+    for r in will:
+        try:
+            a = float(r["willingness_contribute_pct_climate"])
+            g = float(r["willingness_contribute_1pct_climate_others"])
+        except (KeyError, ValueError, TypeError): continue
+        row = {"place": r["entity"], "code": r.get("code") or "",
+               "actual": round(a, 1), "guess": round(g, 1)}
+        if row["code"] in gmap: row["govt"] = gmap[row["code"]]
+        if r["entity"] == "World": world = row
+        else: allc.append(row)
+    if len(allc) < 100 or world is None:
+        raise RuntimeError(f"OWID perception data looks wrong: {len(allc)} countries, world={world}")
+    allc.sort(key=lambda x: x["place"])
+    return allc, world
+_allc, _world = fetch_owid_pg()
+out["perception_gap"]["all"] = _allc
+out["perception_gap"]["world"] = _world
+out["perception_gap"]["owid_attrib"] = ("Andre et al. (2024), Globally representative evidence on the "
+    "actual and perceived support for climate action — processed by Our World in Data (CC BY 4.0)")
+print(f"  perception gap: {len(_allc)} countries + World (actual {_world['actual']} / guess {_world['guess']})")
+
+# Where money is vetted to move the needle — names re-checked annually, framings quoted with caveats.
+out["giving"] = {
+ "src": "Giving Green Top Climate Nonprofits 2025-26 (givinggreen.earth); Founders Pledge Climate Fund",
+ "_verify": "recommendation lists and framings re-checked against the named pages annually",
+ "orgs": [
+  {"n": "Clean Air Task Force", "w": "policy advocacy for neglected low-carbon technology"},
+  {"n": "Future Cleantech Architects", "w": "hard-to-abate industry research and EU policy"},
+  {"n": "Good Food Institute", "w": "alternative proteins against livestock emissions"},
+  {"n": "Opportunity Green", "w": "aviation and shipping decarbonisation law and policy"},
+  {"n": "Project InnerSpace", "w": "next-generation geothermal"}],
+ "funds": [{"n": "Giving Green Fund", "u": "givinggreen.earth/giving-green-fund"},
+           {"n": "Founders Pledge Climate Fund", "u": "founderspledge.com/programs/climate-fund"}],
+ "framing": ("Their vetters' own framing: the best picks average roughly $1 per tonne of EXPECTED CO2 "
+             "avoided — a modelled expectation, not measured tonnes — and roughly ten times the impact "
+             "of high-quality offsets. Systems change over offset math.")}
+
 out["sky"] = fetch_sky()
 print(f"  sky: {len(out['sky']['stars'])} stars ≤ mag 5.0 · {len(out['sky']['zod'])} zodiacal figures (incl. Ophiuchus)")
 
