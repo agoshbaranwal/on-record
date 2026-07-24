@@ -782,7 +782,7 @@ var __ATMO=(function(){
 "  float spike=exp(-abs(vo.x)*70.)*exp(-abs(vo.y)*320.)+exp(-abs(vo.y)*70.)*exp(-abs(vo.x)*320.);\n"+
 "  c+=vec3(1.,.975,.92)*venAmt*vtw*(exp(-vd*vd*42000.)*2.0+exp(-vd*110.)*.10+spike*.13);}\n"+
 " if(uMetT0>0.){\n"+                                              // a meteor, when the night grants one
-"  float mp=(uT-uMetT0)/1.15;\n"+
+"  float mp=(uT-uMetT0)/1.6;\n"+
 "  if(mp>0.&&mp<1.){\n"+
 "   float sx=.34+fract(uMetSeed*7.13)*.56,sy=.03+fract(uMetSeed*3.71)*.19;\n"+
 "   vec2 dir=normalize(vec2(-.55-fract(uMetSeed*11.7)*.35,.34+fract(uMetSeed*5.9)*.30));\n"+
@@ -902,7 +902,7 @@ var __ATMO=(function(){
   if(reduce)expB=to;wake();}
  function meteor(){if(reduce)return 0;
   metT0=((performance.now()-t0)/1000)%3600;metSeed=Math.random()*97.3;
-  wake();return 1150;}                       // flight time in ms, for the sound to match
+  wake();return 1600;}                       // flight time in ms, for the sound to match
  el("stage").classList.add("gl");
  size();draw();wake();
  return {ok:true,setState:setState,
@@ -1599,7 +1599,7 @@ var __MET=(function(){
   if(CH[cur]&&CH[cur].id==="night"&&!document.hidden&&__ATMO.ok){
    __ATMO.meteor();if(window.__SND&&__SND.whoosh)__SND.whoosh();}}
  function schedule(){if(t)clearTimeout(t);
-  var wait=first?(2500+Math.random()*3500):(9000+Math.random()*16000);
+  var wait=first?(1800+Math.random()*1700):(7000+Math.random()*9000);
   first=false;
   t=setTimeout(function(){fire();schedule();},wait);}  // never on a metronome
  return {start:function(){if(!reduce&&!t)schedule();},
@@ -1609,18 +1609,20 @@ var __MET=(function(){
 if(Q.get("met")==="1")setTimeout(function(){__MET.fire();},300);   // verification hook
 
 /* ═══════════ THE SOUND OF EACH CHAMBER — synthesised, nothing downloaded ═══════════
-   Brown-noise wind through a moving filter, a low drone for enclosed places, and
-   scheduled voices: cicadas at midday, crickets at night, birds at first light. */
+   Not noise for its own sake: each chamber gets a quiet tonal ground (two slowly
+   beating sines + a soft fifth — a tone, not a tune), wind that BREATHES in slow
+   uneven gusts instead of hissing steadily, and the natural voices that place you:
+   cicadas in the day heat, crickets at night, birds at first light. */
 var __SND=(function(){
  var AC=window.AudioContext||window.webkitAudioContext;
  if(!AC)return {ok:false,toggle:function(){},chamber:function(){},whoosh:function(){}};
- var ctx,master,noise,lp,windG,drone,droneG,started=false,on=false,evT=0,st=null;
- var VOICE={sky:{lp:430,wind:.55,dr:0,drf:58,ev:null,rate:0},
-   ground:{lp:1050,wind:.30,dr:0,drf:58,ev:"cicada",rate:2600},
-   night:{lp:250,wind:.14,dr:.020,drf:62,ev:"cricket",rate:900},
-   firstlight:{lp:560,wind:.20,dr:.008,drf:70,ev:"bird",rate:2400},
-   morning:{lp:1250,wind:.26,dr:0,drf:58,ev:"bird",rate:5200},
-   bedrock:{lp:150,wind:.09,dr:.026,drf:44,ev:null,rate:0}};
+ var ctx,master,noise,lp,gustG,windG,drone,drone2,drone3,droneG,started=false,on=false,evT=0,st=null;
+ var VOICE={sky:{lp:380,wind:.30,dr:.012,drf:110,ev:null,rate:0},
+   ground:{lp:900,wind:.20,dr:.008,drf:73,ev:"cicada",rate:2200},
+   night:{lp:220,wind:.10,dr:.016,drf:55,ev:"cricket",rate:900},
+   firstlight:{lp:520,wind:.15,dr:.012,drf:82,ev:"bird",rate:2200},
+   morning:{lp:1100,wind:.18,dr:.009,drf:98,ev:"bird",rate:4800},
+   bedrock:{lp:140,wind:.06,dr:.022,drf:41,ev:null,rate:0}};
  function build(){
   ctx=new AC();
   master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);
@@ -1628,14 +1630,19 @@ var __SND=(function(){
   for(var i=0;i<len;i++){var w=Math.random()*2-1;last=(last+.02*w)/1.02;d[i]=last*3.1;}
   noise=b;
   var s=ctx.createBufferSource();s.buffer=noise;s.loop=true;
-  lp=ctx.createBiquadFilter();lp.type="lowpass";lp.frequency.value=430;lp.Q.value=.6;
-  windG=ctx.createGain();windG.gain.value=.5;
-  s.connect(lp);lp.connect(windG);windG.connect(master);s.start();
-  var lfo=ctx.createOscillator(),lg=ctx.createGain();      // gusts
-  lfo.frequency.value=.045;lg.gain.value=170;lfo.connect(lg);lg.connect(lp.frequency);lfo.start();
-  drone=ctx.createOscillator();drone.type="sine";drone.frequency.value=58;
-  droneG=ctx.createGain();droneG.gain.value=0;
-  drone.connect(droneG);droneG.connect(master);drone.start();
+  lp=ctx.createBiquadFilter();lp.type="lowpass";lp.frequency.value=380;lp.Q.value=.6;
+  gustG=ctx.createGain();gustG.gain.value=.72;               // the breath of the wind
+  windG=ctx.createGain();windG.gain.value=.3;
+  s.connect(lp);lp.connect(gustG);gustG.connect(windG);windG.connect(master);s.start();
+  var lfo=ctx.createOscillator(),lg=ctx.createGain();        // slow filter sweep
+  lfo.frequency.value=.038;lg.gain.value=140;lfo.connect(lg);lg.connect(lp.frequency);lfo.start();
+  [[.053,.21],[.131,.11]].forEach(function(p){               // two uneven gust cycles
+   var o=ctx.createOscillator(),g=ctx.createGain();
+   o.frequency.value=p[0];g.gain.value=p[1];o.connect(g);g.connect(gustG.gain);o.start();});
+  droneG=ctx.createGain();droneG.gain.value=0;droneG.connect(master);
+  function dOsc(f,g){var o=ctx.createOscillator(),gn=ctx.createGain();o.type="sine";
+   o.frequency.value=f;gn.gain.value=g;o.connect(gn);gn.connect(droneG);o.start();return o;}
+  drone=dOsc(110,1);drone2=dOsc(110*1.0045,.6);drone3=dOsc(165,.35); // root · beat · fifth
   started=true;if(st)apply(st,.05);
   evT=setInterval(tick,700);
  }
@@ -1665,7 +1672,9 @@ var __SND=(function(){
   lp.frequency.setTargetAtTime(v.lp,t,k/3);
   windG.gain.setTargetAtTime(v.wind,t,k/3);
   droneG.gain.setTargetAtTime(v.dr,t,k/3);
-  drone.frequency.setTargetAtTime(v.drf,t,k/3);}
+  drone.frequency.setTargetAtTime(v.drf,t,k/3);
+  drone2.frequency.setTargetAtTime(v.drf*1.0045,t,k/3);
+  drone3.frequency.setTargetAtTime(v.drf*1.5,t,k/3);}
  function vol(x){if(!started)return;
   master.gain.setTargetAtTime(x,ctx.currentTime,.35);}
  function toggle(force){
@@ -1683,10 +1692,10 @@ var __SND=(function(){
   whoosh:function(){if(!on||!started)return;
    var t=ctx.currentTime,s=ctx.createBufferSource();s.buffer=noise;
    var bp=ctx.createBiquadFilter();bp.type="bandpass";bp.Q.value=1.1;
-   bp.frequency.setValueAtTime(1700,t);bp.frequency.exponentialRampToValueAtTime(280,t+1.1);
+   bp.frequency.setValueAtTime(1700,t);bp.frequency.exponentialRampToValueAtTime(280,t+1.5);
    var g=ctx.createGain();g.gain.setValueAtTime(.0001,t);
-   g.gain.exponentialRampToValueAtTime(.035,t+.2);g.gain.exponentialRampToValueAtTime(.0001,t+1.15);
-   s.connect(bp);bp.connect(g);g.connect(master);s.start(t);s.stop(t+1.2);},
+   g.gain.exponentialRampToValueAtTime(.035,t+.28);g.gain.exponentialRampToValueAtTime(.0001,t+1.6);
+   s.connect(bp);bp.connect(g);g.connect(master);s.start(t);s.stop(t+1.65);},
   wanted:function(){try{return localStorage.getItem("onrecord_snd")!=="0";}catch(e){return true;}}};
 })();
 window.__SND=__SND;
