@@ -373,8 +373,13 @@ svg{display:block;width:100%;height:auto}
   -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 46px),transparent)}
 #p-bedrock .hww{max-width:64ch;font-size:12.5px;line-height:1.6;color:var(--bone-2);margin-top:10px}
 #p-bedrock .hww b{color:var(--bone);font-weight:500}
+/* the archive: every source is a catalogued record on a shelf */
 #p-bedrock .srcs{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-  gap:12px 24px;font-family:var(--mono);font-size:10.5px;line-height:1.7;color:var(--bone-3);max-width:940px}
+  gap:14px 28px;font-family:var(--mono);font-size:10.5px;line-height:1.7;color:var(--bone-3);max-width:940px}
+#p-bedrock .srcs>div{position:relative;padding:8px 0 10px 16px;
+  border-left:1px solid rgba(242,231,204,.22);border-bottom:1px solid rgba(242,231,204,.10)}
+#p-bedrock .srcs>div::before{content:attr(data-cat);position:absolute;left:-1px;top:-9px;
+  font-size:9px;letter-spacing:.2em;color:rgba(240,188,98,.55);background:transparent;padding-right:6px}
 #p-bedrock .srcs b{display:block;color:var(--bone-2);letter-spacing:.1em;text-transform:uppercase;
   font-size:10px;margin-bottom:3px}
 #p-bedrock .limits{margin-top:18px;max-width:64ch;font-size:11px;line-height:1.6;color:var(--bone-3)}
@@ -487,11 +492,16 @@ svg{display:block;width:100%;height:auto}
   .rung .pill{position:absolute;width:1px;height:1px;overflow:hidden;
     clip-path:inset(50%);padding:0;border:0}          /* name survives for screen readers */
   .rung .dot{position:static;width:9px;height:9px;border-radius:50%}
-  .duo{grid-template-columns:1fr;gap:14px}
-  #skycount{top:52%}
-  #dial{bottom:64px;width:min(400px,86vw)}
+  .duo{grid-template-columns:1fr;grid-template-rows:auto auto;flex:none;height:auto;gap:14px}
+  #skycount{top:44%}
+  #axisnote{display:none}                             /* dense mobile: the drawer keeps the mapping */
+  #dial{bottom:52px;width:min(400px,86vw)}
   #tease{display:none}
-  #skycap{right:5%;bottom:11%}
+  #skycap{right:12px;bottom:72px}
+  #skycap .zname{font-size:10px}
+  #skycap .zsub{font-size:9px;max-width:60vw}
+  #showerbox{margin:12px 0 20px;max-width:100%}
+  #gplace input{width:140px}
   #soundbtn{right:14px;bottom:auto;top:12px;padding:8px 10px}   /* vitals hide here — corner is free */
   .hl{right:8px}
   #p-sky .years{font-size:clamp(56px,15vw,96px)}
@@ -1098,13 +1108,14 @@ function go(i,focusH2){
  if(__ATMO.ok){
   __ATMO.setState(c.id,{dur:Math.min(2100,1500+300*(steps-1))});
   if(c.id==="night"&&prev.id!=="night")__ATMO.exposure(.5,1,950);      // eyes adjust to the dark
-  if(c.id==="morning"&&prev.id!=="morning")__ATMO.exposure(1.35,1,700); // daylight bloom
+  else if(c.id==="morning"&&prev.id!=="morning")__ATMO.exposure(1.35,1,700); // daylight bloom
+  else if((prev.id==="sky")!==(c.id==="sky"))__ATMO.exposure(.78,1,900);     // crossing the budget horizon dims the light
  }
  el("panes").classList.toggle("up",i<prevI);
  /* the night gets its constellation and its meteors; every chamber gets its own air */
  if(__SKY){if(c.id==="night")__SKY.enter();else __SKY.leave();}
  if(__MET){if(c.id==="night")__MET.start();else __MET.stop();}
- if(__SND)__SND.chamber(c.id);
+ if(__SND){__SND.chamber(c.id);if(__SND.gust)__SND.gust();}            // moving through air is audible
  document.querySelectorAll(".atmo").forEach(function(a){a.classList.toggle("on",a.id==="atmo-"+c.id);});
  document.getElementById("stage").classList.toggle("thm-ink",!!c.ink);
  document.querySelectorAll(".pane").forEach(function(p){
@@ -1662,7 +1673,11 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
   "<div><b>The people</b>Andre, Boneva, Chopra &amp; Falk 2024, Nature Climate Change<br>per-country via Our World in Data (CC-BY)</div>"+
   "<div><b>The cohort &amp; the night</b>Thiery et al. 2021, Science<br>Padma Kumari et al. 2007, GRL — aerosol dimming<br>attribution: WWA · ClimaMeter · Climate Central</div>"+
   "<div><b>The counterweights</b>Ember GER 2026 · IEA EV Outlook 2026<br>Climate Action Tracker · WMO/UNEP Ozone — all “verify at build”</div>"+
-  "<div><b>The night sky</b>Yale Bright Star Catalogue via d3-celestial (BSD-3, O. Frohn)<br>alt/az computed client-side for Delhi — IAU 1982 sidereal time; Sun/Moon/Venus per Schlyter (display-grade)</div>";
+  "<div><b>The night sky</b>Yale Bright Star Catalogue via d3-celestial (BSD-3, O. Frohn)<br>alt/az computed client-side for Delhi — IAU 1982 sidereal time; Sun/Moon/Venus per Schlyter (display-grade)</div>"+
+  "<div><b>The meteors</b>IMO Meteor Shower Calendar 2026, ed. J. Rendtel — imo.net<br>parent bodies per the IMO working list · display compression declared</div>"+
+  "<div><b>The giving</b>Giving Green Top Climate Nonprofits 2025–26<br>Founders Pledge Climate Fund · framings quoted with their caveats</div>";
+ document.querySelectorAll("#srcs>div").forEach(function(d,i){   // catalogue numbers: this is an archive
+  d.setAttribute("data-cat","REC "+("0"+(i+1)).slice(-2));});
  el("limits").innerHTML="<b>Limitations, plainly.</b> ERA5's ~30 km grid smooths valley heat — day-counts are "+
   "model-dependent, presented as a descriptive reanalysis record, not station ground-truth. The 0.88 °C "+
   "pre-industrial offset is a stated assumption. Carbon budgets are revised yearly; each is published against "+
@@ -2310,6 +2325,11 @@ var __SND=(function(){
   return on;}
  return {ok:true,toggle:toggle,
   chamber:function(n){st=n;if(started&&on)apply(n,1.4);},
+  gust:function(){if(!started||!on)return;                 // travel is a breath of wind
+   var t=ctx.currentTime,g=windG.gain,v=VOICE[st];
+   var base=(v?v.wind:.2)*((st==="sky")?(1+(brn-.62)*1.2):1);
+   g.cancelScheduledValues(t);g.setTargetAtTime(Math.min(1,base*2.2+.06),t,.12);
+   g.setTargetAtTime(base,t+.4,.5);},
   burn:function(b){brn=Math.max(0,Math.min(1,b));if(started&&on&&st==="sky")apply("sky",.5);},
   whoosh:function(){if(!on||!started)return;
    var t=ctx.currentTime,s=ctx.createBufferSource();s.buffer=noise;
