@@ -291,6 +291,7 @@ svg{display:block;width:100%;height:auto}
   text-transform:uppercase;color:var(--amber);min-height:36px}
 #tease button::after{content:" ↓"}
 
+.chartwrap{max-width:1000px;margin-top:14px}
 /* --- shared chamber layout (ground/night/firstlight) --- */
 .duo{display:grid;grid-template-columns:minmax(250px,330px) minmax(0,1fr);gap:26px;
   flex:1;min-height:0;margin-top:12px;align-items:start}
@@ -640,38 +641,55 @@ svg{display:block;width:100%;height:auto}
       </section>
 
       <!-- GROUND -->
-      <section class="pane" id="p-ground" aria-label="Ground — Seville on its own record" hidden>
-        <h2 tabindex="-1">Down here, the budget becomes afternoons.</h2>
-        <div id="gplace">
-          <input id="gq" type="search" placeholder="any city on Earth" aria-label="Search a place to draw its record">
-          <button type="button" id="gq-go">draw its record</button>
-          <button type="button" id="gq-mine">my ground</button>
-          <button type="button" id="gq-sev" hidden>back to Seville</button>
-          <span id="gq-status" aria-live="polite"></span>
-        </div>
-        <div class="duo">
-          <div class="copy">
-            <p class="bignum" id="g-today">– <small>forecast today <span class="chip">provisional</span></small></p>
-            <p class="fact-line" id="g-fact"></p>
-            <p class="fact-line" id="g-freq" style="font-size:12px"></p>
-            <div class="finder">
-              <label for="yr">Type a year you remember:</label>
-              <input type="number" id="yr" min="1940" max="2025" placeholder="1985" inputmode="numeric">
+      <section class="pane" id="p-ground" aria-label="Ground — your city on its own record" hidden>
+        <div class="beats">
+          <!-- BEAT 1 — whose ground this is, and that you can change it -->
+          <div class="beat">
+            <h2 tabindex="-1" id="g-h2">Here is Seville, day by day, since 1940.</h2>
+            <p class="lead">Every temperature in this chapter comes from ERA5, a scientific
+              reconstruction of past weather used by meteorologists worldwide. This is not a
+              global average. It is the ground under your feet.</p>
+            <div id="gplace">
+              <input id="gq" type="search" placeholder="Search any city on Earth" aria-label="Search a place to draw its record">
+              <button type="button" id="gq-go">draw its record</button>
+              <button type="button" id="gq-mine">my ground</button>
+              <button type="button" id="gq-sev" hidden>back to Seville</button>
+              <span id="gq-status" aria-live="polite"></span>
             </div>
-            <span class="out mono finder" id="yr-out" aria-live="polite"></span>
+            <p class="beat-cue">scroll &mdash; what its record shows &darr;</p>
+          </div>
+
+          <!-- BEAT 2 — the then-vs-now count: the chapter's one number -->
+          <div class="beat">
+            <h2 id="g-count-h2">Scorching days here: <b class="num" id="g-then">–</b> then,
+              <b class="num" id="g-now">–</b> now.</h2>
+            <p class="lead" id="g-fact"></p>
+            <p class="fact-line" id="g-freq" style="font-size:12.5px"></p>
             <p class="receipt" id="g-receipt"></p>
             <button class="drawbtn" data-drawer="ground">Receipts &amp; the full record</button>
           </div>
-          <div class="chart"><div class="plate">
-            <div id="recwin"></div>
-            <div class="legend">
-              <span><i style="background:#5FA8DC"></i>1951–80 avg</span>
-              <span><i style="background:#E8886B"></i>last-30-yr avg</span>
-              <span><i class="dash" style="color:var(--bone-4)"></i>hottest ever</span>
-              <span><i style="background:#F2E7CC"></i>2026</span>
-              <span><i class="dot" style="background:#F0BC62"></i>today</span>
+
+          <!-- BEAT 3 — today against 86 versions of today, and the finder -->
+          <div class="beat">
+            <h2>Today, against every version of today since 1940.</h2>
+            <p class="bignum" id="g-today">– <small>forecast today <span class="chip">provisional</span></small></p>
+            <div class="chartwrap"><div class="plate">
+              <div id="recwin"></div>
+              <div class="legend">
+                <span><i style="background:#5FA8DC"></i>1951–80 avg</span>
+                <span><i style="background:#E8886B"></i>last-30-yr avg</span>
+                <span><i class="dash" style="color:var(--bone-4)"></i>hottest ever</span>
+                <span><i style="background:#F2E7CC"></i>this year</span>
+                <span><i class="dot" style="background:#F0BC62"></i>today</span>
+              </div>
+            </div></div>
+            <div class="finder">
+              <label for="yr">Type a year, 1940 to now, to light up its line:</label>
+              <input type="number" id="yr" min="1940" max="2025" placeholder="1985" inputmode="numeric">
             </div>
-          </div></div>
+            <span class="out mono finder" id="yr-out" aria-live="polite"></span>
+            <p class="beat-cue">days are only half the record &mdash; the other half is after dark &darr;</p>
+          </div>
         </div>
       </section>
 
@@ -1405,6 +1423,8 @@ function buildGround(V){
  el("recwin").innerHTML="";
  var thenN=mean(Gc.days_ge35_per_year,1951,1980),nowN=mean(Gc.days_ge35_per_year,LF-9,LF);
  var wnThen=mean(Gc.warm_nights_ge25_per_year,1951,1980),wnNow=mean(Gc.warm_nights_ge25_per_year,LF-9,LF);
+ if(el("g-h2"))el("g-h2").textContent="Here is "+PLACE+", day by day, since 1940.";
+ if(el("g-then")){el("g-then").textContent=thenN.toFixed(0);el("g-now").textContent=nowN.toFixed(0);}
 
  /* record-window chart */
  var W=940,Hh=400,mL=38,mR=14,mT=12,mB=24,n=RWc.labels.length;
@@ -1455,7 +1475,10 @@ function buildGround(V){
   el("yr-out").textContent=yr+" — that summer ran "+(a>=0?"+":"")+a.toFixed(2)+" °C vs 1951–80"+
    (pk!=null?(" · hottest day "+pk.toFixed(1)+" °C · traced in amber"):"");}
  el("yr").addEventListener("input",function(){var v=+this.value;
-  if(v>=1940&&v<=2025)setYear(v);else{hiP.setAttribute("stroke-opacity",0);el("yr-out").textContent="";}});
+  if(v>=1940&&v<=2025)setYear(v);
+  else{hiP.setAttribute("stroke-opacity",0);
+   el("yr-out").textContent=(this.value.length>=4)?
+    "The record runs 1940 to "+LF+". Try a year between those.":"";}});
  var qy=parseInt(Q.get("yr"),10);if(isFinite(qy)){el("yr").value=qy;setYear(qy);}
 
  /* drawer content for ground: stripes + key + tables */
@@ -1493,10 +1516,12 @@ function buildGround(V){
   el("g-today").innerHTML=(t.tmax!=null?t.tmax.toFixed(1)+"°":"—")+
    "<small> forecast, "+t.dateLabel+" <span class=\"chip\">"+
    (t.mode==="live"?"live · provisional":"snapshot · built "+t.fetched)+"</span></small>";
-  el("g-fact").innerHTML="In "+t.n+" years, no "+t.dateLabel+" here has passed <b class=\"mono\">"+
+  el("g-fact").innerHTML="A scorching day here is one "+THR.hotLabel+". Early in the record this "+
+   "place had about "+thenN.toFixed(0)+" of them a year. In recent years, about "+nowN.toFixed(0)+
+   ". Warm nights that never cool "+THR.nightLabel+" went from <b>"+wnThen.toFixed(1)+"</b> to <b>"+
+   wnNow.toFixed(1)+"</b> a year. And in "+t.n+" years, no "+t.dateLabel+" here has passed <b class=\"mono\">"+
    t.rec.toFixed(1)+"</b> °C ("+t.recy+")."+(isRec?" <b>Today's forecast would pass it.</b>":"")+
-   " Days "+THR.hotLabel+": <b>"+thenN.toFixed(0)+" → "+nowN.toFixed(0)+"</b> a year. "+
-   "Nights that never cool "+THR.nightLabel+": <b>"+wnThen.toFixed(1)+" → "+wnNow.toFixed(1)+"</b>.";
+   " This describes what happened. It does not, by itself, say why.";
   el("g-freq").textContent=(t.h40a||t.h40b)?
    ("A 40 °C day within two weeks of this date came "+t.h40a+" summers in 30 (1951–80). "+
     "In the last thirty years: "+t.h40b+" in 30."):"";
