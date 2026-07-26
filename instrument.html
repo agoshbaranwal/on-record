@@ -1,4 +1,3 @@
-<title>On Record — the living atmosphere</title>
 <style>
 /*__FONTS__*/
 /* ============================================================================
@@ -497,6 +496,36 @@ svg{display:block;width:100%;height:auto}
 .sharefallback{display:none;width:100%;margin-top:8px}
 .sharefallback textarea{width:100%;font-family:var(--mono);font-size:10.5px;padding:9px;
   border:1px solid var(--ink-hair);border-radius:3px;background:#FFFBF0;color:var(--ink);min-height:64px}
+.sharecard button.share-minor{background:none;color:var(--ink-2);border:0;border-bottom:1px solid var(--ink-hair);
+  border-radius:0;padding:8px 2px;font-size:10.5px;letter-spacing:.04em;min-height:38px}
+.sharecard button.share-minor:hover{color:var(--ink)}
+/* Bedrock "take it with you" toolkit — every record leaves as image / citation / CSV */
+#takeaway{margin-top:12px;display:flex;flex-direction:column;max-width:660px}
+.take-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  padding:11px 0;border-top:1px solid var(--bone-hair)}
+.take-h b{font-weight:500;color:var(--bone);font-size:13px}
+.take-h span{display:block;font-family:var(--mono);font-size:10.5px;color:var(--bone-3);margin-top:2px}
+.take-btns{display:flex;gap:6px;flex-wrap:wrap}
+.take-btns button{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--bone-2);background:none;border:1px solid var(--bone-4);border-radius:2px;padding:7px 11px;min-height:36px}
+.take-btns button:hover{color:var(--bone);border-color:var(--bone-2)}
+/* print one-pager — the whole argument survives on paper, fully attributed */
+#print-sheet{display:none}
+@media print{
+  #backdrop,#atmo-gl,#skymap,#ladder,#mast,#budget-band,#soundbtn,#intro,#panes,#drawer,#whatis{display:none!important}
+  html,body{background:#fff!important}
+  #print-sheet{display:block!important;color:#111;font-family:var(--sg);padding:24px 28px;max-width:none}
+  #print-sheet *{color:#111!important}
+  #print-sheet h1{font-size:20px;font-weight:500;margin:0 0 6px;letter-spacing:-.01em}
+  #print-sheet .pintro{font-size:12px;line-height:1.5;margin:0 0 14px;max-width:64ch}
+  #print-sheet .pstripes{display:flex;height:30px;margin:0;border-radius:2px;overflow:hidden;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #print-sheet .pstripes i{flex:1 1 0}
+  #print-sheet .pcap{font-family:var(--mono);font-size:9.5px;color:#555!important;margin:5px 0 12px}
+  #print-sheet .pcites{list-style:none;padding:0;margin:8px 0}
+  #print-sheet .pcites li{font-size:12px;line-height:1.5;margin-bottom:11px;padding-left:12px;border-left:2px solid #b91c2b}
+  #print-sheet .pfoot{font-family:var(--mono);font-size:10px;color:#555!important;margin-top:18px;border-top:1px solid #ccc;padding-top:8px}
+}
 
 /* --- bedrock (the archive chamber may scroll internally) --- */
 #p-bedrock .arch{flex:1;min-height:0;overflow-y:auto;margin-top:12px;padding-right:10px;
@@ -983,9 +1012,10 @@ svg{display:block;width:100%;height:auto}
               study has found it pushes people the other way. So tell one person what you just saw.</p>
             <div class="sharecard">
               <div class="mini" id="share-mini" aria-hidden="true"></div>
-              <button id="share-btn" type="button">Share Seville&rsquo;s record with one person</button>
+              <button id="share-btn" type="button">Save Seville&rsquo;s record <span aria-hidden="true">&rarr;</span></button>
+              <button id="share-cite" type="button" class="share-minor">copy the sentence</button>
               <div class="sharefallback" id="share-fallback">
-                <label class="receipt" for="share-text">Couldn&rsquo;t reach the clipboard &mdash; select and copy:</label>
+                <label class="receipt" for="share-text">The caption &mdash; select and copy it to post with the image:</label>
                 <textarea id="share-text" readonly></textarea>
               </div>
             </div>
@@ -1007,6 +1037,11 @@ svg{display:block;width:100%;height:auto}
           <p class="hww" id="budget-notes" style="margin-top:6px"></p>
           <div class="dtable" id="t-budget" tabindex="0"></div>
           <div class="srcs" id="srcs"></div>
+          <h2 style="font-size:15px;margin-top:22px">Take it with you</h2>
+          <p class="hww" style="margin-top:6px;max-width:64ch">Every record can leave as a self-attributing image, a one-line
+            citation, or a CSV — each carries its own named source, permalink and date, so a screenshot or a downloaded file
+            can never lose where it came from. All computed outputs are <b>CC BY 4.0</b>.</p>
+          <div id="takeaway"></div>
           <div class="limits" id="limits"></div>
           <p class="colophon" id="colophon"></p>
         </div>
@@ -2157,22 +2192,241 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
  svg.setAttribute("width","100%");svg.setAttribute("height","26");
  S.anom.forEach(function(a,i){svg.appendChild(E("rect",{x:i,y:0,width:1.02,height:10,fill:tcol(a)}));});
  el("share-mini").appendChild(svg);
- var shareText="Seville, on record: days at or above 35°C went from "+
-  mean(G.days_ge35_per_year,1951,1980).toFixed(0)+" a year (1951–80) to "+
-  mean(G.days_ge35_per_year,2016,2025).toFixed(0)+" now. Nights that never drop below 25°C: "+
-  mean(G.warm_nights_ge25_per_year,1951,1980).toFixed(1)+" → "+
-  mean(G.warm_nights_ge25_per_year,2016,2025).toFixed(1)+" a year. Source: ERA5 reanalysis. — On Record";
- var btn=el("share-btn"),orig=btn.textContent;
- function ok(){btn.textContent="Copied ✓";el("sr-status").textContent="Record copied";
-  setTimeout(function(){btn.textContent=orig;},2000);}
- function fail(){el("share-text").value=shareText;el("share-fallback").style.display="block";
-  btn.textContent="Couldn't copy — select below";
-  el("sr-status").textContent="Couldn't copy — a text field with the record is shown";
-  setTimeout(function(){btn.textContent=orig;},3000);}
- btn.addEventListener("click",function(){
-  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(shareText).then(ok,fail);
-  else fail();});
+ var btn=el("share-btn"),orig=btn.innerHTML,cbtn=el("share-cite");
+ function flash(m,el2){var t=el2||btn,o=(el2?el2.textContent:orig);t.textContent=m;el("sr-status").textContent=m;
+  setTimeout(function(){if(el2)el2.textContent=o;else btn.innerHTML=orig;},2400);}
+ function showCap(){el("share-text").value=__ART.cite("seville");el("share-fallback").style.display="block";}
+ btn.addEventListener("click",function(){if(!window.__ART)return;btn.textContent="Preparing…";
+  __ART.share("seville","land").then(function(res){
+   if(res==="shared")flash("Shared ✓");
+   else if(res==="saved"){flash("Saved — caption copied ✓");showCap();}
+   else if(res==="cancel")btn.innerHTML=orig;
+   else{flash("Couldn't save — copy the sentence below");showCap();}
+  },function(){flash("Couldn't save");});});
+ if(cbtn)cbtn.addEventListener("click",function(){
+  var t=__ART.cite("seville");
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(function(){flash("Copied ✓",cbtn);},function(){showCap();flash("Select below",cbtn);});
+  else{showCap();}});
 })();
+
+/* ============ Phase 6 — THE ARTIFACT LAYER: self-attributing evidence cards ============
+   One drawCard() engine on a fresh 2D canvas (never a WebGL screenshot). The same code path
+   draws the on-demand share PNG and can bake the build-time OG image, so they cannot disagree.
+   Every card carries its own NAMED source, permalink and dated stamp — a crop can't lose provenance. */
+var __ART=(function(){
+ var SG="SpaceGroteskX",MONO='ui-monospace,Menlo,"DejaVu Sans Mono",monospace';
+ var BONE="#F2E7CC",INK="#08201F",INK2="rgba(8,32,31,.66)",INK3="rgba(8,32,31,.60)",HAIR="rgba(8,32,31,.20)",AMBER="#C98A2E",HOT="rgb(178,24,43)",TEAL="#155048";
+ var BASE="agoshbaranwal.github.io/on-record/";
+ var STAMP="recorded "+((typeof B!=="undefined"&&B.now_label)||"");
+ var LASTFULL=(typeof S!=="undefined"&&S.anom)?(S.year0+S.anom.length-1):2025;  // last COMPLETE year (the stripes are the authority) — never let the partial current year leak into a card or CSV
+ function R(n){return Math.round(n);}
+ function ls(x,v){if(x.letterSpacing!==undefined)x.letterSpacing=(v||0)+"px";}
+ function T(x,str,px,font,color,al,lsp){x.font=(font===SG?"500 ":"")+px+"px "+font;
+  x.fillStyle=color;x.textAlign=al||"left";x.textBaseline="alphabetic";ls(x,lsp);x.fillText(str,x.__ox||0,x.__oy||0);}
+ function put(x,str,ax,ay,px,font,color,al,lsp){x.__ox=ax;x.__oy=ay;T(x,str,px,font,color,al,lsp);}
+
+ function recs(){
+  var was=R(mean(G.days_ge35_per_year,1951,1980)),now=R(mean(G.days_ge35_per_year,2016,2025));
+  var lo=B.estimates[0],hi=B.estimates[1];   // sorted ascending; lo is the lower ledger
+  function sname(e){return /IGCC/i.test(e.label||"")?"IGCC 2025":"GCB 2025";}
+  var yrsLo=(lo.remaining_now_gt/B.rate_now_gt),yrsHi=(hi.remaining_now_gt/B.rate_now_gt);
+  var yrs=yrsLo.toFixed(1)===yrsHi.toFixed(1)?yrsLo.toFixed(1):yrsLo.toFixed(1)+"–"+yrsHi.toFixed(1);
+  var pw=R(P.world.actual),pg=R(P.world.guess);
+  return {
+   seville:{key:"seville",kind:"climb",place:"SEVILLE",title:"Seville, on record",
+    hero:String(now),wasN:was,label:"days a year at or above 35 °C",
+    sub:"2016–25 average · was "+was+" a year in 1951–80",
+    series:G.days_ge35_per_year.filter(function(r){return r.year<=LASTFULL;}),
+    src:"ERA5 via Open-Meteo · Seville · daily max ≥ 35 °C",url:BASE+"?chamber=ground",
+    cite:"In Seville, days at or above 35 °C rose from "+was+" a year (1951–80 average) to "+now+" (2016–25). Source: ERA5 reanalysis via Open-Meteo. On Record — "+BASE+"?chamber=ground"},
+   budget:{key:"budget",kind:"ledger",place:"THE SKY",title:"The carbon budget, on record",
+    hero:yrs,heroUnit:"years",label:"of budget left for a ~50% chance of staying under 1.5 °C",
+    sub:"at today’s ~"+R(B.rate_now_gt)+" GtCO₂/yr · "+R(lo.remaining_now_gt)+"–"+R(hi.remaining_now_gt)+" Gt remaining · spent ~"+R(B.now_dec+yrsLo),
+    lo:lo.remaining_now_gt,hi:hi.remaining_now_gt,loName:sname(lo),hiName:sname(hi),loYrs:yrsLo,hiYrs:yrsHi,
+    src:sname(lo)+" & "+sname(hi)+" · re-anchored to today",url:BASE+"?chamber=sky",
+    cite:"About "+R(lo.remaining_now_gt)+"–"+R(hi.remaining_now_gt)+" GtCO₂ remains for a ~50% chance of staying under 1.5 °C — roughly "+yrs+" years at today’s ~"+R(B.rate_now_gt)+" Gt/yr. Source: "+sname(lo)+" / "+sname(hi)+". On Record — "+BASE+"?chamber=sky"},
+   perception:{key:"perception",kind:"gap",place:"ALMOST EVERYONE",title:"The gap, on record",
+    hero:String(pw),heroUnit:"%",label:"would give 1% of income — most guess only "+pg+"%",
+    sub:"125 countries · a survey of stated willingness, not behaviour",
+    a:pw,g:pg,src:"Andre et al. 2024 · via Our World in Data · 125 countries",url:BASE+"?chamber=firstlight",
+    cite:"Across 125 countries, "+pw+"% say they would give 1% of income to fight climate change; people guess only "+pg+"%. Source: Andre et al. 2024 (Our World in Data). On Record — "+BASE+"?chamber=firstlight"}
+  };
+ }
+ var REC=null;function rec(k){if(!REC)REC=recs();return REC[k];}
+
+ function spine(x,W,hpx){var a=S.anom,n=a.length,w=W/n;
+  for(var i=0;i<n;i++){x.fillStyle=tcol(a[i]);x.fillRect(Math.floor(i*w),0,Math.ceil(w)+1,hpx);}}
+ function mast(x,W,r,m){put(x,"ON RECORD",m,m+2,20,SG,INK,"left",3);
+  x.beginPath();x.arc(m+152,m-4,4,0,6.2832);x.fillStyle=AMBER;x.fill();
+  put(x,r.place,W-m,m+2,20,SG,INK2,"right",3);}
+ function footer(x,W,H,r,m){var fy=H-m-46;
+  x.strokeStyle=HAIR;x.lineWidth=1;x.beginPath();x.moveTo(m,fy);x.lineTo(W-m,fy);x.stroke();
+  put(x,r.src,m,fy+26,17,MONO,INK2,"left",0);
+  put(x,"ON RECORD · "+r.url,m,fy+48,17,MONO,INK2,"left",0);
+  put(x,STAMP,W-m,fy+48,16,MONO,INK3,"right",0);}
+
+ function climb(x,W,H,r,story){
+  var s=r.series,y0=s[0].year,y1=s[s.length-1].year,mx=0;
+  s.forEach(function(d){if(d.n>mx)mx=d.n;});mx=Math.ceil((mx+6)/10)*10;
+  var m=story?70:64;
+  if(story){
+   put(x,"was "+r.wasN+" a year in 1951–80  →",m,330,34,MONO,INK2,"left",0);
+   put(x,r.hero,m,640,290,MONO,HOT,"left",0);
+   put(x,r.label,m,724,46,SG,INK,"left",0);
+   put(x,r.sub,m,776,28,MONO,INK2,"left",0);
+   chart(x,m,910,W-2*m,540,s,y0,y1,mx);
+   put(x,"One city’s record. Every number measured.",m,1580,40,SG,INK2,"left",0);
+   return;
+  }
+  // landscape: hero left, chart right
+  put(x,"was "+r.wasN+" in 1951–80  →",m,150,26,MONO,INK2,"left",0);
+  put(x,r.hero,m,340,190,MONO,HOT,"left",0);
+  put(x,r.label,m,388,30,SG,INK,"left",0);
+  put(x,r.sub,m,420,20,MONO,INK2,"left",0);
+  chart(x,660,150,W-660-m,290,s,y0,y1,mx);
+ }
+ function chart(x,cx,cy,cw,ch,s,y0,y1,mx){
+  function px(yr){return cx+(yr-y0)/(y1-y0)*cw;}
+  function py(n){return cy+ch-(n/mx)*ch;}
+  // area
+  x.beginPath();x.moveTo(px(y0),cy+ch);
+  s.forEach(function(d){x.lineTo(px(d.year),py(d.n));});
+  x.lineTo(px(y1),cy+ch);x.closePath();
+  var g=x.createLinearGradient(0,cy,0,cy+ch);g.addColorStop(0,"rgba(214,96,77,.34)");g.addColorStop(1,"rgba(214,96,77,.02)");
+  x.fillStyle=g;x.fill();
+  // baseline
+  x.strokeStyle=HAIR;x.lineWidth=1;x.beginPath();x.moveTo(cx,cy+ch);x.lineTo(cx+cw,cy+ch);x.stroke();
+  // line
+  x.strokeStyle="rgb(178,24,43)";x.lineWidth=3;x.lineJoin="round";x.beginPath();
+  s.forEach(function(d,i){var X=px(d.year),Y=py(d.n);if(i)x.lineTo(X,Y);else x.moveTo(X,Y);});x.stroke();
+  // endpoints
+  [[s[0]],[s[s.length-1]]].forEach(function(p){var d=p[0];x.beginPath();x.arc(px(d.year),py(d.n),5,0,6.2832);
+   x.fillStyle="rgb(178,24,43)";x.fill();x.strokeStyle=BONE;x.lineWidth=2;x.stroke();});
+  // year ticks
+  [y0,1980,y1].forEach(function(yr){put(x,String(yr),px(yr),cy+ch+22,16,MONO,INK3,"center",0);});
+  put(x,String(mx),cx-8,cy+8,16,MONO,INK3,"right",0);
+ }
+
+ function ledger(x,W,H,r,story){
+  var m=story?70:64;
+  if(story){
+   put(x,r.hero,m,470,300,MONO,INK,"left",0);put(x,r.heroUnit,m,548,54,SG,INK2,"left",0);
+   put(x,r.label,m,650,40,SG,INK,"left",0);put(x,r.sub,m,720,28,MONO,INK2,"left",0);
+   twoLedgers(x,m,860,r,true);return;
+  }
+  put(x,r.hero,m,320,180,MONO,INK,"left",0);put(x,r.heroUnit,m+r.hero.length*106,320,44,SG,INK2,"left",0);
+  put(x,r.label,m,378,28,SG,INK,"left",0);put(x,r.sub,m,412,19,MONO,INK2,"left",0);
+  twoLedgers(x,700,206,r,false);
+ }
+ function twoLedgers(x,rx,ry,r,story){var rows=[[r.loName,R(r.lo),r.loYrs],[r.hiName,R(r.hi),r.hiYrs]];
+  var lh=story?58:52;
+  put(x,"two ledgers, one answer",rx,ry-26,story?26:18,SG,INK2,"left",0);
+  rows.forEach(function(row,i){var y=ry+i*lh;
+   x.strokeStyle=HAIR;x.lineWidth=1;x.beginPath();x.moveTo(rx,y+8);x.lineTo(rx+(story?940:440),y+8);x.stroke();
+   put(x,row[0],rx,y,story?28:21,MONO,INK,"left",0);
+   put(x,row[1]+" Gt",rx+(story?360:200),y,story?28:21,MONO,INK,"left",0);
+   put(x,"~"+row[2].toFixed(1)+" yr",rx+(story?940:440),y,story?28:21,MONO,INK2,"right",0);});
+ }
+ function gap(x,W,H,r,story){
+  var m=story?70:64;
+  if(story){put(x,r.hero+r.heroUnit,m,470,260,MONO,TEAL,"left",0);put(x,r.label,m,560,38,SG,INK,"left",0);
+   bars(x,m,720,W-2*m,r);put(x,r.sub,m,1180,28,MONO,INK2,"left",0);return;}
+  put(x,r.hero+r.heroUnit,m,320,180,MONO,TEAL,"left",0);put(x,r.label,m,378,27,SG,INK,"left",0);
+  put(x,r.sub,m,412,19,MONO,INK2,"left",0);bars(x,660,170,W-660-m,r);
+ }
+ function bars(x,bx,by,bw,r){var rows=[["would give",r.a,TEAL],["people guess",r.g,"rgba(8,32,31,.30)"]];
+  rows.forEach(function(row,i){var y=by+i*70;put(x,row[0],bx,y-8,18,SG,INK2,"left",0);
+   x.fillStyle="rgba(8,32,31,.08)";x.fillRect(bx,y,bw,26);x.fillStyle=row[2];x.fillRect(bx,y,bw*row[1]/100,26);
+   put(x,row[1]+"%",bx+bw*row[1]/100+10,y+21,20,MONO,INK,"left",0);});
+ }
+
+ function draw(key,format){var r=rec(key);if(!r)return null;
+  var story=format==="story",W=story?1080:1200,H=story?1920:630,DPR=2;
+  var cv=document.createElement("canvas");cv.width=W*DPR;cv.height=H*DPR;
+  var x=cv.getContext("2d");x.scale(DPR,DPR);x.textBaseline="alphabetic";
+  x.fillStyle=BONE;x.fillRect(0,0,W,H);
+  spine(x,W,story?90:16);
+  mast(x,W,r,story?150:44);
+  if(r.kind==="climb")climb(x,W,H,r,story);
+  else if(r.kind==="ledger")ledger(x,W,H,r,story);
+  else if(r.kind==="gap")gap(x,W,H,r,story);
+  footer(x,W,H,r,story?90:44);
+  return cv;
+ }
+ function ready(){return (document.fonts&&document.fonts.ready)||Promise.resolve();}
+ function stampSlug(){return ((typeof B!=="undefined"&&B.now_label)||"").replace(/ /g,"-");}
+ function fname(r,format,ext){return "on-record_"+r.key+(format==="story"?"_story":"")+"_"+stampSlug()+"."+ext;}
+ function dl(blob,name){var u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=name;
+  document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},1500);}
+ function toBlob(cv){return new Promise(function(res){if(cv.toBlob)cv.toBlob(function(b){res(b);},"image/png");
+  else res(null);});}
+ function copy(t){try{if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(t);}catch(e){}return Promise.reject();}
+ /* share: native file-share where supported, else download the PNG AND copy the caption so provenance never gets lost */
+ function share(key,format){var r=rec(key);format=format||"land";
+  return ready().then(function(){var cv=draw(key,format);return toBlob(cv);}).then(function(blob){
+   if(!blob)return "err";
+   var f=(typeof File!=="undefined")?new File([blob],fname(r,format,"png"),{type:"image/png"}):null;
+   if(f&&navigator.canShare&&navigator.canShare({files:[f]})){
+    return navigator.share({files:[f],title:r.title,text:r.cite,url:"https://"+r.url}).then(function(){return "shared";},function(){return "cancel";});}
+   dl(blob,fname(r,format,"png"));copy(r.cite);return "saved";});}
+ function download(key,format){var r=rec(key);format=format||"land";
+  return ready().then(function(){return toBlob(draw(key,format));}).then(function(blob){if(!blob)return "err";dl(blob,fname(r,format,"png"));return "saved";});}
+ function cite(key){return rec(key).cite;}
+ /* CSV: every file opens with #-prefixed provenance repeating the same named source + permalink + stamp as the card */
+ function csvText(key){var r=rec(key),H=["# On Record — "+r.title,"# source: "+r.src,"# permalink: "+r.url,"# "+STAMP,
+   "# license: computed outputs CC-BY-4.0; underlying data per the named source"],L=[];
+  if(key==="seville"){L.push("year,days_ge_35C,warm_nights_ge_25C,anomaly_C_vs_1951-80");
+   var nb={};G.warm_nights_ge25_per_year.forEach(function(d){nb[d.year]=d.n;});var y0=S.year0;
+   G.days_ge35_per_year.filter(function(d){return d.year<=LASTFULL;}).forEach(function(d){L.push(d.year+","+d.n+","+(nb[d.year]!=null?nb[d.year]:"")+","+(S.anom[d.year-y0]!=null?S.anom[d.year-y0].toFixed(2):""));});
+  }else if(key==="budget"){L.push("ledger,gtco2_remaining_now,gt_per_year,years_left,exhaustion_year");
+   [B.estimates[0],B.estimates[1]].forEach(function(e){var sn=/IGCC/i.test(e.label||"")?"IGCC 2025":"GCB 2025";
+    L.push(sn+","+e.remaining_now_gt.toFixed(1)+","+B.rate_now_gt+","+e.years_at_now.toFixed(2)+","+R(B.now_dec+e.remaining_now_gt/B.rate_now_gt));});
+  }else if(key==="perception"){L.push("measure,percent,note");
+   L.push("would_give_1pct_of_income,"+R(P.world.actual)+",stated willingness (survey)");
+   L.push("guessed_share,"+R(P.world.guess)+",what people guess others would do");
+   L.push("want_government_action,"+P.global_want_action_pct+",");}
+  return H.join("\n")+"\n"+L.join("\n")+"\n";}
+ function csv(key){var r=rec(key);dl(new Blob([csvText(key)],{type:"text/csv;charset=utf-8"}),fname(r,"","csv"));return "saved";}
+ return {draw:draw,rec:rec,ready:ready,share:share,download:download,cite:cite,csv:csv,csvText:csvText,fname:fname,BASE:BASE,
+  keys:["seville","budget","perception"]};
+})();
+window.__ART=__ART;   // exposed for the build-time OG bake
+/* Bedrock toolkit — every record leaves as image / citation / CSV */
+(function(){var box=el("takeaway");if(!box||!window.__ART)return;
+ function RM(n){return Math.round(n);}
+ function meta(k){var r=__ART.rec(k);   // subtitles derived from the SAME numbers the card/CSV use — never hand-typed
+  if(k==="seville")return ["Seville’s heat record","days ≥ 35 °C: "+r.wasN+" → "+r.hero+" a year"];
+  if(k==="budget")return ["The carbon budget","≈ "+r.hero+" years left · "+RM(r.lo)+"–"+RM(r.hi)+" Gt"];
+  if(k==="perception")return ["The perception gap",r.a+"% would give · "+r.g+"% guessed"];
+  return [k,""];}
+ __ART.keys.forEach(function(k){var m=meta(k),row=document.createElement("div");row.className="take-row";
+  function btn(a,lab,al){return '<button type="button" data-a="'+a+'" data-k="'+k+'" aria-label="'+al+' — '+m[0]+'">'+lab+'</button>';}
+  row.innerHTML='<div class="take-h"><b>'+m[0]+'</b><span>'+m[1]+'</span></div><div class="take-btns">'+
+   btn("card",'card <span aria-hidden="true">&darr;</span>',"Download card image")+
+   btn("story",'story <span aria-hidden="true">&darr;</span>',"Download story-format card")+
+   btn("cite","cite","Copy one-line citation")+
+   btn("csv",'csv <span aria-hidden="true">&darr;</span>',"Download data as CSV")+'</div>';
+  box.appendChild(row);});
+ function copyCite(k){var t=__ART.cite(k);if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).catch(function(){});}
+ box.addEventListener("click",function(e){var b=e.target.closest("button[data-a]");if(!b)return;
+  var k=b.getAttribute("data-k"),a=b.getAttribute("data-a"),o=b.innerHTML;
+  function flash(m){b.textContent=m;el("sr-status").textContent=m;setTimeout(function(){b.innerHTML=o;},1900);}
+  if(a==="card"||a==="story")__ART.download(k,a==="story"?"story":"land").then(function(res){
+   if(res==="saved"){copyCite(k);flash("saved — caption copied ✓");}else flash("couldn’t save");});
+  else if(a==="csv"){__ART.csv(k);flash("saved ✓");}
+  else{if(navigator.clipboard&&navigator.clipboard.writeText)
+   navigator.clipboard.writeText(__ART.cite(k)).then(function(){flash("copied ✓");},function(){flash("—");});else flash("—");}});
+})();
+/* print one-pager — built once, revealed only by @media print */
+(function(){if(!window.__ART)return;var ps=document.createElement("div");ps.id="print-sheet";ps.setAttribute("aria-hidden","true");
+ var stripes="";for(var i=0;i<S.anom.length;i++)stripes+='<i style="background:'+tcol(S.anom[i])+'"></i>';
+ ps.innerHTML='<h1>On Record — the receipts</h1>'+
+  '<p class="pintro">The world has a carbon budget, drawn on the site as a living sky; and one city, measured against its own record. Every figure below is sourced — a claim you cannot check is an opinion.</p>'+
+  '<div class="pstripes">'+stripes+'</div>'+
+  '<p class="pcap">Seville · annual heat vs the 1951–80 average (ERA5 via Open-Meteo) · '+S.year0+' → '+(S.year0+S.anom.length-1)+'</p>'+
+  '<ul class="pcites">'+__ART.keys.map(function(k){return "<li>"+__ART.cite(k)+"</li>";}).join("")+'</ul>'+
+  '<p class="pfoot">Printed from '+__ART.BASE+' · '+((typeof B!=="undefined"&&B.now_label)||"")+' · every figure sourced above · computed outputs CC BY 4.0.</p>';
+ document.body.appendChild(ps);})();
 
 /* ============ BEDROCK ============ */
 (function(){

@@ -425,8 +425,35 @@ body = (tpl.replace("/*__FONTS__*/", css)
            .replace("/*__DATA__*/ null", json.dumps(out, separators=(",", ":")))
            .replace("/*__NOSCRIPT__*/", ns))
 (ROOT / "onrecord-heat-mockup.html").write_text(body)
+# ---- link-preview / OG meta (a real static preview image lives at og/seville.png, baked from the same card engine) ----
+OG = "https://agoshbaranwal.github.io/on-record/"
+_was = round(mean_over(g35, 1951, 1980))                    # same decade means the card/noscript use — never hand-typed
+_now = round(mean_over(g35, LAST_FULL - 9, LAST_FULL))
+DESC = ("An honest climate instrument: the world&#39;s carbon budget as a living sky, and one city&#39;s heat record "
+        "measured against its own past. Every number measured, every source shown.")
+CARD = (f"In Seville, days at or above 35&#176;C rose from {_was} a year (1951–80 average) to {_now} "
+        f"({LAST_FULL-9}–{LAST_FULL}). Every number sourced — ERA5 via Open-Meteo.")
+ALT = f"On Record card: in Seville, days at or above 35C rose from {_was} a year to {_now}."
+head_meta = (
+    "<title>On Record — the carbon budget, drawn as a living sky</title>"
+    '<meta name="description" content="' + DESC + '">'
+    '<link rel="canonical" href="' + OG + '">'
+    '<meta property="og:type" content="website">'
+    '<meta property="og:site_name" content="On Record">'
+    '<meta property="og:title" content="On Record — Seville, on record">'
+    '<meta property="og:description" content="' + CARD + '">'
+    '<meta property="og:url" content="' + OG + '">'
+    '<meta property="og:image" content="' + OG + 'og/seville.png">'
+    '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
+    '<meta property="og:image:alt" content="' + ALT + '">'
+    '<meta name="twitter:card" content="summary_large_image">'
+    '<meta name="twitter:title" content="On Record — Seville, on record">'
+    '<meta name="twitter:description" content="' + CARD + '">'
+    '<meta name="twitter:image" content="' + OG + 'og/seville.png">'
+)
 doc = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
        '<meta name="viewport" content="width=device-width, initial-scale=1">'
+       + head_meta +
        '</head><body>' + body + "</body></html>")
 (ROOT / "index.html").write_text(doc)
 print(f"[pipeline] built index.html ({len(doc):,} B) — done")
