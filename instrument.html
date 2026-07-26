@@ -301,7 +301,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 .pane .fact-line{margin-top:8px;font-size:13.5px;color:var(--bone-2);max-width:52ch;text-wrap:pretty;text-shadow:var(--halo)}
 .thm-ink .pane .fact-line{text-shadow:none}
 .thm-ink .pane .fact-line{color:var(--ink-2)}
-.receipt{font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;line-height:1.7;color:var(--bone-3);text-shadow:var(--halo)}
+.receipt{font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;line-height:1.7;color:var(--bone-2);text-shadow:var(--halo)}
 .thm-ink .receipt{text-shadow:none}
 .receipt b{color:var(--bone-2);font-weight:500}
 .thm-ink .receipt{color:var(--ink-3)}
@@ -442,17 +442,23 @@ svg{display:block;width:100%;height:auto}
 .finder .out{font-family:var(--mono);font-size:10px;color:var(--amber);min-height:2.6em;display:block}
 
 /* --- ground: any place on Earth --- */
-#gplace{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
-#gplace input{font-family:var(--mono);font-size:12px;width:200px;padding:8px 4px;min-height:38px;
-  border:0;border-bottom:1px solid rgba(242,231,204,.35);border-radius:0;
-  background:rgba(3,16,18,.22);color:var(--bone)}
-#gplace input:focus{outline:none;border-bottom-color:var(--amber)}
-#gplace input::placeholder{color:rgba(242,231,204,.5)}
-#gplace button{font-weight:500;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
-  padding:8px 3px;min-height:38px;border:0;border-bottom:1px solid rgba(242,231,204,.30);
-  border-radius:0;color:var(--bone-2);background:none;transition:color .3s,border-color .3s;text-shadow:0 1px 5px rgba(3,16,18,.55),0 0 12px rgba(3,16,18,.4)}
-#gplace button:hover{color:var(--bone);border-color:var(--amber)}
-#gq-status{font-family:var(--mono);font-size:11px;color:var(--bone-2);letter-spacing:.04em;max-width:46ch;line-height:1.5;text-shadow:var(--halo)}
+#gplace{display:flex;align-items:center;gap:10px 12px;flex-wrap:wrap;margin:12px 0 6px}
+/* the place you type is prose, so it reads in the body font (Space Grotesk), larger and clearer */
+#gplace input{font-family:var(--sg);font-size:15px;width:240px;max-width:64vw;padding:9px 10px;min-height:44px;
+  border:1px solid rgba(242,231,204,.28);border-radius:8px;
+  background:rgba(3,16,18,.30);color:var(--bone)}
+#gplace input:focus{outline:none;border-color:var(--amber)}
+#gplace input::placeholder{color:rgba(242,231,204,.66)}
+/* the actions stay in the instrument's control voice (mono, letter-spaced), but legibly sized; the primary one leads in amber */
+#gplace button{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  padding:9px 6px;min-height:44px;border:0;border-bottom:1px solid rgba(242,231,204,.30);
+  border-radius:0;color:var(--bone-2);background:none;transition:color .3s,border-color .3s;text-shadow:0 1px 5px rgba(3,16,18,.6),0 0 12px rgba(3,16,18,.45)}
+#gplace button:hover,#gplace button:focus-visible{color:var(--bone);border-color:var(--amber);outline:none}
+#gplace #gq-go{color:var(--amber)}                                   /* the primary action reads first */
+#gplace #gq-go:hover,#gplace #gq-go:focus-visible{color:#f6d089}
+#gq-status{font-family:var(--sg);font-size:14px;color:var(--bone);letter-spacing:0;max-width:52ch;
+  line-height:1.5;text-shadow:var(--halo);flex-basis:100%}
+#gq-status:empty{display:none}
 #gq-status.err{color:var(--amber)}
 #p-ground.fetching .plate{opacity:.35;transition:opacity .4s ease}
 #p-ground.fetching #gq-go{opacity:.4}
@@ -3190,7 +3196,10 @@ var __PLACE=(function(){
    var sv=el("gq-sev");if(sv)sv.hidden=false;
    if(__ATMO.ok&&__ATMO.groundHeat&&out.t.pct!=null)__ATMO.groundHeat(out.t.pct/100);
    busy(false);
-   status(name+" — drawn from its own 86-year record, computed in your browser");
+   status(name+" — drawn from its own 86-year record, computed in your browser. Its heat, its nights and today are below.");
+   /* the whole point of the picker is the record it draws — take the reader to it (beats 2–3), not leave them on the search box */
+   var gbeats=el("p-ground")&&el("p-ground").querySelectorAll(".beat");
+   if(gbeats&&gbeats[1])try{gbeats[1].scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});}catch(e2){}
   }).catch(function(e){busy(false);
    status(/503|502|429/.test(e.message)?
    "the weather archive is busy right now — give it a minute, then try again":
