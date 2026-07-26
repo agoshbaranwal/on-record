@@ -10,9 +10,9 @@
    per chamber; everything deeper lives in the receipts drawer.
    ========================================================================== */
 :root{
-  --bone:#F2E7CC; --bone-2:rgba(242,231,204,.84); --bone-3:rgba(242,231,204,.72);
-  --bone-4:rgba(242,231,204,.58); --bone-hair:rgba(242,231,204,.18);
-  --ink:#3E1208; --ink-2:rgba(62,18,8,.8); --ink-3:rgba(62,18,8,.68); --ink-hair:rgba(62,18,8,.2);
+  --bone:#F2E7CC; --bone-2:rgba(242,231,204,.86); --bone-3:rgba(242,231,204,.80);
+  --bone-4:rgba(242,231,204,.66); --bone-hair:rgba(242,231,204,.18);
+  --ink:#3E1208; --ink-2:rgba(62,18,8,.82); --ink-3:rgba(62,18,8,.74); --ink-hair:rgba(62,18,8,.2);
   --amber:#F0BC62; --ember:#D96C3A; --ember-hi:#E8886B; --slate:#9aa39e;
   --sage:#82B8A6; --teal-hi:#7ED6C4; --act:#155048; --deep:#05171A;
   --sg:"SpaceGroteskX",system-ui,-apple-system,sans-serif;
@@ -30,7 +30,7 @@
 /* the viewport scrolls the tall body naturally; the sky is a fixed backdrop behind it */
 html{scroll-snap-type:y proximity;scroll-behavior:smooth}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;scroll-snap-type:none}}
-body{background:var(--deep);color:var(--bone);font-family:var(--sg);font-size:15px;
+body{background:var(--deep);color:var(--bone);font-family:var(--sg);font-size:16px;
   line-height:1.5;-webkit-font-smoothing:antialiased}
 button{font:inherit;cursor:pointer;color:inherit;background:none;border:0}
 a{color:inherit}
@@ -87,11 +87,11 @@ a{color:inherit}
 #skycap.on{opacity:1}
 #skycap .zname{display:block;color:rgba(220,232,255,.82);font-family:var(--mono);font-size:11px;text-shadow:var(--halo);
   letter-spacing:.34em;text-transform:uppercase}
-#skycap .zsub{display:block;margin-top:5px;color:rgba(220,232,255,.55);font-family:var(--mono);text-shadow:var(--halo);
-  font-size:10px;letter-spacing:.05em}
+#skycap .zsub{display:block;margin-top:5px;color:rgba(220,232,255,.72);font-family:var(--mono);text-shadow:var(--halo);
+  font-size:11px;letter-spacing:.05em}
 #skycap #skyctx{margin:0 0 6px;color:rgba(220,232,255,.6)}
 #skyloc{margin-top:9px;display:flex;gap:6px;justify-content:flex-end;pointer-events:auto}
-#skyloc button{font-weight:500;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+#skyloc button{font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
   padding:6px 3px;min-height:30px;border:0;border-bottom:1px solid rgba(220,232,255,.25);
   border-radius:0;color:rgba(220,232,255,.55);background:none;transition:color .3s,border-color .3s}
 #skyloc button:hover{color:rgba(232,240,255,.9);border-color:rgba(220,232,255,.6)}
@@ -100,7 +100,7 @@ a{color:inherit}
 
 /* ================= sound ================= */
 #soundbtn{position:fixed;right:38px;top:114px;z-index:7;display:flex;align-items:center;gap:8px;
-  font-weight:500;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  font-weight:500;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
   color:var(--bone-2);background:none;border:0;border-bottom:1px solid rgba(242,231,204,.30);
   border-radius:0;padding:9px 2px;min-height:40px;transition:border-color .3s,color .3s;
   text-shadow:0 1px 5px rgba(3,16,18,.55),0 0 12px rgba(3,16,18,.4)}
@@ -122,7 +122,7 @@ a{color:inherit}
 /* the persistent budget band — the 1.5 °C clock rides the top of every chapter; a caret follows you through the story */
 #budget-band{position:fixed;top:0;left:0;right:0;z-index:6;pointer-events:none;height:22px;
   display:flex;align-items:center;gap:16px;max-width:1400px;margin:0 auto;padding:0 38px;
-  font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;color:var(--bone-3);text-shadow:var(--halo)}
+  font-family:var(--mono);font-size:11px;letter-spacing:.07em;color:var(--bone-3);text-shadow:var(--halo)}
 #bb-label{white-space:nowrap;flex:none}
 #bb-label b{color:var(--bone);font-weight:500}
 #bb-rail{position:relative;flex:1;max-width:180px;height:2px;background:rgba(242,231,204,.16);border-radius:2px}
@@ -134,13 +134,13 @@ a{color:inherit}
 .thm-ink #bb-label b{color:var(--ink)}
 .thm-ink #bb-rail{background:rgba(62,18,8,.16)}
 .thm-ink #bb-fill,.thm-ink #bb-you{background:var(--act)}
-@media(max-width:640px){#budget-band{font-size:9px;padding:0 20px}#bb-rail{max-width:88px}}
+@media(max-width:640px){#budget-band{font-size:10.5px;padding:0 20px}#bb-rail{max-width:88px}#bb-label{min-width:0;flex:0 1 auto;overflow:hidden;text-overflow:ellipsis}}
 @media(prefers-reduced-motion:reduce){#bb-fill,#bb-you{transition:none}}
 #mast{position:fixed;top:22px;left:0;right:0;z-index:5;pointer-events:none;
   display:flex;justify-content:space-between;align-items:flex-start;gap:30px;
   max-width:1400px;margin:0 auto;padding:22px 38px}
 #mast a,#mast button{pointer-events:auto}
-#mast .word{font-family:var(--mono);font-size:10px;letter-spacing:.34em;color:var(--bone-2);
+#mast .word{font-family:var(--mono);font-size:11px;letter-spacing:.34em;color:var(--bone-2);
   text-transform:uppercase;margin-bottom:7px;text-shadow:var(--halo)}
 #mast .plain{font-weight:500;font-size:clamp(15px,1.7vw,20px);letter-spacing:-.01em;
   line-height:1.3;max-width:40ch;color:rgba(242,231,204,.95);text-shadow:var(--halo-h)}
@@ -155,7 +155,7 @@ a{color:inherit}
 /* the pulse — a slim, always-present today reading; the daily-glance magnet.
    Present on ordinary days too (it says "ordinary"), amber only when the tab dot fires. */
 #pulse{display:inline-block;margin-top:9px;padding:0;border:0;background:none;cursor:pointer;
-  font-family:var(--mono);font-size:10px;letter-spacing:.05em;line-height:1.45;text-align:left;
+  font-family:var(--mono);font-size:11px;letter-spacing:.05em;line-height:1.45;text-align:left;
   color:var(--bone-3);text-shadow:var(--halo);max-width:42ch;
   border-bottom:1px solid transparent;transition:color .3s ease,border-color .3s ease}
 #pulse::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;
@@ -170,7 +170,7 @@ a{color:inherit}
 .thm-ink #pulse.dot::before{background:var(--act);box-shadow:0 0 6px rgba(178,24,43,.4)}
 .thm-ink #pulse:hover{color:var(--ink);border-bottom-color:rgba(62,18,8,.3)}
 .thm-ink #pulse:focus-visible{color:var(--ink);border-bottom-color:transparent;outline:2px solid var(--act)}
-@media(max-width:640px){#pulse{font-size:9.5px;max-width:34ch}}
+@media(max-width:640px){#pulse{font-size:11px;max-width:34ch}}
 /* Phase 8 — the return card ("since you were last here") and the offline stamp.
    The card is a calm, dismissible information reward for coming back, never a nag. */
 #sincecard{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);z-index:14;
@@ -180,13 +180,13 @@ a{color:inherit}
   box-shadow:0 10px 40px rgba(0,0,0,.4);color:var(--bone-2)}
 #sincecard.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
 #sincecard .sc-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:9px}
-#sincecard .sc-k{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-3)}
+#sincecard .sc-k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-2)}
 #sincecard .sc-x{flex:none;background:none;border:0;cursor:pointer;color:var(--bone-3);
   font-size:16px;line-height:1;padding:2px 4px;border-radius:6px}
 #sincecard .sc-x:hover,#sincecard .sc-x:focus-visible{color:var(--bone);outline:none;background:rgba(242,231,204,.1)}
-#sincecard p{margin:0 0 8px;font-size:13px;line-height:1.5;color:var(--bone-2)}
+#sincecard p{margin:0 0 8px;font-size:13.5px;line-height:1.5;color:var(--bone-2)}
 #sincecard p.sc-num b{font-family:var(--mono);font-weight:500;color:var(--bone);letter-spacing:.01em}
-#sincecard .sc-note{margin:9px 0 0;font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;
+#sincecard .sc-note{margin:9px 0 0;font-family:var(--mono);font-size:11px;letter-spacing:.04em;
   line-height:1.5;color:var(--bone-4)}
 .thm-ink #sincecard{background:rgba(250,246,236,.94);border-color:rgba(62,18,8,.16);color:var(--ink-2)}
 .thm-ink #sincecard p,.thm-ink #sincecard p.sc-num b{color:var(--ink)}
@@ -196,7 +196,7 @@ a{color:inherit}
 @media(prefers-reduced-motion:reduce){#sincecard{transition:opacity .01s}}
 /* offline as-of stamp — persistent, calm, honest */
 #offline-chip{position:fixed;left:50%;top:6px;transform:translateX(-50%);z-index:15;display:none;
-  max-width:calc(100vw - 24px);font-family:var(--mono);font-size:10px;letter-spacing:.03em;
+  max-width:calc(100vw - 24px);font-family:var(--mono);font-size:11px;letter-spacing:.03em;
   color:var(--bone-2);background:rgba(6,20,22,.9);border:1px solid rgba(240,188,98,.4);
   border-radius:20px;padding:5px 14px;text-shadow:none;box-shadow:0 3px 14px rgba(0,0,0,.35)}
 #offline-chip.show{display:block}
@@ -298,15 +298,32 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 .pane h2{font-weight:500;font-size:clamp(21px,2.6vw,31px);line-height:1.12;letter-spacing:-.015em;
   max-width:24ch;text-wrap:balance;color:var(--bone);text-shadow:var(--halo-h)}
 .thm-ink .pane h2{color:var(--ink);text-shadow:none}
-.pane .fact-line{margin-top:8px;font-size:13.5px;color:var(--bone-2);max-width:52ch;text-wrap:pretty;text-shadow:var(--halo)}
+.pane .fact-line{margin-top:8px;font-size:14.5px;line-height:1.55;color:var(--bone-2);max-width:52ch;text-wrap:pretty;text-shadow:var(--halo)}
 .thm-ink .pane .fact-line{text-shadow:none}
 .thm-ink .pane .fact-line{color:var(--ink-2)}
-.receipt{font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;line-height:1.7;color:var(--bone-2);text-shadow:var(--halo)}
+.receipt{font-family:var(--mono);font-size:12px;letter-spacing:.03em;line-height:1.6;color:var(--bone-2);text-shadow:var(--halo)}
 .thm-ink .receipt{text-shadow:none}
 .receipt b{color:var(--bone-2);font-weight:500}
 .thm-ink .receipt{color:var(--ink-3)}
 .thm-ink .receipt b{color:var(--ink-2)}
-.chip{display:inline-block;font-weight:500;font-size:10px;letter-spacing:.14em;
+/* Ground: the then→now comparison, drawn — two bars scaled to a shared max, revealing as the beat scrolls in */
+#g-bars{margin:16px 0 4px;max-width:460px}
+#g-bars .gb-row{display:flex;align-items:center;gap:12px;margin:9px 0}
+#g-bars .gb-lab{flex:0 0 78px;font-family:var(--mono);font-size:11px;letter-spacing:.03em;color:var(--bone-3);text-align:right;text-shadow:var(--halo)}
+#g-bars .gb-track{position:relative;flex:1;height:15px;background:rgba(242,231,204,.10);border-radius:3px;overflow:hidden}
+#g-bars .gb-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:3px;transition:width 1.05s cubic-bezier(.3,.7,.2,1)}
+.beat.seen #g-bars .gb-fill{width:var(--w)}
+#g-bars .gb-then{background:rgba(242,231,204,.32)}
+#g-bars .gb-now{background:var(--amber)}
+#g-bars .gb-num{flex:0 0 auto;min-width:2.6ch;font-family:var(--mono);font-size:15px;font-weight:600;
+  color:var(--bone-2);font-variant-numeric:tabular-nums}
+#g-bars .gb-num.on{color:var(--amber)}
+#g-bars .gb-delta{margin:8px 0 0 90px;font-family:var(--mono);font-size:14px;font-weight:600;color:var(--amber);letter-spacing:.01em;text-shadow:var(--halo)}
+#g-fact .gb-say{font-size:15px;line-height:1.55;color:var(--bone);max-width:52ch;margin-top:14px;text-shadow:var(--halo)}
+#g-fact .gb-say b{color:var(--bone);font-weight:600}
+#g-fact .gb-caveat{font-family:var(--mono);font-size:11.5px;color:var(--bone-3);letter-spacing:.02em;margin-top:8px;text-shadow:var(--halo)}
+@media(prefers-reduced-motion:reduce){#g-bars .gb-fill{transition:none;width:var(--w)}}
+.chip{display:inline-block;font-weight:500;font-size:11px;letter-spacing:.14em;
   text-transform:uppercase;border:1px solid rgba(240,188,98,.55);color:var(--amber);
   padding:2px 7px;border-radius:2px;vertical-align:2px}
 .drawbtn{margin-top:auto;align-self:flex-start;font-weight:500;font-size:11px;
@@ -335,14 +352,14 @@ svg{display:block;width:100%;height:auto}
   text-transform:uppercase;color:var(--bone);text-shadow:var(--halo2)}
 #p-sky .spent{margin-top:5px;font-family:var(--mono);font-size:12px;letter-spacing:.04em;
   color:var(--bone);text-shadow:var(--halo2)}
-#p-sky .burnedtick{margin-top:7px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;
+#p-sky .burnedtick{margin-top:7px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;
   color:var(--amber);text-shadow:var(--halo);font-variant-numeric:tabular-nums}
 #skycount{margin-top:18px}
 #hzn-hi,#hzn-lo{position:absolute;left:-38px;right:-38px;border-top:1px solid rgba(62,18,8,.5);pointer-events:none}
 /* the century axis: altitude is time, and the axis is drawn, not implied */
 #skyaxis{position:absolute;inset:0;pointer-events:none}
 #skyaxis .rung{position:absolute;right:24%;display:flex;align-items:center;gap:8px;
-  font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:rgba(242,231,204,.62);
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:rgba(242,231,204,.80);
   text-shadow:var(--halo)}
 #skyaxis .rung i{display:block;width:26px;border-top:1px solid rgba(242,231,204,.30);
   box-shadow:0 1px 3px rgba(3,16,18,.35)}
@@ -367,25 +384,34 @@ svg{display:block;width:100%;height:auto}
 .dimKnob{position:absolute;top:5px;width:2px;height:25px;margin-left:-1px;background:var(--bone);
   box-shadow:0 0 14px rgba(242,231,204,.8)}
 .dim:focus-visible .dimKnob,.dim:hover .dimKnob{height:31px;top:2px}
-.dimEnds{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;
+.dimEnds{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;
   color:var(--bone-3);margin-top:3px;text-shadow:var(--halo)}
-#dial .foot{margin-top:8px;font-family:var(--mono);font-size:10.5px;color:var(--bone-3);text-shadow:var(--halo)}
+#dial .foot{margin-top:8px;font-family:var(--mono);font-size:11px;color:var(--bone-3);text-shadow:var(--halo)}
 .presets{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px}
 .presets button{font-weight:500;font-size:11.5px;letter-spacing:.08em;color:var(--bone-2);
   background:none;border:0;border-bottom:1px solid rgba(242,231,204,.30);border-radius:0;
   padding:8px 2px;min-height:36px;transition:color .3s,border-color .3s;text-shadow:var(--halo)}
 .presets button:hover{color:var(--bone);border-color:var(--amber)}
-.verdict{margin-top:14px;font-size:15px;line-height:1.5;color:var(--bone);max-width:52ch;
+.verdict .vsig{color:var(--amber);font-weight:600}
+/* Night: the two lines run opposite ways — show it, big and diverging */
+#n-diverge{display:flex;gap:16px 34px;flex-wrap:wrap;margin:18px 0 6px}
+#n-diverge .nd{display:flex;align-items:center;gap:10px}
+#n-diverge .nd .ar{font-size:26px;line-height:1;font-weight:700}
+#n-diverge .nd .val{font-family:var(--mono);font-size:32px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+#n-diverge .nd .lab{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--bone-2);max-width:11ch;line-height:1.3;text-shadow:var(--halo)}
+#n-diverge .nd-day .ar,#n-diverge .nd-day .val{color:#8FC0EA}
+#n-diverge .nd-night .ar,#n-diverge .nd-night .val{color:#EE9E80}
+.verdict{margin-top:14px;font-size:16px;line-height:1.5;color:var(--bone);max-width:52ch;
   text-wrap:pretty;text-shadow:var(--halo)}
 .verdict b{color:var(--amber);font-weight:500}
 #dial .foot button{color:var(--bone-2);border-bottom:1px solid var(--bone-4);letter-spacing:.05em;
   margin-right:8px;min-height:30px}
 #tease{position:static;max-width:none;text-align:left;margin-top:22px}
-#tease .tl2{font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+#tease .tl2{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;
   color:var(--bone-3);margin-bottom:5px;text-shadow:var(--halo)}
 #tease .big{font-weight:500;font-size:24px;color:var(--bone);font-variant-numeric:tabular-nums;text-shadow:var(--halo)}
-#tease .sub{font-size:12px;color:var(--bone-2);margin-top:3px;text-shadow:var(--halo)}
-#tease button{margin-top:8px;font-weight:500;font-size:10.5px;background:none;border:0;
+#tease .sub{font-size:13px;color:var(--bone-2);margin-top:3px;text-shadow:var(--halo)}
+#tease button{margin-top:8px;font-weight:500;font-size:11px;background:none;border:0;
   border-bottom:1px solid rgba(242,231,204,.30);border-radius:0;text-shadow:0 1px 5px rgba(3,16,18,.55),0 0 12px rgba(3,16,18,.4);letter-spacing:.2em;
   text-transform:uppercase;color:var(--amber);min-height:36px}
 #tease button::after{content:" ↓"}
@@ -395,11 +421,11 @@ svg{display:block;width:100%;height:auto}
   background:var(--amber);border:0;border-radius:3px;padding:11px 18px;min-height:44px;
   transition:transform .2s ease,box-shadow .3s ease;box-shadow:0 2px 18px -6px rgba(240,188,98,.6)}
 #fd-raise:hover{transform:translateY(-1px);box-shadow:0 5px 24px -6px rgba(240,188,98,.85)}
-#fd-clear{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+#fd-clear{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
   color:var(--bone-2);background:none;border:0;border-bottom:1px solid var(--bone-4);border-radius:0;
   min-height:36px;text-shadow:var(--halo)}
 #fd-clear:hover{color:var(--bone)}
-#fd-sublabel{font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--bone-3);
+#fd-sublabel{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--bone-2);
   max-width:30ch;line-height:1.5;text-shadow:var(--halo)}
 .fd-chip{font-family:var(--mono);font-size:11px;letter-spacing:.03em;color:var(--bone-2);
   margin-top:14px;max-width:58ch;line-height:1.55;text-shadow:var(--halo)}
@@ -429,7 +455,7 @@ svg{display:block;width:100%;height:auto}
   line-height:1.3;margin-top:5px;text-shadow:var(--halo)}
 .thm-ink .bignum small,.thm-ink .bignum{text-shadow:none}
 .thm-ink .bignum{color:var(--ink)}
-.legend{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;
   letter-spacing:.04em;color:var(--bone-3);margin-top:8px}
 .legend i{display:inline-block;width:13px;height:3px;border-radius:2px;margin-right:5px;vertical-align:2px}
 .legend i.dot{width:8px;height:8px;border-radius:50%}
@@ -439,7 +465,10 @@ svg{display:block;width:100%;height:auto}
   border:0;border-bottom:1px solid rgba(242,231,204,.35);border-radius:0;
   background:rgba(3,16,18,.22);color:var(--bone)}
 .finder input:focus{outline:none;border-bottom-color:var(--amber)}
-.finder .out{font-family:var(--mono);font-size:10px;color:var(--amber);min-height:2.6em;display:block}
+.finder .out{font-family:var(--mono);font-size:11px;color:var(--amber);min-height:2.6em;display:block}
+/* the year finder's answer — a reserved block so it never jumps, with the value itself in loud amber */
+#yr-out{display:block;min-height:2.7em;margin-top:10px;font-family:var(--sg);font-size:13.5px;line-height:1.5;color:var(--bone-2);text-shadow:var(--halo)}
+#yr-out .yr-val{font-family:var(--mono);font-size:17px;font-weight:700;color:var(--amber);letter-spacing:-.01em}
 
 /* --- ground: any place on Earth --- */
 #gplace{display:flex;align-items:center;gap:10px 12px;flex-wrap:wrap;margin:12px 0 6px}
@@ -467,7 +496,7 @@ svg{display:block;width:100%;height:auto}
 /* --- first light --- */
 #pgwrap{max-width:640px;width:100%}
 .place-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 12px}
-.place-tabs button{font-family:var(--mono);font-size:10px;letter-spacing:.06em;padding:8px 13px;
+.place-tabs button{font-family:var(--mono);font-size:11px;letter-spacing:.06em;padding:8px 13px;
   min-height:40px;border:1px solid var(--bone-4);border-radius:2px;color:var(--bone-2)}
 .place-tabs button[aria-pressed=true]{background:var(--bone);color:#0B2B31;border-color:var(--bone)}
 #pg-pick{display:flex;align-items:center;gap:10px;margin:10px 0 12px;flex-wrap:wrap}
@@ -475,7 +504,7 @@ svg{display:block;width:100%;height:auto}
   background:rgba(3,16,18,.22);color:var(--bone);border:0;
   border-bottom:1px solid rgba(242,231,204,.35);border-radius:0;max-width:300px}
 #pg-sel:focus{outline:none;border-bottom-color:var(--amber)}
-#pg-guessed{font-family:var(--mono);font-size:10px;color:var(--bone-3);letter-spacing:.06em;text-shadow:var(--halo)}
+#pg-guessed{font-family:var(--mono);font-size:11px;color:var(--bone-2);letter-spacing:.06em;text-shadow:var(--halo)}
 #pg-give b{color:var(--bone)}
 /* 125 threads at dawn: every country, from what people guess to what is true */
 #pgfield{position:relative;width:100%;max-width:640px;margin:16px 0 4px}
@@ -495,9 +524,9 @@ svg{display:block;width:100%;height:auto}
 #pgfield .pgrow-you .pgguess{fill:rgba(206,224,255,.9)}
 /* SVG <text> font-size is in viewBox user-units, not screen px — keep it small */
 #pgfield .pglab{font-family:var(--mono);font-size:2.4px;letter-spacing:.02px;
-  fill:rgba(242,231,204,.62)}
+  fill:rgba(242,231,204,.80)}
 #pgfield .pglab-you{fill:#FFE9B8;font-weight:500}
-.pgaxis{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;
+.pgaxis{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;
   text-shadow:var(--halo);color:var(--bone-3);margin-top:8px;max-width:640px}
 .pgaxis span:nth-child(2){color:var(--bone-2)}
 @media(prefers-reduced-motion:reduce){#pgfield .pgthread,#pgfield .pgtrue{transition:none}}
@@ -507,14 +536,14 @@ svg{display:block;width:100%;height:auto}
   background:var(--amber);border:0;border-radius:3px;padding:11px 18px;min-height:44px;
   transition:transform .2s ease,box-shadow .3s ease;box-shadow:0 2px 16px -6px rgba(240,188,98,.6)}
 #ask-btn:hover{transform:translateY(-1px);box-shadow:0 4px 22px -6px rgba(240,188,98,.8)}
-#ask-hint{font-size:11.5px;color:var(--bone-3);max-width:26ch;text-shadow:var(--halo)}
+#ask-hint{font-size:12.5px;color:var(--bone-2);max-width:28ch;text-shadow:var(--halo)}
 #ask-fallback{display:none;width:100%;margin-top:8px}
 #ask-fallback textarea{width:100%;max-width:560px;min-height:70px;font-size:12px;
   background:rgba(3,16,18,.4);color:var(--bone);border:1px solid var(--bone-4);border-radius:3px;padding:8px}
 .kick{font-size:14px;line-height:1.45;color:var(--bone);margin-top:12px;display:none;max-width:52ch;outline:none;text-shadow:var(--halo)}
 .kick.show{display:block}
 .kick b{color:var(--amber);font-weight:500}
-.sep89{font-size:11px;color:var(--bone-2);margin-top:8px;display:none;max-width:52ch;text-shadow:var(--halo)}
+.sep89{font-size:12.5px;color:var(--bone-2);margin-top:8px;display:none;max-width:52ch;text-shadow:var(--halo)}
 .sep89.show{display:block}
 .sep89 b{color:var(--bone)}
 
@@ -547,10 +576,10 @@ svg{display:block;width:100%;height:auto}
 #p-morning .scale .redu::before{content:"";position:absolute;left:-1px;top:-2.5px;
   border:3px solid transparent;border-right-color:rgba(62,18,8,.6)}   /* arrowhead, pointing left = falling */
 #p-morning .scale .mk{position:absolute;top:-16px;transform:translateX(-50%);white-space:nowrap;
-  font-family:var(--mono);font-size:8.5px;letter-spacing:.02em;color:var(--ink-2)}
+  font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--ink-2)}
 #p-morning .scale .mk.thrlab{color:rgba(62,18,8,.7)}
 #p-morning .axlab{display:flex;justify-content:space-between;gap:8px;margin-top:7px;
-  font-family:var(--mono);font-size:9px;letter-spacing:.02em;color:var(--ink-3)}
+  font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--ink-2)}
 #p-morning .axlab .mid{color:var(--ink-2);text-align:center}
 @media(prefers-reduced-motion:reduce){
   #p-morning .scale .fill{transition:none;width:var(--w)}
@@ -559,53 +588,53 @@ svg{display:block;width:100%;height:auto}
 #p-morning .action{margin-top:16px;border:1px solid rgba(21,80,72,.5);border-radius:3px;
   padding:16px 18px;background:rgba(255,251,240,.55);max-width:640px}
 #p-morning .leadline{font-weight:500;font-size:clamp(16px,1.9vw,21px);line-height:1.3;color:var(--ink);max-width:34ch}
-#p-morning .action p{font-size:12.5px;color:var(--ink-2);margin-top:8px;max-width:56ch}
+#p-morning .action p{font-size:14px;line-height:1.55;color:var(--ink-2);margin-top:8px;max-width:56ch}
 /* --- Morning Beat 3: the action layer --- */
-#record-room .rr-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--act);margin-bottom:6px}
-#record-room .rr-disclose{font-size:12px;line-height:1.55;color:var(--ink-2);max-width:58ch;margin-top:8px}
+#record-room .rr-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--act);margin-bottom:6px}
+#record-room .rr-disclose{font-size:13.5px;line-height:1.55;color:var(--ink-2);max-width:58ch;margin-top:8px}
 .rr-menu{margin-top:18px;display:flex;flex-direction:column;gap:1px;max-width:640px}
 .rr-row{text-align:left;background:none;border:0;border-top:1px solid var(--ink-hair);padding:13px 0;display:block;width:100%;font-family:inherit}
 .rr-row .rr-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .rr-label{font-weight:500;font-size:15px;color:var(--ink)}
-.rr-note{display:block;font-size:11.5px;line-height:1.5;color:var(--ink-2);margin-top:5px;max-width:58ch}
+.rr-note{display:block;font-size:13px;line-height:1.55;color:var(--ink-2);margin-top:5px;max-width:58ch}
 .rr-note b{color:var(--ember)}
-.rr-src{font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;color:var(--ink-3);white-space:nowrap}
+.rr-src{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-2);white-space:nowrap}
 button.rr-row{cursor:pointer;transition:padding-left .18s,background .2s;min-height:auto}
 button.rr-row:hover .rr-label,button.rr-row:focus-visible .rr-label{color:var(--act)}
 button.rr-row:hover{padding-left:6px}
 .rr-wedge{flex:1 1 70px;min-width:60px;max-width:150px;height:14px;background:var(--act);clip-path:polygon(0 40%,100% 0,100% 100%,0 60%);opacity:.5}
 .rr-row.rr-default{border:1px solid rgba(21,80,72,.5);border-radius:3px;padding:13px 14px;background:rgba(21,80,72,.05)}
-.rr-chip{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#F2E7CC;background:var(--act);padding:3px 7px;border-radius:2px}
+.rr-chip{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#F2E7CC;background:var(--act);padding:3px 7px;border-radius:2px}
 .rr-give .rr-ev{font-family:var(--mono);font-size:11px;color:var(--act);white-space:nowrap}
-.rr-divider{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:16px;padding-top:2px}
+.rr-divider{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:16px;padding-top:2px}
 .rr-foot{cursor:default}
 .rr-foot .rr-t{font-family:var(--mono);font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums;margin-left:auto}
 .rr-bar{display:block;height:6px;margin-top:8px;max-width:320px;background:rgba(62,18,8,.10);border-radius:3px;position:relative}
 .rr-bar i{position:absolute;left:0;top:0;bottom:0;width:var(--w);background:linear-gradient(90deg,#D96C3A,#B4181D);border-radius:3px}
-.rr-omit{font-size:10.5px;line-height:1.55;color:var(--ink-3);margin-top:14px;max-width:60ch}
+.rr-omit{font-size:12.5px;line-height:1.55;color:var(--ink-2);margin-top:14px;max-width:60ch}
 /* letter builder / plan / pledge panels */
 .rr-panel{margin-top:16px;border:1px solid var(--ink-hair);border-radius:4px;padding:16px;background:rgba(255,251,240,.6);max-width:640px}
 .rr-panel h3{font-weight:500;font-size:14px;color:var(--ink);margin-bottom:4px}
-.rr-panel .rr-hint{font-size:11.5px;color:var(--ink-2);line-height:1.5;margin-bottom:12px;max-width:56ch}
+.rr-panel .rr-hint{font-size:13px;color:var(--ink-2);line-height:1.5;margin-bottom:12px;max-width:56ch}
 .rr-field{display:block;margin:10px 0}
-.rr-field span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:var(--ink-3);margin-bottom:4px}
+.rr-field span{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-2);margin-bottom:4px}
 .rr-field input,.rr-field select{width:100%;max-width:340px;font-family:var(--sg);font-size:13px;color:var(--ink);
   background:#FFFBF0;border:1px solid var(--ink-hair);border-radius:3px;padding:9px 10px;min-height:40px}
 .rr-field input:focus,.rr-field select:focus{outline:none;border-color:var(--act)}
-.rr-preview{font-family:var(--mono);font-size:11px;line-height:1.6;color:var(--ink);white-space:pre-wrap;
+.rr-preview{font-family:var(--mono);font-size:12.5px;line-height:1.6;color:var(--ink);white-space:pre-wrap;
   background:#FFFDF6;border:1px solid var(--ink-hair);border-radius:3px;padding:12px;margin:10px 0;max-height:240px;overflow:auto}
 .rr-btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:8px}
 .rr-btns .rr-primary{background:var(--act);color:#F2E7CC;border:0;border-radius:3px;padding:11px 16px;font-size:12.5px;font-weight:500;min-height:44px}
 .rr-btns .rr-minor{background:none;color:var(--ink-2);border:0;border-bottom:1px solid var(--ink-hair);border-radius:0;padding:8px 2px;font-size:11px;min-height:38px}
 .rr-btns .rr-minor:hover{color:var(--ink)}
 .rr-panel .rr-note{margin-top:10px}
-.rr-reps{margin-top:12px;font-size:11px;line-height:1.7;color:var(--ink-2);border-top:1px solid var(--ink-hair);padding-top:10px}
+.rr-reps{margin-top:12px;font-size:12.5px;line-height:1.7;color:var(--ink-2);border-top:1px solid var(--ink-hair);padding-top:10px}
 .rr-reps a{color:var(--act);border-bottom:1px solid rgba(21,80,72,.3)}
 .rr-reps b{color:var(--ink);font-weight:500}
-.rr-pledge{margin-top:16px;font-size:12.5px;color:var(--ink-2);max-width:56ch}
+.rr-pledge{margin-top:16px;font-size:13.5px;color:var(--ink-2);max-width:56ch}
 .rr-pledge .rr-keep{background:none;border:1px solid var(--act);color:var(--act);border-radius:2px;padding:8px 14px;font-size:11.5px;min-height:40px;margin-left:8px}
 .rr-pledge .rr-keep:hover{background:rgba(21,80,72,.08)}
-.rr-pledge .rr-clear{font-family:var(--mono);font-size:9.5px;color:var(--ink-3);background:none;border:0;border-bottom:1px solid transparent;margin-left:10px;min-height:32px}
+.rr-pledge .rr-clear{font-family:var(--mono);font-size:11px;color:var(--ink-3);background:none;border:0;border-bottom:1px solid transparent;margin-left:10px;min-height:32px}
 .rr-pledge .rr-clear:hover{color:var(--ink-2);border-bottom-color:var(--ink-hair)}
 .rr-pledge .rr-recall{font-family:var(--mono);font-size:11px;color:var(--act);line-height:1.5}
 .sharecard{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}
@@ -623,9 +652,9 @@ button.rr-row:hover{padding-left:6px}
 .take-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
   padding:11px 0;border-top:1px solid var(--bone-hair)}
 .take-h b{font-weight:500;color:var(--bone);font-size:13px}
-.take-h span{display:block;font-family:var(--mono);font-size:10.5px;color:var(--bone-3);margin-top:2px}
+.take-h span{display:block;font-family:var(--mono);font-size:11px;color:var(--bone-2);margin-top:2px}
 .take-btns{display:flex;gap:6px;flex-wrap:wrap}
-.take-btns button{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+.take-btns button{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
   color:var(--bone-2);background:none;border:1px solid var(--bone-4);border-radius:2px;padding:7px 11px;min-height:36px}
 .take-btns button:hover{color:var(--bone);border-color:var(--bone-2)}
 /* print one-pager — the whole argument survives on paper, fully attributed */
@@ -651,19 +680,19 @@ button.rr-row:hover{padding-left:6px}
   scrollbar-width:thin;
   mask-image:linear-gradient(180deg,#000 calc(100% - 46px),transparent);
   -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 46px),transparent)}
-#p-bedrock .hww{max-width:64ch;font-size:12.5px;line-height:1.6;color:var(--bone-2);margin-top:10px}
+#p-bedrock .hww{max-width:60ch;font-size:14px;line-height:1.6;color:var(--bone-2);margin-top:10px}
 #p-bedrock .hww b{color:var(--bone);font-weight:500}
 /* Phase 9 — the honest-measurement surface: outcome-side figures, the caveat at the label's weight */
 #p-bedrock .impwrap{max-width:64ch;margin-top:6px}
-#p-bedrock .impwrap h3{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+#p-bedrock .impwrap h3{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--amber);margin:16px 0 4px;font-weight:400}
 #p-bedrock .imp{display:grid;grid-template-columns:auto 1fr;gap:1px 12px;padding:7px 0;border-bottom:1px solid var(--bone-hair)}
 #p-bedrock .imp-n{grid-row:1/3;font-family:var(--mono);font-size:19px;font-variant-numeric:tabular-nums;
   color:var(--bone);align-self:center;min-width:2ch}
-#p-bedrock .imp-l{color:var(--bone-2);font-size:12.5px;align-self:end}
-#p-bedrock .imp-c{font-size:11.5px;line-height:1.5;color:var(--bone-3)}
+#p-bedrock .imp-l{color:var(--bone-2);font-size:13px;align-self:end}
+#p-bedrock .imp-c{font-size:13px;line-height:1.5;color:var(--bone-2)}
 #p-bedrock .imp-omit{font-family:var(--mono);font-size:11px;color:var(--bone-4);margin-top:9px}
-#p-bedrock .imp-limits{max-width:64ch;font-size:12px;line-height:1.6;color:var(--bone-3);
+#p-bedrock .imp-limits{max-width:64ch;font-size:13.5px;line-height:1.6;color:var(--bone-2);
   border-top:1px solid var(--bone-hair);padding-top:11px;margin-top:14px}
 #p-bedrock .imp-limits b{color:var(--bone-2)}
 #p-bedrock .reuse-link{color:var(--amber);border-bottom:1px solid rgba(240,188,98,.4)}
@@ -678,17 +707,17 @@ button.rr-row:hover{padding-left:6px}
 .thm-ink #p-bedrock .bfb-teal{background:var(--act);color:#f4f4f1}
 /* the archive: every source is a catalogued record on a shelf */
 #p-bedrock .srcs{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-  gap:14px 28px;font-family:var(--mono);font-size:10.5px;line-height:1.7;color:var(--bone-3);max-width:940px}
+  gap:14px 28px;font-family:var(--mono);font-size:11.5px;line-height:1.7;color:var(--bone-2);max-width:940px}
 #p-bedrock .srcs>div{position:relative;padding:8px 0 10px 16px;
   border-left:1px solid rgba(242,231,204,.22);border-bottom:1px solid rgba(242,231,204,.10)}
 #p-bedrock .srcs>div::before{content:attr(data-cat);position:absolute;left:-1px;top:-9px;
-  font-size:9px;letter-spacing:.2em;color:rgba(240,188,98,.55);background:transparent;padding-right:6px}
+  font-size:11px;letter-spacing:.2em;color:rgba(240,188,98,.7);background:transparent;padding-right:6px}
 #p-bedrock .srcs b{display:block;color:var(--bone-2);letter-spacing:.1em;text-transform:uppercase;
-  font-size:10px;margin-bottom:3px}
-#p-bedrock .limits{margin-top:18px;max-width:64ch;font-size:11px;line-height:1.6;color:var(--bone-3)}
+  font-size:11px;margin-bottom:3px}
+#p-bedrock .limits{margin-top:18px;max-width:60ch;font-size:13px;line-height:1.6;color:var(--bone-2)}
 #p-bedrock .limits b{color:var(--bone-2)}
 #p-bedrock .colophon{margin-top:18px;border-top:1px solid var(--bone-hair);padding-top:10px;
-  font-family:var(--mono);font-size:10.5px;line-height:1.7;color:var(--bone-3);max-width:74ch}
+  font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--bone-2);max-width:74ch}
 
 /* ================= drawer ================= */
 #drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,92vw);z-index:9;
@@ -700,7 +729,7 @@ button.rr-row:hover{padding-left:6px}
 #drawer header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
   border-bottom:1px solid var(--bone-hair);padding-bottom:10px}
 #drawer header h3{font-weight:500;font-size:15px;color:var(--bone)}
-#drawer header .k{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--bone-3)}
+#drawer header .k{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--bone-3)}
 #dclose{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--bone-3);
   border:1px solid var(--bone-4);border-radius:2px;padding:7px 12px;min-height:38px}
 #dclose:hover{color:var(--bone)}
@@ -708,7 +737,7 @@ button.rr-row:hover{padding-left:6px}
 #dbody h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
   color:var(--bone-3);margin:18px 0 8px}
 #dbody h4:first-child{margin-top:0}
-#dbody p{font-size:12.5px;line-height:1.6;max-width:58ch;margin-bottom:10px}
+#dbody p{font-size:13.5px;line-height:1.6;max-width:58ch;margin-bottom:10px}
 #dbody p b{color:var(--bone);font-weight:500}
 #dbody .receipt{display:block;margin:6px 0 12px}
 .dtable{margin:8px 0 16px;max-height:300px;overflow:auto;border:1px solid var(--bone-hair)}
@@ -737,7 +766,7 @@ button.rr-row:hover{padding-left:6px}
   color:var(--bone);text-shadow:0 2px 34px rgba(3,10,12,.9);max-width:19ch;margin-bottom:16px;text-wrap:balance}
 .ib-p{font-size:clamp(15px,1.5vw,18px);line-height:1.55;color:var(--bone-2);max-width:42ch;text-shadow:0 1px 20px rgba(3,10,12,.85)}
 .inum{color:var(--amber);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.ib-chip{display:block;margin-top:12px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--bone-3);opacity:0}
+.ib-chip{display:block;margin-top:12px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--bone-3);opacity:0}
 .ib.on .ib-h{animation:ibh .6s cubic-bezier(.2,.7,.2,1) both}
 .ib.on .ib-p{animation:ibp .5s ease .28s both}
 .ib.on .ib-chip{animation:ibp .5s ease .95s both}
@@ -750,8 +779,12 @@ button.rr-row:hover{padding-left:6px}
   transition:background .3s,border-color .3s,transform .3s}
 .idot.done{background:var(--bone-3);border-color:var(--bone-3)}
 .idot.cur{background:var(--amber);border-color:var(--amber);transform:scale(1.35)}
-#intro-hint{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-3);text-shadow:var(--halo);animation:hintpulse 2.4s ease-in-out infinite}
+#intro-hint{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-3);text-shadow:var(--halo);animation:hintpulse 2.4s ease-in-out infinite}
 @keyframes hintpulse{0%,100%{opacity:.55}50%{opacity:.95}}
+/* a one-shot amber pulse so an action's result is FELT — used when we jump to an already-visible target */
+@keyframes flashring{0%{box-shadow:0 0 0 0 rgba(240,188,98,0)}18%{box-shadow:0 0 0 3px rgba(240,188,98,.6),0 0 26px rgba(240,188,98,.4)}100%{box-shadow:0 0 0 0 rgba(240,188,98,0)}}
+.flash-ring{animation:flashring 1s ease-out;border-radius:10px}
+@media(prefers-reduced-motion:reduce){.flash-ring{animation:none}}
 #intro .go{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--deep);
   background:var(--amber);border:0;border-radius:3px;padding:13px 22px;min-height:46px;box-shadow:0 2px 18px -6px rgba(240,188,98,.6);transition:transform .2s}
 #intro .go:hover{transform:translateY(-1px)}
@@ -764,7 +797,7 @@ button.rr-row:hover{padding-left:6px}
 .introing #ladder,.introing #mast,.introing #budget-band,.introing #soundbtn{opacity:.12;transition:opacity .7s ease}
 .introing #panes,.introing #sky-fixtures{opacity:0;transition:opacity .7s ease}
 /* the "What is this?" reopen control lives in the masthead */
-#whatis{margin-top:9px;pointer-events:auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+#whatis{margin-top:9px;pointer-events:auto;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--bone-4);background:none;border:0;padding:4px 0;min-height:32px;border-bottom:1px solid transparent;
   text-shadow:var(--halo);transition:color .3s,border-color .3s}
 #whatis:hover,#whatis:focus-visible{color:var(--bone-2);border-bottom-color:var(--bone-4)}
@@ -791,19 +824,26 @@ button.rr-row:hover{padding-left:6px}
 #odometer{margin-top:6px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;
   color:var(--bone);font-variant-numeric:tabular-nums;text-shadow:var(--halo2)}
 #odometer .dim3{opacity:.75}
-#odometer .rec{display:block;font-size:10px;letter-spacing:.05em;color:var(--bone);margin-top:2px;text-shadow:var(--halo2)}
-/* the cream band IS the disagreement — hoverable */
-#band{position:absolute;left:0;right:0;cursor:help;pointer-events:auto}
-#band:focus-visible{outline:1px dashed var(--amber);outline-offset:-1px}
+#odometer .rec{display:block;font-size:11px;letter-spacing:.05em;color:var(--bone);margin-top:2px;text-shadow:var(--halo2)}
+/* the cream band IS the disagreement — a persistent tag names it (never an easter egg); tap/click/Enter or hover opens the detail */
+#band{position:absolute;left:0;right:0;cursor:pointer;pointer-events:auto}
+#band:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+#band .band-tag{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
+  font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--bone);white-space:nowrap;
+  background:rgba(4,14,16,.5);padding:3px 12px 3px 12px;border-radius:999px;pointer-events:none;
+  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);text-shadow:var(--halo)}
+#band .band-tag::after{content:"  ⓘ";opacity:.75}
+#band:hover .band-tag,#band.band-open .band-tag,#band:focus-visible .band-tag{background:rgba(4,14,16,.78)}
 #band .whisper{position:absolute;left:50%;top:100%;transform:translate(-50%,10px);
   background:rgba(4,14,16,.94);border:1px solid var(--bone-hair);border-radius:3px;
-  padding:8px 12px;font-family:var(--mono);font-size:10px;line-height:1.6;color:var(--bone-2);
+  padding:8px 12px;font-family:var(--mono);font-size:12px;line-height:1.6;color:var(--bone-2);
   white-space:nowrap;opacity:0;transition:opacity .25s;pointer-events:none;z-index:8}
-#band:hover .whisper,#band:focus .whisper{opacity:1}
+#band:hover .whisper,#band:focus-visible .whisper,#band.band-open .whisper{opacity:1;pointer-events:auto}
+@media(max-width:640px){#band .whisper{white-space:normal;width:max-content;max-width:min(86vw,320px)}}
 /* ghost horizon — where the sky stood on your first visit */
 #ghost{position:absolute;left:0;right:0;border-top:1px dashed rgba(62,18,8,.38);
   pointer-events:none;display:none}
-#ghost span{position:absolute;left:12px;bottom:4px;font-family:var(--mono);font-size:8.5px;
+#ghost span{position:absolute;left:12px;bottom:4px;font-family:var(--mono);font-size:10.5px;
   letter-spacing:.08em;color:rgba(62,18,8,.62);white-space:nowrap}
 /* copy-this-sky */
 #copysky{color:var(--bone-2);border-bottom:1px solid var(--bone-4);letter-spacing:.05em;
@@ -824,8 +864,8 @@ button.rr-row:hover{padding-left:6px}
   .duo{grid-template-columns:1fr;grid-template-rows:auto auto;flex:none;height:auto;gap:14px}
   #dial{width:100%}
   #skycap{right:12px;bottom:72px}
-  #skycap .zname{font-size:10px}
-  #skycap .zsub{font-size:9px;max-width:60vw}
+  #skycap .zname{font-size:11px}
+  #skycap .zsub{font-size:10.5px;max-width:60vw}
   #showerbox{margin:12px 0 20px;max-width:100%}
   #gplace input{width:140px}
   #soundbtn{right:14px;bottom:auto;top:12px;padding:8px 10px}   /* vitals hide here — corner is free */
@@ -860,12 +900,12 @@ button.rr-row:hover{padding-left:6px}
     <div id="grain"></div><div id="scrimT"></div><div id="scrimB"></div>
     <canvas id="skymap" aria-hidden="true"></canvas>
     <!-- sky-only fixtures: they annotate the fixed atmosphere, so they live here, not in the scroll -->
-    <div id="sky-fixtures" aria-hidden="true">
-      <div id="hzn-hi"><span class="hl" id="hlab-hi"></span></div>
-      <div id="hzn-lo"><span class="hl" id="hlab-lo"></span></div>
-      <div id="skyaxis"></div>
-      <div id="band" tabindex="-1" aria-describedby="band-whisper"><span class="whisper" id="band-whisper"></span></div>
-      <div id="ghost"><span id="ghost-lab"></span></div>
+    <div id="sky-fixtures"><!-- was aria-hidden: that hid #band's role/label from AT while leaving it tab-focusable (aria-hidden-focus). Hide only the decorative children; expose the band. -->
+      <div id="hzn-hi" aria-hidden="true"><span class="hl" id="hlab-hi"></span></div>
+      <div id="hzn-lo" aria-hidden="true"><span class="hl" id="hlab-lo"></span></div>
+      <div id="skyaxis" aria-hidden="true"></div>
+      <div id="band" tabindex="0" role="button" aria-describedby="band-whisper"><span class="band-tag" id="band-tag" aria-hidden="true">the ledgers disagree</span><span class="whisper" id="band-whisper"></span></div>
+      <div id="ghost" aria-hidden="true"><span id="ghost-lab"></span></div>
     </div>
     <div id="skycap"><span class="zsub" id="skyctx"></span><span class="zname" id="skyname"></span><span class="zsub" id="skysub"></span>
       <div id="skyloc" role="group" aria-label="Whose sky to draw">
@@ -1010,8 +1050,8 @@ button.rr-row:hover{padding-left:6px}
           <div class="beat">
             <h2 id="g-count-h2">Scorching days here: <b class="num" id="g-then">–</b> then,
               <b class="num" id="g-now">–</b> now.</h2>
-            <p class="lead" id="g-fact"></p>
-            <p class="fact-line" id="g-freq" style="font-size:12.5px"></p>
+            <div id="g-fact"></div>
+            <p class="fact-line" id="g-freq"></p>
             <p class="receipt" id="g-receipt"></p>
             <button class="drawbtn" data-drawer="ground">Receipts &amp; the full record</button>
           </div>
@@ -1056,6 +1096,7 @@ button.rr-row:hover{padding-left:6px}
           <!-- BEAT 2 — the honesty test: the line that fell -->
           <div class="beat">
             <h2 id="n-h2">Delhi&rsquo;s hot days fell. Its hot nights rose.</h2>
+            <div id="n-diverge" aria-hidden="true"></div>
             <p class="lead" id="n-honest"></p>
             <div class="chartwrap"><div class="plate">
               <div id="delhi"></div>
@@ -1345,6 +1386,8 @@ try{if(EMBED)document.body.classList.add("embed");if(KIOSK)document.body.classLi
 /* capture the ORIGINAL hash now — enterChamber(0) stamps "#p-sky" over it before the intro/boot read it */
 var HASH0=location.hash.replace("#p-","").replace("#","").trim();
 function el(id){return document.getElementById(id);}
+function flashRing(node){if(!node)return;node.classList.remove("flash-ring");void node.offsetWidth;  // reflow so it re-fires
+ node.classList.add("flash-ring");setTimeout(function(){node.classList.remove("flash-ring");},1100);}
 var NS="http://www.w3.org/2000/svg";
 function E(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
 var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches;
@@ -2072,9 +2115,8 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
   el("delta").textContent=Math.abs(d)<1?"today's rate":(d>0?"+":"−")+Math.abs(d)+"% vs today";
   var w21=SKYW.warm(target,74);
   if(el("verdict")){
-   el("verdict").innerHTML="At this pace the budget is spent around <b>"+yA+
-    "</b>, and 2100 arrives about <b>"+w21.toFixed(1).replace(".",".")+"&nbsp;&deg;C</b> hotter than the 1800s"+
-    (target<=12?" — the calm blue future.":(target>=55?" — the sky you should fear.":"."));}
+   el("verdict").innerHTML="2100 arrives about <b>"+w21.toFixed(1)+"&nbsp;&deg;C</b> hotter than the 1800s. The budget runs dry around <b>"+yA+"</b>."+
+    (target<=12?" <span class=\"vsig\">The calm blue future.</span>":(target>=55?" <span class=\"vsig\">The sky to fear.</span>":""));}
   el("hlab-lo").innerHTML="<b>"+Math.round(LO.remaining_now_gt)+" Gt</b> · "+srcShort(LO)+" · runs out ~"+yA;
   if(el("lead-gt"))el("lead-gt").textContent=Math.round(LO.remaining_now_gt);
   el("hlab-hi").innerHTML="<b>"+Math.round(HIe.remaining_now_gt)+" Gt</b> · "+srcShort(HIe)+" · same answer";
@@ -2104,6 +2146,8 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
    Math.round(LO.remaining_now_gt)+" Gt vs "+srcShort(HIe)+" "+Math.round(HIe.remaining_now_gt)+
    " Gt · ≈"+(Math.abs(HIe.remaining_now_gt-LO.remaining_now_gt)/target).toFixed(1)+
    " yr at this rate";
+  band.setAttribute("aria-label","The two carbon budgets disagree by about "+
+   Math.abs(Math.round(HIe.remaining_now_gt-LO.remaining_now_gt))+" gigatonnes — activate for detail.");
  }
  el("dimNow").style.left=((RNOW-RMIN)/(RMAX-RMIN)*100).toFixed(2)+"%";
  function setRate(v){target=Math.max(RMIN,Math.min(RMAX,v));sync();}
@@ -2118,6 +2162,17 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
   else if(k==="Home")setRate(RMIN);else if(k==="End")setRate(RMAX);
   else return;e.preventDefault();e.stopPropagation();});
  el("reset").addEventListener("click",function(){setRate(RNOW);dim.focus();});
+ /* the disagreement band: tap/click/Enter reveals the detail (not hover-only) — the flagship honesty idea on touch too */
+ (function(){var bnd=el("band");if(!bnd)return;
+  function shut(){bnd.classList.remove("band-open");}
+  function toggle(){var open=!bnd.classList.contains("band-open");
+   bnd.classList.toggle("band-open",open);
+   if(open){var st=el("sr-status");if(st)st.textContent=el("band-whisper").textContent;}}
+  bnd.addEventListener("click",function(e){e.stopPropagation();toggle();});
+  bnd.addEventListener("keydown",function(e){
+   if(e.key==="Enter"||e.key===" "||e.key==="Spacebar"){e.preventDefault();toggle();}
+   else if(e.key==="Escape")shut();});
+  document.addEventListener("click",function(e){if(!bnd.contains(e.target))shut();});})();
  document.querySelectorAll(".presets button").forEach(function(b){
   b.addEventListener("click",function(){setRate(parseFloat(b.getAttribute("data-rate"))||RNOW);});});
  var qr=parseFloat(Q.get("rate"));if(isFinite(qr))target=Math.max(RMIN,Math.min(RMAX,qr));
@@ -2180,7 +2235,7 @@ function buildGround(V){
  function sc(d0,d1,r0,r1){return function(v){return r0+(v-d0)/(d1-d0)*(r1-r0);};}
  var yd=CUSTOM?V.ydom:[18,45];
  var x=sc(0,n-1,mL,W-mR),y=sc(yd[0],yd[1],Hh-mB,mT);
- var MONO="ui-monospace,Menlo,monospace",AXc="rgba(242,231,204,.62)";
+ var MONO="ui-monospace,Menlo,monospace",AXc="rgba(242,231,204,.80)";
  function txt(a,s,halo){var t=E("text",a);t.textContent=s;
   if(halo){t.setAttribute("paint-order","stroke");t.setAttribute("stroke","#12333A");
    t.setAttribute("stroke-width","3.2");t.setAttribute("stroke-linejoin","round");}return t;}
@@ -2221,8 +2276,8 @@ function buildGround(V){
   var sp=RWc.spaghetti[String(yr)];
   if(sp){hiP.setAttribute("d",path(sp));hiP.setAttribute("stroke-opacity",1);}
   var a=Sc.anom[i],pk=peak(yr);
-  el("yr-out").textContent=yr+" — that summer ran "+(a>=0?"+":"")+a.toFixed(2)+" °C vs 1951–80"+
-   (pk!=null?(" · hottest day "+pk.toFixed(1)+" °C · traced in amber"):"");}
+  el("yr-out").innerHTML="<b>"+yr+"</b> ran <b class=\"yr-val\">"+(a>=0?"+":"−")+Math.abs(a).toFixed(2)+" °C</b> vs the 1951–80 average"+
+   (pk!=null?(" — its hottest day hit <b class=\"yr-val\">"+pk.toFixed(1)+" °C</b>, now traced in amber on the chart."):".");}
  el("yr").addEventListener("input",function(){var v=+this.value;
   if(v>=1940&&v<=2025)setYear(v);
   else{hiP.setAttribute("stroke-opacity",0);
@@ -2265,13 +2320,20 @@ function buildGround(V){
   el("g-today").innerHTML=(t.tmax!=null?t.tmax.toFixed(1)+"°":"—")+
    "<small> forecast, "+t.dateLabel+" <span class=\"chip\">"+
    (t.mode==="live"?"live · provisional":"snapshot · built "+t.fetched)+"</span></small>";
-  el("g-fact").innerHTML="A scorching day here is one "+THR.hotLabel+". Early in the record this "+
-   "place had about "+thenN.toFixed(0)+" of them a year. In recent years, about "+nowN.toFixed(0)+
-   ". Warm nights that never cool "+THR.nightLabel+" went from <b>"+wnThen.toFixed(1)+"</b> to <b>"+
-   wnNow.toFixed(1)+"</b> a year."+
-   (t.rec!=null?(" And in "+t.n+" years, no "+t.dateLabel+" here has passed <b class=\"mono\">"+
-    t.rec.toFixed(1)+"</b> °C ("+t.recy+").") : "")+
-   " This describes what happened. It does not, by itself, say why.";
+  /* the then→now doubling, DRAWN — two bars scaled to a shared max, then one sharp line + the honest caveat.
+     All numbers are live (thenN/nowN/wn* recompute per city via the picker); nothing hardcoded. */
+  var gThen=Math.round(thenN),gNow=Math.round(nowN),gMax=Math.max(gThen,gNow,1),gD=gNow-gThen;
+  var wThen=Math.round(wnThen),wNow=Math.round(wnNow);
+  var HOTW=CUSTOM?"unusually hot":"scorching";   // "scorching" only where the absolute ≥35 °C earns it; a custom city's own 95th pct can be mild
+  el("g-fact").innerHTML=
+   '<div id="g-bars" aria-hidden="true">'+
+    '<div class="gb-row"><span class="gb-lab">1951–80</span><span class="gb-track"><i class="gb-fill gb-then" style="--w:'+(gThen/gMax*100).toFixed(1)+'%"></i></span><span class="gb-num">'+gThen+'</span></div>'+
+    '<div class="gb-row"><span class="gb-lab">'+(LF-9)+'–'+LF+'</span><span class="gb-track"><i class="gb-fill gb-now" style="--w:'+(gNow/gMax*100).toFixed(1)+'%"></i></span><span class="gb-num on">'+gNow+'</span></div>'+
+    (Math.abs(gD)>=1?'<div class="gb-delta">'+(gD>0?'+':'−')+Math.abs(gD)+' '+HOTW+' days a year — in one lifetime</div>':'')+
+   '</div>'+
+   '<p class="gb-say">A'+(CUSTOM?'n':'')+' '+HOTW+' day here is one '+THR.hotLabel+'. A lifetime ago — 1951 to 1980 — '+PLACE+' saw about <b>'+gThen+'</b> a year. Now, about <b>'+gNow+'</b>.'+
+    (wThen<1?(' Nights that never fall '+THR.nightLabel+' were almost unknown then — now about <b>'+wNow+'</b> a year.'):(' Nights that never fall '+THR.nightLabel+' went from about <b>'+wThen+'</b> to about <b>'+wNow+'</b> a year.'))+'</p>'+
+   '<p class="gb-caveat">This is the record. It does not, by itself, say why.</p>';
   el("g-freq").textContent=(t.h40a||t.h40b)?
    ("A 40 °C day within two weeks of this date came "+t.h40a+" summers in 30 (1951–80). "+
     "In the last thirty years: "+t.h40b+" in 30."):"";
@@ -2368,14 +2430,22 @@ var buildNight=function(NV){
  if(el("n-h2"))el("n-h2").innerHTML=dayFell?
   (place+"&rsquo;s hot days fell. Its hot nights rose."):
   ("In "+place+", the nights climbed.");
+ var dDelta=Math.round(dNow-dThen),nDelta=Math.round(nNow-nThen);
+ if(el("n-diverge"))el("n-diverge").innerHTML=
+  '<div class="nd nd-day"><span class="ar">'+(dDelta<0?'▼':dDelta>0?'▲':'▬')+'</span><span class="val">'+(dDelta>0?'+':dDelta<0?'−':'')+Math.abs(dDelta)+'</span><span class="lab">hot days a year</span></div>'+
+  '<div class="nd nd-night"><span class="ar">'+(nDelta>0?'▲':nDelta<0?'▼':'▬')+'</span><span class="val">'+(nDelta>0?'+':nDelta<0?'−':'')+Math.abs(nDelta)+'</span><span class="lab">hot nights a year</span></div>';
+ var dVerb=(dDelta>0?"rose too, from about "+dThen.toFixed(0)+" to "+dNow.toFixed(0)+" a year":
+            dDelta<0?"edged down a little too, from about "+dThen.toFixed(0)+" to "+dNow.toFixed(0)+" a year":
+            "barely moved, about "+dThen.toFixed(0)+" a year");
  el("n-honest").innerHTML=
-  "A hot night here means one warmer than 95% of nights in the 1951&ndash;80 record. "+
-  place+" now has <b>"+Math.abs(dN)+" more</b> of them a year. "+
+  "A hot night here is one warmer than 95% of nights in the 1951&ndash;80 record. "+
   (dayFell?
-   ("Its hot days actually <b>fell</b> over the same years &mdash; haze blocks sunlight and holds the "+
-    "daytime highs down. We draw that falling line too. That is why you can trust the rising one."):
-   ("Here the days climbed too, from about "+dThen.toFixed(0)+" to "+dNow.toFixed(0)+
-    " a year. Both lines are drawn, whichever way they run."));
+   (CUSTOM?
+    (place+"&rsquo;s daytime highs actually fell over the same years &mdash; we draw that falling line too. "+
+     "<b>That is why you can trust the rising one.</b>"):
+    (place+"&rsquo;s days actually cooled a little over the same years &mdash; haze blocks sunlight and holds the "+
+     "daytime highs down. We draw that falling line too. <b>That is why you can trust the rising one.</b>")):
+   ("The days "+dVerb+" &mdash; both lines are drawn, whichever way they run."));
  el("delhi-receipt").innerHTML="days ≥"+thrHs+" °C: <b>"+(+dThen).toFixed(1)+"→"+(+dNow).toFixed(1)+
   "</b>/yr · nights ≥"+thrNs+" °C: <b>"+(+nThen).toFixed(1)+"→"+(+nNow).toFixed(1)+"</b>/yr · "+
   (CUSTOM?"thresholds are the place&rsquo;s own 1951–80 95th percentiles · ":"")+
@@ -2410,9 +2480,9 @@ var buildNight=function(NV){
    "aria-label":place+" hot days and hot nights per year since 1940 — 11-year means drawn bold."});
   [0,.25,.5,.75,1].forEach(function(f){var t=Math.round(ymax*f);
    svg.appendChild(E("line",{x1:mL,x2:W-mR,y1:y(t),y2:y(t),stroke:"rgba(242,231,204,.12)"}));
-   svg.appendChild(txt({x:mL-5,y:y(t)+3,"text-anchor":"end","font-size":fs,fill:"rgba(242,231,204,.62)","font-family":MONO},t));});
+   svg.appendChild(txt({x:mL-5,y:y(t)+3,"text-anchor":"end","font-size":fs,fill:"rgba(242,231,204,.80)","font-family":MONO},t));});
   (narrow?[1950,1990]:[1950,1970,1990,2010]).forEach(function(yr){
-   svg.appendChild(txt({x:x(yr),y:Hh-8,"text-anchor":"middle","font-size":fs,fill:"rgba(242,231,204,.62)","font-family":MONO},yr));});
+   svg.appendChild(txt({x:x(yr),y:Hh-8,"text-anchor":"middle","font-size":fs,fill:"rgba(242,231,204,.80)","font-family":MONO},yr));});
   function line(s,c,w,op,cls){var p="";s.forEach(function(r,i){p+=(i?"L":"M")+x(r.year).toFixed(1)+" "+y(r.n).toFixed(1)+" ";});
    var at={d:p,fill:"none",stroke:c,"stroke-width":w,"stroke-opacity":op||1,"stroke-linejoin":"round"};
    if(cls)at["class"]=cls;
@@ -2485,9 +2555,9 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
  function render(){var c=list[+sel.value]||list[0];
   var A=Math.round(c.actual),G=Math.round(c.guess);
   highlight();
-  el("pg-kick").innerHTML="125 countries measured. In every one, people guessed too low. "+
-   "In <b>"+c.place+"</b>, <b>"+A+" of every 100</b> would give &mdash; "+maj(A)+
-   " &mdash; yet people "+(c.place==="World"?"":"there ")+"guess only <b>"+G+"</b>.";
+  el("pg-kick").innerHTML="In <b>"+c.place+"</b>, <b>"+A+" of every 100</b> would give 1% of their income, "+
+   "every month, to fight warming. People "+(c.place==="World"?"":"there ")+"guess just <b>"+G+"</b>. "+
+   "The majority is real &mdash; it just can&rsquo;t see itself.";
   el("pg-sep").innerHTML=(c.govt!=null?
    "And <b>"+Math.round(c.govt)+"%</b> in "+c.place+" want their government to do more"+
     ((WORLD&&WORLD.govt&&c.place!=="World")?" (worldwide, "+Math.round(WORLD.govt)+"%)":"")+". ":
@@ -2664,9 +2734,12 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
   var a=b.getAttribute("data-act");
   if(a==="letter")openLetter();
   else if(a==="vote")openPlan("vote");
-  else if(a==="talk"){var conv=el("share-btn");if(conv){var beat=conv.closest(".beat");if(beat)beat.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});}}
+  else if(a==="talk"){var conv=el("share-btn");if(conv){var beat=conv.closest(".beat");
+   if(beat){beat.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});flashRing(beat);}
+   var st=el("sr-status");if(st)st.textContent="Jumped to the conversation card — the one lever that moves by talking.";}}
   else if(a==="give"){var i=CH.findIndex(function(c){return c.id==="firstlight";});if(i>=0)scrollToChamber(i);
-   setTimeout(function(){var g=el("pg-give");if(g)g.scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"});},reduce?0:700);}});
+   setTimeout(function(){var g=el("pg-give");if(g){g.scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"});flashRing(g);}
+    var st=el("sr-status");if(st)st.textContent="Here is where to give — vetted funds, about a tonne of CO₂ per dollar.";},reduce?0:700);}});
  recall();
 })();
 
@@ -3477,8 +3550,10 @@ var __SKY=(function(){
    if(!navigator.geolocation){el("skyctx").textContent="this browser offers no location — showing Delhi";return;}
    el("skyctx").textContent="asking your browser for your position — it never leaves this device";
    navigator.geolocation.getCurrentPosition(function(pos){
-    setPlace({name:"your sky",lat:Math.round(pos.coords.latitude*100)/100,
-              lon:Math.round(pos.coords.longitude*100)/100,tz:null,tzl:""},true);},
+    var la=Math.round(pos.coords.latitude*100)/100,lo=Math.round(pos.coords.longitude*100)/100;
+    setPlace({name:"your sky",lat:la,lon:lo,tz:null,tzl:""},true);
+    flashRing(el("skymap"));                                        // make the redraw unmistakable
+    var st=el("sr-status");if(st)st.textContent="Your sky, "+Math.abs(la)+"°"+(la>=0?"N":"S")+" "+Math.abs(lo)+"°"+(lo>=0?"E":"W")+", redrawn from the same catalogue.";},
     function(){el("skyctx").textContent="location declined — showing Delhi's sky";});});})();
  return {enter:function(){live=true;computeTonight();fadeT0=0;
    if(!size()){var tries=0,rt=setInterval(function(){if(size()||++tries>40){clearInterval(rt);draw();}},50);}
@@ -3805,7 +3880,7 @@ var CANT_NOTIFY="This site is a static page. It cannot and will not send notific
 if(Q.get("legibility")==="1"){(function(){
  var REGIONS={
   sky:["#sky-h2","#lead-gt","#years","#odometer .dim3","#verdict","#burned",".beat-cue","#hlab-hi","#hlab-lo","#atrate"],
-  ground:["#g-count-h2","#g-fact","#g-verdict","#g-receipt","#g-today","label[for=yr]","#yr-out"],
+  ground:["#g-count-h2","#g-fact .gb-say","#g-fact .gb-caveat","#g-verdict","#g-receipt","#g-today","label[for=yr]","#yr-out"],
   night:["#p-night h2","#p-night .lead","#p-night .fact-line"],
   firstlight:["#p-firstlight h2","#p-firstlight .lead","#pg-give"],
   morning:["#record-room h2",".rr-label",".rr-note","#p-morning h2","#p-morning .lead"],
