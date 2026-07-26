@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Use this. Honestly. — On Record</title>
+<meta name="description" content="On Record is free to reuse — in a lesson, an article, a slide. The method in plain words, ready-made embeds, citations you can paste, the licence in one paragraph, and a printable classroom worksheet.">
+<link rel="canonical" href="https://agoshbaranwal.github.io/on-record/reuse.html">
+<meta name="theme-color" content="#05171A">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="On Record">
+<meta property="og:title" content="Use this. Honestly. — On Record">
+<meta property="og:description" content="Reuse On Record honestly: the method in plain words, embeds, citations, the licence, and a printable classroom worksheet.">
+<meta property="og:url" content="https://agoshbaranwal.github.io/on-record/reuse.html">
+<meta property="og:image" content="https://agoshbaranwal.github.io/on-record/og/seville.png">
+<style>
+/*__FONTS__*/
+:root{
+  --deep:#05171A; --bone:#F2E7CC; --bone-2:rgba(242,231,204,.84); --bone-3:rgba(242,231,204,.66);
+  --bone-4:rgba(242,231,204,.6); --hair:rgba(242,231,204,.16);
+  --amber:#F0BC62; --ember:#D96C3A; --teal:#7ED6C4; --teal-ink:#0d2c28;
+  --serif:"InstrumentSerifX",Georgia,"Times New Roman",serif;
+  --sg:"SpaceGroteskX",system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,"Cascadia Mono",monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--deep);color:var(--bone);font-family:var(--sg);
+  font-size:17px;line-height:1.65;font-weight:400;
+  background-image:radial-gradient(120% 90% at 92% -10%, rgba(240,188,98,.05), transparent 55%);
+  background-attachment:fixed;background-repeat:no-repeat}
+main{max-width:46rem;margin:0 auto;padding:0 22px 90px}
+a{color:var(--amber);text-underline-offset:2px;text-decoration-thickness:1px}
+a:hover{color:#f6d089}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.12;letter-spacing:.005em}
+h1{font-size:clamp(38px,7vw,64px);margin:.2em 0 .35em}
+h2{font-size:clamp(26px,4.4vw,36px);margin:1.5em 0 .5em}
+h3{font-size:20px;font-family:var(--sg);font-weight:500;letter-spacing:-.01em;margin:1.6em 0 .4em}
+p{margin:0 0 1em;color:var(--bone-2)}
+strong,b{color:var(--bone);font-weight:500}
+em{font-style:italic}
+.sec-n{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--amber);
+  text-transform:uppercase;display:block;margin-bottom:.2em}
+.topstrip{max-width:46rem;margin:0 auto;padding:22px 22px 6px;display:flex;flex-wrap:wrap;gap:6px 18px;
+  align-items:baseline;justify-content:space-between;font-family:var(--mono);font-size:12px;
+  letter-spacing:.03em;color:var(--bone-3);border-bottom:1px solid var(--hair)}
+.topstrip a{font-family:var(--mono)}
+.topstrip .tsr{max-width:34ch}
+.lede{font-size:19px;color:var(--bone-2);max-width:40ch}
+.chips{font-family:var(--mono);font-size:12.5px;letter-spacing:.03em;color:var(--bone-3);margin:1.2em 0 0}
+.chips a{margin-right:2px}
+section{padding-top:14px;border-top:1px solid var(--hair);margin-top:44px}
+section:first-of-type{border-top:0;margin-top:20px}
+.card{border:1px solid var(--hair);border-radius:12px;padding:16px 18px;margin:14px 0;background:rgba(242,231,204,.02)}
+.card h3{margin-top:0}
+.card .lab{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);display:block;margin:.7em 0 .1em}
+.card .lab:first-of-type{margin-top:.4em}
+.caution{border:1px solid rgba(217,108,58,.45);border-left:3px solid var(--ember);border-radius:10px;
+  padding:14px 18px;margin:22px 0;background:rgba(217,108,58,.06)}
+.caution b{color:#f0a986}
+.note{font-family:var(--mono);font-size:12.5px;line-height:1.6;color:var(--bone-3);margin:.8em 0}
+.note div{margin:.25em 0}
+figure.snip{margin:14px 0;border:1px solid var(--hair);border-radius:10px;overflow:hidden;background:rgba(0,0,0,.22)}
+figure.snip .bar{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:7px 10px 7px 14px;border-bottom:1px solid var(--hair);background:rgba(242,231,204,.03)}
+figure.snip .bar span{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--bone-3)}
+figure.snip pre{margin:0;padding:14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;
+  line-height:1.6;color:var(--bone);white-space:pre;tab-size:2}
+button.copy{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--teal);background:transparent;border:1px solid rgba(126,214,196,.4);border-radius:999px;
+  padding:4px 12px;cursor:pointer;flex:none;transition:background .2s,color .2s}
+button.copy:hover,button.copy:focus-visible{background:rgba(126,214,196,.14);outline:none}
+button.copy.done{color:#bff0e5;border-color:rgba(126,214,196,.7)}
+.copynote{font-family:var(--mono);font-size:11.5px;color:var(--bone-4);margin:.4em 0 0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--hair);color:var(--bone-2)}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);font-weight:400}
+td b{color:var(--bone)}
+.num{font-family:var(--mono);color:var(--bone);font-variant-numeric:tabular-nums}
+.gen{border:1px solid var(--hair);border-radius:12px;padding:16px 18px;margin:16px 0;background:rgba(242,231,204,.02)}
+.gen label{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--bone-3);display:inline-block;margin-right:8px}
+.gen select,.gen input{font-family:var(--sg);font-size:15px}
+.gen select{background:var(--deep);color:var(--bone);border:1px solid var(--hair);border-radius:8px;padding:6px 10px}
+.gen .row{display:flex;flex-wrap:wrap;gap:14px 20px;align-items:center;margin-bottom:12px}
+.gen .chk{display:inline-flex;align-items:center;gap:7px;cursor:pointer;color:var(--bone-2)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px}
+.tabs button{font-family:var(--mono);font-size:12px;letter-spacing:.03em;color:var(--bone-3);
+  background:transparent;border:1px solid var(--hair);border-radius:999px;padding:5px 13px;cursor:pointer}
+.tabs button[aria-pressed=true]{color:var(--deep);background:var(--amber);border-color:var(--amber);font-weight:500}
+.imp h3{margin-top:1.2em}
+.imp .imp{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;padding:9px 0;border-bottom:1px solid var(--hair)}
+.imp .imp-n{grid-row:1/3;font-family:var(--mono);font-size:26px;font-variant-numeric:tabular-nums;color:var(--bone);align-self:start;min-width:2.4ch}
+.imp .imp-l{color:var(--bone);font-weight:500;align-self:end}
+.imp .imp-c{font-size:13.5px;color:var(--bone-3);line-height:1.5}
+.imp-omit{font-family:var(--mono);font-size:12.5px;color:var(--bone-4);margin-top:10px}
+.imp-refuse{border:1px solid var(--hair);border-radius:12px;padding:4px 20px 8px;margin:12px 0 20px;background:rgba(242,231,204,.02)}
+.imp-refuse h3{color:var(--bone)}
+.imp-limits{font-size:14px;color:var(--bone-3);border-top:1px solid var(--hair);padding-top:14px;margin-top:18px}
+.feedback{border:1px solid var(--hair);border-radius:12px;padding:16px 18px;margin:18px 0;background:rgba(242,231,204,.02)}
+.feedback .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.btn{display:inline-block;font-family:var(--sg);font-size:14px;font-weight:500;text-decoration:none;
+  padding:9px 16px;border-radius:999px;cursor:pointer}
+.btn-teal{background:var(--teal);color:var(--teal-ink)}
+.btn-teal:hover{background:#a6e6d9;color:var(--teal-ink)}
+.btn-out{border:1px solid var(--hair);color:var(--bone)}
+.btn-out:hover{border-color:var(--bone-3);color:var(--bone)}
+.printbtn{font-family:var(--sg);font-size:14px;font-weight:500;color:var(--deep);background:var(--amber);
+  border:0;border-radius:999px;padding:9px 16px;cursor:pointer;margin:6px 0 4px}
+/* worksheet — styled for paper; shown on screen inside a light card */
+#worksheet{background:#fbf7ee;color:#141414;border-radius:12px;padding:26px 28px;margin:16px 0;
+  font-family:var(--sg);line-height:1.5}
+#worksheet h3,#worksheet h4{font-family:var(--serif);color:#141414}
+#worksheet .wtitle{font-family:var(--serif);font-size:26px;margin:0 0 2px}
+#worksheet p,#worksheet li,#worksheet td,#worksheet th{color:#222}
+#worksheet .rule{font-weight:600}
+#worksheet table{font-size:14px}
+#worksheet th{color:#6a4a10;border-bottom:1px solid #cbb98f}
+#worksheet td{border-bottom:1px solid #e3d8bf}
+#worksheet .blank{border-bottom:1px solid #999;display:inline-block;min-width:12ch}
+#worksheet .prov{font-family:var(--mono);font-size:11px;color:#555;margin-top:14px}
+#worksheet .key{border-top:2px dashed #b9a878;margin-top:22px;padding-top:12px;font-size:13px;color:#333}
+.foot{font-family:var(--mono);font-size:12px;color:var(--bone-4);margin-top:16px;line-height:1.7}
+hr{border:0;border-top:1px solid var(--hair);margin:34px 0}
+@media(max-width:640px){
+  body{font-size:16px}
+  .imp .imp{grid-template-columns:1fr}
+  .imp .imp-n{grid-row:auto}
+}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+/* ---- print: whole page ---- */
+@media print{
+  :root{--deep:#fff;--bone:#111;--bone-2:#222;--bone-3:#444;--bone-4:#666;--hair:#ccc}
+  body{background:#fff;color:#111}
+  a{color:#111}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:.75em;color:#555;word-break:break-all}
+  button.copy,.printbtn,.tabs,.gen .row,.feedback .btns{display:none!important}
+  #worksheet{background:#fff;border:1px solid #000;page-break-before:always}
+  #worksheet .key{page-break-before:always}
+}
+/* ---- print: just the worksheet (button) ---- */
+@media print{
+  body.ws-print header,body.ws-print .topstrip,body.ws-print .foot,
+  body.ws-print main > *:not(#worksheet-sec){display:none!important}
+  body.ws-print #worksheet-sec{border:0;margin:0;padding:0}
+  body.ws-print #worksheet-sec > *:not(#worksheet){display:none!important}
+  body.ws-print #worksheet{page-break-before:auto}   /* no blank leading page when the worksheet prints alone */
+}
+</style>
+</head>
+<body>
+
+<div class="topstrip">
+  <a href="./">&larr; On Record</a>
+  <span class="tsr">A page for teachers and reporters. Everything here is free to reuse; this page shows exactly how.</span>
+</div>
+
+<main>
+
+  <!-- §1 MASTHEAD -->
+  <section id="top">
+    <h1>Use this. Honestly.</h1>
+    <p class="lede">On Record is built to be reused — in a lesson, in an article, in a slide. This page gives you the method in plain words, ready-made embeds, citations you can paste, the licence in one paragraph, and a printable worksheet. Two rules travel with every number: <strong>say where it comes from, and describe what changed — never claim one place or one day was <em>caused</em> by climate change.</strong></p>
+    <p class="chips"><a href="#method">The method &darr;</a> · <a href="#embed">Embeds &darr;</a> · <a href="#cite">Citations &darr;</a> · <a href="#worksheet-sec">Worksheet &darr;</a></p>
+  </section>
+
+  <!-- §2 METHOD -->
+  <section id="method">
+    <span class="sec-n">02 · How every number is made</span>
+    <h2>The method, in plain words</h2>
+    <p>No number on On Record is invented, and none is ours to assert. Each one is a measurement someone else published, that we only counted, averaged, or subtracted — and we show the arithmetic. Here is the whole chain, in order of the site.</p>
+
+    <div class="card">
+      <h3>The air — CO₂</h3>
+      <span class="lab">In plain words</span>
+      <p>The single number at the top of the site — about <b class="num" data-rd="co2_ppm">–</b> ppm — is how many carbon-dioxide molecules sit in every million molecules of air, measured continuously at Mauna Loa and other baseline stations.</p>
+      <span class="lab">Source</span>
+      <p>NOAA Global Monitoring Laboratory (US government data, free to use with attribution). Last reading shown: <span data-rd="co2_date_human">–</span>.</p>
+      <span class="lab">What we did to it</span>
+      <p>Nothing but display the latest published value and its date. The browser re-checks it live on each visit.</p>
+    </div>
+
+    <div class="card">
+      <h3>The sky — the carbon budget</h3>
+      <span class="lab">In plain words</span>
+      <p>Scientists estimate how much more CO₂ the world can emit before warming is <em>likely</em> to pass 1.5 °C. Two teams publish current figures: about <b class="num" data-rd="budget_lo">–</b> GtCO₂ (<span data-rd="budget_lo_src">–</span>) and <b class="num" data-rd="budget_hi">–</b> GtCO₂ (<span data-rd="budget_hi_src">–</span>). At today's rate of about <b class="num" data-rd="rate">–</b> GtCO₂ a year, that is roughly <b class="num" data-rd="years_left">–</b> years of emissions.</p>
+      <span class="lab">Source</span>
+      <p>Global Carbon Project (GCB 2025) and Forster et al., <em>Indicators of Global Climate Change 2025</em> (ESSD). Rate: Global Carbon Budget 2025.</p>
+      <span class="lab">What we did to it</span>
+      <p>Each budget is published against its own start date. We subtract the CO₂ emitted since that date at the current rate, to bring both to <em>today</em> — and we show that subtraction in the table. "Years left" is simply budget ÷ rate: <strong>arithmetic, not a prediction of the future</strong>. 1.5 °C is a dial of rising risk, not a cliff.</p>
+    </div>
+
+    <div class="card">
+      <h3>The ground — Seville's heat</h3>
+      <span class="lab">In plain words</span>
+      <p>In Seville, the number of days each year at or above 35 °C rose from about <b class="num" data-rd="sev_days_was">–</b> (<span data-rd="eras_then">–</span> average) to about <b class="num" data-rd="sev_days_now">–</b> (<span data-rd="eras_now">–</span>). Nights at or above 25 °C went from roughly <b class="num" data-rd="sev_nights_was">–</b> to <b class="num" data-rd="sev_nights_now">–</b> a year. We compare the city only to <strong>its own past</strong>.</p>
+      <span class="lab">Source</span>
+      <p>ERA5, the ECMWF's hour-by-hour reconstruction of weather since 1940 (~30 km grid), read via Open-Meteo (CC-BY).</p>
+      <span class="lab">What we did to it</span>
+      <p>We counted days over each threshold, per year, and averaged across two thirty-year windows. Today's on-site temperature is a live forecast; we measured its bias against the reanalysis (about <b class="num" data-rd="sev_bias">–</b> °C) and say so.</p>
+    </div>
+
+    <div class="card">
+      <h3>The night — Delhi's honest complication</h3>
+      <span class="lab">In plain words</span>
+      <p>Delhi is where we resist a tidy story. Hot <strong>nights</strong> (≥25 °C) rose from about <b class="num" data-rd="delhi_nights_was">–</b> to <b class="num" data-rd="delhi_nights_now">–</b> a year — but hot <strong>days</strong> (≥35 °C) <em>edged down</em>, from about <b class="num" data-rd="delhi_days_was">–</b> to <b class="num" data-rd="delhi_days_now">–</b>. Both are true; we show both.</p>
+      <span class="lab">Source</span>
+      <p>ERA5 via Open-Meteo (CC-BY), <span data-rd="eras_then">–</span> vs <span data-rd="eras_now">–</span>.</p>
+      <span class="lab">What we did to it</span>
+      <p>The same counting and averaging as Seville. We kept the number that complicates the headline, because a source that refuses to flatter the story is the one worth trusting.</p>
+    </div>
+
+    <div class="card">
+      <h3>First light — what people believe</h3>
+      <span class="lab">In plain words</span>
+      <p>Across the world, about <b class="num" data-rd="want_action">–</b>% of people want their government to do more on climate. Yet people <em>guess</em> the number is far lower — nearly everyone underestimates nearly everyone.</p>
+      <span class="lab">Source</span>
+      <p>Andre, Boneva, Chopra &amp; Falk (2024), <em>Nature Climate Change</em>; per-country figures processed by Our World in Data (CC BY 4.0).</p>
+      <span class="lab">What we did to it</span>
+      <p>We display the published shares; the exact survey wording is re-verified against the paper at each build. Country examples on the site: <span id="country-eg">–</span>.</p>
+    </div>
+
+    <div class="card">
+      <h3>The cost, and the response</h3>
+      <span class="lab">In plain words</span>
+      <p>One more tonne of CO₂ is estimated to cause about <b class="num">$<span data-rd="scc">–</span></b> of damage (US EPA, 2023). And the giving lists we link to reckon their best picks avert roughly a tonne of expected CO₂ per dollar — a <em>modelled expectation, not measured tonnes</em>.</p>
+      <span class="lab">Source</span>
+      <p>US EPA social cost of carbon (Dec 2023, 2% discount rate); Giving Green and the Founders Pledge Climate Fund for the giving figures.</p>
+      <span class="lab">What we did to it</span>
+      <p>We quote these as the named bodies frame them, with their uncertainty attached. On Record has <strong>no donation page of its own</strong> — it only links out — so there is no "amount raised" to claim.</p>
+    </div>
+
+    <div class="caution">
+      <p><b>The one discipline behind all of it.</b> Every sentence above is <em>descriptive</em>: it says what a record shows. None says a single hot day, or Seville itself, was <em>caused by</em> climate change — no one measurement can carry that claim. When you reuse these numbers, keep that line. The worksheet below teaches exactly this.</p>
+    </div>
+  </section>
+
+  <!-- §3 EMBED -->
+  <section id="embed">
+    <span class="sec-n">03 · Put a chamber in your page</span>
+    <h2>Embed a chamber</h2>
+    <p>Each chapter of On Record can be embedded on its own, without the site's navigation — just the living sky and that chapter's numbers. Add <code>?embed=&lt;chamber&gt;</code> to the URL inside an <code>&lt;iframe&gt;</code>. It keeps working when On Record updates overnight, because it loads the live site.</p>
+
+    <div class="gen">
+      <div class="row">
+        <span><label for="emb-ch">Chamber</label>
+          <select id="emb-ch">
+            <option value="sky">Sky — the carbon budget</option>
+            <option value="ground" selected>Ground — Seville's heat</option>
+            <option value="night">Night — Delhi's hot nights</option>
+            <option value="firstlight">First light — the perception gap</option>
+            <option value="morning">Morning — what's turning</option>
+            <option value="bedrock">Bedrock — the sources</option>
+          </select></span>
+        <label class="chk"><input type="checkbox" id="emb-still"> Single still (one card, no scroll)</label>
+      </div>
+      <figure class="snip">
+        <div class="bar"><span>Paste this &lt;iframe&gt;</span><button class="copy" data-copy="#emb-code" aria-label="Copy the embed snippet">Copy</button></div>
+        <pre id="emb-code"></pre>
+      </figure>
+      <noscript><p class="note">The snippet builder needs JavaScript. Without it, embed any chapter directly:
+        <code>&lt;iframe src="https://agoshbaranwal.github.io/on-record/?embed=ground"&gt;&lt;/iframe&gt;</code> — swap <code>ground</code> for <code>sky</code>, <code>night</code>, or <code>firstlight</code>.</p></noscript>
+    </div>
+
+    <p class="note">The four narrative chambers are the ones worth framing:</p>
+    <table>
+      <thead><tr><th>Chapter</th><th>?embed=</th><th>What it shows</th></tr></thead>
+      <tbody>
+        <tr><td><b>Sky</b></td><td class="num">sky</td><td>The world's remaining carbon budget as a living sky, counting down</td></tr>
+        <tr><td><b>Ground</b></td><td class="num">ground</td><td>Seville's heat, every year since 1940, against its own past</td></tr>
+        <tr><td><b>Night</b></td><td class="num">night</td><td>Delhi's hot nights rising while hot days fall</td></tr>
+        <tr><td><b>First light</b></td><td class="num">firstlight</td><td>The gap between how much people care and how much we think they do</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Morning and Bedrock can be embedded too (the param accepts all six), but they're the action layer and the source ledger — better linked than framed.</p>
+    <div class="note">
+      <div>· The <b>title</b>, <b>figcaption credit</b>, and <b>?embed=</b> are the only parts to change.</div>
+      <div>· <code>loading="lazy"</code> keeps your page fast; the sky only starts when scrolled into view.</div>
+      <div>· <code>referrerpolicy="no-referrer"</code> and On Record's zero-tracking design mean <b>no reader of your page is ever logged by us</b> — we don't even receive your page's address.</div>
+      <div>· Embeds are best on a desktop or projector; on a phone, link to the chamber instead: <code>…/?chamber=sky</code>.</div>
+      <div>· Running a lobby screen or a projector? <code>…/?kiosk=1</code> cycles the chapters on a calm loop, hands-free.</div>
+    </div>
+  </section>
+
+  <!-- §4 CITE -->
+  <section id="cite">
+    <span class="sec-n">04 · Cite it</span>
+    <h2>Cite it</h2>
+    <p>Two things can be cited: <strong>On Record itself</strong> (for the drawn instrument and the way it's computed) and <strong>the underlying data</strong> (for the measurement). Cite whichever you actually leaned on — often both. Every template carries source, permalink, access date, and licence. The access date shown is this page's build date, <b data-rd-date>–</b> — use <em>your</em> access date.</p>
+
+    <h3>Cite the site</h3>
+    <figure class="snip"><div class="bar"><span>Plain sentence</span><button class="copy" data-copy="#cite-site-plain" aria-label="Copy site citation, plain sentence">Copy</button></div><pre id="cite-site-plain"></pre></figure>
+    <figure class="snip"><div class="bar"><span>Note / footnote</span><button class="copy" data-copy="#cite-site-note" aria-label="Copy site citation, note style">Copy</button></div><pre id="cite-site-note"></pre></figure>
+    <figure class="snip"><div class="bar"><span>BibTeX</span><button class="copy" data-copy="#cite-site-bib" aria-label="Copy site citation, BibTeX">Copy</button></div><pre id="cite-site-bib"></pre></figure>
+
+    <h3>Cite a specific number</h3>
+    <p>When the figure is the point — "days over 35 °C in Seville rose from <span data-rd="sev_days_was">–</span> to <span data-rd="sev_days_now">–</span>" — cite the measurement's source, and credit On Record only for the calculation.</p>
+    <div class="tabs" id="cite-tabs" role="group" aria-label="Citation format">
+      <button type="button" data-k="seville" aria-pressed="true">Seville heat</button>
+      <button type="button" data-k="budget" aria-pressed="false">Carbon budget</button>
+      <button type="button" data-k="delhi" aria-pressed="false">Delhi nights</button>
+      <button type="button" data-k="perception" aria-pressed="false">Perception</button>
+    </div>
+    <figure class="snip"><div class="bar"><span>Plain sentence</span><button class="copy" data-copy="#cite-num-plain" aria-label="Copy number citation, plain sentence">Copy</button></div><pre id="cite-num-plain"></pre></figure>
+    <figure class="snip"><div class="bar"><span>Note style</span><button class="copy" data-copy="#cite-num-note" aria-label="Copy number citation, note style">Copy</button></div><pre id="cite-num-note"></pre></figure>
+    <figure class="snip"><div class="bar"><span>Machine (JSON)</span><button class="copy" data-copy="#cite-num-json" aria-label="Copy number citation, JSON">Copy</button></div><pre id="cite-num-json"></pre></figure>
+    <noscript><p class="note">The citation builder needs JavaScript; the figures and their sources above are complete without it.</p></noscript>
+    <p class="copynote">These buttons copy to your clipboard and nothing else.</p>
+  </section>
+
+  <!-- §5 LICENCE -->
+  <section id="licence">
+    <span class="sec-n">05 · The licence, in one look</span>
+    <h2>What the licence covers</h2>
+    <p>On Record makes a clean split. <strong>What we computed is ours to give away; what we measured belongs to the people who measured it.</strong> So the numbers <em>we</em> derived — the counts, the averages, the drawn figures, the arithmetic on the budget — are <strong>CC BY 4.0</strong>: reuse them anywhere, commercially too, just credit "On Record" with a link. The <strong>underlying data</strong> is governed by whoever published it; keep their name attached and follow their terms (they're all open).</p>
+    <table>
+      <thead><tr><th>What it is</th><th>Licence &amp; how to credit</th></tr></thead>
+      <tbody>
+        <tr><td>The site's computed outputs — heat-day counts, 30-year averages, budget-to-today subtraction, the drawn instrument, this page's text</td><td><b>CC BY 4.0.</b> Credit "On Record" + link.</td></tr>
+        <tr><td>Seville &amp; Delhi temperatures (ERA5 via Open-Meteo)</td><td><b>CC-BY</b> (Open-Meteo / Copernicus ERA5). Credit ERA5/ECMWF and Open-Meteo.</td></tr>
+        <tr><td>CO₂ concentration</td><td>NOAA Global Monitoring Laboratory — <b>US-government open data</b>; credit NOAA GML.</td></tr>
+        <tr><td>Perception figures</td><td>Andre et al. (2024), <em>Nature Climate Change</em> — cite the paper; per-country data <b>processed by Our World in Data, CC BY 4.0</b>.</td></tr>
+        <tr><td>Carbon budget, warming, TCRE</td><td>GCB 2025 (Global Carbon Project), IGCC 2025 (Forster et al., ESSD), IPCC AR6 WG1 — cite each; follow their reuse terms.</td></tr>
+        <tr><td>Social cost of carbon</td><td>US EPA (Dec 2023) — US-government open data.</td></tr>
+        <tr><td>Giving lists</td><td>Giving Green &amp; Founders Pledge — descriptive links; credit them, follow their site terms.</td></tr>
+        <tr><td>Fonts</td><td>Space Grotesk &amp; Instrument Serif — <b>SIL Open Font License</b>.</td></tr>
+        <tr><td>Star field (Sky chamber)</td><td>Yale Bright Star Catalogue via d3-celestial (Olaf Frohn) — <b>BSD-3-Clause</b>.</td></tr>
+      </tbody>
+    </table>
+    <p>In short: <strong>quote our numbers freely with a credit; carry the original source's name wherever it appears.</strong> If you're unsure which applies, cite both — that's always correct here.</p>
+  </section>
+
+  <!-- §6 HONEST MEASUREMENT -->
+  <section id="measure" class="imp">
+    <span class="sec-n">06 · What we can honestly know</span>
+    <h2>Honest measurement</h2>
+    <div class="imp-refuse" id="impact-refuse">
+      <h3>What we refuse to measure.</h3>
+      <p>We do not know you are here. There is no analytics script on this page, no pixel, no beacon, no cookie set for us to read. We do not count visitors, sessions, or unique devices. We do not know how long you stayed, how far you scrolled, or which chamber held you. We do not know your city, your country, or your network. There is no funnel, no A/B test, no heatmap, no session replay — the code is open, and you can confirm all of this is absent. This page itself stores nothing at all. The instrument remembers only your last visit by default — plus anything you deliberately keep, like a private pledge in your own words or a sky location you chose — all held in this browser alone, sent nowhere, and erasable by clearing the site's storage.</p>
+      <p><b>Why.</b> A climate record that surveilled its readers to prove it mattered would be answering the wrong question. The numbers below are the honest ones we can gather without touching you: public traces the code and the archive leave in the open, which anyone can verify against the same public sources. They are small on purpose. A star is a bookmark, not a reader. A fork is a copy, not a use. An archive snapshot is a robot, not a person. A rebuild is our activity, not your attention. None of them count who understood anything, or who did anything — and we would rather show you a true small number than a flattering one we had to watch you to get.</p>
+    </div>
+    <div id="impact-know"></div>
+  </section>
+
+  <!-- §7 WORKSHEET -->
+  <section id="worksheet-sec">
+    <span class="sec-n">07 · Classroom worksheet</span>
+    <h2>"Describe, don't blame"</h2>
+    <p>One page. Real, sourced numbers from On Record. Prints clean in black and white. Free to copy for any class (CC BY 4.0).</p>
+    <button class="printbtn" id="print-ws" type="button">Print this worksheet</button>
+
+    <section id="worksheet">
+      <p class="wtitle">Describe, don't blame</p>
+      <p style="margin:.2em 0 1em">reading the climate record honestly — <span style="white-space:nowrap">Name: <span class="blank">&nbsp;</span></span> &nbsp; <span style="white-space:nowrap">Date: <span class="blank">&nbsp;</span></span></p>
+
+      <p><span class="rule">The one rule.</span> A record can tell you <em>what changed</em>. It cannot, on its own, tell you <em>why any single day happened</em>. Scientists describe what the numbers show; they do <b>not</b> say one hot afternoon "was climate change." Your job today is to spot the difference.</p>
+
+      <h3>Part A — Read the record.</h3>
+      <p style="font-size:13px">These figures are real, and each has a source. (Source: ERA5 reanalysis via Open-Meteo; NOAA; Andre et al. 2024. Compiled by On Record, CC BY 4.0.)</p>
+      <table>
+        <thead><tr><th>Place / thing</th><th>Then</th><th>Now</th></tr></thead>
+        <tbody>
+          <tr><td>Seville — days ≥ 35 °C per year</td><td>~<span data-rd="sev_days_was">–</span> (<span data-rd="eras_then">–</span>)</td><td>~<span data-rd="sev_days_now">–</span> (<span data-rd="eras_now">–</span>)</td></tr>
+          <tr><td>Seville — nights ≥ 25 °C per year</td><td>~<span data-rd="sev_nights_was">–</span></td><td>~<span data-rd="sev_nights_now">–</span></td></tr>
+          <tr><td>Delhi — nights ≥ 25 °C per year</td><td>~<span data-rd="delhi_nights_was">–</span></td><td>~<span data-rd="delhi_nights_now">–</span></td></tr>
+          <tr><td>Delhi — days ≥ 35 °C per year</td><td>~<span data-rd="delhi_days_was">–</span></td><td>~<span data-rd="delhi_days_now">–</span></td></tr>
+          <tr><td>CO₂ in the air</td><td>—</td><td>~<span data-rd="co2_ppm">–</span> ppm</td></tr>
+          <tr><td>People worldwide who want government action</td><td>—</td><td>~<span data-rd="want_action">–</span>%</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Part B — Questions.</h3>
+      <p><b>Q1.</b> By how many did Seville's days over 35 °C rise between the two periods? <span class="blank">&nbsp;</span></p>
+      <p><b>Q2.</b> Delhi's hot <em>nights</em> went up but its hot <em>days</em> went slightly <em>down</em>. Write one sentence describing this <b>without</b> guessing the cause. <br><span class="blank" style="min-width:90%">&nbsp;</span></p>
+      <p><b>Q3.</b> Which of these is a <em>description</em> and which is a <em>claim about cause</em>? Tick.<br>
+        (a) "Seville now records about <span data-rd="sev_days_now">–</span> days over 35 °C a year, up from <span data-rd="sev_days_was">–</span>." ☐ describes ☐ blames<br>
+        (b) "Today was so hot because of climate change." ☐ describes ☐ blames<br>
+        (c) "Hot nights in Delhi have become more common over the last 70 years." ☐ describes ☐ blames</p>
+
+      <h3>Part C — Fix the sentence.</h3>
+      <p>Each line crosses the honest line. Rewrite it as a <em>description of the record</em>, and add where the number comes from.</p>
+      <p>1. "This heatwave proves the planet is doomed." → <span class="blank" style="min-width:70%">&nbsp;</span></p>
+      <p>2. "Delhi is getting cooler in the daytime, so warming isn't real here." → <span class="blank" style="min-width:60%">&nbsp;</span><br>
+        <span style="font-size:12px">(Hint for 2: both numbers are true at once — rising nights, slightly falling days. An honest sentence holds both.)</span></p>
+
+      <h3>Part D — Think it through.</h3>
+      <p>· Nearly 9 in 10 people worldwide want more climate action, but most people <em>guess</em> the number is far lower. Why might believing "hardly anyone cares" change what a person does?</p>
+      <p>· Why is comparing a city <b>to its own past</b> more honest than comparing two different cities?</p>
+
+      <p style="margin-top:1.2em"><b>The takeaway.</b> <em>Say what the record shows. Name where it comes from. Don't turn one day, or one place, into the whole story.</em></p>
+      <p class="prov">Data: On Record (agoshbaranwal.github.io/on-record), CC BY 4.0, accessed <span data-rd-date>–</span> · underlying measurements ERA5/Open-Meteo, NOAA, Andre et al. 2024.</p>
+
+      <div class="key">
+        <b>Teacher's key.</b> Q1 ≈ <span id="ws-q1">–</span> more days (<span data-rd="sev_days_now">–</span> − <span data-rd="sev_days_was">–</span>). Q3: (a) describes, (b) blames, (c) describes. Part C: rewrite each as a sourced description — e.g. "Records show Delhi's hot nights rose from ~<span data-rd="delhi_nights_was">–</span> to ~<span data-rd="delhi_nights_now">–</span> a year while hot days edged down from ~<span data-rd="delhi_days_was">–</span> to ~<span data-rd="delhi_days_now">–</span> (ERA5 via Open-Meteo)."
+      </div>
+    </section>
+  </section>
+
+  <!-- §8 COLOPHON + FEEDBACK -->
+  <section id="colophon">
+    <span class="sec-n">08 · Contact</span>
+    <h2>Colophon</h2>
+    <p>Made by Agosh Baranwal · <a href="mailto:agoshbaranwal@gmail.com">agoshbaranwal@gmail.com</a>. On Record keeps no analytics and sets no trackers; this page is the same — the copy buttons touch only your clipboard. Found an error in a number or a source? That's the most useful message you can send.</p>
+    <p>We take no money and count none. We point to vetted funds and step out of the way.</p>
+
+    <div class="feedback">
+      <h3 style="margin-top:.2em">Report a correction</h3>
+      <p><b>Nothing is sent unless you press send.</b> These buttons only open a draft — a pre-filled email in your own mail app, or a pre-filled issue on GitHub's site. You see it, you edit it, and you decide whether to send it. On Record has no form, no submit endpoint, and no way to receive anything you didn't choose to send from somewhere else.</p>
+      <div class="btns">
+        <a class="btn btn-teal" id="fb-mail" href="mailto:agoshbaranwal@gmail.com?subject=On%20Record%20%E2%80%94%20correction&amp;body=Page%3A%20reuse.html%0AWhat%20looks%20wrong%3A%0A%0AWhere%20it%20should%20come%20from%20(source)%3A%0A">Report a correction by email</a>
+        <a class="btn btn-out" id="fb-issue" href="https://github.com/agoshbaranwal/on-record/issues/new?title=Correction%3A%20&body=%2A%2APage%2Fchamber%3A%2A%2A%20%0A%2A%2AWhat%20looks%20wrong%3A%2A%2A%20%0A%2A%2AWhere%20it%20should%20come%20from%20(source%20%2B%20link)%3A%2A%2A%20%0A" target="_blank" rel="noopener">Open an issue on GitHub</a>
+      </div>
+    </div>
+    <p class="foot">On Record · agoshbaranwal.github.io/on-record · computed outputs CC BY 4.0 · <a href="./#bedrock">every source, shown &rarr;</a></p>
+  </section>
+
+</main>
+
+<script>
+var RD = /*__REUSE_DATA__*/ null;
+(function(){
+  if(!RD){return;}
+  function $(s,c){return (c||document).querySelector(s);}
+  function all(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s));}
+  var SITE="https://agoshbaranwal.github.io/on-record/";
+
+  // 1 — fill simple injected numbers + dates
+  all('[data-rd]').forEach(function(el){var k=el.getAttribute('data-rd'); if(RD[k]!=null) el.textContent=RD[k];});
+  all('[data-rd-date]').forEach(function(el){el.textContent=RD.build_human;});
+  (function(){var c=RD.countries||[]; $('#country-eg').textContent =
+    c.map(function(x){return x.place+" "+x.actual+"% (guessed "+x.guess+"%)";}).join(", ")+".";})();
+  $('#ws-q1').textContent = Math.round(RD.sev_days_now - RD.sev_days_was);
+
+  // 2 — embed snippet generator
+  var CH={
+    sky:"the world's carbon budget, drawn as a living sky",
+    ground:"Seville's heat, on its own record",
+    night:"Delhi's hot nights rising while hot days fall",
+    firstlight:"the gap between how much people care and how much we think they do",
+    morning:"what's already turning, and where one person has leverage",
+    bedrock:"every number, every source"
+  };
+  var LBL={sky:"Sky",ground:"Ground",night:"Night",firstlight:"First light",morning:"Morning",bedrock:"Bedrock"};
+  function snippet(id,still){
+    var src=SITE+"?embed="+id+(still?"&beat=1":"");
+    var title="On Record — "+LBL[id]+": "+CH[id];
+    return '<!-- '+title+'. CC BY 4.0. -->\n'+
+      '<figure style="margin:0">\n'+
+      '  <iframe\n'+
+      '    src="'+src+'"\n'+
+      '    title="'+title+'"\n'+
+      '    width="100%" height="480"\n'+
+      '    loading="lazy"\n'+
+      '    referrerpolicy="no-referrer"\n'+
+      '    style="border:0;max-width:720px;aspect-ratio:3/2;border-radius:14px">\n'+
+      '  </iframe>\n'+
+      '  <figcaption style="font:400 13px/1.5 system-ui;opacity:.7">\n'+
+      '    <a href="'+SITE+'?chamber='+id+'" target="_blank" rel="noopener">On Record ↗</a>\n'+
+      '    — computed outputs CC BY 4.0; data per its named source.\n'+
+      '  </figcaption>\n'+
+      '</figure>';
+  }
+  function regenEmbed(){
+    $('#emb-code').textContent = snippet($('#emb-ch').value, $('#emb-still').checked);
+  }
+  $('#emb-ch').addEventListener('change',regenEmbed);
+  $('#emb-still').addEventListener('change',regenEmbed);
+  regenEmbed();
+
+  // 3 — citations
+  var D=RD.build_human, ISO=RD.build_iso;
+  $('#cite-site-plain').textContent =
+    "On Record, an honest climate instrument by Agosh Baranwal (agoshbaranwal.github.io/on-record), accessed "+D+". Computed outputs CC BY 4.0.";
+  $('#cite-site-note').textContent =
+    "Agosh Baranwal, On Record, 2026, "+SITE+" (accessed "+D+"). Computed values licensed CC BY 4.0.";
+  $('#cite-site-bib').textContent =
+    "@misc{onrecord,\n  author  = {Baranwal, Agosh},\n  title   = {On Record: an honest climate instrument},\n  year    = {2026},\n  url     = {"+SITE+"},\n  urldate = {"+ISO+"},\n  note    = {Computed outputs CC BY 4.0}\n}";
+
+  var NUM={
+    seville:{
+      plain:"In Seville, days at or above 35 °C rose from about "+RD.sev_days_was+" a year ("+RD.eras_then+" average) to about "+RD.sev_days_now+" ("+RD.eras_now+"). Source: ERA5 reanalysis via Open-Meteo (CC-BY), counted by On Record (agoshbaranwal.github.io/on-record/?chamber=ground), accessed "+D+".",
+      note:"ERA5 reanalysis (ECMWF) via Open-Meteo, daily maximum temperature, Seville, 1940–"+RD.eras_now.split('–')[1]+", CC-BY; days ≥35 °C per year counted by On Record, "+SITE+"?chamber=ground (accessed "+D+"). Calculation CC BY 4.0.",
+      json:{claim:"Seville days ≥35 °C rose from ~"+RD.sev_days_was+"/yr ("+RD.eras_then+") to ~"+RD.sev_days_now+"/yr ("+RD.eras_now+")",measurement_source:"ERA5 (ECMWF) via Open-Meteo, CC-BY",variable:"daily maximum 2m air temperature",computed_by:"On Record",permalink:SITE+"?chamber=ground",accessed:ISO,computation_license:"CC BY 4.0"}
+    },
+    budget:{
+      plain:"The remaining CO₂ budget for a likely chance of staying under 1.5 °C is about "+RD.budget_lo+"–"+RD.budget_hi+" GtCO₂ as of "+D+" — roughly "+RD.years_left+" years at the current ~"+RD.rate+" GtCO₂/yr. Sources: Global Carbon Budget 2025 (Global Carbon Project) and IGCC 2025 (Forster et al., ESSD), brought to today by On Record (agoshbaranwal.github.io/on-record/?chamber=sky), accessed "+D+".",
+      note:"Global Carbon Budget 2025 (Global Carbon Project) and Forster et al., Indicators of Global Climate Change 2025 (ESSD); remaining 1.5 °C budget ~"+RD.budget_lo+"–"+RD.budget_hi+" GtCO₂, brought to "+D+" at ~"+RD.rate+" GtCO₂/yr by On Record, "+SITE+"?chamber=sky (accessed "+D+"). Calculation CC BY 4.0.",
+      json:{claim:"Remaining CO2 budget for a likely <1.5 C is ~"+RD.budget_lo+"–"+RD.budget_hi+" GtCO2 as of "+ISO+" (~"+RD.years_left+" yr at ~"+RD.rate+" GtCO2/yr)",measurement_source:"Global Carbon Budget 2025; IGCC 2025 (Forster et al., ESSD)",computed_by:"On Record (subtracted emissions since each budget's start date at the current rate)",permalink:SITE+"?chamber=sky",accessed:ISO,computation_license:"CC BY 4.0"}
+    },
+    delhi:{
+      plain:"In Delhi, nights at or above 25 °C rose from about "+RD.delhi_nights_was+" a year ("+RD.eras_then+") to about "+RD.delhi_nights_now+" ("+RD.eras_now+"), while days at or above 35 °C edged down from about "+RD.delhi_days_was+" to "+RD.delhi_days_now+". Source: ERA5 reanalysis via Open-Meteo (CC-BY), counted by On Record (agoshbaranwal.github.io/on-record/?chamber=night), accessed "+D+".",
+      note:"ERA5 reanalysis (ECMWF) via Open-Meteo, Delhi, "+RD.eras_then+" vs "+RD.eras_now+", CC-BY; nights ≥25 °C ~"+RD.delhi_nights_was+"→"+RD.delhi_nights_now+", days ≥35 °C ~"+RD.delhi_days_was+"→"+RD.delhi_days_now+", counted by On Record, "+SITE+"?chamber=night (accessed "+D+"). Calculation CC BY 4.0.",
+      json:{claim:"Delhi nights ≥25 °C ~"+RD.delhi_nights_was+"→"+RD.delhi_nights_now+"/yr; days ≥35 °C ~"+RD.delhi_days_was+"→"+RD.delhi_days_now+"/yr ("+RD.eras_then+" vs "+RD.eras_now+")",measurement_source:"ERA5 (ECMWF) via Open-Meteo, CC-BY",computed_by:"On Record",permalink:SITE+"?chamber=night",accessed:ISO,computation_license:"CC BY 4.0"}
+    },
+    perception:{
+      plain:"About "+RD.want_action+"% of people worldwide want their government to do more on climate, yet most people guess the share is far lower. Source: Andre, Boneva, Chopra & Falk (2024), Nature Climate Change; per-country data via Our World in Data (CC BY 4.0); shown by On Record (agoshbaranwal.github.io/on-record/?chamber=firstlight), accessed "+D+".",
+      note:"Andre, Boneva, Chopra & Falk (2024), Nature Climate Change; global support for government climate action ~"+RD.want_action+"%; per-country figures via Our World in Data (CC BY 4.0); On Record, "+SITE+"?chamber=firstlight (accessed "+D+").",
+      json:{claim:"~"+RD.want_action+"% worldwide want more government climate action; people systematically underestimate this share",measurement_source:"Andre, Boneva, Chopra & Falk (2024), Nature Climate Change; per-country via Our World in Data (CC BY 4.0)",computed_by:"On Record (display only)",permalink:SITE+"?chamber=firstlight",accessed:ISO,computation_license:"CC BY 4.0"}
+    }
+  };
+  function showCite(k){
+    var c=NUM[k];
+    $('#cite-num-plain').textContent=c.plain;
+    $('#cite-num-note').textContent=c.note;
+    $('#cite-num-json').textContent=JSON.stringify(c.json,null,2);
+  }
+  all('#cite-tabs button').forEach(function(b){b.addEventListener('click',function(){
+    all('#cite-tabs button').forEach(function(x){x.setAttribute('aria-pressed','false');});
+    b.setAttribute('aria-pressed','true'); showCite(b.getAttribute('data-k'));
+  });});
+  showCite('seville');
+
+  // 4 — honest-measurement render (reads RD.impact; refusal already static above)
+  (function(){
+    var I=RD.impact; if(!I){ $('#impact-know').innerHTML="<p class='imp-omit'>Tonight's build recorded no outcome figures.</p>"; return; }
+    var order=[["code","The code, in the open"],["archive","The public archive"],["cadence","How fresh the record is"]];
+    function esc(s){return String(s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];});}
+    var html="";
+    order.forEach(function(g){
+      var arr=(I.metrics||[]).filter(function(m){return m.group===g[0];});
+      if(!arr.length) return;
+      html+="<h3>"+g[1]+"</h3>"+arr.map(function(m){
+        return "<div class='imp'><span class='imp-n'>"+esc(m.value)+"</span><span class='imp-l'>"+esc(m.label)+"</span><span class='imp-c'>"+esc(m.caveat)+"</span></div>";
+      }).join("");
+    });
+    if(I.omitted && I.omitted.length){
+      html+="<p class='imp-omit'>Not reachable in tonight's build, so shown as nothing rather than guessed: "+
+        I.omitted.map(function(o){return esc(o.reason);}).join("; ")+".</p>";
+    }
+    html+="<p class='imp-limits'><b>What these numbers are not.</b> Every figure here is a proxy, and a weak one by design. Stars, forks and watchers count people who found the code on GitHub — a population that is mostly developers and almost never the same as the people the site is for. The archive count measures preservation by the Internet Archive, not readership, and its crawler visits on no fixed schedule, so the number can jump or sit still for reasons that have nothing to do with the site. The cadence figures describe our own machine — when it last ran, how far the data trails real time — and describe no one else. Add them all together and you still have not measured a single reader, a single mind changed, or a single tonne of carbon. Those are the outcomes that matter, and they are exactly the ones an honest static page cannot claim to see.</p>";
+    $('#impact-know').innerHTML=html;
+  })();
+
+  // (the feedback mailto is a static href in the markup, so it works with JavaScript off too)
+
+  // 6 — copy buttons (clipboard only, nothing else)
+  all('button.copy').forEach(function(b){b.addEventListener('click',function(){
+    var pre=$(b.getAttribute('data-copy')); if(!pre) return;
+    var txt=pre.textContent;
+    function ok(){var o=b.textContent;b.textContent="Copied";b.classList.add('done');
+      setTimeout(function(){b.textContent=o;b.classList.remove('done');},1500);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,function(){});}
+    else{try{var r=document.createRange();r.selectNode(pre);var s=getSelection();s.removeAllRanges();s.addRange(r);document.execCommand('copy');s.removeAllRanges();ok();}catch(e){}}
+  });});
+
+  // 7 — print just the worksheet
+  $('#print-ws').addEventListener('click',function(){
+    document.body.classList.add('ws-print');
+    var clear=function(){document.body.classList.remove('ws-print');window.removeEventListener('afterprint',clear);};
+    window.addEventListener('afterprint',clear);
+    setTimeout(function(){window.print();},30);
+  });
+})();
+</script>
+</body>
+</html>

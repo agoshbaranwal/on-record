@@ -6,10 +6,10 @@
    so the browser always detects an update and every older cache is purged — no
    stale copy can linger (the trap that must never recur). There is no push and
    no notification code here: the site cannot send notifications. */
-const BUILD = "20260726054302-acd4e42b";
+const BUILD = "20260726054302-cd5b9de0";
 const CACHE = "onrecord-" + BUILD;
-const SHELL = ["./", "./index.html", "./manifest.webmanifest",
-  "./data/perday-seville.json",   // site-data is inlined into index.html — only perday is fetched at runtime
+const SHELL = ["./", "./index.html", "./reuse.html", "./manifest.webmanifest",
+  "./data/perday-seville.json", "./data/impact.json",   // site-data is inlined into index.html; only these are fetched at runtime
   "./og/icon-192.png", "./og/icon-512.png", "./og/icon-512-maskable.png"];
 
 self.addEventListener("install", function (e) {

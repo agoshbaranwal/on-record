@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }     # full history so impact.json's commit count is honest (not a shallow "1")
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - name: run the pipeline (stdlib only, no installs)
@@ -18,6 +19,6 @@ jobs:
         run: |
           git config user.name "on-record pipeline"
           git config user.email "agoshbaranwal@gmail.com"
-          git add data/ og/ index.html onrecord-heat-mockup.html sw.js manifest.webmanifest
+          git add data/ og/ index.html onrecord-heat-mockup.html sw.js manifest.webmanifest reuse.html
           git diff --cached --quiet || git commit -m "nightly refresh $(date -u +%F)"
           git push

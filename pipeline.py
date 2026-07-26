@@ -15,6 +15,7 @@ Outputs:
   index.html                — the built site (template + fonts + data injected)
 """
 import json, csv, io, math, statistics, time, urllib.request, datetime, pathlib, sys, hashlib, re
+import buildlib   # shared impact.json + reuse.html helpers (Phase 9)
 
 ROOT = pathlib.Path(__file__).parent
 CACHE = ROOT / "spike" / "cache"; CACHE.mkdir(parents=True, exist_ok=True)
@@ -401,6 +402,14 @@ out["showers"] = {
   {"code":"GEM","name":"Geminids","a":"12-04","b":"12-20","peak":"2026-12-14","ra":112,"dec":33,"zhr":150,"parent":"asteroid 3200 Phaethon"},
   {"code":"URS","name":"Ursids","a":"12-17","b":"12-26","peak":"2026-12-22","ra":217,"dec":76,"zhr":10,"parent":"comet 8P/Tuttle"}]}
 
+# ---------------- impact.json — outcome-side measurement only, NEVER the visitor ----------------
+# Folded into `out` (so the page reads D.impact with no runtime fetch/beacon) AND written as a
+# standalone artifact press can cite. A metric whose fetch fails is dropped + listed in `omitted`.
+impact = buildlib.impact_dict(fetch, TODAY, ARCHIVE_END, ROOT, out["_meta"]["built_utc"])
+out["impact"] = impact
+(DATA / "impact.json").write_text(json.dumps(impact, separators=(",", ":")))
+print(f"  impact.json: {len(impact['metrics'])} metrics, {len(impact['omitted'])} omitted")
+
 (DATA / "site-data.json").write_text(json.dumps(out, separators=(",", ":")))
 print(f"  site-data.json written ({(DATA/'site-data.json').stat().st_size:,} B)")
 
@@ -468,3 +477,9 @@ _sw = (ROOT / "sw.js").read_text()
 _sw = re.sub(r'const BUILD = "[^"]*";', 'const BUILD = "%s";' % _swstamp, _sw, count=1)
 (ROOT / "sw.js").write_text(_sw)
 print(f"[pipeline] built index.html ({len(doc):,} B) — sw BUILD {_swstamp} — done")
+
+# ---------------- build reuse.html (teachers + press) ----------------
+reuse_css = css + ("@font-face{font-family:'InstrumentSerifX';font-style:normal;font-weight:400;font-display:swap;"
+                   "src:url(data:font/woff2;base64,%s) format('woff2')}\n" % fonts["InstrumentSerif-normal-400"])
+_rn = buildlib.build_reuse_html(ROOT, reuse_css, buildlib.reuse_data(out, out["_meta"]["today"]))
+print(f"[pipeline] built reuse.html ({_rn:,} B) — done")

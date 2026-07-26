@@ -201,6 +201,22 @@ a{color:inherit}
   border-radius:20px;padding:5px 14px;text-shadow:none;box-shadow:0 3px 14px rgba(0,0,0,.35)}
 #offline-chip.show{display:block}
 .thm-ink #offline-chip{color:var(--ink);background:rgba(250,246,236,.94);border-color:rgba(178,24,43,.4)}
+/* Phase 9 — ?embed: chrome-less single chamber for an iframe; keep the sky + one pane, hide all chrome */
+body.embed #budget-band,body.embed #mast,body.embed #ladder,body.embed #soundbtn,body.embed #intro,
+body.embed #drawer,body.embed #offline-chip,body.embed #sincecard,body.embed #skyloc{display:none!important}
+body.embed{overflow-x:hidden;overflow-y:auto}
+body.embed #panes>.pane{display:none}
+body.embed #panes>.pane.embed-show{display:block}
+body.embed .beat.embed-hide{display:none!important}   /* &beat=n pins a single beat */
+#embed-cred{position:fixed;bottom:10px;right:12px;z-index:60;font-family:var(--mono);font-size:11px;
+  letter-spacing:.02em;color:#fff;background:rgba(20,22,28,.72);padding:3px 9px;border-radius:999px;
+  text-decoration:none;text-shadow:0 1px 2px rgba(0,0,0,.6);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+#embed-cred:hover,#embed-cred:focus-visible{background:rgba(20,22,28,.85);outline:none}
+/* ?kiosk: the real instrument, idle-quiet — cursor hides, chrome dims, nothing new appears */
+body.kiosk.idle{cursor:none}
+body.kiosk.idle #mast,body.kiosk.idle #ladder{opacity:.5;transition:opacity .6s ease}
+body.kiosk #soundbtn{transition:opacity .4s ease}
+body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 
 /* ladder — an instrument rail: one scrim, one hairline, ticks. No boxes. */
 #ladder{position:fixed;right:0;top:50%;transform:translateY(-50%);display:flex;
@@ -631,6 +647,29 @@ button.rr-row:hover{padding-left:6px}
   -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 46px),transparent)}
 #p-bedrock .hww{max-width:64ch;font-size:12.5px;line-height:1.6;color:var(--bone-2);margin-top:10px}
 #p-bedrock .hww b{color:var(--bone);font-weight:500}
+/* Phase 9 — the honest-measurement surface: outcome-side figures, the caveat at the label's weight */
+#p-bedrock .impwrap{max-width:64ch;margin-top:6px}
+#p-bedrock .impwrap h3{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--amber);margin:16px 0 4px;font-weight:400}
+#p-bedrock .imp{display:grid;grid-template-columns:auto 1fr;gap:1px 12px;padding:7px 0;border-bottom:1px solid var(--bone-hair)}
+#p-bedrock .imp-n{grid-row:1/3;font-family:var(--mono);font-size:19px;font-variant-numeric:tabular-nums;
+  color:var(--bone);align-self:center;min-width:2ch}
+#p-bedrock .imp-l{color:var(--bone-2);font-size:12.5px;align-self:end}
+#p-bedrock .imp-c{font-size:11.5px;line-height:1.5;color:var(--bone-3)}
+#p-bedrock .imp-omit{font-family:var(--mono);font-size:11px;color:var(--bone-4);margin-top:9px}
+#p-bedrock .imp-limits{max-width:64ch;font-size:12px;line-height:1.6;color:var(--bone-3);
+  border-top:1px solid var(--bone-hair);padding-top:11px;margin-top:14px}
+#p-bedrock .imp-limits b{color:var(--bone-2)}
+#p-bedrock .reuse-link{color:var(--amber);border-bottom:1px solid rgba(240,188,98,.4)}
+#p-bedrock .reuse-link:hover{color:#f6d089}
+#p-bedrock .bfb{margin-top:16px;max-width:64ch}
+#p-bedrock .bfb-btn{display:inline-block;font-size:12px;font-weight:500;text-decoration:none;
+  padding:6px 13px;border-radius:999px;margin:0 8px 8px 0}
+#p-bedrock .bfb-teal{background:var(--teal-hi);color:#0d2c28}
+#p-bedrock .bfb-teal:hover{background:#a6e6d9}
+#p-bedrock .bfb-out{border:1px solid var(--bone-hair);color:var(--bone-2)}
+#p-bedrock .bfb-out:hover{border-color:var(--bone-3);color:var(--bone)}
+.thm-ink #p-bedrock .bfb-teal{background:var(--act);color:#f4f4f1}
 /* the archive: every source is a catalogued record on a shelf */
 #p-bedrock .srcs{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
   gap:14px 28px;font-family:var(--mono);font-size:10.5px;line-height:1.7;color:var(--bone-3);max-width:940px}
@@ -1193,6 +1232,27 @@ button.rr-row:hover{padding-left:6px}
           <p class="hww" style="margin-top:6px;max-width:64ch">And a promise you can check in the source: <b>this site cannot and will not send
             notifications.</b> It is a static page with no server and no push — nothing reaches you unless you open it. Your
             last visit is remembered only in this browser, and never sent anywhere. Return when you like; the record waits.</p>
+
+          <h2 style="font-size:15px;margin-top:22px">What we can honestly know</h2>
+          <div id="impact-refuse">
+            <p class="hww" style="margin-top:6px;max-width:64ch"><b>What we refuse to measure.</b> We do not know you are here. There is no analytics
+              script on this page, no pixel, no beacon, no cookie set for us to read. We do not count visitors, sessions or
+              devices; we do not know how long you stayed, how far you scrolled, or which chamber held you; we do not know your
+              city, your country, or your network. There is no funnel, no A/B test, no heatmap, no session replay — the code is
+              open, and you can confirm all of this is absent.</p>
+            <p class="hww" style="margin-top:6px;max-width:64ch"><b>Why.</b> A climate record that surveilled its readers to prove it mattered would be
+              answering the wrong question. The figures below are the honest ones we can gather without touching you — public
+              traces the code and the archive leave in the open. They are small on purpose: a star is a bookmark, not a reader;
+              a fork is a copy, not a use; an archive snapshot is a robot, not a person; a rebuild is our activity, not your attention.</p>
+          </div>
+          <div id="impact-know" class="impwrap"></div>
+          <p class="hww" style="margin-top:16px;max-width:64ch"><a class="reuse-link" href="reuse.html">Reuse &amp; cite this &rarr;</a>
+            — the method in plain words, ready-made embeds, citations you can paste, the licence in one paragraph, and a printable classroom worksheet.</p>
+          <div class="bfb">
+            <p class="hww" style="margin:0 0 8px"><b>Found an error in a number or a source?</b> Nothing is sent unless you press send — these open a pre-filled draft you review and send yourself.</p>
+            <a class="bfb-btn bfb-teal" href="mailto:agoshbaranwal@gmail.com?subject=On%20Record%20%E2%80%94%20correction&amp;body=Chamber%3A%20Bedrock%0AWhat%20looks%20wrong%3A%0A%0AWhere%20it%20should%20come%20from%20(source)%3A%0A">Report a correction</a>
+            <a class="bfb-btn bfb-out" href="https://github.com/agoshbaranwal/on-record/issues/new?title=Correction%3A%20&amp;body=%2A%2APage%2Fchamber%3A%2A%2A%20%0A%2A%2AWhat%20looks%20wrong%3A%2A%2A%20%0A%2A%2AWhere%20it%20should%20come%20from%20(source%20%2B%20link)%3A%2A%2A%20%0A" target="_blank" rel="noopener">Open a GitHub issue</a>
+          </div>
           <div class="limits" id="limits"></div>
           <p class="colophon" id="colophon"></p>
         </div>
@@ -1258,6 +1318,13 @@ window.D = /*__DATA__*/ null;
 (function(){
 "use strict";
 var D=window.D,Q=new URLSearchParams(location.search);
+/* ── Phase 9 — reuse modes. Read + flag as EARLY as possible so the chrome never flashes ──
+   ?embed=<chamber>  chrome-less single chamber for an <iframe> (writes NO localStorage);
+   ?kiosk=1          auto-cycling projector/lobby loop. embed wins if both are present. */
+var EMBED=Q.has("embed")?(function(){var id=(Q.get("embed")||"").trim();
+  return ["sky","ground","night","firstlight","morning","bedrock"].indexOf(id)>=0?id:"sky";})():null;
+var KIOSK=(!EMBED)&&Q.has("kiosk")&&Q.get("kiosk")!=="0";
+try{if(EMBED)document.body.classList.add("embed");if(KIOSK)document.body.classList.add("kiosk");}catch(e){}
 /* capture the ORIGINAL hash now — enterChamber(0) stamps "#p-sky" over it before the intro/boot read it */
 var HASH0=location.hash.replace("#p-","").replace("#","").trim();
 function el(id){return document.getElementById(id);}
@@ -1826,7 +1893,7 @@ var startIntro,endIntro;
  var N=beats.length,idx=0,settled=false,countRAF=0,settleTimer=0,
      interacted=false,reopened=false,retScroll=0,lastEx=.66,REVEAL=1300,NUM={};
  /* a REAL deep link (?chamber= or a non-sky #p- hash captured BEFORE enterChamber(0) clobbered it) bypasses the cold-open */
- var isDeep=!!(Q.get("chamber")||(HASH0&&HASH0!=="sky"));
+ var isDeep=!!(Q.get("chamber")||EMBED||KIOSK||(HASH0&&HASH0!=="sky"));
  function calc(){NUM.budget=Math.round((LO.remaining_now_gt+HIe.remaining_now_gt)/2);
   NUM.rate=Math.round(RNOW);NUM.year=Math.round(NOW+LO.remaining_now_gt/RNOW);NUM.years=yearsStr(RNOW);}
  function unit(k){return (k==="budget"||k==="rate")?" billion tonnes":k==="years"?" years":"";}
@@ -1904,7 +1971,7 @@ var startIntro,endIntro;
  endIntro=function(reopen){if(intro.classList.contains("gone"))return;
   clearTimeout(settleTimer);cancelAnimationFrame(countRAF);
   intro.classList.add("gone");stage.classList.remove("introing");bgInert(false);
-  if(!reopen){try{localStorage.setItem("onrecord_intro_seen","1");}catch(e){}}
+  if(!reopen&&!EMBED){try{localStorage.setItem("onrecord_intro_seen","1");}catch(e){}}   // an embedded frame writes nothing
   if(whatis)whatis.hidden=false;
   if(reopen){window.scrollTo(0,retScroll);reopened=false;
    setTimeout(function(){try{whatis.focus();}catch(e){}},60);return;}
@@ -2020,7 +2087,7 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
    od.innerHTML=head+'<span class="dim3">'+tail+'</span> years';}  // dimmed digits already say "not measurement"
   upd();setInterval(upd,reduce?1000:250);})();
  /* the sky remembers you — ghost horizon of your first visit (this device only) */
- (function(){try{
+ (function(){if(EMBED)return;try{                                  // an embedded frame remembers nothing
   var K="onrecord_v1",now=new Date().toISOString().slice(0,10);
   var s=JSON.parse(localStorage.getItem(K)||"null");
   if(!s){localStorage.setItem(K,JSON.stringify({first:now}));return;}
@@ -2528,8 +2595,9 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
  }
  /* ---- private pledge: localStorage, quiet replay, never a public badge (Kristofferson 2014) ---- */
  function loadP(){try{return JSON.parse(localStorage.getItem(PKEY)||"null");}catch(e){return null;}}
- function saveP(p){try{localStorage.setItem(PKEY,JSON.stringify(p));}catch(e){}}
- function offerPledge(action,plannedFor){var p=loadP()||{actions:{},city:"Seville"};
+ function saveP(p){if(EMBED)return;try{localStorage.setItem(PKEY,JSON.stringify(p));}catch(e){}}
+ function offerPledge(action,plannedFor){if(EMBED)return;   // no private-pledge UI (and no write) inside an embedded frame
+  var p=loadP()||{actions:{},city:"Seville"};
   pledgeEl.hidden=false;
   pledgeEl.innerHTML='Want this on your own record? <button type="button" class="rr-keep" id="rr-keep">I’m keeping this</button>'+
    '<label style="display:block;margin-top:8px"><span class="sr-only">In your words, optional: why this matters to you</span>'+
@@ -2814,6 +2882,34 @@ window.__ART=__ART;   // exposed for the build-time OG bake
  el("colophon").innerHTML="A worked mockup of On Record — place data frozen at 3 July 2026 while the form is "+
   "decided; the live build refreshes daily. Every figure traces to the sources above or is flagged “verify at "+
   "build”. Nothing hand-typed or model-guessed. English first; Hindi from launch. Made by Agosh Baranwal · agoshbaranwal@gmail.com";
+})();
+
+/* Phase 9 — the outcome-side "what we can honestly know" figures (reads D.impact, injected at build → no runtime fetch/beacon) */
+(function(){
+ var box=el("impact-know");if(!box)return;
+ var I=D&&D.impact;
+ if(!I){box.innerHTML="<p class='imp-omit'>Tonight's build recorded no outcome figures.</p>";return;}
+ function esc(s){return String(s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];});}
+ var groups=[["code","The code, in the open"],["archive","The public archive"],["cadence","How fresh the record is"]];
+ var html="";
+ groups.forEach(function(g){
+  var arr=(I.metrics||[]).filter(function(m){return m.group===g[0];});
+  if(!arr.length)return;
+  html+="<h3>"+g[1]+"</h3>"+arr.map(function(m){
+   return "<div class='imp'><span class='imp-n'>"+esc(m.value)+"</span><span class='imp-l'>"+esc(m.label)+
+     "</span><span class='imp-c'>"+esc(m.caveat)+"</span></div>";
+  }).join("");
+ });
+ if(I.omitted&&I.omitted.length)
+  html+="<p class='imp-omit'>Not reachable in tonight's build, so shown as nothing rather than guessed: "+
+   I.omitted.map(function(o){return esc(o.reason);}).join("; ")+".</p>";
+ html+="<p class='imp-limits'><b>What these numbers are not.</b> Every figure here is a proxy, and a weak one by design. "+
+  "Stars, forks and watchers count people who found the code on GitHub — mostly developers, almost never the people the "+
+  "site is for. The archive count measures preservation by the Internet Archive, not readership, and its crawler visits on "+
+  "no fixed schedule. The cadence figures describe our own machine, and no one else. Add them all together and you still "+
+  "have not measured a single reader, a single mind changed, or a single tonne of carbon — the outcomes that matter, and "+
+  "exactly the ones an honest static page cannot claim to see.</p>";
+ box.innerHTML=html;
 })();
 
 /* ============ DRAWER ============ */
@@ -3315,7 +3411,7 @@ var __SKY=(function(){
    "</b> ("+nx.parent+"), peaking "+fmtPeak(nx.peak)+" — up to ~"+nx.zhr+"/hr under dark skies.";}
  /* -------- place -------- */
  function setPlace(loc,persist){LOC=loc;LAT=loc.lat;LON=loc.lon;
-  try{if(persist)localStorage.setItem("onrecord_skyloc",JSON.stringify({lat:loc.lat,lon:loc.lon}));
+  if(!EMBED)try{if(persist)localStorage.setItem("onrecord_skyloc",JSON.stringify({lat:loc.lat,lon:loc.lon}));  // an embedded frame never touches storage
    else localStorage.removeItem("onrecord_skyloc");}catch(e){}
   var bd=el("skyloc-delhi"),bm=el("skyloc-mine");
   if(bd){bd.setAttribute("aria-pressed",loc===DELHI?"true":"false");
@@ -3507,6 +3603,71 @@ if(si>0){endIntro();
   if(__ATMO.ok)__ATMO.setState(CH[si].id,{instant:true});
   enterChamber(si);});}
 if(Q.get("drawer")){openDrawer(Q.get("drawer"));endIntro();}
+
+/* ═══════════ REUSE MODES (Phase 9) ═══════════
+   ?embed=<chamber> — chrome-less single chamber for an <iframe>, with an un-strippable
+   credit badge. ?kiosk=1 — a calm auto-cycling projector loop over the existing engine.
+   Both reuse the deep-link arrival path and the sky's own cross-fades; nothing new is drawn. */
+if(EMBED){
+ endIntro();
+ var ei=CH.findIndex(function(c){return c.id===EMBED;});if(ei<0)ei=0;
+ var epane=el("p-"+CH[ei].id);if(epane)epane.classList.add("embed-show");
+ var beatN=parseInt(Q.get("beat"),10);
+ var shortFrame=!!(window.innerHeight&&window.innerHeight<=360);   // a 16:9 press card shows ONE reading, not a clipped scroll
+ if(epane&&((isFinite(beatN)&&beatN>0)||shortFrame)){
+  var bn=(isFinite(beatN)&&beatN>0)?beatN:1;
+  Array.prototype.forEach.call(epane.querySelectorAll(".beat"),function(b,j){if(j!==bn-1)b.classList.add("embed-hide");});
+  epane.style.overflow="hidden";
+ }
+ requestAnimationFrame(function(){                                 // arrive instantly — a locked single frame needs no cross-fade
+  var a=chamberAnchor(ei);if(a)a.scrollIntoView({block:"start"});
+  if(__ATMO.ok)__ATMO.setState(CH[ei].id,{instant:true});
+  enterChamber(ei);
+ });
+ (function(){                                                      // the credit is INJECTED, not markup — stripping it means editing our script
+  var cred=document.createElement("a");cred.id="embed-cred";
+  cred.href="https://agoshbaranwal.github.io/on-record/?chamber="+CH[ei].id;
+  cred.target="_top";cred.rel="noopener";
+  cred.innerHTML="On&nbsp;Record<span aria-hidden=\"true\"> ↗</span>";
+  cred.setAttribute("aria-label","On Record — "+CH[ei].lab+" — open the full instrument");
+  document.body.appendChild(cred);
+  var stg=el("stage");if(stg)stg.setAttribute("aria-label","On Record — "+CH[ei].lab+". The full instrument opens in a new tab.");
+ })();
+}
+if(KIOSK){
+ endIntro();
+ var K_ORDER=(function(){
+  var ids=(Q.get("order")||"").split(",").map(function(s){return s.trim();})
+    .filter(function(id){return id&&CH.some(function(c){return c.id===id;});});
+  if(!ids.length)ids=["sky","ground","night","firstlight","morning"];   // Bedrock (the ledger) is excluded; the loop resolves on Morning, then breathes back to the calm Sky — never ends on Night
+  return ids.map(function(id){return CH.findIndex(function(c){return c.id===id;});});
+ })();
+ var K_DWELL=Math.max(6,Math.min(40,parseFloat(Q.get("dwell"))||12))*1000;
+ var K_IDLE=Math.max(5,Math.min(600,parseFloat(Q.get("idle"))||45))*1000;
+ var kFrom=(function(){var i=CH.findIndex(function(c){return c.id===(Q.get("from")||"sky").trim();});return i<0?0:i;})();
+ var kPos=Math.max(0,K_ORDER.indexOf(kFrom)),kTimer=0,idleTimer=0,resumeTimer=0,kPaused=false;
+ function kDwellMs(idx){return CH[idx].id==="morning"?K_DWELL*1.5:K_DWELL;}   // let the turn land
+ function kArm(idx){clearTimeout(kTimer);if(!kPaused)kTimer=setTimeout(kAdvance,kDwellMs(idx));}
+ function kAdvance(){kPos=(kPos+1)%K_ORDER.length;var idx=K_ORDER[kPos];
+  var a=chamberAnchor(idx);if(a)a.scrollIntoView({block:"start"});   // jump the content; the smooth motion is the sky's own cross-fade
+  enterChamber(idx);                                                 // drive it directly (never depend on the rAF scroll-reader, which pauses when a lobby screen is backgrounded)
+  kArm(idx);}
+ function kGoIdle(){document.body.classList.add("idle");}
+ function kWake(){document.body.classList.remove("idle");clearTimeout(idleTimer);idleTimer=setTimeout(kGoIdle,3000);}
+ function kInteract(){                                             // a real touch hands over the full instrument
+  kPaused=true;clearTimeout(kTimer);kWake();
+  clearTimeout(resumeTimer);resumeTimer=setTimeout(function(){
+   kPaused=false;kPos=Math.max(0,K_ORDER.indexOf(chamberSettled));kArm(K_ORDER[kPos]);
+  },K_IDLE);
+ }
+ ["pointerdown","keydown","touchstart","wheel"].forEach(function(ev){window.addEventListener(ev,kInteract,{passive:true});});
+ window.addEventListener("mousemove",kWake,{passive:true});       // a drifting cursor only wakes the chrome; it never pauses the loop
+ requestAnimationFrame(function(){
+  var a=chamberAnchor(kFrom);if(a)a.scrollIntoView({block:"start"});
+  if(__ATMO.ok)__ATMO.setState(CH[kFrom].id,{instant:true});
+  enterChamber(kFrom);kWake();kArm(kFrom);
+ });
+}
 /* ═══════════ THE RETURN LAYER (Phase 8) ═══════════
    A no-guilt "since you were last here" card, an installable PWA that works
    offline WITHOUT ever masking a fresh nightly build (the service worker is
@@ -3517,6 +3678,7 @@ if(Q.get("drawer")){openDrawer(Q.get("drawer"));endIntro();}
 var CANT_NOTIFY="This site is a static page. It cannot and will not send notifications — nothing leaves your browser unless you choose to share a card.";
 /* 1 — the offline stamp + freeze of the live estimates (never invent numbers we can't confirm) */
 (function(){
+ if(EMBED)return;                                       // an embedded frame shows no chrome of its own
  var built=(D._meta&&D._meta.built_utc)?String(D._meta.built_utc).slice(0,10):((D._meta&&D._meta.today)||"");
  var chip=document.createElement("div");chip.id="offline-chip";chip.setAttribute("role","status");
  document.body.appendChild(chip);
@@ -3532,7 +3694,7 @@ var CANT_NOTIFY="This site is a static page. It cannot and will not send notific
   else if(e.data&&e.data.type==="fresh"&&navigator.onLine!==false)set(false);});
 })();
 /* 2 — since you were last here: local-only, dismissible, an information reward and never a nag */
-(function(){try{
+(function(){if(EMBED||KIOSK)return;try{               // never in an embed (writes nothing) or a kiosk (no per-visit nag)
  var K="onrecord.visit.v1",now=Date.now();
  var built=(D._meta&&D._meta.built_utc)||null,
      arch=((typeof F!=="undefined"&&F.newest_obs)||(D._meta&&D._meta.archive_end))||null;  // human "20 Jul 2026", matching the receipt
@@ -3569,7 +3731,7 @@ var CANT_NOTIFY="This site is a static page. It cannot and will not send notific
  persist();
 }catch(e){}})();
 /* 3 — PWA: register the network-first service worker. NB: the page never requests notification or push permission */
-(function(){if(!("serviceWorker" in navigator))return;
+(function(){if(EMBED||!("serviceWorker" in navigator))return;   // don't install our SW from inside someone's embedded frame
  try{navigator.serviceWorker.register("./sw.js",{updateViaCache:"none"})
   .then(function(reg){try{reg.update();}catch(e){}}).catch(function(){});}catch(e){}})();
 
