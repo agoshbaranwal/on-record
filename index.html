@@ -553,37 +553,63 @@ svg{display:block;width:100%;height:auto}
 .scalekey .tk{position:absolute;top:14px;transform:translateX(-50%);white-space:nowrap}
 
 /* ================= intro ================= */
-#intro{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;
-  background:radial-gradient(ellipse at center,rgba(4,10,12,.30) 0%,rgba(4,10,12,.60) 100%);
-  transition:opacity .9s ease}
-#intro .box{background:rgba(4,10,12,.52);backdrop-filter:blur(6px);border-radius:8px;
-  border:1px solid rgba(242,231,204,.10);padding:34px 30px!important}
-/* while the intro speaks, the instrument waits in the wings */
-.introing #panes,.introing #ladder,.introing #mast,.introing #budget-band{opacity:.12;transition:opacity .7s ease}
-@keyframes landpulse{0%{text-shadow:0 0 0 rgba(240,188,98,0)}
- 35%{text-shadow:0 0 26px rgba(240,188,98,.85)}100%{text-shadow:0 0 8px rgba(240,188,98,.25)}}
-#intro-years.landed{animation:landpulse 1s ease both}
+/* ============ intro cold-open — four plain beats, reader-paced (no auto-advance) ============ */
+.sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;margin:-1px}
+#intro{position:fixed;inset:0;z-index:20;transition:opacity .7s ease}
 #intro.gone{opacity:0;pointer-events:none}
-#intro .box{text-align:center;max-width:34ch;padding:0 20px}
-#intro .l{font-weight:500;font-size:clamp(19px,2.6vw,27px);line-height:1.35;letter-spacing:-.01em;
-  color:var(--bone);opacity:0;transform:translateY(8px);text-shadow:0 2px 30px rgba(4,10,12,.8)}
-#intro .l.num .n{color:var(--amber)}
-#intro.play .l1{animation:lin .8s ease .3s forwards}
-#intro.play .l2{animation:lin .8s ease 1.7s forwards}
-#intro.play .l3{animation:lin .8s ease 3.1s forwards}
-@keyframes lin{to{opacity:1;transform:none}}
-#intro .l+.l{margin-top:14px}
-#intro .go{margin-top:26px;opacity:0}
-#intro.play .go{animation:lin .7s ease 4.1s forwards}
-#intro .go button{font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;
-  color:var(--bone);border:1px solid var(--bone-4);border-radius:2px;padding:12px 22px;min-height:44px;
-  background:rgba(3,16,18,.5)}
-#intro .go button:hover{border-color:var(--bone-2)}
-#intro .skip{position:absolute;right:22px;top:84px;font-weight:500;font-size:10.5px;
-  letter-spacing:.18em;text-transform:uppercase;color:var(--bone-3);min-height:40px;padding:8px 10px;
-  border:1px solid rgba(242,231,204,.22);border-radius:2px}
+#intro-scrim{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(130% 78% at 32% 80%,rgba(3,10,12,.66) 0%,rgba(3,10,12,.44) 32%,rgba(3,10,12,0) 70%)}
+/* the type column: lower-center, left-aligned (30-40-word paragraphs must never be centered) */
+#intro .box{position:absolute;left:0;right:0;bottom:0;padding:0 38px 12vh;max-width:660px;margin:0 auto;text-align:left}
+#intro-stack{position:relative;min-height:36vh}
+.ib{position:absolute;left:0;right:0;bottom:0;opacity:0;pointer-events:none;transition:opacity .35s ease}
+.ib.on{opacity:1;pointer-events:auto}
+.ib-h{font-weight:500;font-size:clamp(26px,4.2vw,46px);line-height:1.12;letter-spacing:-.015em;
+  color:var(--bone);text-shadow:0 2px 34px rgba(3,10,12,.9);max-width:19ch;margin-bottom:16px;text-wrap:balance}
+.ib-p{font-size:clamp(15px,1.5vw,18px);line-height:1.55;color:var(--bone-2);max-width:42ch;text-shadow:0 1px 20px rgba(3,10,12,.85)}
+.inum{color:var(--amber);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ib-chip{display:block;margin-top:12px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--bone-3);opacity:0}
+.ib.on .ib-h{animation:ibh .6s cubic-bezier(.2,.7,.2,1) both}
+.ib.on .ib-p{animation:ibp .5s ease .28s both}
+.ib.on .ib-chip{animation:ibp .5s ease .95s both}
+.ib.on.snap .ib-h,.ib.on.snap .ib-p,.ib.on.snap .ib-chip{animation-delay:0s!important;animation-duration:.001s!important}
+@keyframes ibh{from{opacity:0;transform:translateY(12px);filter:blur(7px)}to{opacity:1;transform:none;filter:none}}
+@keyframes ibp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+#intro-foot{position:relative;margin-top:26px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;min-height:46px}
+#intro-dots{display:flex;gap:9px}
+.idot{width:8px;height:8px;border-radius:50%;background:none;border:1px solid var(--bone-4);padding:0;min-height:8px;
+  transition:background .3s,border-color .3s,transform .3s}
+.idot.done{background:var(--bone-3);border-color:var(--bone-3)}
+.idot.cur{background:var(--amber);border-color:var(--amber);transform:scale(1.35)}
+#intro-hint{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-3);text-shadow:var(--halo);animation:hintpulse 2.4s ease-in-out infinite}
+@keyframes hintpulse{0%,100%{opacity:.55}50%{opacity:.95}}
+#intro .go{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--deep);
+  background:var(--amber);border:0;border-radius:3px;padding:13px 22px;min-height:46px;box-shadow:0 2px 18px -6px rgba(240,188,98,.6);transition:transform .2s}
+#intro .go:hover{transform:translateY(-1px)}
+#intro .skip{position:absolute;right:26px;top:88px;z-index:2;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--bone-2);min-height:40px;padding:8px 12px;background:rgba(3,16,18,.42);
+  border:1px solid var(--bone-4);border-radius:2px;text-shadow:var(--halo)}
+#intro .skip:hover{color:var(--bone);border-color:var(--bone-2)}
+/* while the intro speaks, the instrument waits in the wings — chamber text & the budget fixtures held fully back
+   (their copy overlaps the cold-open, badly on mobile); the ladder/mast/band stay as a faint hint of depth */
+.introing #ladder,.introing #mast,.introing #budget-band,.introing #soundbtn{opacity:.12;transition:opacity .7s ease}
+.introing #panes,.introing #sky-fixtures{opacity:0;transition:opacity .7s ease}
+/* the "What is this?" reopen control lives in the masthead */
+#whatis{margin-top:9px;pointer-events:auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--bone-4);background:none;border:0;padding:4px 0;min-height:32px;border-bottom:1px solid transparent;
+  text-shadow:var(--halo);transition:color .3s,border-color .3s}
+#whatis:hover,#whatis:focus-visible{color:var(--bone-2);border-bottom-color:var(--bone-4)}
+.thm-ink #whatis{color:var(--ink-3);text-shadow:none}
+.thm-ink #whatis:hover,.thm-ink #whatis:focus-visible{color:var(--ink)}
+@media(max-width:640px){
+  #intro .box{padding:0 20px 15vh}
+  #intro .skip{right:16px;top:auto;bottom:calc(15vh + env(safe-area-inset-bottom));background:rgba(3,16,18,.55)}
+  .ib-h{font-size:clamp(24px,7vw,34px)}
+  #intro-foot{gap:13px}}
 @media(prefers-reduced-motion:reduce){
-  #intro .l,#intro .go{opacity:1!important;transform:none!important;animation:none!important}}
+  .ib.on .ib-h,.ib.on .ib-p,.ib.on .ib-chip{animation:none;opacity:1;transform:none;filter:none}
+  #intro-hint{animation:none}
+  #intro,.ib,.idot,#intro .go{transition:none}}
 
 /* ================= v3 polish ================= */
 .rung .pill{transition:transform .28s cubic-bezier(.2,.7,.2,1)}
@@ -682,6 +708,7 @@ svg{display:block;width:100%;height:auto}
       <div>
         <p class="word">On Record</p>
         <h1 class="plain" id="mast-tag">Every number measured. Every source shown.</h1>
+        <button id="whatis" type="button" aria-label="What is this? Replay the introduction" hidden>What is this? <span aria-hidden="true">↺</span></button>
       </div>
       <div id="vitals" role="group" aria-label="Global vital signs"></div>
     </header>
@@ -1002,15 +1029,40 @@ svg{display:block;width:100%;height:auto}
   <span id="sr-status" role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)"></span>
 
   <!-- intro -->
-  <div id="intro" class="play" role="dialog" aria-label="Introduction">
-    <button class="skip" id="intro-skip" type="button">skip</button>
+  <div id="intro" role="group" aria-label="Introduction — the carbon budget, in four parts">
+    <div id="intro-scrim" aria-hidden="true"></div>
+    <button class="skip" id="intro-skip" type="button">Skip <span aria-hidden="true">&rarr;</span></button>
+    <p id="intro-live" class="sr-only" aria-live="polite"></p>
     <div class="box">
-      <p class="l l1">This sky is the world&rsquo;s remaining carbon budget — the CO₂ we can
-      still emit with even odds of holding warming to 1.5&nbsp;°C.</p>
-      <p class="l l2 num">At today&rsquo;s burn rate it lasts about <span class="n" id="intro-years">–</span>.</p>
-      <p class="l l3">You can change the rate — and see what the sky already did to one city on
-      the ground.</p>
-      <p class="go"><button id="intro-go" type="button">Enter the sky</button></p>
+      <div id="intro-stack">
+        <section class="ib" data-beat="0">
+          <h2 class="ib-h">The world has a carbon budget.</h2>
+          <p class="ib-p">It is the CO₂ we can still release with a 50% chance of holding warming to
+            1.5&nbsp;°C above pre-industrial times. About <span class="inum count" data-key="budget" aria-hidden="true">–</span>
+            billion tonnes remain.<span class="ib-chip">IGCC 2025 · Global Carbon Budget 2025</span></p>
+        </section>
+        <section class="ib" data-beat="1">
+          <h2 class="ib-h">At today&rsquo;s pace, it&rsquo;s spent around <span class="inum" data-key="year">–</span>.</h2>
+          <p class="ib-p">The world emits roughly <span class="inum count" data-key="rate" aria-hidden="true">–</span> billion tonnes of
+            CO₂ a year — so the budget lasts about <span class="inum" data-key="years">–</span> years.<span
+            class="ib-chip">Global Carbon Budget 2025</span></p>
+        </section>
+        <section class="ib" data-beat="2">
+          <h2 class="ib-h">1.5&nbsp;°C is not a cliff edge.</h2>
+          <p class="ib-p">Crossing it does not end the world, and staying under it does not make the world safe.
+            Each tenth of a degree raises the risk we live with.</p>
+        </section>
+        <section class="ib" data-beat="3">
+          <h2 class="ib-h">This site turns the numbers into a sky.</h2>
+          <p class="ib-p">Six chapters, one living sky that changes colour as you scroll. Every number is measured,
+            every source is listed, and every limit is admitted at the end.</p>
+        </section>
+      </div>
+      <div id="intro-foot">
+        <div id="intro-dots" role="group" aria-label="Progress"></div>
+        <p id="intro-hint" aria-hidden="true">Continue <span aria-hidden="true">&darr;</span></p>
+        <button class="go" id="intro-go" type="button" hidden>Enter the sky <span aria-hidden="true">&rarr;</span></button>
+      </div>
     </div>
   </div>
 </div>
@@ -1022,6 +1074,8 @@ window.D = {"_meta":{"built_utc":"2026-07-24T19:05:14+00:00","archive_end":"2026
 (function(){
 "use strict";
 var D=window.D,Q=new URLSearchParams(location.search);
+/* capture the ORIGINAL hash now — enterChamber(0) stamps "#p-sky" over it before the intro/boot read it */
+var HASH0=location.hash.replace("#p-","").replace("#","").trim();
 function el(id){return document.getElementById(id);}
 var NS="http://www.w3.org/2000/svg";
 function E(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
@@ -1055,6 +1109,8 @@ B.estimates.forEach(function(e){
  e.years_at_now=Math.round(e.remaining_now_gt/B.rate_now_gt*100)/100;});
 B.estimates.sort(function(a,b){return a.remaining_now_gt-b.remaining_now_gt;});
 var LO=B.estimates[0],HIe=B.estimates[1],RNOW=B.rate_now_gt;
+/* the sort can swap which ledger is lower, so NEVER hardcode the source name — read it off the estimate */
+function srcShort(e){return /IGCC/i.test(e&&e.label||"")?"IGCC 2025":"GCB 2025";}
 var F=D.seville_frequency,RW=D.seville_record_window,S=D.seville_stripes,G=D.seville_generational;
 var DH=D.delhi_honesty,P=D.perception_gap,N=D.the_number;
 var dr=DH.receipts;
@@ -1511,31 +1567,110 @@ document.querySelectorAll("[data-go]").forEach(function(b){
  fdReset=function(){if(level!==0){level=0;apply();}};   // leaving Sky re-arms the beat
 })();
 
-/* ============ intro — a day is born, then you learn it's a countdown ============ */
+/* ============ intro cold-open — four plain beats, reader-paced (no auto-advance, no auto-dissolve) ============
+   The 5-second version is one tap on the always-visible exit; the four-beat lesson is depth you opt into. */
+var startIntro,endIntro;
 (function(){
- var tgtA=LO.remaining_now_gt/RNOW,tgtB=HIe.remaining_now_gt/RNOW,e=el("intro-years");
- if(reduce||Q.get("intro")==="0"){e.textContent=yearsStr(RNOW)+" years";return;}
- /* the sky itself performs the sunrise behind the words */
- if(__ATMO.ok&&!Q.get("chamber")&&!location.hash)setTimeout(function(){
-  if(!el("intro").classList.contains("gone"))__ATMO.setState("sky",{dur:3000});},700);
- var st=null;
- function stp(ts){if(!st)st=ts;var k=Math.min(1,(ts-st)/1000);var q=1-Math.pow(1-k,3);
-  var a=(tgtA*q).toFixed(1),b=(tgtB*q).toFixed(1);
-  e.textContent=(a===b?a:a+"–"+b)+" years";
-  if(k<1)requestAnimationFrame(stp);
-  else e.classList.add("landed");}
- e.textContent="0.0 years";
- setTimeout(function(){requestAnimationFrame(stp);},1750);
+ var intro=el("intro"),stackEl=el("intro-stack"),dotsWrap=el("intro-dots"),
+     hint=el("intro-hint"),go=el("intro-go"),skip=el("intro-skip"),
+     live=el("intro-live"),stage=el("stage"),whatis=el("whatis");
+ var beats=Array.prototype.slice.call(stackEl.querySelectorAll(".ib"));
+ var N=beats.length,idx=0,settled=false,countRAF=0,settleTimer=0,
+     interacted=false,reopened=false,retScroll=0,lastEx=.66,REVEAL=1300,NUM={};
+ /* a REAL deep link (?chamber= or a non-sky #p- hash captured BEFORE enterChamber(0) clobbered it) bypasses the cold-open */
+ var isDeep=!!(Q.get("chamber")||(HASH0&&HASH0!=="sky"));
+ function calc(){NUM.budget=Math.round((LO.remaining_now_gt+HIe.remaining_now_gt)/2);
+  NUM.rate=Math.round(RNOW);NUM.year=Math.round(NOW+LO.remaining_now_gt/RNOW);NUM.years=yearsStr(RNOW);}
+ function unit(k){return (k==="budget"||k==="rate")?" billion tonnes":k==="years"?" years":"";}
+ function seed(){calc();beats.forEach(function(b){
+  Array.prototype.forEach.call(b.querySelectorAll(".inum"),function(s){var k=s.getAttribute("data-key");
+   s.setAttribute("aria-label",NUM[k]+unit(k));
+   s.textContent=s.classList.contains("count")?"0":NUM[k];});});}
+ seed();
+ for(var q=0;q<N;q++)(function(j){var d=document.createElement("button");
+  d.type="button";d.className="idot";d.setAttribute("aria-label","Part "+(j+1)+" of "+N);
+  d.addEventListener("click",function(ev){ev.stopPropagation();goTo(j);});dotsWrap.appendChild(d);})(q);
+ var dots=Array.prototype.slice.call(dotsWrap.children);
+ function countUp(b,instant){cancelAnimationFrame(countRAF);
+  var spans=Array.prototype.slice.call(b.querySelectorAll(".inum.count"));if(!spans.length)return;
+  if(instant||reduce){spans.forEach(function(s){s.textContent=NUM[s.getAttribute("data-key")];});return;}
+  var t0=null;spans.forEach(function(s){s.textContent="0";});
+  function step(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/700),qq=1-Math.pow(1-k,3);
+   spans.forEach(function(s){s.textContent=Math.round(NUM[s.getAttribute("data-key")]*qq);});
+   if(k<1)countRAF=requestAnimationFrame(step);}
+  countRAF=requestAnimationFrame(step);}
+ function hideCount(b,h){Array.prototype.forEach.call(b.querySelectorAll(".inum.count"),function(s){
+  if(h)s.setAttribute("aria-hidden","true");else s.removeAttribute("aria-hidden");});}  // silent while animating; the settled figure is exposed to browse mode
+ function announce(b){var h=b.querySelector(".ib-h"),p=b.querySelector(".ib-p"),chip=b.querySelector(".ib-chip");
+  var ptxt=p?p.textContent:"";if(chip)ptxt=ptxt.replace(chip.textContent,"");
+  var s=((h?h.textContent:"")+" "+ptxt).replace(/\s+/g," ").trim();
+  if(chip)s+=" Source: "+chip.textContent.replace(/\s+/g," ").trim()+".";
+  live.textContent=s;}
+ function finalize(b){countUp(b,true);hideCount(b,false);settled=true;announce(b);}
+ function settleNow(){clearTimeout(settleTimer);var b=beats[idx];b.classList.add("snap");finalize(b);}
+ function show(i){var cur2=idx=Math.max(0,Math.min(N-1,i));
+  clearTimeout(settleTimer);cancelAnimationFrame(countRAF);settled=false;
+  beats.forEach(function(b,j){b.classList.remove("snap");b.classList.toggle("on",j===cur2);
+   b.setAttribute("aria-hidden",j===cur2?"false":"true");});
+  dots.forEach(function(d,j){d.classList.toggle("done",j<=cur2);d.classList.toggle("cur",j===cur2);
+   if(j===cur2)d.setAttribute("aria-current","true");else d.removeAttribute("aria-current");});
+  var b=beats[cur2];hideCount(b,true);
+  if(__ATMO.ok&&__ATMO.exposure&&!reopened){var ex=.66+.34*(cur2/(N-1));__ATMO.exposure(lastEx,ex,reduce?0:900);lastEx=ex;}
+  if(reduce){settleNow();}
+  else{setTimeout(function(){if(idx===cur2&&!settled)countUp(b,false);},520);
+   settleTimer=setTimeout(function(){if(idx===cur2)finalize(b);},REVEAL);}
+  hint.hidden=(cur2>1)||interacted;
+  if(document.activeElement===go&&cur2!==N-1){try{intro.focus();}catch(e){}}   // don't drop focus to <body> when the finish button hides on back-nav
+  go.hidden=(cur2!==N-1);
+  if(cur2===N-1)setTimeout(function(){if(idx===N-1){try{go.focus();}catch(e){}}},reduce?0:420);}
+ function advance(){interacted=true;hint.hidden=true;
+  if(!settled){settleNow();return;}
+  if(idx>=N-1){endIntro(reopened);return;}show(idx+1);}
+ function back(){interacted=true;if(idx>0)show(idx-1);}
+ function goTo(i){interacted=true;hint.hidden=true;show(i);settleNow();}
+ intro.addEventListener("click",function(e){if(e.target.closest("button"))return;advance();});
+ skip.addEventListener("click",function(e){e.stopPropagation();endIntro(reopened);});
+ go.addEventListener("click",function(e){e.stopPropagation();endIntro(reopened);});
+ document.addEventListener("keydown",function(e){if(intro.classList.contains("gone"))return;
+  if(el("drawer").classList.contains("open"))return;
+  if(e.target&&e.target.closest&&e.target.closest("#intro-skip,#intro-go,#intro-dots"))return; // let a focused control activate natively (Enter/Space)
+  var k=e.key;
+  if(k==="Escape"){endIntro(reopened);e.preventDefault();}
+  else if(k==="ArrowRight"||k==="ArrowDown"||k==="Enter"||k===" "||k==="Spacebar"){advance();e.preventDefault();}
+  else if(k==="ArrowLeft"||k==="ArrowUp"){back();e.preventDefault();}
+  else if(k==="Home"){goTo(0);e.preventDefault();}
+  else if(k>="1"&&k<=String(N)){goTo(parseInt(k,10)-1);e.preventDefault();}});
+ var tx=0,ty=0;
+ intro.addEventListener("touchstart",function(e){if(e.touches[0]){tx=e.touches[0].clientX;ty=e.touches[0].clientY;}},{passive:true});
+ intro.addEventListener("touchend",function(e){var t=e.changedTouches&&e.changedTouches[0];if(!t)return;
+  var dx=t.clientX-tx,dy=t.clientY-ty;
+  if(Math.abs(dx)>44&&Math.abs(dx)>Math.abs(dy)){if(dx<0)advance();else back();}},{passive:true});
+ function bgInert(on){["panes","sky-fixtures","ladder","mast","budget-band","soundbtn"].forEach(function(id){
+   var e=el(id);if(e){if(on)e.setAttribute("inert","");else e.removeAttribute("inert");}});}  // no tabbing into the dimmed instrument behind the cold-open
+ startIntro=function(reopen){reopened=!!reopen;interacted=false;lastEx=.66;
+  if(reopen){retScroll=window.scrollY||window.pageYOffset||0;seed();}
+  intro.classList.remove("gone");stage.classList.add("introing");bgInert(true);
+  if(whatis)whatis.hidden=true;intro.setAttribute("tabindex","-1");
+  if(__ATMO.ok&&!reopen&&!isDeep)__ATMO.setState("sky",{dur:reduce?0:2600});
+  show(0);setTimeout(function(){try{intro.focus();}catch(e){}},20);};
+ endIntro=function(reopen){if(intro.classList.contains("gone"))return;
+  clearTimeout(settleTimer);cancelAnimationFrame(countRAF);
+  intro.classList.add("gone");stage.classList.remove("introing");bgInert(false);
+  if(!reopen){try{localStorage.setItem("onrecord_intro_seen","1");}catch(e){}}
+  if(whatis)whatis.hidden=false;
+  if(reopen){window.scrollTo(0,retScroll);reopened=false;
+   setTimeout(function(){try{whatis.focus();}catch(e){}},60);return;}
+  if(!isDeep){window.scrollTo(0,0);
+   if(__ATMO.ok){__ATMO.exposure(.9,1,900);if(__ATMO.setState)__ATMO.setState(CH[cur||0].id,{dur:1200});}}
+  setTimeout(function(){var h=document.querySelector("#p-sky h1,#p-sky h2");
+   if(h){try{h.setAttribute("tabindex","-1");h.focus();}catch(e){}}},80);};
+ if(whatis)whatis.addEventListener("click",function(){startIntro(true);});
+ /* first-ever visit auto-plays; deep links, ?intro=0, and returning visitors bypass (recoverable via "What is this?") */
+ var seen=false;try{seen=localStorage.getItem("onrecord_intro_seen")==="1";}catch(e){}
+ if(Q.get("intro")==="0"||isDeep||seen){intro.classList.add("gone");stage.classList.remove("introing");
+  if(whatis)whatis.hidden=false;}
+ else startIntro(false);
 })();
-function endIntro(){el("intro").classList.add("gone");
- el("stage").classList.remove("introing");
- if(__ATMO.ok&&!Q.get("chamber")&&!location.hash)__ATMO.setState(CH[cur].id,{dur:1200});}
-el("intro-go").addEventListener("click",endIntro);
-el("intro-skip").addEventListener("click",endIntro);
-el("intro").addEventListener("click",function(e){if(e.target===el("intro"))endIntro();});
-if(!reduce)setTimeout(function(){/* auto-dissolve shortly after the last line if untouched */
- if(!el("intro").classList.contains("gone"))endIntro();},7500);
-if(Q.get("intro")==="0")endIntro();
 
 /* ============ vitals + masthead ============ */
 el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air · NOAA</p>"+
@@ -1582,9 +1717,9 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
    el("verdict").innerHTML="At this pace the budget is spent around <b>"+yA+
     "</b>, and 2100 arrives about <b>"+w21.toFixed(1).replace(".",".")+"&nbsp;&deg;C</b> hotter than the 1800s"+
     (target<=12?" — the calm blue future.":(target>=55?" — the sky you should fear.":"."));}
-  el("hlab-lo").innerHTML="<b>"+Math.round(LO.remaining_now_gt)+" Gt</b> · IGCC 2025 · runs out ~"+yA;
+  el("hlab-lo").innerHTML="<b>"+Math.round(LO.remaining_now_gt)+" Gt</b> · "+srcShort(LO)+" · runs out ~"+yA;
   if(el("lead-gt"))el("lead-gt").textContent=Math.round(LO.remaining_now_gt);
-  el("hlab-hi").innerHTML="<b>"+Math.round(HIe.remaining_now_gt)+" Gt</b> · GCB 2025 · same answer";
+  el("hlab-hi").innerHTML="<b>"+Math.round(HIe.remaining_now_gt)+" Gt</b> · "+srcShort(HIe)+" · same answer";
   var dim=el("dim");
   dim.setAttribute("aria-valuenow",target.toFixed(1));
   dim.setAttribute("aria-valuetext",Math.round(target)+" gigatonnes per year — "+yearsStr(target)+" years of budget left");
@@ -1603,8 +1738,8 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
   /* the cream band IS the disagreement — position the hoverable truth of it */
   var band=el("band");
   band.style.top=pHi+"%";band.style.height=Math.max(.8,(pLo-pHi))+"%";
-  el("band-whisper").innerHTML="this glow is where the two ledgers disagree — IGCC "+
-   Math.round(LO.remaining_now_gt)+" Gt vs GCB "+Math.round(HIe.remaining_now_gt)+
+  el("band-whisper").innerHTML="this glow is where the two ledgers disagree — "+srcShort(LO)+" "+
+   Math.round(LO.remaining_now_gt)+" Gt vs "+srcShort(HIe)+" "+Math.round(HIe.remaining_now_gt)+
    " Gt · ≈"+(Math.abs(HIe.remaining_now_gt-LO.remaining_now_gt)/target).toFixed(1)+
    " yr at this rate";
  }
@@ -2762,13 +2897,11 @@ el("soundbtn").addEventListener("click",function(){__SND.toggle();});
  window.addEventListener("pointerdown",first);window.addEventListener("keydown",first);})();
 
 /* ============ boot state from URL ============ */
-/* keyboard: native scroll handles arrows/space/PageDown; we only field Escape */
+/* keyboard: native scroll handles arrows/space/PageDown; drawer Escape here, the cold-open owns its own keys */
 window.addEventListener("keydown",function(e){
- if(el("drawer").classList.contains("open")){if(e.key==="Escape")closeDrawer();return;}
- if(!el("intro").classList.contains("gone")&&(e.key==="Enter"||e.key===" "||e.key==="Escape")){
-  endIntro();e.preventDefault();}});
+ if(el("drawer").classList.contains("open")){if(e.key==="Escape")closeDrawer();return;}});
 /* deep link: ?chamber= or #p-<id> jumps to a chapter and skips the intro */
-var startCh=(Q.get("chamber")||location.hash.replace("#p-","").replace("#","")).trim();
+var startCh=(Q.get("chamber")||HASH0).trim();
 var si=CH.findIndex(function(c){return c.id===startCh;});
 if(si>0){endIntro();
  requestAnimationFrame(function(){
