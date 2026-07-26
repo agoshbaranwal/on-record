@@ -154,6 +154,55 @@ a{color:inherit}
 .thm-ink #mast .plain{text-shadow:none}
 .thm-ink #vitals{color:var(--ink-3);text-shadow:none}
 .thm-ink #vitals b{color:var(--ink)}
+/* the pulse — a slim, always-present today reading; the daily-glance magnet.
+   Present on ordinary days too (it says "ordinary"), amber only when the tab dot fires. */
+#pulse{display:inline-block;margin-top:9px;padding:0;border:0;background:none;cursor:pointer;
+  font-family:var(--mono);font-size:10px;letter-spacing:.05em;line-height:1.45;text-align:left;
+  color:var(--bone-3);text-shadow:var(--halo);max-width:42ch;
+  border-bottom:1px solid transparent;transition:color .3s ease,border-color .3s ease}
+#pulse::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;
+  margin-right:7px;vertical-align:middle;background:var(--bone-4);transition:background .3s ease}
+#pulse:hover{color:var(--bone);border-bottom-color:rgba(242,231,204,.3)}
+#pulse:focus-visible{color:var(--bone);border-bottom-color:transparent;outline:2px solid var(--amber);outline-offset:3px;border-radius:2px}
+#pulse.dot{color:var(--bone-2)}
+#pulse.dot::before{background:var(--amber);box-shadow:0 0 6px rgba(240,188,98,.7)}
+.thm-ink #pulse{color:var(--ink-3);text-shadow:none}
+.thm-ink #pulse::before{background:rgba(62,18,8,.42)}
+.thm-ink #pulse.dot{color:var(--ink)}
+.thm-ink #pulse.dot::before{background:var(--act);box-shadow:0 0 6px rgba(178,24,43,.4)}
+.thm-ink #pulse:hover{color:var(--ink);border-bottom-color:rgba(62,18,8,.3)}
+.thm-ink #pulse:focus-visible{color:var(--ink);border-bottom-color:transparent;outline:2px solid var(--act)}
+@media(max-width:640px){#pulse{font-size:9.5px;max-width:34ch}}
+/* Phase 8 — the return card ("since you were last here") and the offline stamp.
+   The card is a calm, dismissible information reward for coming back, never a nag. */
+#sincecard{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);z-index:14;
+  width:min(440px,calc(100vw - 32px));opacity:0;pointer-events:none;transition:opacity .5s ease,transform .5s ease;
+  background:rgba(6,20,22,.92);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
+  border:1px solid rgba(242,231,204,.16);border-radius:12px;padding:16px 18px 15px;
+  box-shadow:0 10px 40px rgba(0,0,0,.4);color:var(--bone-2)}
+#sincecard.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+#sincecard .sc-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:9px}
+#sincecard .sc-k{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-3)}
+#sincecard .sc-x{flex:none;background:none;border:0;cursor:pointer;color:var(--bone-3);
+  font-size:16px;line-height:1;padding:2px 4px;border-radius:6px}
+#sincecard .sc-x:hover,#sincecard .sc-x:focus-visible{color:var(--bone);outline:none;background:rgba(242,231,204,.1)}
+#sincecard p{margin:0 0 8px;font-size:13px;line-height:1.5;color:var(--bone-2)}
+#sincecard p.sc-num b{font-family:var(--mono);font-weight:500;color:var(--bone);letter-spacing:.01em}
+#sincecard .sc-note{margin:9px 0 0;font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;
+  line-height:1.5;color:var(--bone-4)}
+.thm-ink #sincecard{background:rgba(250,246,236,.94);border-color:rgba(62,18,8,.16);color:var(--ink-2)}
+.thm-ink #sincecard p,.thm-ink #sincecard p.sc-num b{color:var(--ink)}
+.thm-ink #sincecard .sc-k,.thm-ink #sincecard .sc-note{color:var(--ink-3)}
+.thm-ink #sincecard .sc-x{color:var(--ink-3)}
+.thm-ink #sincecard .sc-x:hover,.thm-ink #sincecard .sc-x:focus-visible{color:var(--ink);background:rgba(62,18,8,.08)}
+@media(prefers-reduced-motion:reduce){#sincecard{transition:opacity .01s}}
+/* offline as-of stamp — persistent, calm, honest */
+#offline-chip{position:fixed;left:50%;top:6px;transform:translateX(-50%);z-index:15;display:none;
+  max-width:calc(100vw - 24px);font-family:var(--mono);font-size:10px;letter-spacing:.03em;
+  color:var(--bone-2);background:rgba(6,20,22,.9);border:1px solid rgba(240,188,98,.4);
+  border-radius:20px;padding:5px 14px;text-shadow:none;box-shadow:0 3px 14px rgba(0,0,0,.35)}
+#offline-chip.show{display:block}
+.thm-ink #offline-chip{color:var(--ink);background:rgba(250,246,236,.94);border-color:rgba(178,24,43,.4)}
 
 /* ladder — an instrument rail: one scrim, one hairline, ticks. No boxes. */
 #ladder{position:fixed;right:0;top:50%;transform:translateY(-50%);display:flex;
@@ -785,6 +834,7 @@ button.rr-row:hover{padding-left:6px}
       <div>
         <p class="word">On Record</p>
         <h1 class="plain" id="mast-tag">Every number measured. Every source shown.</h1>
+        <button id="pulse" type="button" hidden title="Today's reading — open the Ground chapter"></button>
         <button id="whatis" type="button" aria-label="What is this? Replay the introduction" hidden>What is this? <span aria-hidden="true">↺</span></button>
       </div>
       <div id="vitals" role="group" aria-label="Global vital signs"></div>
@@ -915,6 +965,7 @@ button.rr-row:hover{padding-left:6px}
           <!-- BEAT 3 — today against 86 versions of today, and the finder -->
           <div class="beat">
             <h2>Today, against every version of today since 1940.</h2>
+            <p class="lead" id="g-verdict"></p>
             <p class="bignum" id="g-today">– <small>forecast today <span class="chip">provisional</span></small></p>
             <div class="chartwrap"><div class="plate">
               <div id="recwin"></div>
@@ -1136,6 +1187,14 @@ button.rr-row:hover{padding-left:6px}
             citation, or a CSV — each carries its own named source, permalink and date, so a screenshot or a downloaded file
             can never lose where it came from. All computed outputs are <b>CC BY 4.0</b>.</p>
           <div id="takeaway"></div>
+          <h2 style="font-size:15px;margin-top:22px">The tab dot, and a promise</h2>
+          <p class="hww" style="margin-top:6px;max-width:64ch">When this page shows a <b>&#9679;</b> before its name in the browser tab, it means one auditable
+            thing: today reached at least the 95th percentile for this date, or tied or passed a same-date record, in the
+            city shown. Nothing else earns it — an ordinary day leaves the tab plain, and the page says so in as many words.
+            The dot is attention, never alarm.</p>
+          <p class="hww" style="margin-top:6px;max-width:64ch">And a promise you can check in the source: <b>this site cannot and will not send
+            notifications.</b> It is a static page with no server and no push — nothing reaches you unless you open it. Your
+            last visit is remembered only in this browser, and never sent anywhere. Return when you like; the record waits.</p>
           <div class="limits" id="limits"></div>
           <p class="colophon" id="colophon"></p>
         </div>
@@ -1207,6 +1266,7 @@ function el(id){return document.getElementById(id);}
 var NS="http://www.w3.org/2000/svg";
 function E(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
 var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+var OFFLINE=false;   /* Phase 8 — set true when the SW serves a cached copy or the device is offline; freezes the live estimates so we never invent numbers we can't confirm */
 function mean(s,a,b){var v=s.filter(function(r){return r.year>=a&&r.year<=b;}).map(function(r){return r.n;});
  return v.reduce(function(x,y){return x+y;},0)/v.length;}
 var STOPS=[[-2.5,5,48,97],[-1.5,33,102,172],[-1,67,147,195],[-0.5,146,197,222],[-0.15,209,229,240],
@@ -1288,6 +1348,66 @@ var TS={mode:"snapshot",tmax:(D.today_snapshot&&D.today_snapshot.tmax_C),
 TS.dateLabel=dLabel(TS.dateISO);
 var applyToday=null; /* assigned by groundInit; live module re-calls it */
 var groundOverture=null; /* the 86-summers assembly, played on first arrival */
+
+/* ═══════════ THE NOTABILITY ENGINE (Phase 8) ═══════════
+   One classify(t) is the single source of truth for the pulse strip, the
+   Ground verdict line, the tab-title dot and any share card — so they can never
+   disagree. Record logic reads the bias-adjusted `comparable`, NEVER the raw
+   forecast tmax, so a warm-biased forecast can't fake a record. The dot means
+   exactly one auditable thing (printed in Bedrock so it's falsifiable): today
+   reached ≥95th percentile for this date, or tied/passed a same-date record.
+   Ordinary and cool days are reported as ordinary and cool — a source that
+   says "nothing today" is the one worth trusting. Forecast days stay
+   provisional; only the settled reanalysis makes a record final. */
+function ord(n){var s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);}  // 1→1st, 2→2nd, 21→21st, 91→91st, 11→11th
+var NOTE=(D._meta&&D._meta.notability)||null;   // the pipeline may single-source these; else the literals below
+var BASE_TITLE=(function(){try{return document.title;}catch(e){return "";}})()||
+  "On Record — the carbon budget, drawn as a living sky";
+function classify(t,place){
+ place=place||"Seville";
+ var TIE=(NOTE&&NOTE.tieC)||0.1, NEAR=(NOTE&&NOTE.nearRecordC)||1.0,
+     P99=(NOTE&&NOTE.p99)||99, P95=(NOTE&&NOTE.p95)||95,
+     COOL=(NOTE&&NOTE.coolPctl)||25, WARM=(NOTE&&NOTE.warmPctl)||90;
+ var dl=t.dateLabel||"today", n=t.n, pct=(t.pct!=null?t.pct:null),
+     rec=(t.rec!=null?t.rec:null), recy=t.recy, cmp=(t.comparable!=null?t.comparable:null);
+ var m=(cmp!=null&&rec!=null)?Math.round((cmp-rec)*10)/10:null;   // one decimal, so the ±0.1 tie band is exact (no float dust)
+ var recS=(rec!=null?rec.toFixed(1)+" °C":null);
+ function P(){return ord(pct)+" percentile";}
+ var cls,tier,shortL,longL;
+ if(m!=null&&Math.abs(m)<=TIE){cls="record_tie";tier="A";   /* within a tenth either way reads as level, never a "break" on a provisional forecast */
+  shortL="level with the "+dl+" record";
+  longL="Today's forecast sits level with the warmest "+dl+" on record ("+recS+", "+recy+"), across "+n+" years. Provisional until the day is measured.";}
+ else if(m!=null&&m>TIE){cls="record_broken";tier="A";
+  shortL="on course to break the "+dl+" record";
+  longL="Today's forecast is on course to pass every "+dl+" in "+n+" years of record — the standing mark is "+recS+", set in "+recy+". Provisional until the day is measured.";}
+ else if(m!=null&&m<-TIE&&m>=-NEAR){cls="near_record";tier="A";
+  shortL="within a degree of the "+dl+" record";
+  longL="Within about a degree of the warmest "+dl+" on record ("+recS+", "+recy+"), across "+n+" years of this date.";}
+ else if(pct!=null&&pct>=P99){cls="top1";tier="B";
+  shortL="among the hottest 1% of "+dl+"s on record";
+  longL="Today sits in the top 1% of "+dl+"s in "+n+" years of record — about the "+P()+".";}
+ else if(pct!=null&&pct>=P95){cls="extreme";tier="B";
+  shortL="among the hottest "+dl+"s on record";
+  longL="Today is around the "+P()+" of "+n+" years for this date — among the hottest "+dl+"s on record.";}
+ else if(pct!=null&&pct>=WARM){cls="warm";tier="C";
+  shortL="a warm day for the date";
+  longL="A warm one for "+dl+" — about the "+P()+" of "+n+" years"+(recS?" — but short of the record ("+recS+", "+recy+").":".");}
+ else if(pct!=null&&pct<=COOL){cls="cool";tier="C";
+  shortL="a cool day for the date";
+  longL="A cool "+dl+" by the record — about the "+P()+" of "+n+" years."+(recS?" The record holds at "+recS+" ("+recy+").":"");}
+ else if(pct!=null){cls="ordinary";tier="C";
+  shortL="an ordinary day by the record";
+  longL="An ordinary day by the record — about the "+P()+" of "+n+" years for this date. Nothing here broke.";}
+ else {cls="unknown";tier="C";shortL=null;longL=null;}
+ /* THE DOT is computed straight from its published, falsifiable definition — today reached at least
+    the 95th percentile for this date, OR tied/passed a same-date record — NEVER from the class label,
+    so it can never drift from the promise printed in Bedrock (a near-record day earns it only if it is
+    genuinely ≥95th). */
+ var dot=(m!=null&&m>=-TIE)||(pct!=null&&pct>=P95);
+ return {cls:cls,tier:tier,dot:dot,notable:dot,
+   shortLine:(shortL!=null?(place+" · "+shortL):null), longLine:longL};
+}
+window.__NOTE=classify;   // exposed for headless verification
 
 /* ═══════════ THE ATMOSPHERE ENGINE ═══════════
    One WebGL fragment shader renders every chamber's sky. Each chamber is a
@@ -1595,6 +1715,9 @@ CH.forEach(function(c,i){
   '</em> '+c.lab+'</span><span class="fact">'+c.fact+'</span></span><span class="dot"></span>';
  b.addEventListener("click",function(e){e.preventDefault();scrollToChamber(i);});
  ladder.appendChild(b);});
+/* the pulse is a shortcut into the chapter it reads from */
+(function(){var p=el("pulse");if(!p)return;p.addEventListener("click",function(){
+ var i=CH.findIndex(function(c){return c.id==="ground";});if(i>=0)scrollToChamber(i);});})();
 function drawIn(p){if(reduce||!p)return;
  p.querySelectorAll("path.dr").forEach(function(pt){try{var L=pt.getTotalLength();
   pt.style.transition="none";pt.style.strokeDasharray=L+" "+L;pt.style.strokeDashoffset=L;
@@ -1889,12 +2012,12 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
  sync();
  /* the live burn ticker — plain arithmetic: rate spread over real elapsed time */
  (function(){var t0=Date.now(),tps=RNOW*1e9/31557600,tk=el("burned");
-  function upd(){var t=Math.max(0,(Date.now()-t0)/1000)*tps;
+  function upd(){if(OFFLINE)return;var t=Math.max(0,(Date.now()-t0)/1000)*tps;
    tk.textContent="burned while you've been here: "+Math.round(t).toLocaleString("en")+" tonnes of CO₂";}
   upd();setInterval(upd,reduce?1000:120);})();
  /* the number that never pauses — full-precision countdown, honest about itself */
  (function(){var t0=Date.now(),od=el("odometer");
-  function upd(){var yl=LO.remaining_now_gt/target-(Date.now()-t0)/1000/31557600;
+  function upd(){if(OFFLINE)return;var yl=LO.remaining_now_gt/target-(Date.now()-t0)/1000/31557600;
    var s=yl.toFixed(7),head=s.slice(0,-3),tail=s.slice(-3);
    od.innerHTML=head+'<span class="dim3">'+tail+'</span> years';}  // dimmed digits already say "not measurement"
   upd();setInterval(upd,reduce?1000:250);})();
@@ -2025,7 +2148,7 @@ function buildGround(V){
   el("tease-temp").textContent=t.tmax!=null?t.tmax.toFixed(1)+" °C":"—";
   el("tease-sub").textContent=PLACE+", "+t.dateLabel+" — "+(isRec?
    ("set to pass every "+t.dateLabel+" in the record ("+t.rec.toFixed(1)+"°, "+t.recy+")."):
-   (t.pct!=null?(t.pct+"th percentile of "+t.n+" years of this date."):
+   (t.pct!=null?(ord(t.pct)+" percentile of "+t.n+" years of this date."):
     ("measured against "+t.n+" years of this date.")));
   el("g-today").innerHTML=(t.tmax!=null?t.tmax.toFixed(1)+"°":"—")+
    "<small> forecast, "+t.dateLabel+" <span class=\"chip\">"+
@@ -2033,13 +2156,14 @@ function buildGround(V){
   el("g-fact").innerHTML="A scorching day here is one "+THR.hotLabel+". Early in the record this "+
    "place had about "+thenN.toFixed(0)+" of them a year. In recent years, about "+nowN.toFixed(0)+
    ". Warm nights that never cool "+THR.nightLabel+" went from <b>"+wnThen.toFixed(1)+"</b> to <b>"+
-   wnNow.toFixed(1)+"</b> a year. And in "+t.n+" years, no "+t.dateLabel+" here has passed <b class=\"mono\">"+
-   t.rec.toFixed(1)+"</b> °C ("+t.recy+")."+(isRec?" <b>Today's forecast would pass it.</b>":"")+
+   wnNow.toFixed(1)+"</b> a year."+
+   (t.rec!=null?(" And in "+t.n+" years, no "+t.dateLabel+" here has passed <b class=\"mono\">"+
+    t.rec.toFixed(1)+"</b> °C ("+t.recy+").") : "")+
    " This describes what happened. It does not, by itself, say why.";
   el("g-freq").textContent=(t.h40a||t.h40b)?
    ("A 40 °C day within two weeks of this date came "+t.h40a+" summers in 30 (1951–80). "+
     "In the last thirty years: "+t.h40b+" in 30."):"";
-  el("g-receipt").innerHTML=(t.pct!=null?(t.pct+"th percentile of the two weeks around "+t.dateLabel+" since 1940 · "):"")+
+  el("g-receipt").innerHTML=(t.pct!=null?(ord(t.pct)+" percentile of the two weeks around "+t.dateLabel+" since 1940 · "):"")+
    "ERA5 reanalysis via Open-Meteo · "+(CUSTOM?
     "forecast provisional, unadjusted (forecast and reanalysis differ slightly)":
     "forecast adjusted "+(t.bias<0?"+":"−")+Math.abs(t.bias).toFixed(1)+
@@ -2060,6 +2184,13 @@ function buildGround(V){
     todayBridge.setAttribute("stroke-opacity",.85);}
   }else{todayDot.setAttribute("opacity",0);todayLbl.setAttribute("opacity",0);
    todayBridge.setAttribute("stroke-opacity",0);}
+  /* Phase 8 — one classify(t) drives the pulse strip, this Ground verdict line, and the tab-title dot */
+  var CZ=classify(t,PLACE);window.__TODAY=CZ;
+  el("g-verdict").innerHTML=CZ.longLine||"";
+  (function(){var p=el("pulse");if(!p)return;
+   if(CZ.shortLine){p.textContent=CZ.shortLine;p.hidden=false;p.classList.toggle("dot",CZ.dot);}
+   else p.hidden=true;})();
+  try{document.title=CZ.notable?"● On Record":BASE_TITLE;}catch(e){}
  };
  TS.comparable=TS.tmax!=null?Math.round((TS.tmax-TS.bias)*10)/10:null;
  applyToday(TS);
@@ -2894,7 +3025,7 @@ var __PLACE=(function(){
      hotLabel:"above its own old-normal 95th percentile ("+thrHot.toFixed(1)+" °C)",
      nightLabel:"below its night 95th percentile ("+thrNight.toFixed(1)+" °C)"}},
    t:{mode:"live",tmax:fc,comparable:fc,dateISO:todayISO,dateLabel:dLabel(todayISO),
-      fetched:todayISO,rec:rec!=null?rec:0,recy:recy||"—",n:exact.length,pct:pct,
+      fetched:todayISO,rec:rec,recy:recy,n:exact.length,pct:pct,   // null when this place has no same-date record — never synthesize a "0.0 °C" mark
       bias:0,h40a:0,h40b:0}};}
  function jf(r){if(!r.ok)throw new Error("http "+r.status);return r.json();}
  function fetchRetry(url,tries){                       // the archive 503s when busy — patience, not surrender
@@ -3378,6 +3509,72 @@ if(si>0){endIntro();
   if(__ATMO.ok)__ATMO.setState(CH[si].id,{instant:true});
   enterChamber(si);});}
 if(Q.get("drawer")){openDrawer(Q.get("drawer"));endIntro();}
+/* ═══════════ THE RETURN LAYER (Phase 8) ═══════════
+   A no-guilt "since you were last here" card, an installable PWA that works
+   offline WITHOUT ever masking a fresh nightly build (the service worker is
+   network-first), and an honest offline stamp. The whole layer is local by
+   construction: localStorage never leaves this browser, the SW never
+   exfiltrates, and the site literally cannot send notifications — no
+   Notification or Push API is called anywhere in this file. */
+var CANT_NOTIFY="This site is a static page. It cannot and will not send notifications — nothing leaves your browser unless you choose to share a card.";
+/* 1 — the offline stamp + freeze of the live estimates (never invent numbers we can't confirm) */
+(function(){
+ var built=(D._meta&&D._meta.built_utc)?String(D._meta.built_utc).slice(0,10):((D._meta&&D._meta.today)||"");
+ var chip=document.createElement("div");chip.id="offline-chip";chip.setAttribute("role","status");
+ document.body.appendChild(chip);
+ function set(off){OFFLINE=off;
+  if(off){chip.textContent="Offline — showing the record as of "+built+". Live values resume when you reconnect.";
+   chip.classList.add("show");var bk=el("burned");if(bk)bk.textContent="burned while you've been here — paused (offline)";}
+  else chip.classList.remove("show");}
+ window.addEventListener("online",function(){set(false);});
+ window.addEventListener("offline",function(){set(true);});
+ if(navigator.onLine===false)set(true);
+ if(navigator.serviceWorker)navigator.serviceWorker.addEventListener("message",function(e){
+  if(e.data&&e.data.type==="fromcache")set(true);
+  else if(e.data&&e.data.type==="fresh"&&navigator.onLine!==false)set(false);});
+})();
+/* 2 — since you were last here: local-only, dismissible, an information reward and never a nag */
+(function(){try{
+ var K="onrecord.visit.v1",now=Date.now();
+ var built=(D._meta&&D._meta.built_utc)||null,
+     arch=((typeof F!=="undefined"&&F.newest_obs)||(D._meta&&D._meta.archive_end))||null;  // human "20 Jul 2026", matching the receipt
+ var prev=null;try{prev=JSON.parse(localStorage.getItem(K)||"null");}catch(e){}
+ function persist(){try{localStorage.setItem(K,JSON.stringify(
+  {lastVisit:now,visits:((prev&&prev.visits)||0)+1,city:"Seville",lastBuilt:built,lastArchiveEnd:arch}));}catch(e){}}
+ if(!prev||!prev.lastVisit){persist();return;}                 // first visit → no card, just remember
+ var elapsed=now-prev.lastVisit;
+ if(elapsed<20*3600*1000){persist();return;}                    // under ~a day → never nag a same-session return
+ if(sessionStorage.getItem("onrecord.since.shown")){persist();return;}
+ var daysAway=Math.max(1,Math.floor(elapsed/864e5));   // the 20h gate can leave floor()=0; never say "0 days"
+ var burnedGt=RNOW*(elapsed/31557600000);
+ function fmtBurn(gt){return gt>=1?("About "+gt.toFixed(1)+" Gt CO₂"):("About "+Math.round(gt*1000)+" Mt CO₂");}
+ var welcome=daysAway>30,lines=[];
+ lines.push('<p class="sc-num">'+fmtBurn(burnedGt)+' went on record while you were away — <b>'+daysAway+
+  ' day'+(daysAway===1?'':'s')+'</b> at today’s ~'+Math.round(RNOW)+
+  ' Gt/yr, the same whether or not anyone was watching.</p>');
+ if(prev.lastArchiveEnd&&arch&&prev.lastArchiveEnd!==arch)
+  lines.push('<p>The newest observation advanced from '+prev.lastArchiveEnd+' to '+arch+'.</p>');
+ else if(prev.lastBuilt&&built&&String(prev.lastBuilt).slice(0,10)!==String(built).slice(0,10))
+  lines.push('<p>The record was refreshed on '+String(built).slice(0,10)+'.</p>');
+ var card=document.createElement("aside");card.id="sincecard";
+ card.setAttribute("aria-label",welcome?"Welcome back":"Since you were last here");
+ card.innerHTML='<div class="sc-head"><span class="sc-k">'+(welcome?"Welcome back":"Since you were last here")+
+  '</span><button class="sc-x" type="button" aria-label="Dismiss">×</button></div>'+lines.join("")+
+  '<p class="sc-note">'+CANT_NOTIFY+'</p>';
+ document.body.appendChild(card);
+ function close(){card.classList.remove("show");setTimeout(function(){if(card.parentNode)card.parentNode.removeChild(card);},600);}
+ card.querySelector(".sc-x").addEventListener("click",close);
+ setTimeout(function(){card.classList.add("show");
+  var st=el("sr-status");if(st)st.textContent=(welcome?"Welcome back. ":"Since you were last here. ")+  // one calm line for screen readers, not the whole card
+   fmtBurn(burnedGt)+" went on record over "+daysAway+" day"+(daysAway===1?"":"s")+" away.";},900);
+ try{sessionStorage.setItem("onrecord.since.shown","1");}catch(e){}
+ persist();
+}catch(e){}})();
+/* 3 — PWA: register the network-first service worker. NB: the page never requests notification or push permission */
+(function(){if(!("serviceWorker" in navigator))return;
+ try{navigator.serviceWorker.register("./sw.js",{updateViaCache:"none"})
+  .then(function(reg){try{reg.update();}catch(e){}}).catch(function(){});}catch(e){}})();
+
 if(Q.get("debug")){setTimeout(function(){
  var vw=window.innerWidth,bad=[];
  document.querySelectorAll("body *").forEach(function(nn){

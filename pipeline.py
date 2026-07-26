@@ -14,7 +14,7 @@ Outputs:
                               score any day's live forecast against 86 years
   index.html                — the built site (template + fonts + data injected)
 """
-import json, csv, io, math, statistics, time, urllib.request, datetime, pathlib, sys
+import json, csv, io, math, statistics, time, urllib.request, datetime, pathlib, sys, hashlib, re
 
 ROOT = pathlib.Path(__file__).parent
 CACHE = ROOT / "spike" / "cache"; CACHE.mkdir(parents=True, exist_ok=True)
@@ -450,10 +450,21 @@ head_meta = (
     '<meta name="twitter:title" content="On Record — Seville, on record">'
     '<meta name="twitter:description" content="' + CARD + '">'
     '<meta name="twitter:image" content="' + OG + 'og/seville.png">'
+    # PWA: installable, offline-capable (network-first SW), zero tracking
+    '<link rel="manifest" href="manifest.webmanifest">'
+    '<meta name="theme-color" content="#05171A">'
+    '<link rel="apple-touch-icon" href="og/icon-192.png">'
 )
 doc = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
        '<meta name="viewport" content="width=device-width, initial-scale=1">'
        + head_meta +
        '</head><body>' + body + "</body></html>")
 (ROOT / "index.html").write_text(doc)
-print(f"[pipeline] built index.html ({len(doc):,} B) — done")
+# ---- stamp the service worker so every nightly build busts the offline cache ----
+# BUILD changes when the build time OR the built HTML changes → sw.js differs byte-for-byte
+# → the browser detects an update, the new cache name supersedes, old caches are purged.
+_swstamp = re.sub(r"[^0-9]", "", out["_meta"]["built_utc"])[:14] + "-" + hashlib.sha1(doc.encode()).hexdigest()[:8]
+_sw = (ROOT / "sw.js").read_text()
+_sw = re.sub(r'const BUILD = "[^"]*";', 'const BUILD = "%s";' % _swstamp, _sw, count=1)
+(ROOT / "sw.js").write_text(_sw)
+print(f"[pipeline] built index.html ({len(doc):,} B) — sw BUILD {_swstamp} — done")
