@@ -489,6 +489,54 @@ svg{display:block;width:100%;height:auto}
   padding:16px 18px;background:rgba(255,251,240,.55);max-width:640px}
 #p-morning .leadline{font-weight:500;font-size:clamp(16px,1.9vw,21px);line-height:1.3;color:var(--ink);max-width:34ch}
 #p-morning .action p{font-size:12.5px;color:var(--ink-2);margin-top:8px;max-width:56ch}
+/* --- Morning Beat 3: the action layer --- */
+#record-room .rr-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--act);margin-bottom:6px}
+#record-room .rr-disclose{font-size:12px;line-height:1.55;color:var(--ink-2);max-width:58ch;margin-top:8px}
+.rr-menu{margin-top:18px;display:flex;flex-direction:column;gap:1px;max-width:640px}
+.rr-row{text-align:left;background:none;border:0;border-top:1px solid var(--ink-hair);padding:13px 0;display:block;width:100%;font-family:inherit}
+.rr-row .rr-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rr-label{font-weight:500;font-size:15px;color:var(--ink)}
+.rr-note{display:block;font-size:11.5px;line-height:1.5;color:var(--ink-2);margin-top:5px;max-width:58ch}
+.rr-note b{color:var(--ember)}
+.rr-src{font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;color:var(--ink-3);white-space:nowrap}
+button.rr-row{cursor:pointer;transition:padding-left .18s,background .2s;min-height:auto}
+button.rr-row:hover .rr-label,button.rr-row:focus-visible .rr-label{color:var(--act)}
+button.rr-row:hover{padding-left:6px}
+.rr-wedge{flex:1 1 70px;min-width:60px;max-width:150px;height:14px;background:var(--act);clip-path:polygon(0 40%,100% 0,100% 100%,0 60%);opacity:.5}
+.rr-row.rr-default{border:1px solid rgba(21,80,72,.5);border-radius:3px;padding:13px 14px;background:rgba(21,80,72,.05)}
+.rr-chip{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#F2E7CC;background:var(--act);padding:3px 7px;border-radius:2px}
+.rr-give .rr-ev{font-family:var(--mono);font-size:11px;color:var(--act);white-space:nowrap}
+.rr-divider{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:16px;padding-top:2px}
+.rr-foot{cursor:default}
+.rr-foot .rr-t{font-family:var(--mono);font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums;margin-left:auto}
+.rr-bar{display:block;height:6px;margin-top:8px;max-width:320px;background:rgba(62,18,8,.10);border-radius:3px;position:relative}
+.rr-bar i{position:absolute;left:0;top:0;bottom:0;width:var(--w);background:linear-gradient(90deg,#D96C3A,#B4181D);border-radius:3px}
+.rr-omit{font-size:10.5px;line-height:1.55;color:var(--ink-3);margin-top:14px;max-width:60ch}
+/* letter builder / plan / pledge panels */
+.rr-panel{margin-top:16px;border:1px solid var(--ink-hair);border-radius:4px;padding:16px;background:rgba(255,251,240,.6);max-width:640px}
+.rr-panel h3{font-weight:500;font-size:14px;color:var(--ink);margin-bottom:4px}
+.rr-panel .rr-hint{font-size:11.5px;color:var(--ink-2);line-height:1.5;margin-bottom:12px;max-width:56ch}
+.rr-field{display:block;margin:10px 0}
+.rr-field span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:var(--ink-3);margin-bottom:4px}
+.rr-field input,.rr-field select{width:100%;max-width:340px;font-family:var(--sg);font-size:13px;color:var(--ink);
+  background:#FFFBF0;border:1px solid var(--ink-hair);border-radius:3px;padding:9px 10px;min-height:40px}
+.rr-field input:focus,.rr-field select:focus{outline:none;border-color:var(--act)}
+.rr-preview{font-family:var(--mono);font-size:11px;line-height:1.6;color:var(--ink);white-space:pre-wrap;
+  background:#FFFDF6;border:1px solid var(--ink-hair);border-radius:3px;padding:12px;margin:10px 0;max-height:240px;overflow:auto}
+.rr-btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.rr-btns .rr-primary{background:var(--act);color:#F2E7CC;border:0;border-radius:3px;padding:11px 16px;font-size:12.5px;font-weight:500;min-height:44px}
+.rr-btns .rr-minor{background:none;color:var(--ink-2);border:0;border-bottom:1px solid var(--ink-hair);border-radius:0;padding:8px 2px;font-size:11px;min-height:38px}
+.rr-btns .rr-minor:hover{color:var(--ink)}
+.rr-panel .rr-note{margin-top:10px}
+.rr-reps{margin-top:12px;font-size:11px;line-height:1.7;color:var(--ink-2);border-top:1px solid var(--ink-hair);padding-top:10px}
+.rr-reps a{color:var(--act);border-bottom:1px solid rgba(21,80,72,.3)}
+.rr-reps b{color:var(--ink);font-weight:500}
+.rr-pledge{margin-top:16px;font-size:12.5px;color:var(--ink-2);max-width:56ch}
+.rr-pledge .rr-keep{background:none;border:1px solid var(--act);color:var(--act);border-radius:2px;padding:8px 14px;font-size:11.5px;min-height:40px;margin-left:8px}
+.rr-pledge .rr-keep:hover{background:rgba(21,80,72,.08)}
+.rr-pledge .rr-clear{font-family:var(--mono);font-size:9.5px;color:var(--ink-3);background:none;border:0;border-bottom:1px solid transparent;margin-left:10px;min-height:32px}
+.rr-pledge .rr-clear:hover{color:var(--ink-2);border-bottom-color:var(--ink-hair)}
+.rr-pledge .rr-recall{font-family:var(--mono);font-size:11px;color:var(--act);line-height:1.5}
 .sharecard{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}
 .sharecard .mini{height:26px;flex:1 1 180px;min-width:150px;border-radius:2px;overflow:hidden}
 .sharecard button{background:var(--act);color:#F2E7CC;border-radius:2px;padding:10px 16px;
@@ -1020,6 +1068,50 @@ svg{display:block;width:100%;height:auto}
               </div>
             </div>
             <button class="drawbtn" data-drawer="morning" style="color:var(--ink-3);border-color:var(--ink-hair)">Sources &amp; the honest caveats</button>
+            <p class="beat-cue">and if you want more leverage than a conversation &darr;</p>
+          </div>
+          <!-- BEAT 3 — the action layer: where one person actually has leverage -->
+          <div class="beat" id="record-room">
+            <p class="rr-eyebrow">Where one person has leverage</p>
+            <h2>Now put it on the record.</h2>
+            <p class="lead" style="max-width:52ch">Sorted by how far it reaches. The biggest levers are collective &mdash; a vote,
+              a voice, where your money pushes the system. The personal ones are real, and worth making, but they&rsquo;re
+              small next to policy. Both are here on purpose.</p>
+            <p class="rr-disclose">Naming that isn&rsquo;t giving up &mdash; it&rsquo;s the opposite. It keeps &ldquo;I recycle&rdquo;
+              from quietly standing in for &ldquo;I asked my representative to act.&rdquo; Hiding the size of personal cuts turns
+              out to be both the dishonest move and the less effective one (Hagmann, Ho &amp; Loewenstein 2019).</p>
+            <div class="rr-menu">
+              <button class="rr-row rr-lever rr-default" data-act="letter" type="button">
+                <span class="rr-head"><span class="rr-chip">Start here</span><span class="rr-label">Put your city on the record.</span><span class="rr-wedge" aria-hidden="true"></span></span>
+                <span class="rr-note">92% of US congressional staff say a personalised local letter can sway an undecided vote; only 9% of messages carry local data (measured for the US Congress; the mechanism — local, personal, specific — travels). This page just computed yours. <span class="rr-src">CMF</span></span></button>
+              <button class="rr-row rr-lever" data-act="vote" type="button">
+                <span class="rr-head"><span class="rr-label">Vote like the climate is on the ballot.</span><span class="rr-wedge" aria-hidden="true"></span></span>
+                <span class="rr-note">A written when-and-where voting plan lifts turnout by about 4 points (Nickerson &amp; Rogers 2010). Non-partisan &mdash; we name no parties; you check records. <span class="rr-src">plan &rarr;</span></span></button>
+              <button class="rr-row rr-lever" data-act="talk" type="button">
+                <span class="rr-head"><span class="rr-label">Have the conversation.</span><span class="rr-wedge" aria-hidden="true"></span></span>
+                <span class="rr-note">People who hear the people they know discuss warming perceive stronger consensus, then report more concern (Goldberg et al. 2019). The effect is social, not tonnes. <span class="rr-src">&uarr; the kit above</span></span></button>
+              <button class="rr-row rr-give" data-act="give" type="button">
+                <span class="rr-head"><span class="rr-label">Give where a dollar buys the most.</span><span class="rr-ev">~$1 / tonne CO₂e · uncertain</span></span>
+                <span class="rr-note">An uncertain bet on systemic change (CATF, Carbon180) &mdash; <b>not</b> an offset that cancels your own emissions. <span class="rr-src">Founders Pledge / Giving Green</span></span></button>
+              <p class="rr-divider">The personal levers &mdash; real, smaller, fully in your hands</p>
+              <div class="rr-row rr-foot">
+                <span class="rr-head"><span class="rr-label">Live car-free, or car-light.</span><span class="rr-t">2.4 t</span></span>
+                <span class="rr-bar" style="--w:96%" aria-hidden="true"><i></i></span>
+                <span class="rr-note">Technical potential, high-income context, where transit exists. <span class="rr-src">Wynes &amp; Nicholas 2017</span></span></div>
+              <div class="rr-row rr-foot">
+                <span class="rr-head"><span class="rr-label">Skip one transatlantic round-trip.</span><span class="rr-t">1.6 t</span></span>
+                <span class="rr-bar" style="--w:64%" aria-hidden="true"><i></i></span>
+                <span class="rr-note">Per avoided flight &mdash; only if you&rsquo;d have flown. <span class="rr-src">Wynes &amp; Nicholas 2017</span></span></div>
+              <div class="rr-row rr-foot">
+                <span class="rr-head"><span class="rr-label">Eat plant-based.</span><span class="rr-t">0.8 t</span></span>
+                <span class="rr-bar" style="--w:32%" aria-hidden="true"><i></i></span>
+                <span class="rr-note">Diet-shift average; varies by your baseline. <span class="rr-src">Wynes &amp; Nicholas 2017</span></span></div>
+              <p class="rr-omit">A widely-cited &ldquo;have one fewer child&rdquo; figure (58.6 t) is left off on purpose: it attributes a lifetime
+                of descendants&rsquo; emissions to a parent, double-counts across generations, and turns a systemic problem into a
+                personal reproductive choice. We don&rsquo;t think it&rsquo;s a number anyone can act on honestly.</p>
+            </div>
+            <div id="rr-panel" class="rr-panel" hidden></div>
+            <div id="rr-pledge" class="rr-pledge" hidden></div>
             <p class="beat-cue">one chapter left &mdash; every source shown, every limit admitted &darr;</p>
           </div>
         </div>
@@ -2207,6 +2299,129 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
   var t=__ART.cite("seville");
   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(function(){flash("Copied ✓",cbtn);},function(){showCap();flash("Select below",cbtn);});
   else{showCap();}});
+})();
+
+/* ============ Phase 7 — THE ACTION LAYER: letter builder, .ics plan, private pledge ============
+   All client-side, zero tracking: the mailto is a local draft with a blank To:, the .ics is a local Blob,
+   the pledge is localStorage with no PII. Nothing leaves the browser until the user sends it themselves. */
+(function(){
+ var room=el("record-room");if(!room)return;
+ var panel=el("rr-panel"),pledgeEl=el("rr-pledge"),PKEY="onrecord.pledge.v1";
+ function focusPanel(msg){var h=panel.querySelector("h3");if(h){h.setAttribute("tabindex","-1");try{h.focus();}catch(e){}}
+  var st=el("sr-status");if(st&&msg)st.textContent=msg;}
+ var was=Math.round(mean(G.days_ge35_per_year,1951,1980)),now=Math.round(mean(G.days_ge35_per_year,LF-9,LF));  // SAME dynamic window (LF) the Ground chapter renders — the letter can never drift from the on-page number
+ var nWas=mean(G.warm_nights_ge25_per_year,1951,1980),nNow=mean(G.warm_nights_ge25_per_year,LF-9,LF);
+ var nWasS=(nWas<1?"under one":(Math.round(nWas*10)/10)),nNowS=(Math.round(nNow*10)/10);
+ var SUBJECT="A constituent from Seville, about our summers";
+ function esc(s){return s;}
+ function letterBody(v){return "Dear "+(v.to||"[your representative’s name]")+",\n\n"+
+  "I live in Seville. I want to tell you what the record already shows here, because it is my reason for writing.\n\n"+
+  "In the three decades from 1951 to 1980, Seville averaged "+was+" days a year at or above 35 °C. In the most recent decade, "+(LF-9)+" to "+LF+", that average is "+now+" days — the hot season has roughly doubled.\n\n"+
+  "The nights have changed even more sharply. Tropical nights at or above 25 °C — the nights the body cannot cool down — went from "+nWasS+" a year to about "+nNowS+".\n\n"+
+  "These are not projections. They are the measured record for the city we share.\n\n"+
+  "I’m not writing to tell you what the science should mean to you. I’m writing to put on the record that it is already measurable here, and to ask you to treat climate policy as the local, present-day issue it is for Seville"+(v.own?" — "+v.own:"")+".\n\n"+
+  "Thank you for representing us.\n\n"+(v.name||"[Your name]")+"\n"+(v.pc||"[Your postcode, so they know I’m a constituent]");}
+ function gv(id){var e=el(id);return e?e.value.trim():"";}
+ function vals(){return {to:gv("rr-to"),own:gv("rr-own"),name:gv("rr-name"),pc:gv("rr-pc")};}
+ function refreshPrev(){var p=el("rr-prev");if(p)p.textContent=letterBody(vals());}
+ function openLetter(){
+  panel.hidden=false;
+  panel.innerHTML='<h3>Your letter — every number already sourced.</h3>'+
+   '<p class="rr-hint">The record does the arguing. You add only who it’s to and who you are — every figure is locked to what this page measured.</p>'+
+   '<label class="rr-field"><span>To — your representative’s name</span><input id="rr-to" type="text" placeholder="your Diputado, MEP, councillor…"></label>'+
+   '<div class="rr-preview" id="rr-prev"></div>'+
+   '<label class="rr-field"><span>One sentence in your own words (optional)</span><input id="rr-own" type="text" maxlength="180" placeholder="e.g. I have two young children"></label>'+
+   '<label class="rr-field"><span>Your name</span><input id="rr-name" type="text" autocomplete="name"></label>'+
+   '<label class="rr-field"><span>Your postcode</span><input id="rr-pc" type="text" autocomplete="postal-code"></label>'+
+   '<div class="rr-btns"><button type="button" class="rr-primary" id="rr-mail">Open in my email <span aria-hidden="true">&rarr;</span></button>'+
+   '<button type="button" class="rr-minor" id="rr-copy">copy the text</button>'+
+   '<button type="button" class="rr-minor" id="rr-plan-l">remind me to send it</button></div>'+
+   '<p class="rr-note">This opens a draft in your own email. Nothing is sent, and nothing leaves this page, until you press send yourself.</p>'+
+   '<div class="rr-reps"><b>Who represents you?</b> This letter uses Seville’s record because that’s the record this page measured — it can’t know where you are.<br>'+
+   '&middot; Spain — your Diputado: <a href="https://www.congreso.es" target="_blank" rel="noopener">congreso.es<span class="sr-only"> (opens in a new tab)</span></a><br>'+
+   '&middot; European Parliament — your MEP: <a href="https://www.europarl.europa.eu" target="_blank" rel="noopener">europarl.europa.eu<span class="sr-only"> (opens in a new tab)</span></a><br>'+
+   '&middot; Somewhere else? Search &ldquo;[your country] find my representative&rdquo; — every democracy publishes a directory.</div>';
+  ["rr-to","rr-own","rr-name","rr-pc"].forEach(function(id){var e=el(id);if(e)e.addEventListener("input",refreshPrev);});
+  refreshPrev();
+  el("rr-mail").addEventListener("click",function(){
+   var href="mailto:?subject="+encodeURIComponent(SUBJECT)+"&body="+encodeURIComponent(letterBody(vals()));
+   var a=document.createElement("a");a.href=href;document.body.appendChild(a);a.click();a.remove();
+   el("sr-status").textContent="A letter draft opened in your email app — nothing is sent until you send it.";offerPledge("letter");});
+  el("rr-copy").addEventListener("click",function(){var t=SUBJECT+"\n\n"+letterBody(vals());var b=el("rr-copy");
+   function noCopy(){b.textContent="select the letter above";el("sr-status").textContent="Couldn't copy automatically — the letter is shown above; select and copy it.";
+    var pv=el("rr-prev");if(pv){pv.setAttribute("tabindex","0");try{pv.focus();}catch(e){}}setTimeout(function(){b.textContent="copy the text";},2600);}
+   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(function(){b.textContent="copied ✓";setTimeout(function(){b.textContent="copy the text";},1800);},noCopy);else noCopy();
+   offerPledge("letter");});
+  el("rr-plan-l").addEventListener("click",function(){openPlan("letter");});
+  focusPanel("Letter form opened. Every figure is locked to the numbers this page measured; you add only who it's to and who you are.");
+  panel.scrollIntoView({behavior:reduce?"auto":"smooth",block:"nearest"});
+ }
+ /* ---- plan card + .ics (implementation intention; fresh-start default) ---- */
+ function freshStart(){var d=new Date(),nm=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+  var add=((8-nm.getDay())%7)||7;nm.setDate(nm.getDate()+add);            // next Monday
+  var first=new Date(d.getFullYear(),d.getMonth()+1,1),diff=(first-nm)/864e5; // the coming 1st
+  return (diff>=0&&diff<=3)?first:nm;}
+ function isoDate(d){function p(n){return (n<10?"0":"")+n;}return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());}
+ function icsEsc(s){return s.replace(/([\\,;])/g,"\\$1").replace(/\n/g,"\\n");}
+ var PLAN={letter:{what:"Send Seville’s record to my representative",sum:"On Record — put Seville’s heat record on the record",
+    desc:"I said I’d send my letter. Seville now averages "+now+" days a year over 35°C (was "+was+" in 1951–80). Open it: https://agoshbaranwal.github.io/on-record/?chamber=morning"},
+   vote:{what:"Make my climate voting plan",sum:"On Record — my climate voting plan",
+    desc:"When, where, and how I’ll vote — with the climate on the ballot. Check candidates’ records; no party named for me. https://agoshbaranwal.github.io/on-record/?chamber=morning"}};
+ function twoDigit(n){return (n<10?"0":"")+n;}
+ function planIcs(kind,dateStr,timeStr,note){var p=PLAN[kind]||PLAN.letter;
+  var parts=dateStr.split("-"),tp=(timeStr||"18:00").split(":");
+  var dt=parts[0]+parts[1]+parts[2]+"T"+(tp[0]||"18")+(tp[1]||"00")+"00";          // floating local time — follows the user's own clock
+  var un=new Date(),uid=""+un.getTime()+"-"+Math.floor((un.getSeconds()*1000+un.getMilliseconds()))+"@onrecord";
+  function z(d){return d.getUTCFullYear()+twoDigit(d.getUTCMonth()+1)+twoDigit(d.getUTCDate())+"T"+twoDigit(d.getUTCHours())+twoDigit(d.getUTCMinutes())+twoDigit(d.getUTCSeconds())+"Z";}
+  var desc=p.desc+(note?"\n\nMy words: "+note:"");
+  return ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//On Record//Action Layer//EN","METHOD:PUBLISH","BEGIN:VEVENT",
+   "UID:"+uid,"DTSTAMP:"+z(un),"DTSTART:"+dt,"DURATION:PT30M","SUMMARY:"+icsEsc(p.sum),"DESCRIPTION:"+icsEsc(desc),
+   "BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:Your On Record plan","TRIGGER:-PT30M","END:VALARM",
+   "END:VEVENT","END:VCALENDAR"].join("\r\n");}
+ function openPlan(kind){var p=PLAN[kind]||PLAN.letter,fs=freshStart();
+  panel.hidden=false;
+  panel.innerHTML='<h3>Make it a plan.</h3><p class="rr-hint">A plan you can see beats a good intention (Gollwitzer &amp; Sheeran) — and a date plus a time beats a date alone (Milkman 2011).</p>'+
+   '<label class="rr-field"><span>What</span><input id="rr-what" type="text" value="'+p.what.replace(/"/g,"&quot;")+'"></label>'+
+   '<label class="rr-field"><span>When — a day</span><input id="rr-date" type="date" value="'+isoDate(fs)+'"></label>'+
+   '<label class="rr-field"><span>and a time</span><input id="rr-time" type="time" value="18:00"></label>'+
+   '<label class="rr-field"><span>Where or how (optional)</span><input id="rr-where" type="text" placeholder="e.g. at my desk after work"></label>'+
+   '<div class="rr-btns"><button type="button" class="rr-primary" id="rr-cal">Add to my calendar</button></div>'+
+   '<p class="rr-note">This goes into your calendar, not ours — the reminder follows you after you close this tab.</p>';
+  el("rr-cal").addEventListener("click",function(){
+   var ics=planIcs(kind,gv("rr-date")||isoDate(fs),gv("rr-time")||"18:00",gv("rr-where"));
+   var u=URL.createObjectURL(new Blob([ics],{type:"text/calendar;charset=utf-8"})),a=document.createElement("a");
+   a.href=u;a.download="on-record-plan.ics";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},1500);
+   el("sr-status").textContent="A calendar reminder was downloaded.";offerPledge(kind,gv("rr-date"));});
+  focusPanel("Plan form opened.");
+  panel.scrollIntoView({behavior:reduce?"auto":"smooth",block:"nearest"});
+ }
+ /* ---- private pledge: localStorage, quiet replay, never a public badge (Kristofferson 2014) ---- */
+ function loadP(){try{return JSON.parse(localStorage.getItem(PKEY)||"null");}catch(e){return null;}}
+ function saveP(p){try{localStorage.setItem(PKEY,JSON.stringify(p));}catch(e){}}
+ function offerPledge(action,plannedFor){var p=loadP()||{actions:{},city:"Seville"};
+  pledgeEl.hidden=false;
+  pledgeEl.innerHTML='Want this on your own record? <button type="button" class="rr-keep" id="rr-keep">I’m keeping this</button>'+
+   '<label style="display:block;margin-top:8px"><span class="sr-only">In your words, optional: why this matters to you</span>'+
+   '<input id="rr-words" type="text" maxlength="140" placeholder="in my words (optional): why this matters to me" style="width:100%;max-width:360px;font-size:12px;background:#FFFBF0;border:1px solid var(--ink-hair);border-radius:3px;padding:8px;color:var(--ink)"></label>';
+  el("rr-keep").addEventListener("click",function(){p.actions[action]=true;if(plannedFor)p.plannedFor=plannedFor;
+   var w=gv("rr-words");if(w)p.note=w;p.madeAt=new Date().toISOString();saveP(p);
+   pledgeEl.innerHTML='<span class="rr-recall">On the record — for you, on this device only. Thank you.</span>';});
+ }
+ function recall(){var p=loadP();if(!p||!p.actions)return;pledgeEl.hidden=false;
+  var when=p.madeAt?new Date(p.madeAt):null,dstr=when?when.toLocaleDateString():"";
+  var msg="You were here"+(dstr?" on "+dstr:"")+(p.note?", and said: &ldquo;"+p.note.replace(/</g,"&lt;")+"&rdquo;":".");
+  if(p.plannedFor){var pd=new Date(p.plannedFor);if(!isNaN(pd)&&pd<new Date())msg+=" You’d set a day that has passed — want to pick a new one?";}
+  pledgeEl.innerHTML='<span class="rr-recall">'+msg+'</span> <button type="button" class="rr-clear" id="rr-clear">clear this</button>';
+  el("rr-clear").addEventListener("click",function(){try{localStorage.removeItem(PKEY);}catch(e){}pledgeEl.hidden=true;});
+ }
+ room.querySelector(".rr-menu").addEventListener("click",function(e){var b=e.target.closest("button.rr-row");if(!b)return;
+  var a=b.getAttribute("data-act");
+  if(a==="letter")openLetter();
+  else if(a==="vote")openPlan("vote");
+  else if(a==="talk"){var conv=el("share-btn");if(conv){var beat=conv.closest(".beat");if(beat)beat.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});}}
+  else if(a==="give"){var i=CH.findIndex(function(c){return c.id==="firstlight";});if(i>=0)scrollToChamber(i);
+   setTimeout(function(){var g=el("pg-give");if(g)g.scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"});},reduce?0:700);}});
+ recall();
 })();
 
 /* ============ Phase 6 — THE ARTIFACT LAYER: self-attributing evidence cards ============
