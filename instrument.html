@@ -319,9 +319,14 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
   color:var(--bone-2);font-variant-numeric:tabular-nums}
 #g-bars .gb-num.on{color:var(--amber)}
 #g-bars .gb-delta{margin:8px 0 0 90px;font-family:var(--mono);font-size:14px;font-weight:600;color:var(--amber);letter-spacing:.01em;text-shadow:var(--halo)}
+#g-bars .gb-delta.gb-ease{color:var(--bone-2);font-weight:500}   /* a DECLINE is not an alarm — neutral, never amber */
 #g-fact .gb-say{font-size:15px;line-height:1.55;color:var(--bone);max-width:52ch;margin-top:14px;text-shadow:var(--halo)}
 #g-fact .gb-say b{color:var(--bone);font-weight:600}
 #g-fact .gb-caveat{font-family:var(--mono);font-size:11.5px;color:var(--bone-3);letter-spacing:.02em;margin-top:8px;text-shadow:var(--halo)}
+#g-fact .gb-global{margin-top:14px;padding-left:12px;border-left:2px solid rgba(240,188,98,.5);font-size:14px;line-height:1.5;color:var(--bone-2);max-width:52ch;text-shadow:var(--halo)}
+#g-fact .gb-global b{color:var(--amber);font-family:var(--mono);font-weight:700}
+#g-fact .gb-tosky{background:none;border:0;padding:0;font:inherit;color:var(--amber);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+#g-fact .gb-tosky:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:2px}
 @media(prefers-reduced-motion:reduce){#g-bars .gb-fill{transition:none;width:var(--w)}}
 .chip{display:inline-block;font-weight:500;font-size:11px;letter-spacing:.14em;
   text-transform:uppercase;border:1px solid rgba(240,188,98,.55);color:var(--amber);
@@ -1048,7 +1053,7 @@ button.rr-row:hover{padding-left:6px}
 
           <!-- BEAT 2 — the then-vs-now count: the chapter's one number -->
           <div class="beat">
-            <h2 id="g-count-h2">Scorching days here: <b class="num" id="g-then">–</b> then,
+            <h2 id="g-count-h2"><span id="g-hotw">Scorching</span> days here: <b class="num" id="g-then">–</b> then,
               <b class="num" id="g-now">–</b> now.</h2>
             <div id="g-fact"></div>
             <p class="fact-line" id="g-freq"></p>
@@ -2229,6 +2234,7 @@ function buildGround(V){
  var wnThen=mean(Gc.warm_nights_ge25_per_year,1951,1980),wnNow=mean(Gc.warm_nights_ge25_per_year,LF-9,LF);
  if(el("g-h2"))el("g-h2").textContent="Here is "+PLACE+", day by day, since 1940.";
  if(el("g-then")){el("g-then").textContent=thenN.toFixed(0);el("g-now").textContent=nowN.toFixed(0);}
+ if(el("g-hotw"))el("g-hotw").textContent=CUSTOM?"Unusually hot":"Scorching";
 
  /* record-window chart */
  var W=940,Hh=400,mL=38,mR=14,mT=12,mB=24,n=RWc.labels.length;
@@ -2325,15 +2331,28 @@ function buildGround(V){
   var gThen=Math.round(thenN),gNow=Math.round(nowN),gMax=Math.max(gThen,gNow,1),gD=gNow-gThen;
   var wThen=Math.round(wnThen),wNow=Math.round(wnNow);
   var HOTW=CUSTOM?"unusually hot":"scorching";   // "scorching" only where the absolute ≥35 °C earns it; a custom city's own 95th pct can be mild
+  var DAYW=Math.abs(gD)===1?"day":"days";        // "1 fewer … day", not "days", at the ±1 boundary
   el("g-fact").innerHTML=
    '<div id="g-bars" aria-hidden="true">'+
     '<div class="gb-row"><span class="gb-lab">1951–80</span><span class="gb-track"><i class="gb-fill gb-then" style="--w:'+(gThen/gMax*100).toFixed(1)+'%"></i></span><span class="gb-num">'+gThen+'</span></div>'+
     '<div class="gb-row"><span class="gb-lab">'+(LF-9)+'–'+LF+'</span><span class="gb-track"><i class="gb-fill gb-now" style="--w:'+(gNow/gMax*100).toFixed(1)+'%"></i></span><span class="gb-num on">'+gNow+'</span></div>'+
-    (Math.abs(gD)>=1?'<div class="gb-delta">'+(gD>0?'+':'−')+Math.abs(gD)+' '+HOTW+' days a year — in one lifetime</div>':'')+
+    (Math.abs(gD)>=1?'<div class="gb-delta'+(gD<0?' gb-ease':'')+'">'+(gD>0?
+       ('+'+gD+' '+HOTW+' '+DAYW+' a year — in one lifetime'):
+       (Math.abs(gD)+' fewer '+HOTW+' '+DAYW+' a year than a lifetime ago'))+'</div>':'')+
    '</div>'+
    '<p class="gb-say">A'+(CUSTOM?'n':'')+' '+HOTW+' day here is one '+THR.hotLabel+'. A lifetime ago — 1951 to 1980 — '+PLACE+' saw about <b>'+gThen+'</b> a year. Now, about <b>'+gNow+'</b>.'+
     (wThen<1?(' Nights that never fall '+THR.nightLabel+' were almost unknown then — now about <b>'+wNow+'</b> a year.'):(' Nights that never fall '+THR.nightLabel+' went from about <b>'+wThen+'</b> to about <b>'+wNow+'</b> a year.'))+'</p>'+
-   '<p class="gb-caveat">This is the record. It does not, by itself, say why.</p>';
+   '<p class="gb-caveat">This is the record. It does not, by itself, say why.</p>'+
+   /* LEAN ON THE GLOBAL PICTURE: where the local count did NOT rise, the local record can't carry the
+      alarm — so pull in the planet's own sourced figure (never a local causal claim). General: fires for
+      any flat/cooled place (default Seville rose, so it never shows there). */
+   (gD<1?'<p class="gb-global">A place can cool while the planet heats. Human activity has warmed the world about <b>'+
+     B.human_induced.c.toFixed(2)+' °C</b> above pre-industrial, and it keeps climbing (IGCC 2025).'+
+     /* the "See the sky" jump is meaningless (and its screen-reader "Jumped to…" would be a false claim)
+        in ?embed=ground, where the Sky pane is display:none — so omit the button there entirely. */
+     (EMBED?'':' <button type="button" class="gb-tosky" aria-label="Go to the Sky — the world&rsquo;s carbon budget">See the sky &uarr;</button>')+'</p>':'');
+  var _gs=el("g-fact").querySelector(".gb-tosky");
+  if(_gs)_gs.addEventListener("click",function(){scrollToChamber(0);var _st=el("sr-status");if(_st)_st.textContent="Jumped to the Sky — the world’s carbon budget.";});
   el("g-freq").textContent=(t.h40a||t.h40b)?
    ("A 40 °C day within two weeks of this date came "+t.h40a+" summers in 30 (1951–80). "+
     "In the last thirty years: "+t.h40b+" in 30."):"";
