@@ -469,6 +469,11 @@ doc = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
        + head_meta +
        '</head><body>' + body + "</body></html>")
 (ROOT / "index.html").write_text(doc)
+# ---- protected-requirement invariant (Phase 10 kill-list): fail the build if a distinct capability is dropped ----
+_KEEP = ["years", "odometer", "burned", "spent", "hlab-hi", "hlab-lo", "ghost-lab", "copysky",
+         "share-btn", "t-budget", "takeaway", "pulse", "g-verdict", "impact-know", "ledger-sr"]
+_missing = [k for k in _KEEP if ('id="%s"' % k) not in doc]
+assert not _missing, "PROTECTED elements dropped from index.html: %s" % _missing
 # ---- stamp the service worker so every nightly build busts the offline cache ----
 # BUILD changes when the build time OR the built HTML changes → sw.js differs byte-for-byte
 # → the browser detects an update, the new cache name supersedes, old caches are purged.
