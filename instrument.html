@@ -1040,7 +1040,7 @@ button.rr-row:hover{padding-left:6px}
       <div id="hzn-hi" aria-hidden="true"><span class="hl" id="hlab-hi"></span></div>
       <div id="hzn-lo" aria-hidden="true"><span class="hl" id="hlab-lo"></span></div>
       <div id="skyaxis" aria-hidden="true"></div>
-      <div id="band" tabindex="0" role="button" aria-describedby="band-whisper"><span class="band-tag" id="band-tag" aria-hidden="true">the ledgers disagree</span><span class="whisper" id="band-whisper"></span></div>
+      <div id="band" tabindex="0" role="button" aria-describedby="band-whisper"><span class="band-tag" id="band-tag" aria-hidden="true">two ledgers, one answer</span><span class="whisper" id="band-whisper"></span></div>
       <div id="ghost" aria-hidden="true"><span id="ghost-lab"></span></div>
     </div>
     <div id="skycap"><span class="zsub" id="skyctx"></span><span class="zname" id="skyname"></span><span class="zsub" id="skysub"></span>
@@ -1081,14 +1081,18 @@ button.rr-row:hover{padding-left:6px}
         <div class="beats">
           <!-- BEAT 1 — the plain thesis, and the number that carries the page -->
           <div class="beat">
-            <h2 tabindex="-1" id="sky-h2">The world has a carbon budget.<br>This sky is what&rsquo;s left of it.</h2>
-            <p class="lead" id="sky-lead">Burn more than about <b class="num" id="lead-gt">–</b> billion
-              tonnes of CO&#8322; and even a coin-flip chance of holding warming to
-              1.5&nbsp;&deg;C is gone. At today&rsquo;s pace, that budget lasts about</p>
+            <!-- This used to repeat the cold-open word for word, teaching the reader that scrolling
+                 returns nothing new — while the one sentence that stops "2.4-2.5" being read as
+                 "the world ends in 2029" was stranded in the SKIPPABLE intro. The correction now
+                 lives in the chamber, where a deep-linked or returning reader also meets it. -->
+            <h2 tabindex="-1" id="sky-h2">Two and a half years.<br>Then the odds change.</h2>
+            <p class="lead" id="sky-lead">Not the end of anything. The end of a coin-flip chance of
+              stopping at 1.5&nbsp;&deg;C &mdash; about <b class="num" id="lead-gt">–</b> billion tonnes
+              of CO&#8322; from now. Past it the risk keeps climbing, a tenth of a degree at a time.</p>
             <div id="skycount">
               <p class="years num" id="years">–</p>
               <div class="capplate">
-                <p class="ylab">years of sky left <span id="atrate"></span></p>
+                <p class="ylab">years until the 1.5&nbsp;&deg;C budget is spent <span id="atrate"></span></p>
                 <p class="spent num" id="spent"></p>
                 <p id="odometer"></p>
               </div>
@@ -1153,18 +1157,14 @@ button.rr-row:hover{padding-left:6px}
             <button class="drawbtn" data-drawer="sky">Receipts &amp; why this is smoke, not carbon</button>
           </div>
 
-          <!-- BEAT 4 — the bridge down to the ground -->
-          <div class="beat">
-            <h2>That was the whole world.<br>Now stand somewhere real.</h2>
-            <p class="lead">The budget up there becomes afternoons down here. Next: your own city,
-              measured against its own record, back to 1940.</p>
+          <!-- the ground tease rides the END of the smoke beat: a whole snapped screen whose
+               only job was signposting a chapter one scroll away has been removed. -->
             <div id="tease">
               <p class="tl2">Beneath this sky</p>
               <p class="big num" id="tease-temp">–</p>
               <p class="sub" id="tease-sub">Seville, measured against its own record.</p>
               <button type="button" data-go="ground">descend to ground</button>
             </div>
-          </div>
         </div>
       </section>
 
@@ -2418,11 +2418,15 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
   /* the cream band IS the disagreement — position the hoverable truth of it */
   var band=el("band");
   band.style.top=pHi+"%";band.style.height=Math.max(.8,(pLo-pHi))+"%";
-  el("band-whisper").innerHTML="this glow is where the two ledgers disagree — "+srcShort(LO)+" "+
-   Math.round(LO.remaining_now_gt)+" Gt vs "+srcShort(HIe)+" "+Math.round(HIe.remaining_now_gt)+
-   " Gt · ≈"+(Math.abs(HIe.remaining_now_gt-LO.remaining_now_gt)/target).toFixed(1)+
-   " yr at this rate";
-  band.setAttribute("aria-label","The two carbon budgets disagree by about "+
+  /* This band was the chamber's most prominent permanent annotation and it announced a CONFLICT —
+     while the label on its own upper edge already said "same answer". Two independent teams,
+     publishing a year apart, land about a month apart on the same quantity. That is the strongest
+     evidence on the page that the number is real, and it was being sold as doubt. */
+  el("band-whisper").innerHTML="two independent teams, one answer — "+srcShort(LO)+" says "+
+   Math.round(LO.remaining_now_gt)+" Gt, "+srcShort(HIe)+" says "+Math.round(HIe.remaining_now_gt)+
+   " Gt · they differ by about "+(Math.abs(HIe.remaining_now_gt-LO.remaining_now_gt)/target*12).toFixed(0)+
+   " weeks at this rate. The band is that gap, drawn to scale.";
+  band.setAttribute("aria-label","Two independent carbon budgets agree to within about "+
    Math.abs(Math.round(HIe.remaining_now_gt-LO.remaining_now_gt))+" gigatonnes — activate for detail.");
  }
  /* ── DECLUTTER ────────────────────────────────────────────────────────────────
