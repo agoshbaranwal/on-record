@@ -2832,17 +2832,30 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
  var panel=el("rr-panel"),pledgeEl=el("rr-pledge"),PKEY="onrecord.pledge.v1";
  function focusPanel(msg){var h=panel.querySelector("h3");if(h){h.setAttribute("tabindex","-1");try{h.focus();}catch(e){}}
   var st=el("sr-status");if(st&&msg)st.textContent=msg;}
+ /* The letter follows the reader's OWN place. It used to hardcode Seville and admit "it can't
+    know where you are" — an admission that __HOME makes false. When the home is device-located we
+    still cannot NAME the city (there is no reverse geocoder), so the letter leaves a marked blank
+    and says why, rather than inventing a name or silently claiming Seville. */
+ function LN(){
+  var hm=window.__HOME&&__HOME.get(),ser=(window.__HOME&&__HOME.series())||null;
+  var Gs=ser||G, named=!!(hm&&!hm.ex&&hm.src!=="device"&&hm.name), dev=!!(hm&&hm.src==="device");
+  var place=named?hm.name:(dev?"[your city]":"Seville");
+  var w=Math.round(mean(Gs.days_ge35_per_year,1951,1980)),nw=Math.round(mean(Gs.days_ge35_per_year,LF-9,LF));
+  var a=mean(Gs.warm_nights_ge25_per_year,1951,1980),b=mean(Gs.warm_nights_ge25_per_year,LF-9,LF);
+  return {place:place,was:w,now:nw,dev:dev,named:named,ex:!!(hm&&hm.ex),
+          nWasS:(a<1?"under one":(Math.round(a*10)/10)),nNowS:(Math.round(b*10)/10)};}
+ function SUBJ(){var L=LN();return "A constituent from "+L.place+", about our summers";}
  var was=Math.round(mean(G.days_ge35_per_year,1951,1980)),now=Math.round(mean(G.days_ge35_per_year,LF-9,LF));  // SAME dynamic window (LF) the Ground chapter renders — the letter can never drift from the on-page number
  var nWas=mean(G.warm_nights_ge25_per_year,1951,1980),nNow=mean(G.warm_nights_ge25_per_year,LF-9,LF);
  var nWasS=(nWas<1?"under one":(Math.round(nWas*10)/10)),nNowS=(Math.round(nNow*10)/10);
- var SUBJECT="A constituent from Seville, about our summers";
  function esc(s){return s;}
- function letterBody(v){return "Dear "+(v.to||"[your representative’s name]")+",\n\n"+
-  "I live in Seville. I want to tell you what the record already shows here, because it is my reason for writing.\n\n"+
-  "In the three decades from 1951 to 1980, Seville averaged "+was+" days a year at or above 35 °C. In the most recent decade, "+(LF-9)+" to "+LF+", that average is "+now+" days — the hot season has roughly doubled.\n\n"+
-  "The nights have changed even more sharply. Tropical nights at or above 25 °C — the nights the body cannot cool down — went from "+nWasS+" a year to about "+nNowS+".\n\n"+
-  "These are not projections. They are the measured record for the city we share.\n\n"+
-  "I’m not writing to tell you what the science should mean to you. I’m writing to put on the record that it is already measurable here, and to ask you to treat climate policy as the local, present-day issue it is for Seville"+(v.own?" — "+v.own:"")+".\n\n"+
+ function letterBody(v){var L=LN();
+  return "Dear "+(v.to||"[your representative’s name]")+",\n\n"+
+  "I live in "+L.place+". I want to tell you what the record already shows here, because it is my reason for writing.\n\n"+
+  "In the three decades from 1951 to 1980, "+L.place+" averaged "+L.was+" days a year at or above 35 °C. In the most recent decade, "+(LF-9)+" to "+LF+", that average is "+L.now+" days.\n\n"+
+  "The nights have changed too. Nights at or above 25 °C — the nights the body cannot cool down — went from "+L.nWasS+" a year to about "+L.nNowS+".\n\n"+
+  "These are not projections. They are the measured record for the place we share.\n\n"+
+  "I’m not writing to tell you what the science should mean to you. I’m writing to put on the record that it is already measurable here, and to ask you to treat climate policy as the local, present-day issue it is for "+L.place+(v.own?" — "+v.own:"")+".\n\n"+
   "Thank you for representing us.\n\n"+(v.name||"[Your name]")+"\n"+(v.pc||"[Your postcode, so they know I’m a constituent]");}
  function gv(id){var e=el(id);return e?e.value.trim():"";}
  function vals(){return {to:gv("rr-to"),own:gv("rr-own"),name:gv("rr-name"),pc:gv("rr-pc")};}
@@ -2860,17 +2873,20 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
    '<button type="button" class="rr-minor" id="rr-copy">copy the text</button>'+
    '<button type="button" class="rr-minor" id="rr-plan-l">remind me to send it</button></div>'+
    '<p class="rr-note">This opens a draft in your own email. Nothing is sent, and nothing leaves this page, until you press send yourself.</p>'+
-   '<div class="rr-reps"><b>Who represents you?</b> This letter uses Seville’s record because that’s the record this page measured — it can’t know where you are.<br>'+
+   '<div class="rr-reps"><b>Who represents you?</b> '+(function(){var L=LN();
+     return L.named?("This letter quotes <b>"+L.place+"</b>’s own measured record — the place this page is drawn for."):
+      L.dev?("This letter quotes the record for your location. We know your coordinates but not your city’s name — there is no reverse-geocoding on this site — so fill in <b>[your city]</b> before sending."):
+      ("This letter uses Seville’s record, the worked example. Set your place at the top of the Ground chapter and it will quote yours instead.");})()+'<br>'+
    '&middot; Spain — your Diputado: <a href="https://www.congreso.es" target="_blank" rel="noopener">congreso.es<span class="sr-only"> (opens in a new tab)</span></a><br>'+
    '&middot; European Parliament — your MEP: <a href="https://www.europarl.europa.eu" target="_blank" rel="noopener">europarl.europa.eu<span class="sr-only"> (opens in a new tab)</span></a><br>'+
    '&middot; Somewhere else? Search &ldquo;[your country] find my representative&rdquo; — every democracy publishes a directory.</div>';
   ["rr-to","rr-own","rr-name","rr-pc"].forEach(function(id){var e=el(id);if(e)e.addEventListener("input",refreshPrev);});
   refreshPrev();
   el("rr-mail").addEventListener("click",function(){
-   var href="mailto:?subject="+encodeURIComponent(SUBJECT)+"&body="+encodeURIComponent(letterBody(vals()));
+   var href="mailto:?subject="+encodeURIComponent(SUBJ())+"&body="+encodeURIComponent(letterBody(vals()));
    var a=document.createElement("a");a.href=href;document.body.appendChild(a);a.click();a.remove();
    el("sr-status").textContent="A letter draft opened in your email app — nothing is sent until you send it.";offerPledge("letter");});
-  el("rr-copy").addEventListener("click",function(){var t=SUBJECT+"\n\n"+letterBody(vals());var b=el("rr-copy");
+  el("rr-copy").addEventListener("click",function(){var t=SUBJ()+"\n\n"+letterBody(vals());var b=el("rr-copy");
    function noCopy(){b.textContent="select the letter above";el("sr-status").textContent="Couldn't copy automatically — the letter is shown above; select and copy it.";
     var pv=el("rr-prev");if(pv){pv.setAttribute("tabindex","0");try{pv.focus();}catch(e){}}setTimeout(function(){b.textContent="copy the text";},2600);}
    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(function(){b.textContent="copied ✓";setTimeout(function(){b.textContent="copy the text";},1800);},noCopy);else noCopy();
@@ -3206,7 +3222,16 @@ window.__ART=__ART;   // exposed for the build-time OG bake
   "chamber's star field is the real sky, computed from catalogue positions for its place and moment. "+
   "The fire-day sky is the mirror case: a labelled render at measured aerosol optical depth — a real phenomenon "+
   "shown as illustration, on demand and reversible; the dial speaks only in frequency and never claims CO₂ "+
-  "colours the air on any given day. Corrections will be listed here, dated.";
+  "colours the air on any given day. "+
+  /* the location promise, kept where the limits are admitted rather than buried in a settings screen */
+  "<br><br><b>Where you are.</b> If you allow location, your coordinates are rounded to two decimals "+
+  "(about a kilometre) and sent only to Open-Meteo, the weather archive. There is no reverse-geocoding "+
+  "service on this site — we never turn a coordinate into a place name, which is why a located reader is "+
+  "called “your place” and not a city. Nothing about your position is stored anywhere but this browser, "+
+  "and it is never added to a link you share. The twenty-four cities in the picker are fixed points, not "+
+  "whole cities: two decimals is about a kilometre while ERA5’s grid cell is about 28 km across, so each "+
+  "record is that cell’s, not that street’s. ?place= and ?loc= are verification links, not something the "+
+  "share button produces. Corrections will be listed here, dated.";
  el("colophon").innerHTML="A worked mockup of On Record — place data frozen at 3 July 2026 while the form is "+
   "decided; the live build refreshes daily. Every figure traces to the sources above or is flagged “verify at "+
   "build”. Nothing hand-typed or model-guessed. English first; Hindi from launch. Made by Agosh Baranwal · agoshbaranwal@gmail.com";
@@ -4002,7 +4027,13 @@ var __HOME=(function(){
    if(old&&isFinite(old.lat)&&isFinite(old.lon)){s={src:"device",lat:old.lat,lon:old.lon,tz:devTZ()};drop(KOLD);}}
   if(s&&isFinite(s.lat)&&isFinite(s.lon)){set(s,{scroll:false});return;}
   HOME=normalize(EXAMPLES.seville);labelsRefresh();pgSync(HOME);}
+ /* the record __PLACE just computed for this home, so the Morning letter and the share card
+    can quote the reader's OWN numbers instead of the worked example's */
+ var LASTV=null;
+ function drawn(g,out){if(g===GEN&&out&&out.V)LASTV=out.V;}
+ function failed(g){if(g===GEN)LASTV=null;}
  return {get:function(){return HOME;},gen:function(){return GEN;},set:set,boot:boot,ask:ask,
+         drawn:drawn,failed:failed,series:function(){return LASTV?LASTV.G:null;},
          cities:function(){return WORLD_CITIES;},regions:REGN,examples:EXAMPLES,city:city,
          fromCity:fromCity,preflight:preflight,asked:askedAlready,markAsked:markAsked,
          isExample:function(){return !!(HOME&&HOME.ex);},
@@ -4023,9 +4054,27 @@ window.__HOME=__HOME;
   for(var i=0;i<rows.length;i++)if(rows[i].place===n)return rows[i].code;
   return null;}                                   /* no match => we say we don't know, never guess a neighbour */
  /* build the bar into a host; identical markup in the intro and in Ground */
+ /* the reader's own time zone moves their REGION to the front of the list. It never draws
+    anything and never becomes the home — a zone is not a place, and guessing one from the other
+    ("Europe/Madrid" therefore Seville) would be a 500 km claim we have no basis for. */
+ function leadRegion(){
+  var tz="";try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||"";}catch(e){}
+  /* browsers still report legacy zone aliases (this is why an exact match alone is not enough) */
+  var ALIAS={"Asia/Calcutta":"Asia/Kolkata","Asia/Katmandu":"Asia/Kathmandu","Asia/Saigon":"Asia/Ho_Chi_Minh",
+   "Asia/Rangoon":"Asia/Yangon","America/Buenos_Aires":"America/Argentina/Buenos_Aires",
+   "Europe/Kiev":"Europe/Kyiv","Africa/Asmera":"Africa/Asmara","Atlantic/Faeroe":"Atlantic/Faroe"};
+  tz=ALIAS[tz]||tz;
+  var cs=H.cities(),i;
+  for(i=0;i<cs.length;i++)if(cs[i].tz===tz)return cs[i].r;          // the reader's exact city zone
+  var area=(tz.split("/")[0]||"").toLowerCase();
+  /* "America/" spans two of our regions, so it is resolved by the zone list above, never guessed */
+  return {asia:"asia",africa:"africa",europe:"europe",australia:"oceania",pacific:"oceania",
+          atlantic:"europe",indian:"africa"}[area]||null;}
  function renderCityBar(host){
   if(!host)return;
   var cs=H.cities(),order=["asia","mideast","africa","europe","latam","namerica","oceania"],out="";
+  var lead=leadRegion();
+  if(lead&&order.indexOf(lead)>0)order=[lead].concat(order.filter(function(r){return r!==lead;}));
   order.forEach(function(rg){
    var inr=cs.filter(function(c){return c.r===rg;});
    if(!inr.length)return;

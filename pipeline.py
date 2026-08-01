@@ -471,9 +471,32 @@ doc = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
 (ROOT / "index.html").write_text(doc)
 # ---- protected-requirement invariant (Phase 10 kill-list): fail the build if a distinct capability is dropped ----
 _KEEP = ["years", "odometer", "burned", "spent", "hlab-hi", "hlab-lo", "ghost-lab", "copysky",
-         "share-btn", "t-budget", "takeaway", "pulse", "g-verdict", "impact-know", "ledger-sr"]
+         "share-btn", "t-budget", "takeaway", "pulse", "g-verdict", "impact-know", "ledger-sr",
+         # the localization layer: the picker, the fallback bar, the worked examples, the
+         # mast chip, and the Delhi keystone panel that carries the sourced honesty lesson
+         "homepick", "gq-bar", "gq-ex", "homechip", "n-example", "skywhere", "pk-ask"]
 _missing = [k for k in _KEEP if ('id="%s"' % k) not in doc]
 assert not _missing, "PROTECTED elements dropped from index.html: %s" % _missing
+
+# ---- localization invariants: these are honesty guarantees, not style preferences ----
+# The sourced aerosol explanation may exist exactly ONCE, inside buildNightExample(), whose only
+# data source is Delhi's baked series. More than one copy means some code path can attach Delhi's
+# physical cause to a reader's own city.
+assert doc.count("haze over the Indo-Gangetic") == 1, \
+    "the sourced aerosol sentence must appear exactly once (inside buildNightExample)"
+# Exactly one place may raise a location prompt, and it must be __HOME.ask.
+assert doc.count("navigator.geolocation.getCurrentPosition") == 1, \
+    "getCurrentPosition must have exactly one caller (__HOME.ask)"
+# The superseded per-chapter sky key must never be written again.
+assert 'setItem("onrecord_skyloc"' not in doc, "the legacy onrecord_skyloc key must not be written"
+# Every fallback city's country must be in the perception survey, or FIRST LIGHT dead-ends.
+_codes = {r.get("code") for r in (out["perception_gap"].get("all") or out["perception_gap"]["countries"])}
+_bar = re.findall(r'\{s:"([a-z-]+)",n:"[^"]*",f:"[^"]*",la:[-\d.]+,lo:[-\d.]+,tz:"[^"]*",c:"([A-Z]{3})"', doc)
+assert len(_bar) == 24, "expected 24 fallback cities, found %d" % len(_bar)
+_unsurveyed = sorted({c for s, c in _bar if c not in _codes})
+assert not _unsurveyed, "fallback cities whose country is not in the survey: %s" % _unsurveyed
+assert not ({"seville", "delhi"} & {s for s, c in _bar}), \
+    "Seville and Delhi belong in the examples row, not the fallback bar"
 # ---- stamp the service worker so every nightly build busts the offline cache ----
 # BUILD changes when the build time OR the built HTML changes → sw.js differs byte-for-byte
 # → the browser detects an update, the new cache name supersedes, old caches are purged.
