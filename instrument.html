@@ -551,10 +551,6 @@ svg{display:block;width:100%;height:auto}
   color:var(--bone-2);margin:0 0 6px;text-shadow:var(--halo)}
 #n-ex-lead{font-size:14px;line-height:1.55;color:var(--bone-2);margin:0 0 8px;max-width:56ch;text-shadow:var(--halo)}
 #n-ex-lead b{color:var(--bone)}
-#n-ex-toggle{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
-  background:none;border:0;border-bottom:1px solid rgba(242,231,204,.3);padding:6px 0;min-height:44px;
-  color:var(--bone-3);cursor:pointer;transition:color .25s,border-color .25s}
-#n-ex-toggle:hover,#n-ex-toggle:focus-visible{color:var(--bone);border-color:var(--amber);outline:none}
 #n-rec-ex{margin-top:8px}
 /* the honest label that stops "example" reading as "default" */
 .place-tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--amber);
@@ -1017,7 +1013,7 @@ button.rr-row:hover{padding-left:6px}
   /* selectors specific enough to beat their base height rules (#dial .foot button, .rr-btns .rr-minor, .rr-pledge .rr-clear) */
   #dclose,#dial #copysky,.rr-btns .rr-minor,#gplace input,.take-btns button,.rr-pledge .rr-clear,#sincecard .sc-x,
   #gq-bar button,#pk-bar button,#gq-ex button,#gq-mine,#pk-geo,#pk-list,#pk-skip,#homechip,
-  #n-ex-toggle,#skywhere-change,#home-retry{min-height:44px}
+  #skywhere-change,#home-retry{min-height:44px}
 }
 </style>
 
@@ -1276,11 +1272,7 @@ button.rr-row:hover{padding-left:6px}
             <section id="n-example" aria-labelledby="n-ex-h">
               <h3 id="n-ex-h">Why you can trust a record that falls</h3>
               <p id="n-ex-lead"></p>
-              <button type="button" id="n-ex-toggle" aria-expanded="false" aria-controls="n-ex-body">show Delhi&rsquo;s two lines</button>
-              <div id="n-ex-body" hidden>
-                <div class="chartwrap"><div class="plate"><div id="n-chart-ex"></div></div></div>
-                <p class="receipt" id="n-rec-ex"></p>
-              </div>
+              <p class="receipt" id="n-rec-ex"></p>
             </section>
             <button class="drawbtn" data-drawer="night">Receipts &amp; why the split</button>
             <p class="beat-cue">one more count before the good news &mdash; the people on your side &darr;</p>
@@ -2865,9 +2857,14 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
  function render(){var c=list[+sel.value]||list[0];
   var A=Math.round(c.actual),G=Math.round(c.guess);
   highlight();
+  /* The closing line used to assert "The majority is real" for EVERY country. 11 of the 125
+     surveyed are under 50% — so an Egyptian reader was told "31 of every 100 … the majority is
+     real" on the same screen as the number that contradicts it. The gap is the finding; whether
+     it clears half is a separate fact, and the sentence now follows the data either way. */
   el("pg-kick").innerHTML="In <b>"+c.place+"</b>, <b>"+A+" of every 100</b> would give 1% of their income, "+
    "every month, to fight warming. People "+(c.place==="World"?"":"there ")+"guess just <b>"+G+"</b>. "+
-   "The majority is real &mdash; it just can&rsquo;t see itself.";
+   (A>=50?"The majority is real &mdash; it just can&rsquo;t see itself."
+         :"Still far more than anyone there thinks &mdash; the support is undercounted, by the people who hold it.");
   el("pg-sep").innerHTML=(c.govt!=null?
    "And <b>"+Math.round(c.govt)+"%</b> in "+c.place+" want their government to do more"+
     ((WORLD&&WORLD.govt&&c.place!=="World")?" (worldwide, "+Math.round(WORLD.govt)+"%)":"")+". ":
@@ -3336,9 +3333,12 @@ window.__ART=__ART;   // exposed for the build-time OG bake
   "whole cities: two decimals is about a kilometre while ERA5’s grid cell is about 28 km across, so each "+
   "record is that cell’s, not that street’s. ?place= and ?loc= are verification links, not something the "+
   "share button produces. Corrections will be listed here, dated.";
- el("colophon").innerHTML="A worked mockup of On Record — place data frozen at 3 July 2026 while the form is "+
-  "decided; the live build refreshes daily. Every figure traces to the sources above or is flagged “verify at "+
-  "build”. Nothing hand-typed or model-guessed. English first; Hindi from launch. Made by Agosh Baranwal · agoshbaranwal@gmail.com";
+ /* this said "place data frozen at 3 July 2026" long after the nightly build began refreshing it —
+    the last sentence of the site contradicted the build date printed two hundred words above it */
+ el("colophon").innerHTML="On Record rebuilds every night: this page was last built <b>"+D._meta.today+
+  "</b> from an archive complete to <b>"+D._meta.archive_end+"</b>. Every figure traces to the sources above "+
+  "or is flagged “verify at build”. Nothing hand-typed or model-guessed. English first; Hindi from launch. "+
+  "Made by Agosh Baranwal · agoshbaranwal@gmail.com";
 })();
 
 /* Phase 9 — the outcome-side "what we can honestly know" figures (reads D.impact, injected at build → no runtime fetch/beacon) */
@@ -3536,10 +3536,6 @@ function buildNightExample(){
   "</b>/yr &middot; 1951&ndash;80 average vs the last ten full years &middot; ERA5 via Open-Meteo &middot; "+
   "descriptive, not attribution.";
 }
-(function(){var t=el("n-ex-toggle"),b=el("n-ex-body");if(!t||!b)return;
- t.addEventListener("click",function(){
-  var open=b.hidden;b.hidden=!open;t.setAttribute("aria-expanded",String(open));
-  t.textContent=open?"hide Delhi’s numbers":"show Delhi’s two lines";});})();
 
 var __PLACE=(function(){
  if(!window.fetch||typeof buildGround!=="function")return null;

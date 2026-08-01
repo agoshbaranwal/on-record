@@ -1,0 +1,13 @@
+<!doctype html><meta charset=utf-8><style>iframe{width:900px;height:900px;border:0}</style>
+<iframe id="f" src="index.html?intro=0&live=0"></iframe>
+<script>setTimeout(function(){try{var d=document.getElementById("f").contentDocument,o=[];
+ var sel=d.getElementById("pg-sel");
+ function pick(name){for(var i=0;i<sel.options.length;i++)if(sel.options[i].textContent===name){
+  sel.value=sel.options[i].value;sel.dispatchEvent(new Event("change"));return true;}return false;}
+ pick("Egypt");
+ o.push("EGYPT: "+(d.getElementById("pg-kick").textContent||"").slice(-72));
+ pick("Spain");
+ o.push("SPAIN: "+(d.getElementById("pg-kick").textContent||"").slice(-58));
+ o.push("COLOPHON: "+(d.getElementById("colophon").textContent||"").slice(0,86));
+ o.push("deadToggle="+(!!d.getElementById("n-ex-toggle")));
+ document.title="PROBE::"+o.join(" ~ ");}catch(e){document.title="ERR "+e.message;}},3000);</script>
