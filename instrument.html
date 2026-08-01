@@ -505,12 +505,25 @@ svg{display:block;width:100%;height:auto}
 .gq-exb{font-family:var(--sg);font-size:13px;min-height:44px;padding:8px 12px;border:1px dashed rgba(242,231,204,.30);
   border-radius:7px;background:none;color:var(--bone-3);cursor:pointer;transition:color .25s,border-color .25s}
 .gq-exb:hover,.gq-exb:focus-visible{color:var(--bone);border-color:var(--bone-3);outline:none}
+/* the keystone panel — compact by default so it is never absent and never in the way */
+#n-example{margin:22px 0 6px;padding:14px 0 2px;border-top:1px solid rgba(242,231,204,.16);max-width:640px}
+#n-example h3{font-family:var(--sg);font-size:15px;font-weight:600;letter-spacing:.01em;
+  color:var(--bone-2);margin:0 0 6px;text-shadow:var(--halo)}
+#n-ex-lead{font-size:14px;line-height:1.55;color:var(--bone-2);margin:0 0 8px;max-width:56ch;text-shadow:var(--halo)}
+#n-ex-lead b{color:var(--bone)}
+#n-ex-toggle{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+  background:none;border:0;border-bottom:1px solid rgba(242,231,204,.3);padding:6px 0;min-height:44px;
+  color:var(--bone-3);cursor:pointer;transition:color .25s,border-color .25s}
+#n-ex-toggle:hover,#n-ex-toggle:focus-visible{color:var(--bone);border-color:var(--amber);outline:none}
+#n-rec-ex{margin-top:8px}
 /* the honest label that stops "example" reading as "default" */
 .place-tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--amber);
   margin:2px 0 8px;text-shadow:var(--halo)}
-#homechip{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;pointer-events:auto;
-  border:1px solid rgba(242,231,204,.26);border-radius:999px;padding:6px 11px;min-height:30px;
-  background:rgba(3,16,18,.34);color:var(--bone-2);cursor:pointer;margin-right:8px}
+#homechip{display:inline-block;vertical-align:middle;margin:9px 0 0 10px;font-family:var(--mono);
+  font-size:11px;letter-spacing:.08em;pointer-events:auto;max-width:26ch;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;
+  border:1px solid rgba(242,231,204,.26);border-radius:999px;padding:4px 10px;
+  background:rgba(3,16,18,.34);color:var(--bone-2);cursor:pointer}
 #homechip.unset{color:var(--amber);border-color:rgba(240,188,98,.5)}
 #homechip:hover,#homechip:focus-visible{color:var(--bone);border-color:var(--amber);outline:none}
 #gplace{display:flex;align-items:center;gap:10px 12px;flex-wrap:wrap;margin:12px 0 6px}
@@ -971,9 +984,9 @@ button.rr-row:hover{padding-left:6px}
       <div>
         <p class="word">On Record</p>
         <h1 class="plain" id="mast-tag">Every number measured. Every source shown.</h1>
-        <button id="homechip" type="button" hidden title="The place this site is drawn for — opens the picker">where are you?</button>
         <button id="pulse" type="button" hidden title="Today's reading — open the Ground chapter"></button>
         <button id="whatis" type="button" aria-label="What is this? Replay the introduction" hidden>What is this? <span aria-hidden="true">↺</span></button>
+        <button id="homechip" type="button" hidden title="The place this site is drawn for — opens the picker">where are you?</button>
       </div>
       <div id="vitals" role="group" aria-label="Global vital signs"></div>
     </header>
@@ -1175,6 +1188,19 @@ button.rr-row:hover{padding-left:6px}
               </div>
             </div></div>
             <p class="receipt" id="delhi-receipt"></p>
+            <!-- THE KEYSTONE. Drawn from Delhi's own baked series and NEVER from the reader's
+                 place, so the sourced aerosol explanation can never be attached to another city.
+                 Rendered for every reader in every state: the lesson that the record is honest
+                 must not depend on the reader's own city happening to diverge. -->
+            <section id="n-example" aria-labelledby="n-ex-h">
+              <h3 id="n-ex-h">Why you can trust a record that falls</h3>
+              <p id="n-ex-lead"></p>
+              <button type="button" id="n-ex-toggle" aria-expanded="false" aria-controls="n-ex-body">show Delhi&rsquo;s two lines</button>
+              <div id="n-ex-body" hidden>
+                <div class="chartwrap"><div class="plate"><div id="n-chart-ex"></div></div></div>
+                <p class="receipt" id="n-rec-ex"></p>
+              </div>
+            </section>
             <button class="drawbtn" data-drawer="night">Receipts &amp; why the split</button>
             <p class="beat-cue">one more count before the good news &mdash; the people on your side &darr;</p>
           </div>
@@ -2522,12 +2548,11 @@ var buildNight=function(NV){
             "barely moved, about "+dThen.toFixed(0)+" a year");
  el("n-honest").innerHTML=
   "A hot night here is one warmer than 95% of nights in the 1951&ndash;80 record. "+
+  /* NO physical cause is asserted here for ANY place — the one sourced explanation lives in
+     buildNightExample(), which can only ever be fed Delhi's own series. */
   (dayFell?
-   (CUSTOM?
-    (place+"&rsquo;s daytime highs actually fell over the same years &mdash; we draw that falling line too. "+
-     "<b>That is why you can trust the rising one.</b>"):
-    (place+"&rsquo;s days actually cooled a little over the same years &mdash; haze blocks sunlight and holds the "+
-     "daytime highs down. We draw that falling line too. <b>That is why you can trust the rising one.</b>")):
+   (place+"&rsquo;s daytime highs actually fell over the same years &mdash; we draw that falling line too. "+
+    "<b>That is why you can trust the rising one.</b>"):
    ("The days "+dVerb+" &mdash; both lines are drawn, whichever way they run."));
  el("delhi-receipt").innerHTML="days ≥"+thrHs+" °C: <b>"+(+dThen).toFixed(1)+"→"+(+dNow).toFixed(1)+
   "</b>/yr · nights ≥"+thrNs+" °C: <b>"+(+nThen).toFixed(1)+"→"+(+nNow).toFixed(1)+"</b>/yr · "+
@@ -3251,6 +3276,42 @@ document.querySelectorAll("[data-drawer]").forEach(function(b){
    window traces, both normals, the record envelope, per-year counts against the
    place's OWN old-normal 95th percentiles, today's forecast percentile — all
    client-side. Nothing about you is sent anywhere except the open weather API. */
+
+/* ═══════════ THE KEYSTONE — Delhi, always, and only ever Delhi ═══════════
+   The site's honesty argument is that a record which FALLS is drawn as honestly as one that
+   rises. Delhi is the worked proof: its hot days edged down while its hot nights climbed, and
+   there is a published reason for the daytime half. That lesson used to be a CUSTOM?: branch
+   inside buildNight — so the moment a reader chose their own city it disappeared. Now that the
+   reader's city IS the default, that would have meant almost nobody ever saw it.
+   This function takes NO arguments and reads ONLY Delhi's baked series, so there is no code
+   path that can attach Delhi's physical cause to somebody else's city. The aerosol sentence
+   and the Padma Kumari citation exist exactly once in this file: here. */
+function buildNightExample(){
+ var host=el("n-example");if(!host)return;
+ var home=window.__HOME&&__HOME.get();
+ /* when Delhi IS the reader's chosen place, panel A already tells this story — don't tell it twice */
+ if(home&&home.slug==="delhi"){host.hidden=true;return;}
+ host.hidden=false;
+ var dThen=dr.days_ge35_then,dNow=dr.days_ge35_now,
+     nThen=dr.warm_nights_then,nNow=dr.warm_nights_now;
+ var dD=Math.round(dNow-dThen),nD=Math.round(nNow-nThen);
+ el("n-ex-lead").innerHTML=
+  "In <b>Delhi</b>, the two lines run opposite ways. Days at or above 35&nbsp;&deg;C went "+
+  (dD<0?"<b>down</b>":"<b>up</b>")+" by about <b>"+Math.abs(dD)+"</b> a year since 1951&ndash;80, while nights "+
+  "that never fall below 25&nbsp;&deg;C went <b>up</b> by about <b>"+Math.abs(nD)+"</b>. The daytime half has a "+
+  "published explanation &mdash; haze over the Indo-Gangetic Plain blocks sunlight and holds the afternoon "+
+  "highs down (Padma Kumari et al. 2007). <b>We draw the line that falls as plainly as the one that "+
+  "climbs.</b> That is the whole promise of this page.";
+ el("n-rec-ex").innerHTML="Delhi &middot; days &ge;35&nbsp;&deg;C: <b>"+(+dThen).toFixed(1)+"&rarr;"+(+dNow).toFixed(1)+
+  "</b>/yr &middot; nights &ge;25&nbsp;&deg;C: <b>"+(+nThen).toFixed(1)+"&rarr;"+(+nNow).toFixed(1)+
+  "</b>/yr &middot; 1951&ndash;80 average vs the last ten full years &middot; ERA5 via Open-Meteo &middot; "+
+  "descriptive, not attribution.";
+}
+(function(){var t=el("n-ex-toggle"),b=el("n-ex-body");if(!t||!b)return;
+ t.addEventListener("click",function(){
+  var open=b.hidden;b.hidden=!open;t.setAttribute("aria-expanded",String(open));
+  t.textContent=open?"hide Delhi’s numbers":"show Delhi’s two lines";});})();
+
 var __PLACE=(function(){
  if(!window.fetch||typeof buildGround!=="function")return null;
  var act=false;
@@ -3585,8 +3646,8 @@ var __SKY=(function(){
     cx.beginPath();cx.arc(q[0],q[1],1.7*dpr,0,6.2832);cx.fill();});});}
   drawMoon(j);}
  function caption(){var f=tonight[feat];if(!f)return;
-  el("skyctx").textContent=(LOC===DELHI?(liveNow?"the sky over Delhi right now":"tonight's sky over Delhi")
-   :(liveNow?"your sky, right now":"your sky tonight"))+" · facing south";
+  var pn=(window.__HOME&&__HOME.get()&&__HOME.get().name)||LOC.name||"here";
+  el("skyctx").textContent=(liveNow?("the sky over "+pn+" right now"):("tonight's sky over "+pn))+" · facing south";
   el("skyname").textContent=f.n;
   var upw=liveNow?"up now":"in view after dark";
   /* with no true dark window there is no honest "highest at" time — say the polar truth instead.
@@ -3659,25 +3720,13 @@ var __SKY=(function(){
  /* the reader's own device zone — correct by construction for THEIR location, and it needs
     no third-party lookup (we never send a coordinate anywhere to name it). */
  function devTZ(){try{return Intl.DateTimeFormat().resolvedOptions().timeZone||null;}catch(e){return null;}}
- function setPlace(loc,persist){LOC=loc;LAT=loc.lat;LON=loc.lon;
-  if(!EMBED)try{if(persist)localStorage.setItem("onrecord_skyloc",JSON.stringify({lat:loc.lat,lon:loc.lon}));  // an embedded frame never touches storage
-   else localStorage.removeItem("onrecord_skyloc");}catch(e){}
-  var bd=el("skyloc-delhi"),bm=el("skyloc-mine");
-  if(bd){bd.setAttribute("aria-pressed",loc===DELHI?"true":"false");
-   bm.setAttribute("aria-pressed",loc===DELHI?"false":"true");}
-  computeTonight();draw();caption();}
- (function(){var bd=el("skyloc-delhi"),bm=el("skyloc-mine");if(!bd)return;
-  if(LOC!==DELHI){bd.setAttribute("aria-pressed","false");bm.setAttribute("aria-pressed","true");}
-  bd.addEventListener("click",function(){setPlace(DELHI,false);});
-  bm.addEventListener("click",function(){
-   if(!navigator.geolocation){el("skyctx").textContent="this browser offers no location — showing Delhi";return;}
-   el("skyctx").textContent="asking your browser for your position — it never leaves this device";
-   navigator.geolocation.getCurrentPosition(function(pos){
-    var la=Math.round(pos.coords.latitude*100)/100,lo=Math.round(pos.coords.longitude*100)/100;
-    setPlace({name:"your sky",lat:la,lon:lo,tz:devTZ(),tzl:""},true);   // the device's own zone IS this place's zone
-    flashRing(el("skymap"));                                        // make the redraw unmistakable
-    var st=el("sr-status");if(st)st.textContent="Your sky, "+Math.abs(la)+"°"+(la>=0?"N":"S")+" "+Math.abs(lo)+"°"+(lo>=0?"E":"W")+", redrawn from the same catalogue.";},
-    function(){el("skyctx").textContent="location declined — showing Delhi's sky";});});})();
+ /* The sky no longer owns a place: __HOME does, and calls this. Storage and the location
+    prompt both moved there, so there is exactly ONE persisted home and ONE caller of
+    getCurrentPosition in this file — the old "Delhi / my sky" pair was a second, competing
+    place control that could disagree with the ground. */
+ function setPlace(loc){LOC=loc;LAT=loc.lat;LON=loc.lon;
+  computeTonight();draw();caption();
+  try{flashRing(el("skymap"));}catch(e){}}
  return {setPlace:setPlace,        /* exported so ONE site-wide home place can move the sky too */
   enter:function(){live=true;computeTonight();fadeT0=0;
    if(!size()){var tries=0,rt=setInterval(function(){if(size()||++tries>40){clearInterval(rt);draw();}},50);}
@@ -3801,7 +3850,7 @@ var __HOME=(function(){
   var h=HOME;if(!h)return;
   var chip=el("homechip");
   if(chip){chip.hidden=false;
-   chip.textContent=h.ex?("example: "+h.name+" · set your place"):h.name;
+   chip.textContent=h.ex?"set your place":h.name;   /* the example is named by the .place-tag under each heading */
    chip.classList.toggle("unset",!!h.ex);}
   var sw=el("skywhere");
   if(sw)sw.textContent="the sky over "+h.name+" · "+Math.abs(h.lat).toFixed(2)+"° "+(h.lat<0?"S":"N")+", "+
@@ -3811,7 +3860,8 @@ var __HOME=(function(){
   var tags=document.querySelectorAll(".place-tag");
   for(var i=0;i<tags.length;i++)tags[i].hidden=!h.ex;
   var bars=document.querySelectorAll(".cb-chip");
-  for(var j=0;j<bars.length;j++)bars[j].setAttribute("aria-pressed",String(bars[j].getAttribute("data-slug")===h.slug));}
+  for(var j=0;j<bars.length;j++)bars[j].setAttribute("aria-pressed",String(bars[j].getAttribute("data-slug")===h.slug));
+  try{if(typeof buildNightExample==="function")buildNightExample();}catch(e){}}
  /* THE ONE MUTATOR. Stars + first light + labels are pure local work and land immediately;
     the ground record is a multi-second archive fetch, so it goes last and asynchronously. */
  function set(h,opts){
@@ -3820,7 +3870,7 @@ var __HOME=(function(){
   try{if(__SKY&&__SKY.setPlace)__SKY.setPlace({name:h.name,lat:h.lat,lon:h.lon,tz:h.tz,tzl:""},false);}catch(e){}
   pgSync(h);labelsRefresh();
   if(h.ex==="seville"){if(__PLACE&&__PLACE.reset)__PLACE.reset();}
-  else if(__PLACE&&__PLACE.pick)__PLACE.pick(h.lat,h.lon,h.full,GEN,{scroll:opts.scroll!==false});
+  else if(__PLACE&&__PLACE.pick)__PLACE.pick(h.lat,h.lon,h.name,GEN,{scroll:opts.scroll!==false});
   if(opts.persist!==false&&h.src!=="link")put(KEY,JSON.stringify(h));}
  /* the ONLY caller of getCurrentPosition in the file, and only ever from a real click */
  function ask(origin,onDone){
