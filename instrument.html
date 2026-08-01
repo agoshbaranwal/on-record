@@ -500,6 +500,12 @@ svg{display:block;width:100%;height:auto}
 
 /* --- the ONE place picker: your location, or a city, or any place on Earth --- */
 #homepick{margin:14px 0 6px;max-width:640px}
+#homenow{font-size:15px;line-height:1.5;color:var(--bone-2);margin:12px 0 4px;text-shadow:var(--halo)}
+#homenow b{color:var(--bone);font-weight:600}
+#homenow-change{margin-left:10px;background:none;border:0;padding:4px 0;min-height:44px;cursor:pointer;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--bone-3);
+  text-decoration:underline;text-underline-offset:3px}
+#homenow-change:hover,#homenow-change:focus-visible{color:var(--amber);outline:none}
 #homeask h3{font-family:var(--sg);font-size:19px;font-weight:600;color:var(--bone);margin:0 0 4px;text-shadow:var(--halo)}
 #homeask p{font-size:14.5px;line-height:1.5;color:var(--bone-2);margin:0 0 8px;max-width:52ch;text-shadow:var(--halo)}
 #homeask-privacy,#gq-barnote,#homeask-blocked{font-family:var(--mono);font-size:11.5px;line-height:1.6;
@@ -1174,6 +1180,11 @@ button.rr-row:hover{padding-left:6px}
               global average. It is the ground under your feet.</p>
             <!-- the ONE place picker. #gplace is kept inside it so its existing CSS still applies. -->
             <div id="homepick">
+              <!-- once a place is set, the whole picker collapses to this one line: the reader
+                   answered "where are you?" in the cold-open and must not be asked again. -->
+              <p id="homenow" hidden>Drawn for <b id="homenow-name"></b>
+                <button type="button" id="homenow-change" aria-expanded="false" aria-controls="homepick-body">not your place? change</button></p>
+              <div id="homepick-body">
               <div id="homeask">
                 <h3 id="homeask-h">Where are you?</h3>
                 <p id="homeask-p">This chapter is drawn for one place. Make it yours &mdash; every
@@ -1199,6 +1210,7 @@ button.rr-row:hover{padding-left:6px}
                 <span class="gq-exlab">worked examples</span>
                 <button type="button" class="gq-exb" id="ex-seville" data-slug="seville">Seville &mdash; heat that doubled</button>
                 <button type="button" class="gq-exb" id="ex-delhi" data-slug="delhi">Delhi &mdash; days flat, nights climbing</button>
+              </div>
               </div>
             </div>
             <p class="beat-cue">scroll &mdash; what its record shows &darr;</p>
@@ -2185,7 +2197,11 @@ var startIntro,endIntro;
  var hasAsk=!!el("pk-ask"),askResolved=!hasAsk;   /* the ask beat, when present, must be answered */
  /* a REAL deep link (?chamber= or a non-sky #p- hash captured BEFORE enterChamber(0) clobbered it) bypasses the cold-open */
  var isDeep=!!(Q.get("chamber")||EMBED||KIOSK||(HASH0&&HASH0!=="sky"));
- function calc(){NUM.budget=Math.round((LO.remaining_now_gt+HIe.remaining_now_gt)/2);
+ /* This averaged the two published budgets, which the site's own note explicitly disavows —
+   "we show both current estimates, never an average" — and produced 104 in the cold-open against
+   the 103 that #lead-gt renders for the same quantity fifteen seconds later. Use the same lower,
+   more conservative estimate the chamber uses; both figures still appear, on the two horizons. */
+function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
   NUM.rate=Math.round(RNOW);NUM.year=Math.round(NOW+LO.remaining_now_gt/RNOW);NUM.years=yearsStr(RNOW);}
  function unit(k){return (k==="budget"||k==="rate")?" billion tonnes":k==="years"?" years":"";}
  function seed(){calc();beats.forEach(function(b){
@@ -2467,9 +2483,18 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
  var qr=parseFloat(Q.get("rate"));if(isFinite(qr))target=Math.max(RMIN,Math.min(RMAX,qr));
  sync();
  /* the live burn ticker — plain arithmetic: rate spread over real elapsed time */
- (function(){var t0=Date.now(),tps=RNOW*1e9/31557600,tk=el("burned");
-  function upd(){if(OFFLINE)return;var t=Math.max(0,(Date.now()-t0)/1000)*tps;
-   tk.textContent="burned while you've been here: "+Math.round(t).toLocaleString("en")+" tonnes of CO₂";}
+ /* This was fixed to RNOW, so the loudest number under the dial went on racing at today's pace
+    no matter where the reader dragged it — the control appeared to do nothing. It now integrates
+    at the rate they have actually chosen. The VERB changes with it, because the counter must never
+    report a hypothetical as if it were measured: at today's pace it says what the world HAS
+    burned; moved off it, it says what it WOULD burn at that pace. */
+ (function(){var last=Date.now(),acc=0,tk=el("burned");
+  function upd(){if(OFFLINE)return;
+   var now=Date.now(),dt=Math.max(0,(now-last)/1000);last=now;
+   acc+=dt*(target*1e9/31557600);
+   var real=Math.abs(target-RNOW)<0.05;
+   tk.textContent=(real?"burned while you've been here: ":"at this pace the world would burn: ")+
+    Math.round(acc).toLocaleString("en")+" tonnes of CO\u2082"+(real?"":", in the time you've been here");}
   upd();setInterval(upd,reduce?1000:120);})();
  /* the number that never pauses — full-precision countdown, honest about itself */
  (function(){var t0=Date.now(),od=el("odometer");
@@ -4133,6 +4158,13 @@ var __HOME=(function(){
      the instant the home is really the reader's: that is what stops "example" reading "default". */
   var tags=document.querySelectorAll(".place-tag");
   for(var i=0;i<tags.length;i++)tags[i].hidden=!h.ex;
+  /* collapse or expand the picker to match what we already know */
+  var now=el("homenow"),body=el("homepick-body"),nm=el("homenow-name");
+  if(now&&body){var settled=!h.ex;                       /* an example is not an answer */
+   now.hidden=!settled;
+   if(settled&&nm)nm.textContent=h.full||h.name;
+   if(settled&&!body.getAttribute("data-open"))body.hidden=true;
+   if(!settled){body.hidden=false;body.removeAttribute("data-open");}}
   var bars=document.querySelectorAll(".cb-chip");
   for(var j=0;j<bars.length;j++)bars[j].setAttribute("aria-pressed",String(bars[j].getAttribute("data-slug")===h.slug));
   try{if(typeof buildNightExample==="function")buildNightExample();}catch(e){}}
@@ -4283,6 +4315,13 @@ window.__HOME=__HOME;
     var f=el("gq-bar")&&el("gq-bar").querySelector(".cb-chip");if(f)try{f.focus();}catch(e){}}
    else{mine.textContent="try location again";
     if(st)st.textContent="your browser couldn't fix a position just now — pick a city below, or try again.";}});});
+ var chg=el("homenow-change"),bodyEl=el("homepick-body");
+ if(chg&&bodyEl)chg.addEventListener("click",function(){
+  var open=bodyEl.hidden;bodyEl.hidden=!open;
+  if(open)bodyEl.setAttribute("data-open","1");else bodyEl.removeAttribute("data-open");
+  chg.setAttribute("aria-expanded",String(open));
+  chg.textContent=open?"keep this place":"not your place? change";
+  if(open){var t=el("gq-bar")&&el("gq-bar").querySelector(".cb-chip");if(t)try{t.focus();}catch(e){}}});
  /* the sky's caption points at the one picker rather than owning a second place control */
  var swc=el("skywhere-change");
  if(swc)swc.addEventListener("click",function(){toPicker();});
