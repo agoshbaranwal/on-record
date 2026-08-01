@@ -499,6 +499,29 @@ svg{display:block;width:100%;height:auto}
 #yr-out .yr-val{font-family:var(--mono);font-size:17px;font-weight:700;color:var(--amber);letter-spacing:-.01em}
 
 /* --- the ONE place picker: your location, or a city, or any place on Earth --- */
+/* FIRST LIGHT — guess before you are told */
+#wg-ask{margin:14px 0 6px;max-width:52ch}
+#wg-ask label{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.05em;
+  color:var(--bone-3);margin-bottom:8px;text-shadow:var(--halo)}
+.wg-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#wg-in{font-family:var(--mono);font-size:19px;width:120px;min-height:48px;padding:8px 12px;
+  border:1px solid rgba(242,231,204,.30);border-radius:8px;background:rgba(3,16,18,.32);color:var(--bone)}
+#wg-in:focus{outline:none;border-color:var(--amber)}
+#wg-go{font-family:var(--mono);font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;
+  min-height:48px;padding:10px 16px;border:1px solid var(--amber);border-radius:8px;
+  background:rgba(240,188,98,.14);color:var(--amber);cursor:pointer}
+#wg-go:hover,#wg-go:focus-visible{background:rgba(240,188,98,.26);outline:none}
+#wg-out{margin-top:12px;font-size:16px;line-height:1.55;color:var(--bone);max-width:52ch;text-shadow:var(--halo)}
+#wg-out:empty{display:none}
+#wg-out b{color:var(--amber);font-family:var(--mono)}
+/* GROUND — the record chart had NO mobile rule at all: a 940x400 viewBox scaled into a ~350px
+   column renders its axis text at about 4px. Let it keep a legible width and scroll sideways. */
+@media(max-width:640px){
+  #recwin{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  #recwin svg{min-width:620px}
+  #recwin::after{content:"swipe the chart sideways \2192";display:block;font-family:var(--mono);
+    font-size:11px;color:var(--bone-4);margin-top:6px}
+}
 #homepick{margin:14px 0 6px;max-width:640px}
 #homenow{font-size:15px;line-height:1.5;color:var(--bone-2);margin:12px 0 4px;text-shadow:var(--halo)}
 #homenow b{color:var(--bone);font-weight:600}
@@ -1299,8 +1322,18 @@ button.rr-row:hover{padding-left:6px}
           <div class="beat">
             <h2 tabindex="-1">Most people back climate action.<br>They just think most people don&rsquo;t.</h2>
             <p class="lead">Researchers asked people in 125 countries whether they would give
-              <b>1% of their income</b> to fight warming. Worldwide, <b>69%</b> said yes. Then they
-              were asked to guess how many others would say yes. The average answer was <b>43%</b>.</p>
+              <b>1% of their income</b>, every month, to fight warming. Before we tell you the
+              answer &mdash; what would you guess?</p>
+            <!-- Guess FIRST. "69% say yes, people guess 43%" is a statistic; being wrong yourself,
+                 by your own hand, is the finding. The chamber's point is that the reader is
+                 personally inside the error it describes. -->
+            <div id="wg-ask">
+              <label for="wg-in">Out of 100 people worldwide, how many said yes?</label>
+              <span class="wg-row"><input id="wg-in" type="number" min="0" max="100" inputmode="numeric"
+                placeholder="0&ndash;100" aria-describedby="wg-out">
+              <button type="button" id="wg-go">show me</button></span>
+            </div>
+            <p id="wg-out" aria-live="polite"></p>
             <p class="beat-cue">now find your own country &darr;</p>
           </div>
           <!-- BEAT 2 — your country, the lamps, and where money helps -->
@@ -1352,13 +1385,6 @@ button.rr-row:hover{padding-left:6px}
                   <div class="tick" style="left:33.0%"></div></div>
                 <div class="axlab"><span>0</span><span class="mid">share of the world&rsquo;s electricity &middot; Ember 2025</span><span>100%</span></div></div>
               <!-- 2. a SHARE of a named whole: new cars sold -->
-              <div class="li"><div class="big">~1 in 4</div>
-                <div class="txt">Of all new cars sold in 2025 were electric &mdash; an uneven spread across the world.</div>
-                <div class="scale" style="--w:25%" role="img" aria-label="Electric cars were 25% of new cars sold worldwide; about 10% in the US, 55% in China.">
-                  <div class="fill"></div>
-                  <span class="mk" style="left:10%">US 10%</span><div class="tick" style="left:10%"></div>
-                  <span class="mk" style="left:55%">China 55%</span><div class="tick" style="left:55%"></div></div>
-                <div class="axlab"><span>0</span><span class="mid">share of new cars sold &middot; IEA 2025</span><span>100%</span></div></div>
               <!-- 3. a real SCALE, not a share: expected warming in °C -->
               <div class="li"><div class="big">3.6 &rarr; 2.6 °C</div>
                 <div class="txt">Expected warming if today&rsquo;s policies hold, 2015 &rarr; now. Still unsafe &mdash; but falling.</div>
@@ -1368,24 +1394,18 @@ button.rr-row:hover{padding-left:6px}
                   <div class="dot past" style="left:90%;--d:.15s"></div><span class="mk" style="left:90%">2015</span>
                   <div class="dot" style="left:65%;--d:.55s"></div><span class="mk" style="left:65%">now</span></div>
                 <div class="axlab"><span>0&deg;C</span><span class="mid">expected warming &middot; Climate Action Tracker</span><span>4&deg;C</span></div></div>
-              <!-- 4. a real SCALE, not a share: the recovery timeline -->
-              <div class="li"><div class="big">on schedule</div>
-                <div class="txt">The ozone layer is healing &mdash; a binding global treaty is working, on time.</div>
-                <div class="scale" role="img" aria-label="Ozone recovery timeline: the Montreal Protocol in 1987, today about halfway, full recovery expected around 2066.">
-                  <div class="fill" style="--w:49%"></div>
-                  <div class="rest" style="left:49%"></div>
-                  <div class="tick" style="left:67%"></div><span class="mk" style="left:67%">~2040</span>
-                  <div class="dot" style="left:49%;--d:.5s"></div><span class="mk" style="left:49%">today</span></div>
-                <div class="axlab"><span>1987 &middot; Montreal</span><span class="mid">recovery &middot; WMO/UNEP</span><span>~2066</span></div></div>
             </div>
-            <p class="beat-cue">the single most useful thing you can do &darr;</p>
+            <p class="beat-cue">what actually moves this &darr;</p>
           </div>
           <!-- BEAT 2 — the one act that works -->
           <div class="beat">
-            <h2>The most useful act is a conversation.</h2>
+            <h2>Start by telling one person.</h2>
+            <!-- This screen and the next both used to crown themselves "the most useful thing",
+                 one scroll apart, so neither read as the answer. This one is now the FIRST step and
+                 says so; the record room below is where the leverage actually is. -->
             <p class="lead">Most people underestimate how many of their neighbours want climate action.
-              Studies find that simply telling someone the true numbers closes that gap &mdash; and no
-              study has found it pushes people the other way. So tell one person what you just saw.</p>
+              Telling someone the true numbers closes that gap, and no study has found it pushes people
+              the other way. It is the smallest useful thing &mdash; and the one you can do now.</p>
             <div class="sharecard">
               <div class="mini" id="share-mini" aria-hidden="true"></div>
               <button id="share-btn" type="button">Save this record <span aria-hidden="true">&rarr;</span></button>
@@ -4348,6 +4368,22 @@ window.__HOME=__HOME;
  if(go){go.addEventListener("click",doSearch);}
  if(qi){qi.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();doSearch();}});}
 })();
+/* the guess, taken before the answer is given — the reader's own error IS the finding */
+(function(){var go=el("wg-go"),inp=el("wg-in"),out=el("wg-out");if(!go||!inp||!out)return;
+ var TRUE_YES=Math.round((P.world&&P.world.actual)||69),TRUE_GUESS=Math.round((P.world&&P.world.guess)||43);
+ function reveal(){
+  var v=parseInt(inp.value,10);
+  var head=isFinite(v)?("You guessed <b>"+Math.max(0,Math.min(100,v))+"</b>. "):"";
+  var mine=isFinite(v)?Math.max(0,Math.min(100,v)):null;
+  out.innerHTML=head+"Worldwide, <b>"+TRUE_YES+" of every 100</b> said yes. "+
+   "The average guess was <b>"+TRUE_GUESS+"</b>"+
+   (mine!=null&&mine<TRUE_YES?" &mdash; and you undercounted them too."
+    :mine!=null?" &mdash; you saw them more clearly than most.":".")+
+   " Almost everyone is surrounded by more support than they can see.";
+  el("wg-ask").hidden=true;}
+ go.addEventListener("click",reveal);
+ inp.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();reveal();}});})();
+
 /* and finally: adopt the reader's place (or the worked example) — the last thing the script does */
 try{__HOME.boot();}catch(e){}
 
