@@ -3314,12 +3314,16 @@ var __PLACE=(function(){
    navigator.geolocation.getCurrentPosition(function(pos){
     pick(Math.round(pos.coords.latitude*100)/100,Math.round(pos.coords.longitude*100)/100,"your ground");},
     function(){status("location declined");});});
-  sv.addEventListener("click",function(){act=false;sv.hidden=true;
-   buildGround(null);TS.comparable=TS.tmax!=null?Math.round((TS.tmax-TS.bias)*10)/10:null;
-   applyToday(TS);if(typeof buildNight==="function")buildNight(null);
-   if(__ATMO.ok&&__ATMO.groundHeat)__ATMO.groundHeat(.55);idleHint();});
+  sv.addEventListener("click",function(){reset();});
   idleHint();})();
- return {active:function(){return act;}};
+ /* back to the worked example — also the recovery path when a chosen place cannot be drawn */
+ function reset(){act=false;var sv=el("gq-sev");if(sv)sv.hidden=true;
+  buildGround(null);TS.comparable=TS.tmax!=null?Math.round((TS.tmax-TS.bias)*10)/10:null;
+  applyToday(TS);if(typeof buildNight==="function")buildNight(null);
+  if(__ATMO.ok&&__ATMO.groundHeat)__ATMO.groundHeat(.55);idleHint();}
+ /* the engine is exposed so ONE site-wide home place can drive ground+night, instead of
+    this picker being the only way in (the buttons above are now just one caller of it). */
+ return {active:function(){return act;},pick:pick,search:search,reset:reset,status:status};
 })();
 window.__PLACE=__PLACE;
 
@@ -3414,26 +3418,44 @@ var __SKY=(function(){
  function raCentre(fig){var sx=0,sy=0;
   fig.l.forEach(function(seg){seg.forEach(function(p){sx+=Math.cos(p[0]*R);sy+=Math.sin(p[0]*R);});});
   return ((Math.atan2(sy,sx)/R)+360)%360;}
- function darkWindow(ms){                                     // sun below -9 deg: stars own the sky
+ /* Sun below -9 deg: stars own the sky. Returns NULL when today has no such window —
+    above roughly 57.6 deg latitude near midsummer the sun never sinks that far, and in
+    polar winter it never climbs back. The old code let its search loop run off the end of
+    the day and returned the loop's bail-out time AS a dusk/dawn pair, i.e. it invented a
+    number. Any location on Earth can be home now, so that path is a charter breach. */
+ function darkWindow(ms){
   var t=ms,step=3e5,dusk=null,dawn=null;
-  if(sunAlt(jd(t))>=-9){while(sunAlt(jd(t))>=-9&&t<ms+864e5)t+=step;dusk=t;}
-  else{while(sunAlt(jd(t))<-9&&t>ms-864e5)t-=step;dusk=t+step;}
-  t=dusk+step;while(sunAlt(jd(t))<-9&&t<dusk+864e5)t+=step;dawn=t;
+  if(sunAlt(jd(t))>=-9){while(sunAlt(jd(t))>=-9&&t<ms+864e5)t+=step;
+   if(t>=ms+864e5)return null;                                // never sank far enough — no true night
+   dusk=t;}
+  else{while(sunAlt(jd(t))<-9&&t>ms-864e5)t-=step;
+   if(t<=ms-864e5)return null;                                // never rose that far — polar night
+   dusk=t+step;}
+  t=dusk+step;while(sunAlt(jd(t))<-9&&t<dusk+864e5)t+=step;
+  if(t>=dusk+864e5)return null;                               // and it never came back up
+  dawn=t;
   return [dusk,dawn];}
+ /* which of the two polar conditions we are in, so the caption can say the true one */
+ function polarKind(ms){var lo=99,hi=-99,t=ms;
+  for(;t<ms+864e5;t+=6e5){var a=sunAlt(jd(t));if(a<lo)lo=a;if(a>hi)hi=a;}
+  return lo>=-9?"midnightsun":(hi<-9?"polarnight":null);}
  function transitAfter(raD,ms){var diff=((raD-lstDeg(jd(ms)))%360+360)%360;return ms+diff/DEGPMS;}
- var tonight=[],fullNight=[],feat=0,timer=0,refr=0,live=false,fadeT0=0,prevFeat=-1;
+ var tonight=[],fullNight=[],feat=0,timer=0,refr=0,live=false,fadeT0=0,prevFeat=-1,POLAR=null;
  var viewT=0,liveNow=true;                                    // the moment the sky depicts
  function decCentre(fig){var s2=0,n=0;
   fig.l.forEach(function(seg){seg.forEach(function(p){s2+=p[1];n++;});});return s2/n;}
  function baseTime(){var nn=nowMs();
   if(sunAlt(jd(nn))<-9)return {t:nn,live:true};               // dark where you are: the sky right now
-  var wnd=darkWindow(nn);return {t:wnd[0]+24e5,live:false};}  // daylight: tonight's sky, 40 min into the dark
+  var wnd=darkWindow(nn);
+  if(!wnd)return {t:nn,live:false};                           // no true night today — show the sky as it stands
+  return {t:wnd[0]+24e5,live:false};}                         // daylight: tonight's sky, 40 min into the dark
  function computeTonight(){var bt=baseTime();viewT=bt.t;liveNow=bt.live;
   var wnd=darkWindow(viewT),all=[];
+  POLAR=wnd?null:polarKind(viewT);   // no window => say which polar condition, never a made-up time
   D.sky.order.forEach(function(ab){var f=D.sky.zod[ab];if(!f)return;
-   var ra=raCentre(f),tt=transitAfter(ra,wnd[0]);
+   var ra=raCentre(f),tt=wnd?transitAfter(ra,wnd[0]):0;
    var v=altaz(ra,decCentre(f),jd(viewT));
-   all.push({ab:ab,n:f.n,ms:tt<=wnd[1]?tt:0,
+   all.push({ab:ab,n:f.n,ms:(wnd&&tt<=wnd[1])?tt:0,
              up:v[0]>6&&v[1]>AZ0+4&&v[1]<AZ1-4});});          // up = genuinely in the drawn window
   fullNight=all.filter(function(t){return t.ms;}).sort(function(a,b){return a.ms-b.ms;});
   var vis=all.filter(function(t){return t.up;});
@@ -3441,8 +3463,11 @@ var __SKY=(function(){
   if(!tonight.length)tonight=[{ab:D.sky.order[0],n:D.sky.zod[D.sky.order[0]].n,ms:viewT,up:false}];
   var keep=tonight[feat]&&tonight[feat].ab;feat=0;prevFeat=-1;
   for(var i2=0;i2<tonight.length;i2++)if(tonight[i2].ab===keep){feat=i2;break;}}
+ /* a place whose IANA zone we do not know formats on the READER's clock — Intl's silent
+    fallback. Saying so is the difference between a time and a wrong time. */
  function fmtT(ms){var o={hour:"2-digit",minute:"2-digit"};if(LOC.tz)o.timeZone=LOC.tz;
-  return new Intl.DateTimeFormat("en-GB",o).format(new Date(ms))+(LOC.tzl?" "+LOC.tzl:"");}
+  return new Intl.DateTimeFormat("en-GB",o).format(new Date(ms))+
+   (LOC.tzl?" "+LOC.tzl:(LOC.tz?"":" your clock"));}
  /* -------- drawing -------- */
  function drawStar(x,y,mag,bv,a){
   var r2=Math.max(.55,(5.2-mag)*.42)*dpr;
@@ -3496,7 +3521,15 @@ var __SKY=(function(){
    :(liveNow?"your sky, right now":"your sky tonight"))+" · facing south";
   el("skyname").textContent=f.n;
   var upw=liveNow?"up now":"in view after dark";
-  var when=f.up===false?"below the horizon — highest at "+fmtT(f.ms):
+  /* with no true dark window there is no honest "highest at" time — say the polar truth instead.
+     Every fmtT() below is now gated on a real f.ms: formatting 0 printed a fabricated 01:00. */
+  var when;
+  if(POLAR==="midnightsun")
+   when="at "+Math.abs(LAT).toFixed(1)+"° "+(LAT<0?"S":"N")+" the sun doesn’t set far enough tonight "+
+    "for these stars to be seen — this is where they are, behind the daylight";
+  else if(POLAR==="polarnight")
+   when="the sun doesn’t rise here today — these stars are up all day";
+  else when=(f.up===false)?(f.ms?"below the horizon — highest at "+fmtT(f.ms):"below the horizon"):
    (f.ms? (f.ms>viewT?upw+" — highest at "+fmtT(f.ms):upw+" — past its peak, heading west")
         : upw+" — heading west, setting");
   el("skysub").textContent=when+" · Yale Bright Star Catalogue, computed on your device";}
@@ -3555,6 +3588,9 @@ var __SKY=(function(){
   return "No major shower is active on this date, so this sky stays still. Next: <b>"+nx.name+
    "</b> ("+nx.parent+"), peaking "+fmtPeak(nx.peak)+" — up to ~"+nx.zhr+"/hr under dark skies.";}
  /* -------- place -------- */
+ /* the reader's own device zone — correct by construction for THEIR location, and it needs
+    no third-party lookup (we never send a coordinate anywhere to name it). */
+ function devTZ(){try{return Intl.DateTimeFormat().resolvedOptions().timeZone||null;}catch(e){return null;}}
  function setPlace(loc,persist){LOC=loc;LAT=loc.lat;LON=loc.lon;
   if(!EMBED)try{if(persist)localStorage.setItem("onrecord_skyloc",JSON.stringify({lat:loc.lat,lon:loc.lon}));  // an embedded frame never touches storage
    else localStorage.removeItem("onrecord_skyloc");}catch(e){}
@@ -3570,11 +3606,12 @@ var __SKY=(function(){
    el("skyctx").textContent="asking your browser for your position — it never leaves this device";
    navigator.geolocation.getCurrentPosition(function(pos){
     var la=Math.round(pos.coords.latitude*100)/100,lo=Math.round(pos.coords.longitude*100)/100;
-    setPlace({name:"your sky",lat:la,lon:lo,tz:null,tzl:""},true);
+    setPlace({name:"your sky",lat:la,lon:lo,tz:devTZ(),tzl:""},true);   // the device's own zone IS this place's zone
     flashRing(el("skymap"));                                        // make the redraw unmistakable
     var st=el("sr-status");if(st)st.textContent="Your sky, "+Math.abs(la)+"°"+(la>=0?"N":"S")+" "+Math.abs(lo)+"°"+(lo>=0?"E":"W")+", redrawn from the same catalogue.";},
     function(){el("skyctx").textContent="location declined — showing Delhi's sky";});});})();
- return {enter:function(){live=true;computeTonight();fadeT0=0;
+ return {setPlace:setPlace,        /* exported so ONE site-wide home place can move the sky too */
+  enter:function(){live=true;computeTonight();fadeT0=0;
    if(!size()){var tries=0,rt=setInterval(function(){if(size()||++tries>40){clearInterval(rt);draw();}},50);}
    draw();caption();cv.classList.add("on");cap.classList.add("on");
    var sb=el("showerbox");if(sb)sb.innerHTML=showerHTML();
