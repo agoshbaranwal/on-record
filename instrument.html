@@ -140,6 +140,12 @@ a{color:inherit}
   display:flex;justify-content:space-between;align-items:flex-start;gap:30px;
   max-width:1400px;margin:0 auto;padding:22px 38px}
 #mast a,#mast button{pointer-events:auto}
+/* the three mast controls were loose inline-blocks with their own margins, so the two-line
+   #pulse sentence threw everything after it onto a ragged baseline. One row, one gap, and the
+   sentence always takes its own line so the two pills stay aligned beside each other. */
+#mast-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:10px}
+#mast-controls #pulse{flex:1 1 100%;margin-top:0}
+#mast-controls #whatis,#mast-controls #homechip{margin-top:0}
 #mast .word{font-family:var(--mono);font-size:11px;letter-spacing:.34em;color:var(--bone-2);
   text-transform:uppercase;margin-bottom:7px;text-shadow:var(--halo)}
 #mast .plain{font-weight:500;font-size:clamp(15px,1.7vw,20px);letter-spacing:-.01em;
@@ -536,7 +542,7 @@ svg{display:block;width:100%;height:auto}
 /* the honest label that stops "example" reading as "default" */
 .place-tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--amber);
   margin:2px 0 8px;text-shadow:var(--halo)}
-#homechip{display:inline-block;vertical-align:middle;margin:9px 0 0 10px;font-family:var(--mono);
+#homechip{display:inline-block;vertical-align:middle;margin:0;font-family:var(--mono);
   font-size:11px;letter-spacing:.08em;pointer-events:auto;max-width:26ch;overflow:hidden;
   text-overflow:ellipsis;white-space:nowrap;
   border:1px solid rgba(242,231,204,.26);border-radius:999px;padding:4px 10px;
@@ -941,7 +947,10 @@ button.rr-row:hover{padding-left:6px}
   #showerbox{margin:12px 0 20px;max-width:100%}
   #gplace input{width:140px}
   #soundbtn{right:14px;bottom:auto;top:12px;padding:8px 10px}   /* vitals hide here — corner is free */
-  .hl{right:8px}
+  /* #hzn-hi/#hzn-lo deliberately bleed 38px past each edge, so a small `right` on the label
+     puts the budget numbers OFF-SCREEN on a phone (measured: right edge at 420px on a 390px
+     viewport — the figure was simply cut in half). Clear the bleed, then inset. */
+  .hl{right:46px;font-size:11px;letter-spacing:.06em}
   #p-sky .years{font-size:clamp(56px,15vw,96px)}
   #mast .plain{font-size:13.5px}
   #vitals{display:none}
@@ -951,11 +960,45 @@ button.rr-row:hover{padding-left:6px}
    on a phone the ladder is at the bottom, so reclaim that space for the text column */
 @media(max-width:640px){
   .beat,.pane-screen,.pane:has(>h2),#p-bedrock{padding-left:20px;padding-right:20px}
+  /* ── MOBILE CHROME BUDGET ──────────────────────────────────────────────────
+     Measured on a 390x844 phone: the fixed masthead was eating ~230px — a quarter
+     of the screen — before a word of the chapter appeared, because it stacked the
+     wordmark, a tagline, a two-line "today" sentence and a control row. On a phone
+     the masthead's job is identity + where-you-are, nothing else. */
+  #mast{padding:12px 20px;gap:12px}
+  #mast .word{font-size:10px;letter-spacing:.28em;margin-bottom:4px}
+  #mast .plain{display:none}                 /* the tagline is the cold-open's job on a phone */
+  #mast-controls{margin-top:6px;gap:6px 10px}
+  #pulse{font-size:11px;max-width:none;line-height:1.35}
+  #homechip{font-size:10.5px;padding:3px 9px;max-width:22ch}
+  #whatis{font-size:10px;min-height:28px}
+  /* the picker is the busiest new block on the page — tighten it without shrinking the type */
+  #homepick{margin-top:10px}
+  #homeask h3{font-size:17px}
+  #homeask p{font-size:14px}
+  #gq-bar .cb-reg{margin:9px 0 4px}
+  #gq-ex{gap:8px;margin-top:12px}
+  .gq-exb{font-size:12.5px;padding:8px 10px}
+  #n-example{margin-top:18px;padding-top:12px}
+  /* the ask beat must never push its own resolve buttons off a short screen */
+  .ib-ask{max-height:72vh}
+  #pk-bar{max-height:34vh}
+  #pk-btns{gap:8px}
+  #pk-geo,#pk-list,#pk-skip{width:100%;text-align:center}
+}
+/* the sky's own labels sit over the brightest band of the gradient, where bone-on-haze loses
+   contrast. On a phone there is no room to move them, so give them a plate instead. */
+@media(max-width:640px){
+  .hl{background:rgba(4,14,16,.55);padding:3px 7px;border-radius:4px;color:var(--bone-2)}
+  .hl b{color:var(--bone)}
+  #skyaxis .rung{font-size:10px}
 }
 /* touch: raise the small secondary controls to a 44px tap target (desktop untouched — coarse-only) */
 @media(pointer:coarse){
   /* selectors specific enough to beat their base height rules (#dial .foot button, .rr-btns .rr-minor, .rr-pledge .rr-clear) */
-  #dclose,#dial #copysky,.rr-btns .rr-minor,#gplace input,.take-btns button,.rr-pledge .rr-clear,#sincecard .sc-x{min-height:44px}
+  #dclose,#dial #copysky,.rr-btns .rr-minor,#gplace input,.take-btns button,.rr-pledge .rr-clear,#sincecard .sc-x,
+  #gq-bar button,#pk-bar button,#gq-ex button,#gq-mine,#pk-geo,#pk-list,#pk-skip,#homechip,
+  #n-ex-toggle,#skywhere-change,#home-retry{min-height:44px}
 }
 </style>
 
@@ -1001,9 +1044,11 @@ button.rr-row:hover{padding-left:6px}
       <div>
         <p class="word">On Record</p>
         <h1 class="plain" id="mast-tag">Every number measured. Every source shown.</h1>
+        <div id="mast-controls">
         <button id="pulse" type="button" hidden title="Today's reading — open the Ground chapter"></button>
         <button id="whatis" type="button" aria-label="What is this? Replay the introduction" hidden>What is this? <span aria-hidden="true">↺</span></button>
         <button id="homechip" type="button" hidden title="The place this site is drawn for — opens the picker">where are you?</button>
+        </div>
       </div>
       <div id="vitals" role="group" aria-label="Global vital signs"></div>
     </header>
@@ -1120,10 +1165,10 @@ button.rr-row:hover{padding-left:6px}
                   chapter follows.</p>
                 <button type="button" id="gq-mine">use my location</button>
                 <p id="homeask-privacy" class="receipt">Your coordinates are rounded to two decimals
-                  (about a kilometre) and sent only to Open-Meteo, the weather archive. There is no
-                  reverse-geocoding here &mdash; we never turn a coordinate into a name, which is why a
-                  located reader is called &ldquo;your place&rdquo;. Nothing is stored outside this
-                  browser, and it is never added to a link you share.</p>
+                  (about a kilometre) and sent only to Open-Meteo, the weather archive. To name your
+                  city we download a list of the world&rsquo;s cities and find the nearest one <b>on your
+                  device</b> &mdash; your position is never sent anywhere to be identified. Nothing is
+                  stored outside this browser, and it is never added to a link you share.</p>
                 <p id="homeask-blocked" class="receipt" hidden></p>
               </div>
               <div id="gplace">
@@ -1483,8 +1528,9 @@ button.rr-row:hover{padding-left:6px}
             <button type="button" id="pk-skip">Skip &mdash; show me an example</button>
           </div>
           <p id="pk-note">Your coordinates are rounded to about a kilometre and sent only to the weather
-            archive. We never turn them into a name, never store them off this device, and never add
-            them to a link you share.</p>
+            archive. Your city is named on your own device, from a list we download &mdash; your position
+            is never sent anywhere to be identified, never stored off this device, and never added to
+            a link you share.</p>
           <p id="pk-wait" hidden>Still waiting on your browser &mdash; you can pick a city below instead.</p>
           <p id="pk-done" hidden></p>
           <div id="pk-bar" role="group" aria-label="Cities you can choose" hidden></div>
@@ -1985,6 +2031,14 @@ var CH=[
 /* how hard the sky darkens behind the text column, per chapter — lighter sky needs more.
    Morning is ink-on-pale (dark text) so it gets none; night/bedrock are already dark. */
 var TEXTDIM={sky:.63,ground:.56,night:.32,firstlight:.42,morning:0,bedrock:.28};
+/* These were tuned against the desktop layout, where the words occupy a narrow left column and
+   the veil only has to cover that. On a phone the text is full-width and runs straight across the
+   brightest band of the sky, so the same veil leaves the lead paragraph and the big number sitting
+   on haze. Deepen it on narrow screens (morning stays 0 — it is ink-on-pale by design). */
+(function(){try{
+ if(window.matchMedia&&matchMedia("(max-width:640px)").matches)
+  for(var k in TEXTDIM)if(TEXTDIM[k]>0)TEXTDIM[k]=Math.min(.9,TEXTDIM[k]+.16);
+}catch(e){}})();
 var cur=0;
 var ladder=el("ladder");
 /* the rail: numbered chapters, each a real anchor into the one scroll */
@@ -2344,6 +2398,35 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
   band.setAttribute("aria-label","The two carbon budgets disagree by about "+
    Math.abs(Math.round(HIe.remaining_now_gt-LO.remaining_now_gt))+" gigatonnes — activate for detail.");
  }
+ /* ── DECLUTTER ────────────────────────────────────────────────────────────────
+    Three absolutely-positioned layers share the right-hand column: the century axis
+    rungs (fixed percentages), the two budget-horizon labels (which MOVE with the dial)
+    and the masthead vitals. Nothing coordinated them, so "2100" sat under the vitals and
+    "2030" ran through "103 GT · GCB 2025". Rather than nudge individual labels — which
+    only moves the collision — the axis yields: any rung whose box overlaps a label that
+    carries a NUMBER is hidden. The axis is context; the numbers are the point. */
+ function boxesHit(a,b,pad){
+  if(!a||!b)return false;
+  return !(a.right<b.left-pad||a.left>b.right+pad||a.bottom<b.top-pad||a.top>b.bottom+pad);}
+ function axisDeclutter(){
+  var ax=el("skyaxis");if(!ax)return;
+  var rungs=ax.querySelectorAll(".rung");if(!rungs.length)return;
+  var keepOut=[];
+  ["vitals","hlab-hi","hlab-lo","mast","skycap"].forEach(function(id){
+   var e=el(id);if(!e)return;
+   if(e.offsetParent===null&&id!=="mast")return;
+   var r=e.getBoundingClientRect();
+   if(r.width>0&&r.height>0)keepOut.push(r);});
+  for(var i=0;i<rungs.length;i++){
+   rungs[i].style.visibility="visible";
+   var rr=rungs[i].getBoundingClientRect(),hit=false;
+   for(var j=0;j<keepOut.length;j++)if(boxesHit(rr,keepOut[j],4)){hit=true;break;}
+   rungs[i].style.visibility=hit?"hidden":"visible";}}
+ var _sync_inner=sync;
+ sync=function(){_sync_inner.apply(this,arguments);
+  if(window.requestAnimationFrame)requestAnimationFrame(axisDeclutter);else axisDeclutter();};
+ window.addEventListener("resize",function(){
+  if(window.requestAnimationFrame)requestAnimationFrame(axisDeclutter);else axisDeclutter();});
  el("dimNow").style.left=((RNOW-RMIN)/(RMAX-RMIN)*100).toFixed(2)+"%";
  function setRate(v){target=Math.max(RMIN,Math.min(RMAX,v));sync();}
  var dim=el("dim");
@@ -2875,7 +2958,7 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
    '<p class="rr-note">This opens a draft in your own email. Nothing is sent, and nothing leaves this page, until you press send yourself.</p>'+
    '<div class="rr-reps"><b>Who represents you?</b> '+(function(){var L=LN();
      return L.named?("This letter quotes <b>"+L.place+"</b>’s own measured record — the place this page is drawn for."):
-      L.dev?("This letter quotes the record for your location. We know your coordinates but not your city’s name — there is no reverse-geocoding on this site — so fill in <b>[your city]</b> before sending."):
+      L.dev?("This letter quotes the record for your location. Your device could not match it to a city within 90 km, so fill in <b>[your city]</b> before sending."):
       ("This letter uses Seville’s record, the worked example. Set your place at the top of the Ground chapter and it will quote yours instead.");})()+'<br>'+
    '&middot; Spain — your Diputado: <a href="https://www.congreso.es" target="_blank" rel="noopener">congreso.es<span class="sr-only"> (opens in a new tab)</span></a><br>'+
    '&middot; European Parliament — your MEP: <a href="https://www.europarl.europa.eu" target="_blank" rel="noopener">europarl.europa.eu<span class="sr-only"> (opens in a new tab)</span></a><br>'+
@@ -3225,9 +3308,11 @@ window.__ART=__ART;   // exposed for the build-time OG bake
   "colours the air on any given day. "+
   /* the location promise, kept where the limits are admitted rather than buried in a settings screen */
   "<br><br><b>Where you are.</b> If you allow location, your coordinates are rounded to two decimals "+
-  "(about a kilometre) and sent only to Open-Meteo, the weather archive. There is no reverse-geocoding "+
-  "service on this site — we never turn a coordinate into a place name, which is why a located reader is "+
-  "called “your place” and not a city. Nothing about your position is stored anywhere but this browser, "+
+  "(about a kilometre) and sent only to Open-Meteo, the weather archive. Your city is named WITHOUT a "+
+  "reverse-geocoding service: the browser downloads a list of the world’s cities over 100,000 people "+
+  "(GeoNames, CC BY 4.0) and finds the nearest one on your own device, so your position is never sent "+
+  "anywhere to be identified. We name it only when a city is within 30 km, say “near” out to 90 km, and "+
+  "call it “your place” beyond that rather than guess. Nothing about your position is stored anywhere but this browser, "+
   "and it is never added to a link you share. The twenty-four cities in the picker are fixed points, not "+
   "whole cities: two decimals is about a kilometre while ERA5’s grid cell is about 28 km across, so each "+
   "record is that cell’s, not that street’s. ?place= and ?loc= are verification links, not something the "+
@@ -3943,9 +4028,58 @@ var __HOME=(function(){
    lat:r2(+h.lat),lon:r2(+h.lon),tz:h.tz||devTZ(),iso3:h.iso3||null};
   if(!isFinite(o.lat)||!isFinite(o.lon))return null;
   o.lat=Math.max(-89,Math.min(89,o.lat));o.lon=Math.max(-180,Math.min(180,o.lon));
-  if(o.src==="device"){o.name="your place";o.full="your place";o.slug=null;o.iso3=null;o.ex=null;}
+  if(o.src==="device"){o.slug=null;o.ex=null;o.nearName=!!h.nearName;
+   /* never invent a name: only a nearest-city match on THIS device may fill one in */
+   if(!h.nearName){o.name="your place";o.full="your place";o.iso3=null;}
+   else{o.name=h.name;o.full=h.full;o.iso3=h.iso3||null;}}
   return o;}
  function city(slug){for(var i=0;i<WORLD_CITIES.length;i++)if(WORLD_CITIES[i].s===slug)return WORLD_CITIES[i];return null;}
+ /* NAMING A LOCATED READER — on this device, never over the wire.
+    We fetch a list of the world's cities over 100k (GeoNames, CC BY) and find the nearest one
+    HERE, in the browser. The reader's coordinate is still never sent anywhere to be named, so
+    the promise holds; what changes is that we can finally say "Lucknow" instead of "your place".
+    We only claim a name when we are close enough to mean it. */
+ var CITYDB=null,cityDbTried=false;
+ function km(aLat,aLon,bLat,bLon){
+  var R=6371,p=Math.PI/180;
+  var dLa=(bLat-aLat)*p,dLo=(bLon-aLon)*p;
+  var s=Math.sin(dLa/2)*Math.sin(dLa/2)+
+        Math.cos(aLat*p)*Math.cos(bLat*p)*Math.sin(dLo/2)*Math.sin(dLo/2);
+  return 2*R*Math.asin(Math.min(1,Math.sqrt(s)));}
+ function nearestCity(lat,lon){
+  if(!CITYDB||!CITYDB.c)return null;
+  var best=null,bd=1e9,c=CITYDB.c;
+  for(var i=0;i<c.length;i++){
+   if(Math.abs(c[i][1]-lat)>2.2)continue;                    // cheap pre-filter before the trig
+   var d=km(lat,lon,c[i][1],c[i][2]);
+   if(d<bd){bd=d;best=c[i];}}
+  if(!best)return null;
+  if(bd<=30)return {name:best[0],full:best[0]+", "+best[3],cc:best[3],km:bd,near:false};
+  if(bd<=90)return {name:"near "+best[0],full:"near "+best[0]+", "+best[3],cc:best[3],km:bd,near:true};
+  return null;}                                              // too far to name honestly
+ function withCityName(h,cb){
+  if(h.src!=="device"||cityDbTried&&!CITYDB){cb(h);return;}
+  function apply(){var f=nearestCity(h.lat,h.lon);
+   if(f){h.name=f.name;h.full=f.full;h.iso3=iso3of(f.cc);h.nearName=true;}
+   cb(h);}
+  if(CITYDB){apply();return;}
+  cityDbTried=true;
+  try{fetch("data/cities-lookup.json").then(function(r){if(!r.ok)throw 0;return r.json();})
+   .then(function(j){CITYDB=j;apply();}).catch(function(){cb(h);});}
+  catch(e){cb(h);}}
+ /* the survey keys on ISO-3; GeoNames gives ISO-2, so map through the survey's own rows by name */
+ var A2A3=null;
+ function iso3of(cc){
+  if(!cc)return null;
+  if(!A2A3){A2A3={IN:"IND",US:"USA",GB:"GBR",CN:"CHN",JP:"JPN",BR:"BRA",RU:"RUS",DE:"DEU",FR:"FRA",
+   ES:"ESP",IT:"ITA",MX:"MEX",ID:"IDN",PK:"PAK",BD:"BGD",NG:"NGA",EG:"EGY",ZA:"ZAF",KE:"KEN",
+   TZ:"TZA",PH:"PHL",TR:"TUR",AE:"ARE",AU:"AUS",CA:"CAN",PE:"PER",IS:"ISL",VN:"VNM",TH:"THA",
+   KR:"KOR",PL:"POL",NL:"NLD",SE:"SWE",NO:"NOR",DK:"DNK",FI:"FIN",PT:"PRT",GR:"GRC",CH:"CHE",
+   AT:"AUT",BE:"BEL",IE:"IRL",NZ:"NZL",AR:"ARG",CL:"CHL",CO:"COL",MY:"MYS",SG:"SGP",SA:"SAU",
+   IL:"ISR",MA:"MAR",GH:"GHA",UG:"UGA",ZW:"ZWE",LK:"LKA",NP:"NPL",UA:"UKR",RO:"ROU",CZ:"CZE",
+   HU:"HUN",IQ:"IRQ",IR:"IRN",JO:"JOR",LB:"LBN",TN:"TUN",DZ:"DZA",EC:"ECU",BO:"BOL",UY:"URY",
+   PY:"PRY",VE:"VEN",GT:"GTM",CR:"CRI",PA:"PAN",DO:"DOM",JM:"JAM",TT:"TTO",MM:"MMR",KH:"KHM"};}
+  return A2A3[cc]||null;}
  function fromCity(c,src){return {src:src||"bar",slug:c.s,name:c.n,full:c.f,lat:c.la,lon:c.lo,tz:c.tz,iso3:c.c};}
  /* ?place=<slug> or ?place=<lat>,<lon>[,label]; ?loc= is the older alias and now moves the
     WHOLE home, not just the stars — which removes the last way ground and sky could disagree. */
@@ -3991,6 +4125,11 @@ var __HOME=(function(){
     the ground record is a multi-second archive fetch, so it goes last and asynchronously. */
  function set(h,opts){
   opts=opts||{};h=normalize(h);if(!h)return;
+  /* a located reader is named from the on-device list first, so the fan-out labels every
+     chapter with their real city rather than the placeholder */
+  if(h.src==="device"&&!h.nearName){withCityName(h,function(h2){commit(h2,opts);});return;}
+  commit(h,opts);}
+ function commit(h,opts){
   HOME=h;GEN++;
   try{if(__SKY&&__SKY.setPlace)__SKY.setPlace({name:h.name,lat:h.lat,lon:h.lon,tz:h.tz,tzl:""},false);}catch(e){}
   pgSync(h);labelsRefresh();

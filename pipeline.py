@@ -470,6 +470,28 @@ doc = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
        '</head><body>' + body + "</body></html>")
 (ROOT / "index.html").write_text(doc)
 # ---- protected-requirement invariant (Phase 10 kill-list): fail the build if a distinct capability is dropped ----
+# ---- cities-lookup.json: names a located reader's city ON THEIR DEVICE ----
+# The browser fetches this and finds the nearest city itself, so a coordinate is never sent to
+# anyone to be identified. Non-fatal: if GeoNames is down, yesterday's file stands and the site
+# simply calls a located reader "your place".
+try:
+    import zipfile as _zf
+    _req = urllib.request.Request("https://download.geonames.org/export/dump/cities15000.zip",
+                                  headers={"User-Agent": "on-record/1.0 (agoshbaranwal@gmail.com)"})
+    _z = _zf.ZipFile(io.BytesIO(urllib.request.urlopen(_req, timeout=90).read()))
+    _rows = [l.split("\t") for l in _z.read("cities15000.txt").decode("utf-8").splitlines()]
+    _big = sorted([r for r in _rows if int(r[14] or 0) >= 100000], key=lambda r: -int(r[14]))
+    assert len(_big) > 4000, "GeoNames returned an implausibly short city list: %d" % len(_big)
+    (DATA / "cities-lookup.json").write_text(json.dumps(
+        {"note": "GeoNames cities>=100k (CC BY 4.0). Used ON DEVICE to name a located reader's "
+                 "nearest city; no coordinate is ever sent anywhere to be named.",
+         "source": "GeoNames cities15000, CC BY 4.0", "n": len(_big),
+         "c": [[r[1], round(float(r[4]), 3), round(float(r[5]), 3), r[8]] for r in _big]},
+        separators=(",", ":"), ensure_ascii=False))
+    print("cities-lookup:", len(_big), "cities")
+except Exception as _e:
+    print("cities-lookup: SKIPPED (keeping the existing file) —", _e)
+
 _KEEP = ["years", "odometer", "burned", "spent", "hlab-hi", "hlab-lo", "ghost-lab", "copysky",
          "share-btn", "t-budget", "takeaway", "pulse", "g-verdict", "impact-know", "ledger-sr",
          # the localization layer: the picker, the fallback bar, the worked examples, the
