@@ -475,7 +475,44 @@ svg{display:block;width:100%;height:auto}
 #yr-out{display:block;min-height:2.7em;margin-top:10px;font-family:var(--sg);font-size:13.5px;line-height:1.5;color:var(--bone-2);text-shadow:var(--halo)}
 #yr-out .yr-val{font-family:var(--mono);font-size:17px;font-weight:700;color:var(--amber);letter-spacing:-.01em}
 
-/* --- ground: any place on Earth --- */
+/* --- the ONE place picker: your location, or a city, or any place on Earth --- */
+#homepick{margin:14px 0 6px;max-width:640px}
+#homeask h3{font-family:var(--sg);font-size:19px;font-weight:600;color:var(--bone);margin:0 0 4px;text-shadow:var(--halo)}
+#homeask p{font-size:14.5px;line-height:1.5;color:var(--bone-2);margin:0 0 8px;max-width:52ch;text-shadow:var(--halo)}
+#homeask-privacy,#gq-barnote,#homeask-blocked{font-family:var(--mono);font-size:11.5px;line-height:1.6;
+  color:var(--bone-3);max-width:60ch;margin:6px 0 10px;text-shadow:var(--halo)}
+#gq-mine{font-family:var(--mono);font-weight:500;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;
+  min-height:44px;padding:10px 16px;border:1px solid var(--amber);border-radius:8px;
+  background:rgba(240,188,98,.12);color:var(--amber);cursor:pointer;transition:background .3s,color .3s}
+#gq-mine:hover,#gq-mine:focus-visible{background:rgba(240,188,98,.24);color:#f6d089;outline:none}
+#gq-mine[aria-busy=true]{opacity:.6;cursor:wait}
+#gq-mine.demoted{border:0;background:none;padding:6px 0;text-transform:none;letter-spacing:.02em;
+  font-family:var(--sg);font-size:13.5px;text-decoration:underline;text-underline-offset:3px;min-height:0}
+/* the city bar — a grid that WRAPS. No nowrap anywhere and min-width:0 on the items, so
+   "Dar es Salaam" and "Johannesburg" break instead of pushing the page sideways on a phone. */
+#gq-bar .cb-reg,#pk-bar .cb-reg{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--bone-4);margin:12px 0 5px;text-shadow:var(--halo)}
+#gq-bar .cb-chips,#pk-bar .cb-chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));
+  gap:6px;align-content:start}
+.cb-chip{min-height:44px;min-width:0;padding:7px 9px;text-align:left;font-family:var(--sg);font-size:12.5px;
+  line-height:1.25;overflow-wrap:break-word;border:1px solid rgba(242,231,204,.24);border-radius:7px;
+  background:rgba(3,16,18,.28);color:var(--bone-2);cursor:pointer;transition:border-color .25s,color .25s}
+.cb-chip:hover,.cb-chip:focus-visible{border-color:var(--amber);color:var(--bone);outline:none}
+.cb-chip[aria-pressed=true]{border-color:var(--amber);color:var(--amber);background:rgba(240,188,98,.14)}
+@media(min-width:760px){#gq-bar .cb-chips,#pk-bar .cb-chips{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}}
+#gq-ex{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 4px}
+.gq-exlab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-4);text-shadow:var(--halo)}
+.gq-exb{font-family:var(--sg);font-size:13px;min-height:44px;padding:8px 12px;border:1px dashed rgba(242,231,204,.30);
+  border-radius:7px;background:none;color:var(--bone-3);cursor:pointer;transition:color .25s,border-color .25s}
+.gq-exb:hover,.gq-exb:focus-visible{color:var(--bone);border-color:var(--bone-3);outline:none}
+/* the honest label that stops "example" reading as "default" */
+.place-tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--amber);
+  margin:2px 0 8px;text-shadow:var(--halo)}
+#homechip{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;pointer-events:auto;
+  border:1px solid rgba(242,231,204,.26);border-radius:999px;padding:6px 11px;min-height:30px;
+  background:rgba(3,16,18,.34);color:var(--bone-2);cursor:pointer;margin-right:8px}
+#homechip.unset{color:var(--amber);border-color:rgba(240,188,98,.5)}
+#homechip:hover,#homechip:focus-visible{color:var(--bone);border-color:var(--amber);outline:none}
 #gplace{display:flex;align-items:center;gap:10px 12px;flex-wrap:wrap;margin:12px 0 6px}
 /* the place you type is prose, so it reads in the body font (Space Grotesk), larger and clearer */
 #gplace input{font-family:var(--sg);font-size:15px;width:240px;max-width:64vw;padding:9px 10px;min-height:44px;
@@ -913,9 +950,11 @@ button.rr-row:hover{padding-left:6px}
       <div id="ghost" aria-hidden="true"><span id="ghost-lab"></span></div>
     </div>
     <div id="skycap"><span class="zsub" id="skyctx"></span><span class="zname" id="skyname"></span><span class="zsub" id="skysub"></span>
-      <div id="skyloc" role="group" aria-label="Whose sky to draw">
-        <button type="button" id="skyloc-delhi" aria-pressed="true">Delhi</button>
-        <button type="button" id="skyloc-mine" aria-pressed="false">my sky</button>
+      <!-- the sky follows the ONE home place; the container id stays so its CSS and the
+           body.embed rule keep applying. The two old buttons were a second place-control. -->
+      <div id="skyloc">
+        <span id="skywhere"></span>
+        <button type="button" id="skywhere-change" aria-label="Change your place — opens the Ground chapter">change place</button>
       </div></div>
   </div>
   <button id="soundbtn" type="button" aria-pressed="false"
@@ -932,6 +971,7 @@ button.rr-row:hover{padding-left:6px}
       <div>
         <p class="word">On Record</p>
         <h1 class="plain" id="mast-tag">Every number measured. Every source shown.</h1>
+        <button id="homechip" type="button" hidden title="The place this site is drawn for — opens the picker">where are you?</button>
         <button id="pulse" type="button" hidden title="Today's reading — open the Ground chapter"></button>
         <button id="whatis" type="button" aria-label="What is this? Replay the introduction" hidden>What is this? <span aria-hidden="true">↺</span></button>
       </div>
@@ -1038,15 +1078,38 @@ button.rr-row:hover{padding-left:6px}
           <!-- BEAT 1 — whose ground this is, and that you can change it -->
           <div class="beat">
             <h2 tabindex="-1" id="g-h2">Here is Seville, day by day, since 1940.</h2>
-            <p class="lead">Every temperature in this chapter comes from ERA5, a scientific
+            <p class="place-tag" hidden>worked example &mdash; not your place &middot; set your place above</p>
+                        <p class="lead">Every temperature in this chapter comes from ERA5, a scientific
               reconstruction of past weather used by meteorologists worldwide. This is not a
               global average. It is the ground under your feet.</p>
-            <div id="gplace">
-              <input id="gq" type="search" placeholder="Search any city on Earth" aria-label="Search a place to draw its record">
-              <button type="button" id="gq-go">draw its record</button>
-              <button type="button" id="gq-mine">my ground</button>
-              <button type="button" id="gq-sev" hidden>back to Seville</button>
-              <span id="gq-status" aria-live="polite"></span>
+            <!-- the ONE place picker. #gplace is kept inside it so its existing CSS still applies. -->
+            <div id="homepick">
+              <div id="homeask">
+                <h3 id="homeask-h">Where are you?</h3>
+                <p id="homeask-p">This chapter is drawn for one place. Make it yours &mdash; every
+                  chapter follows.</p>
+                <button type="button" id="gq-mine">use my location</button>
+                <p id="homeask-privacy" class="receipt">Your coordinates are rounded to two decimals
+                  (about a kilometre) and sent only to Open-Meteo, the weather archive. There is no
+                  reverse-geocoding here &mdash; we never turn a coordinate into a name, which is why a
+                  located reader is called &ldquo;your place&rdquo;. Nothing is stored outside this
+                  browser, and it is never added to a link you share.</p>
+                <p id="homeask-blocked" class="receipt" hidden></p>
+              </div>
+              <div id="gplace">
+                <input id="gq" type="search" placeholder="Search any city on Earth" aria-label="Search a place to draw its record">
+                <button type="button" id="gq-go">draw its record</button>
+                <span id="gq-status" aria-live="polite"></span>
+              </div>
+              <div id="gq-bar" role="group" aria-label="Cities you can choose"></div>
+              <p id="gq-barnote" class="receipt">Each city is a single point, not the whole city, and
+                ERA5&rsquo;s grid cell is about 28&nbsp;km across &mdash; so the record is that cell&rsquo;s,
+                not that street&rsquo;s. The coordinates are echoed when you pick, and all are listed in Bedrock.</p>
+              <div id="gq-ex" role="group" aria-label="Worked examples">
+                <span class="gq-exlab">worked examples</span>
+                <button type="button" class="gq-exb" id="ex-seville" data-slug="seville">Seville &mdash; heat that doubled</button>
+                <button type="button" class="gq-exb" id="ex-delhi" data-slug="delhi">Delhi &mdash; days flat, nights climbing</button>
+              </div>
             </div>
             <p class="beat-cue">scroll &mdash; what its record shows &darr;</p>
           </div>
@@ -1101,7 +1164,8 @@ button.rr-row:hover{padding-left:6px}
           <!-- BEAT 2 — the honesty test: the line that fell -->
           <div class="beat">
             <h2 id="n-h2">Delhi&rsquo;s hot days fell. Its hot nights rose.</h2>
-            <div id="n-diverge" aria-hidden="true"></div>
+            <p class="place-tag" hidden>worked example &mdash; not your place &middot; set your place above</p>
+                        <div id="n-diverge" aria-hidden="true"></div>
             <p class="lead" id="n-honest"></p>
             <div class="chartwrap"><div class="plate">
               <div id="delhi"></div>
@@ -3269,7 +3333,11 @@ var __PLACE=(function(){
    if(tries<=1)throw e;
    return new Promise(function(res){setTimeout(res,1800*(4-tries));})
     .then(function(){return fetchRetry(url,tries-1);});});}
- function pick(lat,lon,name){
+ /* gen = the home generation this fetch belongs to. Two quick picks used to resolve
+    last-to-RESOLVE rather than last-to-CLICK; a one-tap city bar makes that trivial to hit,
+    so every continuation below bails if the reader has since chosen somewhere else. */
+ function pick(lat,lon,name,gen,opts){
+  var live=function(){return gen==null||!window.__HOME||gen===__HOME.gen();};
   busy(true);
   status("found "+name+" — fetching its 86 years of days (this takes a few seconds)…");
   var end=new Date(Date.now()-6*864e5).toISOString().slice(0,10);
@@ -3279,23 +3347,31 @@ var __PLACE=(function(){
    fetchRetry("https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+
     "&daily=temperature_2m_max&forecast_days=1&timezone=auto",3)
   ]).then(function(rr){
+   if(!live())return;                       // the reader chose somewhere else while this was in flight
    var fc=(rr[1]&&rr[1].daily&&rr[1].daily.temperature_2m_max)?rr[1].daily.temperature_2m_max[0]:null;
    var out=compute(rr[0],fc,name);
    act=true;buildGround(out.V);applyToday(out.t);
    if(typeof buildNight==="function")buildNight({custom:true,place:name,   // the night follows the place too
     days:out.V.G.days_ge35_per_year,nights:out.V.G.warm_nights_ge25_per_year,
     thrHot:out.V.thr.hot,thrNight:out.V.thr.night});
-   var sv=el("gq-sev");if(sv)sv.hidden=false;
    if(__ATMO.ok&&__ATMO.groundHeat&&out.t.pct!=null)__ATMO.groundHeat(out.t.pct/100);
    busy(false);
    status(name+" — drawn from its own 86-year record, computed in your browser. Its heat, its nights and today are below.");
-   /* the whole point of the picker is the record it draws — take the reader to it (beats 2–3), not leave them on the search box */
-   var gbeats=el("p-ground")&&el("p-ground").querySelectorAll(".beat");
-   if(gbeats&&gbeats[1])try{gbeats[1].scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});}catch(e2){}
-  }).catch(function(e){busy(false);
-   status(/503|502|429/.test(e.message)?
+   if(window.__HOME&&__HOME.drawn)__HOME.drawn(gen,out);
+   /* the whole point of the picker is the record it draws — take the reader to it (beats 2–3).
+      NOT on the cold-open path (opts.scroll===false): a first-time reader must never be yanked
+      out of the Sky by a fetch they started three beats ago. */
+   if(!opts||opts.scroll!==false){
+    var gbeats=el("p-ground")&&el("p-ground").querySelectorAll(".beat");
+    if(gbeats&&gbeats[1])try{gbeats[1].scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});}catch(e2){}}
+  }).catch(function(e){
+   if(!live())return;
+   busy(false);
+   var transient=/503|502|429|Failed to fetch|NetworkError/i.test(e.message||"");
+   status(transient?
    "the weather archive is busy right now — give it a minute, then try again":
-   "couldn't draw that place ("+e.message+") — try another",true);});}
+   "couldn't draw that place ("+e.message+") — try another",true);
+   if(window.__HOME&&__HOME.failed)__HOME.failed(gen,transient,e);});}
  function search(){var qv=(el("gq").value||"").trim();if(qv.length<2)return;
   status("searching…");
   fetch("https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(qv)+
@@ -3304,18 +3380,10 @@ var __PLACE=(function(){
    var p=g.results[0];
    pick(p.latitude,p.longitude,p.name+(p.country_code?", "+p.country_code:""));
   }).catch(function(){status("search failed — try again",true);});}
- (function(){var go=el("gq-go"),mi=el("gq-mine"),sv=el("gq-sev"),qi=el("gq");
-  if(!go)return;
-  go.addEventListener("click",search);
-  qi.addEventListener("keydown",function(e){if(e.key==="Enter")search();});
-  mi.addEventListener("click",function(){
-   if(!navigator.geolocation){status("no location in this browser");return;}
-   status("asking your browser for your position — it goes only to the weather API");
-   navigator.geolocation.getCurrentPosition(function(pos){
-    pick(Math.round(pos.coords.latitude*100)/100,Math.round(pos.coords.longitude*100)/100,"your ground");},
-    function(){status("location declined");});});
-  sv.addEventListener("click",function(){reset();});
-  idleHint();})();
+ /* The picker's buttons are wired ONCE, by the __HOME UI block below — not here. This module is
+    now just the record engine. (Binding them in both places double-fired the search and raised
+    two location prompts; #gq-sev no longer exists at all.) getCurrentPosition has exactly one
+    caller in this file, __HOME.ask, and it only ever runs from a real click. */
  /* back to the worked example — also the recovery path when a chosen place cannot be drawn */
  function reset(){act=false;var sv=el("gq-sev");if(sv)sv.hidden=true;
   buildGround(null);TS.comparable=TS.tmax!=null?Math.round((TS.tmax-TS.bias)*10)/10:null;
@@ -3636,6 +3704,263 @@ var __SKY=(function(){
    tonight:tonight.map(function(t){return t.n+(t.up?"[up]":"")+"@"+(t.ms?fmtT(t.ms):"-");})};}};
 })();
 window.__SKY=__SKY;
+
+/* ═══════════ HOME — the one place this whole site is drawn for ═══════════
+   Before this, GROUND was hardwired to Seville, NIGHT's heat and stars to Delhi,
+   and FIRST LIGHT to a browser-locale guess: four sources of truth that could and
+   did disagree. Now there is ONE home place and ONE mutator. Nothing else in the
+   file may call buildGround / buildNight / __SKY.setPlace directly.
+   The reader is ASKED for their place — we never take it silently: getCurrentPosition
+   has exactly one caller (ask()), and it only ever runs from a real click. */
+var __HOME=(function(){
+ /* The 24 fallback cities, inlined (NOT a data file: sw.js's SHELL would need an entry
+    and the bar would break on the first offline load after an update). Every country here
+    is present in perception_gap's 125 surveyed rows — a chip whose country is unsurveyed
+    would dead-end FIRST LIGHT on the very first tap. Seville and Delhi are deliberately
+    absent: they live in the examples row so the bar never steers you back to the old defaults.
+    A hardcoded lat/lon is a POINT, not a city — said out loud in #gq-barnote. */
+ var WORLD_CITIES=[
+  {s:"mumbai",n:"Mumbai",f:"Mumbai, India",la:19.08,lo:72.88,tz:"Asia/Kolkata",c:"IND",r:"asia"},
+  {s:"dhaka",n:"Dhaka",f:"Dhaka, Bangladesh",la:23.81,lo:90.41,tz:"Asia/Dhaka",c:"BGD",r:"asia"},
+  {s:"karachi",n:"Karachi",f:"Karachi, Pakistan",la:24.86,lo:67.01,tz:"Asia/Karachi",c:"PAK",r:"asia"},
+  {s:"jakarta",n:"Jakarta",f:"Jakarta, Indonesia",la:-6.21,lo:106.85,tz:"Asia/Jakarta",c:"IDN",r:"asia"},
+  {s:"manila",n:"Manila",f:"Manila, Philippines",la:14.6,lo:120.98,tz:"Asia/Manila",c:"PHL",r:"asia"},
+  {s:"shanghai",n:"Shanghai",f:"Shanghai, China",la:31.23,lo:121.47,tz:"Asia/Shanghai",c:"CHN",r:"asia"},
+  {s:"tokyo",n:"Tokyo",f:"Tokyo, Japan",la:35.68,lo:139.69,tz:"Asia/Tokyo",c:"JPN",r:"asia"},
+  {s:"dubai",n:"Dubai",f:"Dubai, United Arab Emirates",la:25.2,lo:55.27,tz:"Asia/Dubai",c:"ARE",r:"mideast"},
+  {s:"istanbul",n:"Istanbul",f:"Istanbul, Turkiye",la:41.01,lo:28.98,tz:"Europe/Istanbul",c:"TUR",r:"mideast"},
+  {s:"lagos",n:"Lagos",f:"Lagos, Nigeria",la:6.45,lo:3.39,tz:"Africa/Lagos",c:"NGA",r:"africa"},
+  {s:"cairo",n:"Cairo",f:"Cairo, Egypt",la:30.04,lo:31.24,tz:"Africa/Cairo",c:"EGY",r:"africa"},
+  {s:"nairobi",n:"Nairobi",f:"Nairobi, Kenya",la:-1.29,lo:36.82,tz:"Africa/Nairobi",c:"KEN",r:"africa"},
+  {s:"dar-es-salaam",n:"Dar es Salaam",f:"Dar es Salaam, Tanzania",la:-6.79,lo:39.21,tz:"Africa/Dar_es_Salaam",c:"TZA",r:"africa"},
+  {s:"johannesburg",n:"Johannesburg",f:"Johannesburg, South Africa",la:-26.2,lo:28.05,tz:"Africa/Johannesburg",c:"ZAF",r:"africa"},
+  {s:"london",n:"London",f:"London, United Kingdom",la:51.51,lo:-0.13,tz:"Europe/London",c:"GBR",r:"europe"},
+  {s:"madrid",n:"Madrid",f:"Madrid, Spain",la:40.42,lo:-3.7,tz:"Europe/Madrid",c:"ESP",r:"europe"},
+  {s:"moscow",n:"Moscow",f:"Moscow, Russia",la:55.76,lo:37.62,tz:"Europe/Moscow",c:"RUS",r:"europe"},
+  {s:"reykjavik",n:"Reykjavik",f:"Reykjavik, Iceland",la:64.15,lo:-21.94,tz:"Atlantic/Reykjavik",c:"ISL",r:"europe"},
+  {s:"mexico-city",n:"Mexico City",f:"Mexico City, Mexico",la:19.43,lo:-99.13,tz:"America/Mexico_City",c:"MEX",r:"latam"},
+  {s:"sao-paulo",n:"Sao Paulo",f:"Sao Paulo, Brazil",la:-23.55,lo:-46.63,tz:"America/Sao_Paulo",c:"BRA",r:"latam"},
+  {s:"lima",n:"Lima",f:"Lima, Peru",la:-12.05,lo:-77.04,tz:"America/Lima",c:"PER",r:"latam"},
+  {s:"new-york",n:"New York",f:"New York, United States",la:40.71,lo:-74.01,tz:"America/New_York",c:"USA",r:"namerica"},
+  {s:"vancouver",n:"Vancouver",f:"Vancouver, Canada",la:49.28,lo:-123.12,tz:"America/Vancouver",c:"CAN",r:"namerica"},
+  {s:"sydney",n:"Sydney",f:"Sydney, Australia",la:-33.87,lo:151.21,tz:"Australia/Sydney",c:"AUS",r:"oceania"}
+ ];
+ var REGN={asia:"Asia",mideast:"Middle East",africa:"Africa",europe:"Europe",
+           latam:"Latin America",namerica:"North America",oceania:"Oceania"};
+ var EXAMPLES={
+  seville:{src:"example",slug:"seville",ex:"seville",name:"Seville",full:"Seville, Spain",
+           lat:37.39,lon:-5.99,tz:"Europe/Madrid",iso3:"ESP"},
+  delhi:{src:"example",slug:"delhi",ex:"delhi",name:"Delhi",full:"Delhi, India",
+         lat:28.61,lon:77.21,tz:"Asia/Kolkata",iso3:"IND"}};
+ var HOME=null,GEN=0,asked=false;
+ var KEY="onrecord.home.v1",KASK="onrecord.ask.v1",KOLD="onrecord_skyloc";
+ var STORE=!(EMBED||KIOSK);          /* an embedded or kiosk frame never reads or writes storage */
+ function devTZ(){try{return Intl.DateTimeFormat().resolvedOptions().timeZone||"UTC";}catch(e){return "UTC";}}
+ function r2(v){return Math.round(v*100)/100;}
+ function get(k){if(!STORE)return null;try{return localStorage.getItem(k);}catch(e){return null;}}
+ function put(k,v){if(!STORE)return;try{localStorage.setItem(k,v);}catch(e){}}
+ function drop(k){if(!STORE)return;try{localStorage.removeItem(k);}catch(e){}}
+ /* coordinates are rounded to 2dp (~1km) the moment they arrive and BEFORE they touch
+    anything else — we want a city, not a doorstep. A device place is never given a name:
+    there is no reverse geocoder here, so inventing one would be a fabricated claim. */
+ function normalize(h){
+  var o={src:h.src||"example",slug:h.slug||null,ex:h.ex||null,
+   name:h.name||"your place",full:h.full||h.name||"your place",
+   lat:r2(+h.lat),lon:r2(+h.lon),tz:h.tz||devTZ(),iso3:h.iso3||null};
+  if(!isFinite(o.lat)||!isFinite(o.lon))return null;
+  o.lat=Math.max(-89,Math.min(89,o.lat));o.lon=Math.max(-180,Math.min(180,o.lon));
+  if(o.src==="device"){o.name="your place";o.full="your place";o.slug=null;o.iso3=null;o.ex=null;}
+  return o;}
+ function city(slug){for(var i=0;i<WORLD_CITIES.length;i++)if(WORLD_CITIES[i].s===slug)return WORLD_CITIES[i];return null;}
+ function fromCity(c,src){return {src:src||"bar",slug:c.s,name:c.n,full:c.f,lat:c.la,lon:c.lo,tz:c.tz,iso3:c.c};}
+ /* ?place=<slug> or ?place=<lat>,<lon>[,label]; ?loc= is the older alias and now moves the
+    WHOLE home, not just the stars — which removes the last way ground and sky could disagree. */
+ function urlPlace(){
+  var p=Q.get("place")||Q.get("loc");if(!p)return null;
+  var c=city(p)||(EXAMPLES[p]?null:null);
+  if(c)return normalize(fromCity(c,"link"));
+  if(EXAMPLES[p])return normalize(EXAMPLES[p]);
+  var m=String(p).split(",");
+  if(m.length>=2&&isFinite(+m[0])&&isFinite(+m[1]))
+   return normalize({src:"link",name:(m[2]||"this place"),full:(m[2]||"this place"),
+                     lat:+m[0],lon:+m[1],tz:null,iso3:null});
+  return null;}
+ /* FIRST LIGHT follows the home when we honestly know its country, and SAYS which rule won */
+ function pgSync(h){
+  var sel=el("pg-sel"),lab=el("pg-guessed");if(!sel)return;
+  if(!h.iso3){if(lab&&h.src==="device")lab.textContent="your country is guessed from your browser · change freely";return;}
+  var rows=(P.all&&P.all.length)?P.all:P.countries,nm=null;
+  for(var i=0;i<rows.length;i++)if(rows[i].code===h.iso3){nm=rows[i].place;break;}
+  if(!nm){if(lab)lab.textContent="that country is not in the 125 surveyed · showing the world";return;}
+  for(var q=0;q<sel.options.length;q++)if(sel.options[q].textContent===nm){
+   sel.value=sel.options[q].value;
+   if(sel.onchange)sel.onchange();else{try{sel.dispatchEvent(new Event("change"));}catch(e){}}
+   if(lab)lab.textContent="from the place you chose · change freely";return;}}
+ /* every label that names the place, in one function, so none can drift */
+ function labelsRefresh(){
+  var h=HOME;if(!h)return;
+  var chip=el("homechip");
+  if(chip){chip.hidden=false;
+   chip.textContent=h.ex?("example: "+h.name+" · set your place"):h.name;
+   chip.classList.toggle("unset",!!h.ex);}
+  var sw=el("skywhere");
+  if(sw)sw.textContent="the sky over "+h.name+" · "+Math.abs(h.lat).toFixed(2)+"° "+(h.lat<0?"S":"N")+", "+
+   Math.abs(h.lon).toFixed(2)+"° "+(h.lon<0?"W":"E");
+  /* "worked example — not your place" appears wherever an example is on screen, and vanishes
+     the instant the home is really the reader's: that is what stops "example" reading "default". */
+  var tags=document.querySelectorAll(".place-tag");
+  for(var i=0;i<tags.length;i++)tags[i].hidden=!h.ex;
+  var bars=document.querySelectorAll(".cb-chip");
+  for(var j=0;j<bars.length;j++)bars[j].setAttribute("aria-pressed",String(bars[j].getAttribute("data-slug")===h.slug));}
+ /* THE ONE MUTATOR. Stars + first light + labels are pure local work and land immediately;
+    the ground record is a multi-second archive fetch, so it goes last and asynchronously. */
+ function set(h,opts){
+  opts=opts||{};h=normalize(h);if(!h)return;
+  HOME=h;GEN++;
+  try{if(__SKY&&__SKY.setPlace)__SKY.setPlace({name:h.name,lat:h.lat,lon:h.lon,tz:h.tz,tzl:""},false);}catch(e){}
+  pgSync(h);labelsRefresh();
+  if(h.ex==="seville"){if(__PLACE&&__PLACE.reset)__PLACE.reset();}
+  else if(__PLACE&&__PLACE.pick)__PLACE.pick(h.lat,h.lon,h.full,GEN,{scroll:opts.scroll!==false});
+  if(opts.persist!==false&&h.src!=="link")put(KEY,JSON.stringify(h));}
+ /* the ONLY caller of getCurrentPosition in the file, and only ever from a real click */
+ function ask(origin,onDone){
+  markAsked();
+  if(!navigator.geolocation){if(onDone)onDone("unsupported");return;}
+  navigator.geolocation.getCurrentPosition(function(pos){
+   set({src:"device",lat:pos.coords.latitude,lon:pos.coords.longitude,tz:devTZ()},
+       {scroll:origin!=="intro"});
+   if(onDone)onDone("granted",HOME);},
+   function(err){if(onDone)onDone(err&&err.code===1?"denied":"error");},
+   {enableHighAccuracy:false,timeout:9000,maximumAge:600000});}
+ function markAsked(){asked=true;put(KASK,"answered");}
+ function askedAlready(){return asked||get(KASK)==="answered";}
+ /* has the reader already granted permission on a previous visit? then no card and no prompt */
+ function preflight(cb){
+  if(!navigator.geolocation||location.protocol==="file:"){cb("unavailable");return;}
+  try{if(navigator.permissions&&navigator.permissions.query)
+   {navigator.permissions.query({name:"geolocation"}).then(function(s){cb(s.state);},function(){cb("prompt");});return;}}
+  catch(e){}
+  cb("prompt");}
+ function boot(){
+  if(EMBED||KIOSK){HOME=urlPlace()||normalize(EXAMPLES.seville);
+   if(HOME.src==="link"&&!HOME.ex)set(HOME,{persist:false,scroll:false});else{labelsRefresh();pgSync(HOME);}
+   return;}
+  var u=urlPlace();
+  if(u){set(u,{persist:false,scroll:false});return;}         /* a shared link never overwrites your home */
+  var s=null;try{s=JSON.parse(get(KEY)||"null");}catch(e){}
+  if(!s){var old=null;try{old=JSON.parse(get(KOLD)||"null");}catch(e){}   /* migrate "my sky" */
+   if(old&&isFinite(old.lat)&&isFinite(old.lon)){s={src:"device",lat:old.lat,lon:old.lon,tz:devTZ()};drop(KOLD);}}
+  if(s&&isFinite(s.lat)&&isFinite(s.lon)){set(s,{scroll:false});return;}
+  HOME=normalize(EXAMPLES.seville);labelsRefresh();pgSync(HOME);}
+ return {get:function(){return HOME;},gen:function(){return GEN;},set:set,boot:boot,ask:ask,
+         cities:function(){return WORLD_CITIES;},regions:REGN,examples:EXAMPLES,city:city,
+         fromCity:fromCity,preflight:preflight,asked:askedAlready,markAsked:markAsked,
+         isExample:function(){return !!(HOME&&HOME.ex);},
+         /* a device-located or hand-typed place is never appended to a shareable link */
+         linkParam:function(){return (HOME&&HOME.slug&&HOME.src!=="device"&&HOME.src!=="search")?("?place="+HOME.slug):"";}};
+})();
+window.__HOME=__HOME;
+/* ═══════════ the picker's UI — one component, rendered into up to two hosts ═══════════ */
+(function(){
+ if(!el("gq-bar"))return;
+ var H=__HOME;
+ function alpha3(nameOrCC){                       /* the survey keys on country NAME; the geocoder gives a name */
+  var rows=(P.all&&P.all.length)?P.all:P.countries;
+  var ALIAS={"Türkiye":"Turkey","Turkiye":"Turkey","United States of America":"United States",
+   "Russian Federation":"Russia","Czech Republic":"Czechia","Viet Nam":"Vietnam",
+   "Korea, Republic of":"South Korea","Ivory Coast":"Cote d'Ivoire"};
+  var n=ALIAS[nameOrCC]||nameOrCC;
+  for(var i=0;i<rows.length;i++)if(rows[i].place===n)return rows[i].code;
+  return null;}                                   /* no match => we say we don't know, never guess a neighbour */
+ /* build the bar into a host; identical markup in the intro and in Ground */
+ function renderCityBar(host){
+  if(!host)return;
+  var cs=H.cities(),order=["asia","mideast","africa","europe","latam","namerica","oceania"],out="";
+  order.forEach(function(rg){
+   var inr=cs.filter(function(c){return c.r===rg;});
+   if(!inr.length)return;
+   out+='<p class="cb-reg" aria-hidden="true">'+H.regions[rg]+'</p><div class="cb-chips">';
+   inr.forEach(function(c){
+    out+='<button type="button" class="cb-chip" data-slug="'+c.s+'" aria-pressed="false" '+
+     'aria-label="'+c.f+' — '+H.regions[rg]+'">'+c.n+'</button>';});
+   out+='</div>';});
+  host.innerHTML=out;
+  host.addEventListener("click",function(e){
+   var b=e.target&&e.target.closest?e.target.closest(".cb-chip"):null;if(!b)return;
+   var c=H.city(b.getAttribute("data-slug"));if(!c)return;
+   H.markAsked();H.set(H.fromCity(c,"bar"),{scroll:true});});}
+ renderCityBar(el("gq-bar"));
+ /* the examples row — always visible, so Seville is content rather than a home base you return to */
+ var ex=el("gq-ex");
+ if(ex)ex.addEventListener("click",function(e){
+  var b=e.target&&e.target.closest?e.target.closest(".gq-exb"):null;if(!b)return;
+  H.markAsked();H.set(H.examples[b.getAttribute("data-slug")],{scroll:true});});
+ /* the location button. The pre-flight is the anti-nag mechanism: if the browser has already
+    refused, or cannot do this at all, we do not render a button whose only outcome is failure. */
+ var mine=el("gq-mine"),blocked=el("homeask-blocked"),head=el("homeask-h");
+ function offerLocation(state){
+  if(!mine)return;
+  if(state==="granted"){mine.hidden=false;return;}
+  if(state==="denied"||state==="unavailable"){
+   mine.hidden=true;
+   if(head)head.textContent="Pick your city";
+   if(blocked){blocked.hidden=false;
+    blocked.textContent=state==="denied"
+     ? "Your browser is set to refuse this site your location, so we won't ask again. Pick a city below, or search any place on Earth — the record is identical either way."
+     : "This browser can't share a location, so pick a city below or search any place on Earth.";}
+   return;}
+  mine.hidden=false;}
+ H.preflight(function(s){offerLocation(s);
+  if(s==="granted"&&!H.get().ex)return;
+  if(s==="granted"&&!H.asked())H.ask("ground",function(){});});
+ if(mine)mine.addEventListener("click",function(){
+  mine.setAttribute("aria-busy","true");var old=mine.textContent;mine.textContent="waiting for your browser…";
+  var st=el("gq-status");if(st)st.textContent="asking your browser for your position — it goes only to the weather archive";
+  H.ask("ground",function(res,h){
+   mine.removeAttribute("aria-busy");mine.textContent=old;
+   if(res==="granted"&&h){
+    if(st)st.textContent="your place: "+Math.abs(h.lat).toFixed(2)+"° "+(h.lat<0?"S":"N")+", "+
+      Math.abs(h.lon).toFixed(2)+"° "+(h.lon<0?"W":"E")+" — that is all we took, and it stays on this device.";
+    mine.hidden=true;if(head)head.textContent="Your place";}
+   else if(res==="denied"){
+    mine.hidden=true;if(head)head.textContent="Pick your city";
+    if(blocked){blocked.hidden=false;
+     blocked.textContent="No problem — we won't ask again. Pick a city below, or search any place on Earth.";}
+    var f=el("gq-bar")&&el("gq-bar").querySelector(".cb-chip");if(f)try{f.focus();}catch(e){}}
+   else{mine.textContent="try location again";
+    if(st)st.textContent="your browser couldn't fix a position just now — pick a city below, or try again.";}});});
+ /* the sky's caption points at the one picker rather than owning a second place control */
+ var swc=el("skywhere-change");
+ if(swc)swc.addEventListener("click",function(){toPicker();});
+ /* the mast chip: says where the site is drawn for, and takes you to the picker */
+ function toPicker(){
+  scrollToChamber(1);
+  setTimeout(function(){var hp=el("homepick");if(hp){flashRing(hp);
+   var t=el("gq-mine")&&!el("gq-mine").hidden?el("gq-mine"):(el("gq-bar")&&el("gq-bar").querySelector(".cb-chip"));
+   if(t)try{t.focus();}catch(e){}}},520);}
+ var chip=el("homechip");
+ if(chip)chip.addEventListener("click",function(){toPicker();});
+ /* a typed search becomes the home too, with its country when the survey knows it */
+ var go=el("gq-go"),qi=el("gq");
+ function doSearch(){
+  var qv=(qi.value||"").trim();if(qv.length<2)return;
+  var st=el("gq-status");if(st)st.textContent="searching…";
+  fetch("https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(qv)+
+   "&count=1&language=en&format=json").then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json();})
+  .then(function(g){
+   if(!g.results||!g.results.length){if(st){st.textContent="no such place found — try the nearest big town";st.classList.add("err");}return;}
+   var p=g.results[0];if(st)st.classList.remove("err");
+   H.markAsked();
+   H.set({src:"search",name:p.name,full:p.name+(p.country?", "+p.country:""),
+          lat:p.latitude,lon:p.longitude,tz:p.timezone||null,iso3:alpha3(p.country)},{scroll:true});})
+  .catch(function(){if(st){st.textContent="search failed — try again";st.classList.add("err");}});}
+ if(go){go.addEventListener("click",doSearch);}
+ if(qi){qi.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();doSearch();}});}
+})();
+/* and finally: adopt the reader's place (or the worked example) — the last thing the script does */
+try{__HOME.boot();}catch(e){}
+
+
 
 /* ═══════════ METEORS — only the showers that are genuinely active ═══════════
    No shower on this date (or radiant below the horizon) means no meteors:
