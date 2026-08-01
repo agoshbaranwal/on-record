@@ -299,7 +299,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 .pane.seen>*{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.pane:has(>h2)>*{opacity:1;transform:none;transition:none}}
 /* bedrock is a free-scrolling archive, never snapped */
-#p-bedrock{scroll-snap-align:none;padding:16vh 172px 12vh 38px;max-width:1400px;margin:0 auto}
+#p-bedrock{scroll-snap-align:none;padding:12vh 172px 12vh 38px;max-width:1400px;margin:0 auto;height:auto;display:block;overflow:visible}
 #p-bedrock,#p-bedrock *{scroll-snap-align:none!important;scroll-snap-stop:normal!important}
 .pane h2{font-weight:500;font-size:clamp(21px,2.6vw,31px);line-height:1.12;letter-spacing:-.015em;
   max-width:24ch;text-wrap:balance;color:var(--bone);text-shadow:var(--halo-h)}
@@ -773,10 +773,11 @@ button.rr-row:hover{padding-left:6px}
 }
 
 /* --- bedrock (the archive chamber may scroll internally) --- */
-#p-bedrock .arch{flex:1;min-height:0;overflow-y:auto;margin-top:12px;padding-right:10px;
-  scrollbar-width:thin;
-  mask-image:linear-gradient(180deg,#000 calc(100% - 46px),transparent);
-  -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 46px),transparent)}
+/* This trapped ~1,560 words, a 7-column table, nine source cards and fourteen buttons inside a
+   ~430px window on a phone — with the bottom 46px permanently faded to transparent, no visible
+   scrollbar, and nothing telling the reader an inner scroller existed. The chapter that proves the
+   site's honesty was the hardest thing on it to read. It now scrolls with the page, like a page. */
+#p-bedrock .arch{margin-top:12px}
 #p-bedrock .hww{max-width:60ch;font-size:14px;line-height:1.6;color:var(--bone-2);margin-top:10px}
 #p-bedrock .hww b{color:var(--bone);font-weight:500}
 /* Phase 9 — the honest-measurement surface: outcome-side figures, the caveat at the label's weight */
@@ -1271,10 +1272,9 @@ button.rr-row:hover{padding-left:6px}
             <p class="lead" id="n-honest"></p>
             <div class="chartwrap"><div class="plate">
               <div id="delhi"></div>
-              <div class="legend">
-                <span><i style="background:var(--slate)"></i><em id="n-leg-d">days &mdash; edging down</em></span>
-                <span><i style="background:var(--ember)"></i><em id="n-leg-n">nights &mdash; climbing</em></span>
-              </div>
+              <!-- legend removed: the same fact was stated five ways on one screen (the +N figure,
+                   the up/down tiles, the prose, this legend, and the receipt). The two lines are
+                   already labelled on the chart itself, where the eye actually is. -->
             </div></div>
             <p class="receipt" id="delhi-receipt"></p>
             <!-- THE KEYSTONE. Drawn from Delhi's own baked series and NEVER from the reader's
@@ -1388,7 +1388,7 @@ button.rr-row:hover{padding-left:6px}
               study has found it pushes people the other way. So tell one person what you just saw.</p>
             <div class="sharecard">
               <div class="mini" id="share-mini" aria-hidden="true"></div>
-              <button id="share-btn" type="button">Save Seville&rsquo;s record <span aria-hidden="true">&rarr;</span></button>
+              <button id="share-btn" type="button">Save this record <span aria-hidden="true">&rarr;</span></button>
               <button id="share-cite" type="button" class="share-minor">copy the sentence</button>
               <div class="sharefallback" id="share-fallback">
                 <label class="receipt" for="share-text">The caption &mdash; select and copy it to post with the image:</label>
@@ -2778,8 +2778,6 @@ var buildNight=function(NV){
   (CUSTOM?"":" · pick any city in Ground and this chapter follows it");
  var dTrend=dayFell?"— edging down":(dNow>dThen+1?"— climbing":"— flat");
  var nTrend=nNow>nThen+1?"— climbing":(nNow<nThen-1?"— edging down":"— flat");
- if(el("n-leg-d"))el("n-leg-d").textContent="days ≥\u200a"+thrHs+"\u200a°C "+dTrend;
- if(el("n-leg-n"))el("n-leg-n").textContent="nights ≥\u200a"+thrNs+"\u200a°C "+nTrend;
  var lr2=ladder.children[2]&&ladder.children[2].querySelector(".fact");
  if(lr2)lr2.textContent=place+" · "+(Math.round(nNow-nThen)>=0?"+":"−")+
   Math.abs(Math.round(nNow-nThen))+" hot nights";
@@ -3024,8 +3022,10 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
   return (diff>=0&&diff<=3)?first:nm;}
  function isoDate(d){function p(n){return (n<10?"0":"")+n;}return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());}
  function icsEsc(s){return s.replace(/([\\,;])/g,"\\$1").replace(/\n/g,"\\n");}
- var PLAN={letter:{what:"Send Seville’s record to my representative",sum:"On Record — put Seville’s heat record on the record",
-    desc:"I said I’d send my letter. Seville now averages "+now+" days a year over 35°C (was "+was+" in 1951–80). Open it: https://agoshbaranwal.github.io/on-record/?chamber=morning"},
+ /* the letter already quotes the reader's own place via LN(); the calendar entry that reminds
+    them to send it was still naming Seville's numbers as their reason to write */
+ var PLAN={letter:{what:"Send "+LN().place+"’s record to my representative",sum:"On Record — put "+LN().place+"’s heat record on the record",
+    desc:"I said I’d send my letter. "+LN().place+" now averages "+LN().now+" days a year over 35°C (was "+LN().was+" in 1951–80). Open it: https://agoshbaranwal.github.io/on-record/?chamber=morning"},
    vote:{what:"Make my climate voting plan",sum:"On Record — my climate voting plan",
     desc:"When, where, and how I’ll vote — with the climate on the ballot. Check candidates’ records; no party named for me. https://agoshbaranwal.github.io/on-record/?chamber=morning"}};
  function twoDigit(n){return (n<10?"0":"")+n;}
