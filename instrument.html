@@ -354,9 +354,26 @@ svg{display:block;width:100%;height:auto}
 #sky-fixtures.on{opacity:1}
 #sky-fixtures #band{pointer-events:auto}
 /* --- SKY pane --- */
+/* ONE VOICE FOR THE DATA. This number was the only figure on the site rendered in dark ink with
+   a cream glow — every other number (.bignum in Ground and Night) is already cream. On the sage
+   band of the century sky that made dark-maroon-on-olive, which is the muddiness Agosh flagged:
+   the numerals were competing with the sky instead of sitting on it. It now reads in the same
+   cream as the rest of the instrument, over the same dark halo, so the sky can be any colour it
+   likes and the data never changes voice. (Morning stays ink-on-pale by design — .thm-ink.) */
 #p-sky .years{font-weight:500;font-size:clamp(56px,8.5vw,110px);line-height:.92;
-  letter-spacing:-.035em;color:var(--ink);font-variant-numeric:tabular-nums;
-  text-shadow:0 0 22px rgba(255,244,214,.45),0 2px 3px rgba(255,248,228,.85),0 1px 1px rgba(255,248,228,.9)}
+  letter-spacing:-.035em;color:var(--bone);font-variant-numeric:tabular-nums;
+  text-shadow:var(--halo-h)}
+.thm-ink #p-sky .years{color:var(--ink);text-shadow:none}
+/* the count block sits on the brightest part of the gradient, so it gets a plate of its own —
+   a soft, blurred pool of dark rather than a hard card, so it reads as depth in the sky. */
+/* The plate is a background on the block itself, not a z-index:-1 pseudo-element — that sat in
+   the pane's stacking context and barely painted. A soft radial pool reads as depth in the sky
+   rather than a card pasted on top of it, and it is what lets one cream voice work over a band
+   that is bright at midday and dark at night. */
+#skycount{position:relative;display:inline-block;padding:16px 30px 14px;margin-left:-30px;
+  border-radius:26px;
+  background:radial-gradient(115% 105% at 26% 46%,rgba(3,13,15,.78) 0%,rgba(3,13,15,.62) 42%,rgba(3,13,15,.22) 72%,rgba(3,13,15,0) 100%)}
+.thm-ink #skycount{background:radial-gradient(115% 105% at 26% 46%,rgba(255,251,240,.80) 0%,rgba(255,251,240,.60) 45%,rgba(255,251,240,.20) 74%,rgba(255,251,240,0) 100%)}
 /* the caption cluster lives on shifting light — it gets its own dark glass, like the pills */
 #skycount .capplate{display:inline-block;position:relative;margin-top:9px;max-width:60ch}
 #p-sky .ylab{font-family:var(--mono);font-size:12px;letter-spacing:.18em;
@@ -365,7 +382,7 @@ svg{display:block;width:100%;height:auto}
   color:var(--bone);text-shadow:var(--halo2)}
 #p-sky .burnedtick{margin-top:7px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;
   color:var(--amber);text-shadow:var(--halo);font-variant-numeric:tabular-nums}
-#skycount{margin-top:18px}
+#skycount{margin-top:18px}   /* (the plate above also sets padding/negative margin to keep the left edge aligned) */
 #hzn-hi,#hzn-lo{position:absolute;left:-38px;right:-38px;border-top:1px solid rgba(62,18,8,.5);pointer-events:none}
 /* the century axis: altitude is time, and the axis is drawn, not implied */
 #skyaxis{position:absolute;inset:0;pointer-events:none}
@@ -965,6 +982,8 @@ button.rr-row:hover{padding-left:6px}
      of the screen — before a word of the chapter appeared, because it stacked the
      wordmark, a tagline, a two-line "today" sentence and a control row. On a phone
      the masthead's job is identity + where-you-are, nothing else. */
+  /* the plate's negative margin must not punch through the 20px beat padding on a phone */
+  #skycount{margin-left:-20px;padding:14px 20px 12px;border-radius:20px}
   #mast{padding:12px 20px;gap:12px}
   #mast .word{font-size:10px;letter-spacing:.28em;margin-bottom:4px}
   #mast .plain{display:none}                 /* the tagline is the cold-open's job on a phone */
