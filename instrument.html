@@ -505,6 +505,23 @@ svg{display:block;width:100%;height:auto}
 .gq-exb{font-family:var(--sg);font-size:13px;min-height:44px;padding:8px 12px;border:1px dashed rgba(242,231,204,.30);
   border-radius:7px;background:none;color:var(--bone-3);cursor:pointer;transition:color .25s,border-color .25s}
 .gq-exb:hover,.gq-exb:focus-visible{color:var(--bone);border-color:var(--bone-3);outline:none}
+/* the cold-open's ask beat — scrollable so the resolve buttons can never be pushed
+   below the fold on a small phone, which would make the single most important screen a dead end */
+.ib-ask{overflow-y:auto;max-height:78vh;overscroll-behavior:contain}
+#pk-btns{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 10px}
+#pk-geo{font-family:var(--mono);font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;
+  min-height:46px;padding:11px 18px;border:1px solid var(--amber);border-radius:8px;
+  background:rgba(240,188,98,.14);color:var(--amber);cursor:pointer;transition:background .3s}
+#pk-geo:hover,#pk-geo:focus-visible{background:rgba(240,188,98,.26);outline:none}
+#pk-geo[aria-busy=true]{opacity:.6;cursor:wait}
+#pk-list,#pk-skip{font-family:var(--sg);font-size:13.5px;min-height:46px;padding:11px 14px;
+  border:1px solid rgba(242,231,204,.26);border-radius:8px;background:none;color:var(--bone-2);cursor:pointer}
+#pk-skip{border:0;text-decoration:underline;text-underline-offset:3px;color:var(--bone-3);padding-left:4px}
+#pk-list:hover,#pk-list:focus-visible,#pk-skip:hover,#pk-skip:focus-visible{color:var(--bone);border-color:var(--amber);outline:none}
+#pk-note,#pk-wait{font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--bone-3);max-width:58ch;margin:4px 0 0}
+#pk-done{font-size:14px;line-height:1.5;color:var(--bone);margin:10px 0 0;max-width:52ch}
+#pk-done b{color:var(--amber);font-family:var(--mono)}
+#pk-bar{margin-top:14px;max-height:38vh;overflow-y:auto;overscroll-behavior:contain}
 /* the keystone panel — compact by default so it is never absent and never in the way */
 #n-example{margin:22px 0 6px;padding:14px 0 2px;border-top:1px solid rgba(242,231,204,.16);max-width:640px}
 #n-example h3{font-family:var(--sg);font-size:15px;font-weight:600;letter-spacing:.01em;
@@ -1426,7 +1443,7 @@ button.rr-row:hover{padding-left:6px}
   <span id="sr-status" role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)"></span>
 
   <!-- intro -->
-  <div id="intro" role="group" aria-label="Introduction — the carbon budget, in four parts">
+  <div id="intro" role="group" aria-label="Introduction — the carbon budget">
     <div id="intro-scrim" aria-hidden="true"></div>
     <button class="skip" id="intro-skip" type="button">Skip <span aria-hidden="true">&rarr;</span></button>
     <p id="intro-live" class="sr-only" aria-live="polite"></p>
@@ -1453,6 +1470,24 @@ button.rr-row:hover{padding-left:6px}
           <h2 class="ib-h">This site turns the numbers into a sky.</h2>
           <p class="ib-p">Six chapters, one living sky that changes colour as you scroll. Every number is measured,
             every source is listed, and every limit is admitted at the end.</p>
+        </section>
+        <!-- BEAT 5 — the ask, LAST. Asking a stranger where they are before they know what the
+             site is would be the creepy version; this comes after "every number is measured". -->
+        <section class="ib ib-ask" data-beat="4" id="pk-ask">
+          <h2 class="ib-h">Now &mdash; where are you?</h2>
+          <p class="ib-p">Two chapters are drawn for one place on Earth. Make them yours and the
+            whole record redraws: your heat, your nights, your sky.<span class="ib-chip">ERA5 &middot; 1940 to today</span></p>
+          <div id="pk-btns">
+            <button type="button" id="pk-geo">Use my location</button>
+            <button type="button" id="pk-list">Pick a city instead</button>
+            <button type="button" id="pk-skip">Skip &mdash; show me an example</button>
+          </div>
+          <p id="pk-note">Your coordinates are rounded to about a kilometre and sent only to the weather
+            archive. We never turn them into a name, never store them off this device, and never add
+            them to a link you share.</p>
+          <p id="pk-wait" hidden>Still waiting on your browser &mdash; you can pick a city below instead.</p>
+          <p id="pk-done" hidden></p>
+          <div id="pk-bar" role="group" aria-label="Cities you can choose" hidden></div>
         </section>
       </div>
       <div id="intro-foot">
@@ -2069,9 +2104,20 @@ var startIntro,endIntro;
  var intro=el("intro"),stackEl=el("intro-stack"),dotsWrap=el("intro-dots"),
      hint=el("intro-hint"),go=el("intro-go"),skip=el("intro-skip"),
      live=el("intro-live"),stage=el("stage"),whatis=el("whatis");
+ /* The ask beat is dropped BEFORE beats/N/dots are counted, so a reader who already has a
+    place (or already answered, or arrived on a shared link, or is in an embed) sees the original
+    four-part cold-open with four dots — never a fifth part asking a question already settled.
+    __HOME does not exist yet at parse time, so we read the same keys it does. */
+ (function(){var pk=el("pk-ask");if(!pk)return;
+  var answered=false;
+  try{answered=EMBED||KIOSK||!!Q.get("place")||!!Q.get("loc")||
+   !!localStorage.getItem("onrecord.home.v1")||localStorage.getItem("onrecord.ask.v1")==="answered";}
+  catch(e){answered=EMBED||KIOSK||!!Q.get("place")||!!Q.get("loc");}
+  if(answered&&pk.parentNode)pk.parentNode.removeChild(pk);})();
  var beats=Array.prototype.slice.call(stackEl.querySelectorAll(".ib"));
  var N=beats.length,idx=0,settled=false,countRAF=0,settleTimer=0,
      interacted=false,reopened=false,retScroll=0,lastEx=.66,REVEAL=1300,NUM={};
+ var hasAsk=!!el("pk-ask"),askResolved=!hasAsk;   /* the ask beat, when present, must be answered */
  /* a REAL deep link (?chamber= or a non-sky #p- hash captured BEFORE enterChamber(0) clobbered it) bypasses the cold-open */
  var isDeep=!!(Q.get("chamber")||EMBED||KIOSK||(HASH0&&HASH0!=="sky"));
  function calc(){NUM.budget=Math.round((LO.remaining_now_gt+HIe.remaining_now_gt)/2);
@@ -2116,10 +2162,64 @@ var startIntro,endIntro;
    settleTimer=setTimeout(function(){if(idx===cur2)finalize(b);},REVEAL);}
   hint.hidden=(cur2>1)||interacted;
   if(document.activeElement===go&&cur2!==N-1){try{intro.focus();}catch(e){}}   // don't drop focus to <body> when the finish button hides on back-nav
-  go.hidden=(cur2!==N-1);
-  if(cur2===N-1)setTimeout(function(){if(idx===N-1){try{go.focus();}catch(e){}}},reduce?0:420);}
+  go.hidden=(cur2!==N-1)||(cur2===N-1&&hasAsk&&!askResolved);
+  if(cur2===N-1&&hasAsk&&!askResolved){armAsk();
+   setTimeout(function(){if(idx===N-1){try{el("pk-geo").focus();}catch(e){}}},reduce?0:420);}
+  else if(cur2===N-1)setTimeout(function(){if(idx===N-1){try{go.focus();}catch(e){}}},reduce?0:420);}
+ /* ── the ask beat ───────────────────────────────────────────────────────────────
+    The fetch STARTS HERE, not in Ground: the reader still has the Sky's four beats to
+    scroll, so the multi-second archive latency disappears into the narrative and Ground is
+    usually already drawn when they arrive. scroll:false, so nobody is yanked out of the Sky. */
+ var armed=false;
+ function resolveAsk(msg){
+  askResolved=true;
+  var w=el("pk-wait");if(w)w.hidden=true;
+  var d=el("pk-done");
+  if(d&&msg){d.hidden=false;d.innerHTML=msg;}
+  try{if(window.__HOME)__HOME.markAsked();}catch(e){}
+  go.hidden=false;setTimeout(function(){try{go.focus();}catch(e){}},reduce?0:260);}
+ function openBar(){
+  var bar=el("pk-bar");if(!bar)return;
+  if(!bar.getAttribute("data-built")){
+   try{if(window.__renderCityBar)__renderCityBar(bar);}catch(e){}
+   bar.setAttribute("data-built","1");}
+  bar.hidden=false;
+  var lb=el("pk-list");if(lb)lb.hidden=true;}
+ function armAsk(){
+  if(armed)return;armed=true;
+  var geo=el("pk-geo"),lst=el("pk-list"),skp=el("pk-skip"),bar=el("pk-bar");
+  /* never render a button whose only possible outcome is failure */
+  try{if(window.__HOME)__HOME.preflight(function(st){
+   if(st==="denied"||st==="unavailable"){if(geo)geo.hidden=true;openBar();
+    var n=el("pk-note");
+    if(n)n.textContent="This browser won't share a location with the site, so pick a city — the record is identical either way.";}});}catch(e){}
+  if(bar)bar.addEventListener("click",function(e){
+   var b=e.target&&e.target.closest?e.target.closest(".cb-chip"):null;if(!b)return;
+   e.stopPropagation();
+   resolveAsk("Drawing <b>"+b.textContent+"</b> — it will be ready when you reach the Ground chapter.");});
+  if(lst)lst.addEventListener("click",function(e){e.stopPropagation();openBar();});
+  if(skp)skp.addEventListener("click",function(e){e.stopPropagation();
+   resolveAsk("No problem — we'll show Seville as a worked example. You can set your place any time.");});
+  if(geo)geo.addEventListener("click",function(e){
+   e.stopPropagation();
+   geo.setAttribute("aria-busy","true");geo.textContent="Waiting for your browser…";
+   /* 3.5s in, offer the bar as well, so the screen is never dead while a prompt sits open */
+   var t=setTimeout(function(){var w=el("pk-wait");if(w&&!askResolved)w.hidden=false;
+    if(!askResolved)openBar();},3500);
+   try{__HOME.ask("intro",function(res,hm){
+    clearTimeout(t);geo.removeAttribute("aria-busy");
+    if(res==="granted"&&hm){geo.hidden=true;
+     resolveAsk("Your place: <b>"+Math.abs(hm.lat).toFixed(2)+"° "+(hm.lat<0?"S":"N")+", "+
+      Math.abs(hm.lon).toFixed(2)+"° "+(hm.lon<0?"W":"E")+"</b> — that is all we took, and it stays on this device.");}
+    else if(res==="denied"){geo.hidden=true;openBar();
+     resolveAsk("No problem — we won't ask again. Pick a city, or carry on and set it later.");}
+    else{geo.textContent="Try location again";openBar();
+     resolveAsk("Your browser couldn't fix a position just now — pick a city, or carry on.");}});}
+   catch(err){clearTimeout(t);geo.removeAttribute("aria-busy");openBar();resolveAsk(null);}});}
  function advance(){interacted=true;hint.hidden=true;
   if(!settled){settleNow();return;}
+  /* the ask is the last beat: a stray click or swipe must not resolve it by accident */
+  if(idx>=N-1&&hasAsk&&!askResolved){try{el("pk-geo").focus();}catch(e){}return;}
   if(idx>=N-1){endIntro(reopened);return;}show(idx+1);}
  function back(){interacted=true;if(idx>0)show(idx-1);}
  function goTo(i){interacted=true;hint.hidden=true;show(i);settleNow();}
@@ -2128,7 +2228,7 @@ var startIntro,endIntro;
  go.addEventListener("click",function(e){e.stopPropagation();endIntro(reopened);});
  document.addEventListener("keydown",function(e){if(intro.classList.contains("gone"))return;
   if(el("drawer").classList.contains("open"))return;
-  if(e.target&&e.target.closest&&e.target.closest("#intro-skip,#intro-go,#intro-dots"))return; // let a focused control activate natively (Enter/Space)
+  if(e.target&&e.target.closest&&e.target.closest("#intro-skip,#intro-go,#intro-dots,#pk-ask"))return; // let a focused control activate natively (Enter/Space)
   var k=e.key;
   if(k==="Escape"){endIntro(reopened);e.preventDefault();}
   else if(k==="ArrowRight"||k==="ArrowDown"||k==="Enter"||k===" "||k==="Spacebar"){advance();e.preventDefault();}
@@ -3940,6 +4040,7 @@ window.__HOME=__HOME;
    var c=H.city(b.getAttribute("data-slug"));if(!c)return;
    H.markAsked();H.set(H.fromCity(c,"bar"),{scroll:true});});}
  renderCityBar(el("gq-bar"));
+ window.__renderCityBar=renderCityBar;   /* the cold-open's #pk-bar is the second host */
  /* the examples row — always visible, so Seville is content rather than a home base you return to */
  var ex=el("gq-ex");
  if(ex)ex.addEventListener("click",function(e){
