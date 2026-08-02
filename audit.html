@@ -1,0 +1,44 @@
+<!doctype html><meta charset=utf-8><style>iframe{border:0}</style>
+<iframe id="f" style="width:390px;height:844px"></iframe>
+<script>
+var CH=["sky","ground","night","firstlight","morning","bedrock"],res=[],i=0;
+function scan(){
+ var d=document.getElementById("f").contentDocument;
+ var root=d.querySelector(".pane")||d.body;
+ var out={ch:CH[i],small:[],overlap:[],longline:[],blocks:0,words:0};
+ var els=[].slice.call(root.querySelectorAll("*"));
+ var leaves=els.filter(function(e){
+   if(!e.offsetParent&&getComputedStyle(e).position!=="fixed")return false;
+   var t=(e.textContent||"").trim(); if(!t)return false;
+   for(var k=0;k<e.children.length;k++) if((e.children[k].textContent||"").trim().length>t.length*0.8) return false;
+   return true;});
+ leaves.forEach(function(e){
+  var cs=getComputedStyle(e),fs=parseFloat(cs.fontSize),r=e.getBoundingClientRect();
+  var t=(e.textContent||"").replace(/\s+/g," ").trim();
+  if(fs<13&&t.length>3) out.small.push(fs.toFixed(1)+"|"+(e.id||e.className||e.tagName).toString().slice(0,22)+"|"+t.slice(0,32));
+  var ch=r.width/(fs*0.5);
+  if(ch>78&&t.length>60) out.longline.push(Math.round(ch)+"ch|"+(e.id||e.className||e.tagName).toString().slice(0,20));
+  out.words+=t.split(" ").length;
+ });
+ out.blocks=leaves.length;
+ // overlap: visible text leaves whose boxes intersect
+ for(var a=0;a<leaves.length;a++){for(var b=a+1;b<leaves.length;b++){
+   var A=leaves[a],B=leaves[b];
+   if(A.contains(B)||B.contains(A))continue;
+   var ra=A.getBoundingClientRect(),rb=B.getBoundingClientRect();
+   if(ra.width<4||rb.width<4)continue;
+   var ox=Math.min(ra.right,rb.right)-Math.max(ra.left,rb.left);
+   var oy=Math.min(ra.bottom,rb.bottom)-Math.max(ra.top,rb.top);
+   if(ox>8&&oy>8){var k=(A.id||A.className||A.tagName)+" X "+(B.id||B.className||B.tagName);
+     if(out.overlap.indexOf(k)<0&&out.overlap.length<6)out.overlap.push(String(k).slice(0,60));}
+ }}
+ res.push(out); i++; next();
+}
+function next(){
+ if(i>=CH.length){document.title="AUDIT::"+JSON.stringify(res);return;}
+ var f=document.getElementById("f");
+ f.onload=function(){setTimeout(scan,1800);};
+ f.src="index.html?embed="+CH[i]+"&live=0";
+}
+next();
+</script>

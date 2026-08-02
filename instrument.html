@@ -425,13 +425,13 @@ svg{display:block;width:100%;height:auto}
 /* The chapter's whole claim is that two things went OPPOSITE ways. Two numbers side by side state
    that; two numbers that visibly pull apart show it. They stack, sit still until the beat is seen,
    then separate — days sinking, nights rising — with the counts running up from zero as they go. */
-#n-diverge{display:flex;flex-direction:column;gap:10px;margin:20px 0 8px;max-width:460px;position:relative}
+#n-diverge{display:flex;flex-direction:column;gap:18px;margin:20px 0 8px;max-width:460px;position:relative}
 #n-diverge::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;
   background:rgba(242,231,204,.16)}
 #n-diverge .nd{transform:translateY(var(--from,0));opacity:.35;
   transition:transform 1.15s cubic-bezier(.22,.7,.2,1),opacity .8s ease}
-#n-diverge .nd-day{--from:16px}
-#n-diverge .nd-night{--from:-16px}
+#n-diverge .nd-day{--from:6px}
+#n-diverge .nd-night{--from:-6px}
 #n-diverge.go .nd{transform:translateY(0);opacity:1}
 @media(prefers-reduced-motion:reduce){#n-diverge .nd{transition:none;transform:none;opacity:1}}
 #n-diverge .nd{display:flex;align-items:center;gap:10px}
