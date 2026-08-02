@@ -422,7 +422,18 @@ svg{display:block;width:100%;height:auto}
 .presets button:hover{color:var(--bone);border-color:var(--amber)}
 .verdict .vsig{color:var(--amber);font-weight:600}
 /* Night: the two lines run opposite ways — show it, big and diverging */
-#n-diverge{display:flex;gap:16px 34px;flex-wrap:wrap;margin:18px 0 6px}
+/* The chapter's whole claim is that two things went OPPOSITE ways. Two numbers side by side state
+   that; two numbers that visibly pull apart show it. They stack, sit still until the beat is seen,
+   then separate — days sinking, nights rising — with the counts running up from zero as they go. */
+#n-diverge{display:flex;flex-direction:column;gap:10px;margin:20px 0 8px;max-width:460px;position:relative}
+#n-diverge::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;
+  background:rgba(242,231,204,.16)}
+#n-diverge .nd{transform:translateY(var(--from,0));opacity:.35;
+  transition:transform 1.15s cubic-bezier(.22,.7,.2,1),opacity .8s ease}
+#n-diverge .nd-day{--from:16px}
+#n-diverge .nd-night{--from:-16px}
+#n-diverge.go .nd{transform:translateY(0);opacity:1}
+@media(prefers-reduced-motion:reduce){#n-diverge .nd{transition:none;transform:none;opacity:1}}
 #n-diverge .nd{display:flex;align-items:center;gap:10px}
 #n-diverge .nd .ar{font-size:26px;line-height:1;font-weight:700}
 #n-diverge .nd .val{font-family:var(--mono);font-size:32px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
@@ -2804,9 +2815,33 @@ var buildNight=function(NV){
   (place+"&rsquo;s hot days fell. Its hot nights rose."):
   ("In "+place+", the nights climbed.");
  var dDelta=Math.round(dNow-dThen),nDelta=Math.round(nNow-nThen);
- if(el("n-diverge"))el("n-diverge").innerHTML=
-  '<div class="nd nd-day"><span class="ar">'+(dDelta<0?'▼':dDelta>0?'▲':'▬')+'</span><span class="val">'+(dDelta>0?'+':dDelta<0?'−':'')+Math.abs(dDelta)+'</span><span class="lab">hot days a year</span></div>'+
-  '<div class="nd nd-night"><span class="ar">'+(nDelta>0?'▲':nDelta<0?'▼':'▬')+'</span><span class="val">'+(nDelta>0?'+':nDelta<0?'−':'')+Math.abs(nDelta)+'</span><span class="lab">hot nights a year</span></div>';
+ if(el("n-diverge")){
+  el("n-diverge").innerHTML=
+   '<div class="nd nd-day"><span class="ar">'+(dDelta<0?'\u25bc':dDelta>0?'\u25b2':'\u25ac')+'</span><span class="val" data-to="'+Math.abs(dDelta)+'" data-sign="'+(dDelta>0?'+':dDelta<0?'\u2212':'')+'">'+(dDelta>0?'+':dDelta<0?'\u2212':'')+'0</span><span class="lab">hot days a year</span></div>'+
+   '<div class="nd nd-night"><span class="ar">'+(nDelta>0?'\u25b2':nDelta<0?'\u25bc':'\u25ac')+'</span><span class="val" data-to="'+Math.abs(nDelta)+'" data-sign="'+(nDelta>0?'+':nDelta<0?'\u2212':'')+'">'+(nDelta>0?'+':nDelta<0?'\u2212':'')+'0</span><span class="lab">hot nights a year</span></div>';
+  /* the counts run up as the two rows separate — the movement IS the finding. Driven from its own
+     IntersectionObserver rather than the shared .seen reveal, so it cannot be left un-fired by it. */
+  (function(){
+   var box=el("n-diverge"),vals=box.querySelectorAll(".val"),done=false;
+   var slow=(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches);
+   function run(){
+    if(done)return;done=true;box.classList.add("go");
+    for(var i=0;i<vals.length;i++)(function(v){
+     var to=+v.getAttribute("data-to")||0,sg=v.getAttribute("data-sign")||"";
+     if(slow){v.textContent=sg+to;return;}
+     var t0=null;
+     function step(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/1100);
+      v.textContent=sg+Math.round(to*(1-Math.pow(1-k,3)));
+      if(k<1)requestAnimationFrame(step);}
+     requestAnimationFrame(step);})(vals[i]);}
+   box.__run=run;                                  /* exposed so a test can fire it deterministically */
+   try{
+    if(!window.IntersectionObserver){run();return;}
+    var io=new IntersectionObserver(function(es){
+     for(var j=0;j<es.length;j++)if(es[j].isIntersecting){io.disconnect();run();return;}},{threshold:.35});
+    io.observe(box);
+   }catch(e){run();}})();
+ }
  var dVerb=(dDelta>0?"rose too, from about "+dThen.toFixed(0)+" to "+dNow.toFixed(0)+" a year":
             dDelta<0?"edged down a little too, from about "+dThen.toFixed(0)+" to "+dNow.toFixed(0)+" a year":
             "barely moved, about "+dThen.toFixed(0)+" a year");
