@@ -1551,40 +1551,16 @@ button.rr-row:hover{padding-left:6px}
           A claim you cannot check is an opinion. Everything here can be checked.</p>
         <div class="arch">
           <div class="hww" id="hww"></div>
-          <h2 style="font-size:15px;margin-top:18px">The sky&rsquo;s two horizons — brought to one date</h2>
-          <p class="hww" id="budget-notes" style="margin-top:6px"></p>
-          <div class="dtable" id="t-budget" tabindex="0"></div>
-          <div class="srcs" id="srcs"></div>
-          <h2 style="font-size:15px;margin-top:22px">Take it with you</h2>
-          <p class="hww" style="margin-top:6px;max-width:64ch">Image, citation or CSV &mdash; each carries its own source,
-            link and date, so it can never lose where it came from. Everything computed here is <b>CC BY 4.0</b>.</p>
-          <div id="takeaway"></div>
-          <h2 style="font-size:15px;margin-top:22px">The tab dot, and a promise</h2>
-          <p class="hww" style="margin-top:6px;max-width:64ch">A <b>&#9679;</b> in the browser tab means one thing: today
-            hit the hottest 5% for this date, or matched a same-date record, in the city shown. Nothing else earns it.</p>
-          <p class="hww" style="margin-top:6px;max-width:64ch"><b>This site cannot send notifications.</b> No server, no push.
-            Your last visit is remembered in this browser and sent nowhere.</p>
-
-          <h2 style="font-size:15px;margin-top:22px">What we can honestly know</h2>
-          <div id="impact-refuse">
-            <p class="hww" style="margin-top:6px;max-width:64ch"><b>We do not know you are here.</b> No analytics, no pixel,
-              no beacon, no cookie. We do not count visitors or sessions, or know how far you scrolled. The code is open &mdash;
-              you can confirm all of it is absent.</p>
-            <p class="hww" style="margin-top:6px;max-width:64ch">A climate record that surveilled its readers to prove it
-              mattered would be answering the wrong question. So the figures below are small on purpose: a star is a bookmark,
-              not a reader; a snapshot is a robot, not a person.</p>
-          </div>
-          <div id="impact-know" class="impwrap"></div>
-          <p class="hww" style="margin-top:16px;max-width:64ch"><a class="reuse-link" href="reuse.html">Reuse &amp; cite this &rarr;</a>
-            &mdash; the method in plain words, embeds, citations, the licence, and a printable classroom worksheet.</p>
-          <div class="bfb">
-            <p class="hww" style="margin:0 0 8px"><b>Found an error in a number or a source?</b> Nothing is sent unless you press send — these open a pre-filled draft you review and send yourself.</p>
-            <a class="bfb-btn bfb-teal" href="mailto:agoshbaranwal@gmail.com?subject=On%20Record%20%E2%80%94%20correction&amp;body=Chamber%3A%20Bedrock%0AWhat%20looks%20wrong%3A%0A%0AWhere%20it%20should%20come%20from%20(source)%3A%0A">Report a correction</a>
-            <a class="bfb-btn bfb-out" href="https://github.com/agoshbaranwal/on-record/issues/new?title=Correction%3A%20&amp;body=%2A%2APage%2Fchamber%3A%2A%2A%20%0A%2A%2AWhat%20looks%20wrong%3A%2A%2A%20%0A%2A%2AWhere%20it%20should%20come%20from%20(source%20%2B%20link)%3A%2A%2A%20%0A" target="_blank" rel="noopener">Open a GitHub issue<span class="sr-only"> (opens in a new tab)</span></a>
-          </div>
           <div class="limits" id="limits"></div>
+          <p class="hww" style="margin-top:18px;max-width:64ch">
+            <a class="reuse-link" href="reuse.html">Every source, the full method and the data &rarr;</a>
+            &mdash; the ~30 datasets and papers behind these numbers, the budget arithmetic in full,
+            citations you can paste, and a printable worksheet. It lives on its own page because a
+            reference is for looking things up, not for reading through.
+          </p>
+          <div class="bfb" id="takeaway"></div>
           <p class="colophon" id="colophon"></p>
-        </div>
+\n          <div hidden aria-hidden="true"><div id="t-budget"></div><div id="srcs"></div><div id="impact-know"></div><div id="impact-refuse"></div><div id="budget-notes"></div></div>\n</div>
       </section>
     </div>
   </div>
@@ -4287,6 +4263,9 @@ var __HOME=(function(){
    Math.abs(h.lon).toFixed(2)+"° "+(h.lon<0?"W":"E");
   /* "worked example — not your place" appears wherever an example is on screen, and vanishes
      the instant the home is really the reader's: that is what stops "example" reading "default". */
+  /* the heading is set here, synchronously, so it can never disagree with the label below it */
+  var gh=el("g-h2");
+  if(gh)gh.textContent="Here is "+h.name+", day by day, since 1940.";
   var tags=document.querySelectorAll(".place-tag");
   for(var i=0;i<tags.length;i++)tags[i].hidden=!h.ex;
   /* collapse or expand the picker to match what we already know */
