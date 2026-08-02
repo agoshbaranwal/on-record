@@ -1,0 +1,170 @@
+[
+ {
+  "slug": "mumbai",
+  "name": "Mumbai",
+  "lat": 19.08,
+  "lon": 72.88,
+  "iso3": "IND"
+ },
+ {
+  "slug": "dhaka",
+  "name": "Dhaka",
+  "lat": 23.81,
+  "lon": 90.41,
+  "iso3": "BGD"
+ },
+ {
+  "slug": "karachi",
+  "name": "Karachi",
+  "lat": 24.86,
+  "lon": 67.01,
+  "iso3": "PAK"
+ },
+ {
+  "slug": "jakarta",
+  "name": "Jakarta",
+  "lat": -6.21,
+  "lon": 106.85,
+  "iso3": "IDN"
+ },
+ {
+  "slug": "manila",
+  "name": "Manila",
+  "lat": 14.6,
+  "lon": 120.98,
+  "iso3": "PHL"
+ },
+ {
+  "slug": "shanghai",
+  "name": "Shanghai",
+  "lat": 31.23,
+  "lon": 121.47,
+  "iso3": "CHN"
+ },
+ {
+  "slug": "tokyo",
+  "name": "Tokyo",
+  "lat": 35.68,
+  "lon": 139.69,
+  "iso3": "JPN"
+ },
+ {
+  "slug": "dubai",
+  "name": "Dubai",
+  "lat": 25.2,
+  "lon": 55.27,
+  "iso3": "ARE"
+ },
+ {
+  "slug": "istanbul",
+  "name": "Istanbul",
+  "lat": 41.01,
+  "lon": 28.98,
+  "iso3": "TUR"
+ },
+ {
+  "slug": "lagos",
+  "name": "Lagos",
+  "lat": 6.45,
+  "lon": 3.39,
+  "iso3": "NGA"
+ },
+ {
+  "slug": "cairo",
+  "name": "Cairo",
+  "lat": 30.04,
+  "lon": 31.24,
+  "iso3": "EGY"
+ },
+ {
+  "slug": "nairobi",
+  "name": "Nairobi",
+  "lat": -1.29,
+  "lon": 36.82,
+  "iso3": "KEN"
+ },
+ {
+  "slug": "dar-es-salaam",
+  "name": "Dar es Salaam",
+  "lat": -6.79,
+  "lon": 39.21,
+  "iso3": "TZA"
+ },
+ {
+  "slug": "johannesburg",
+  "name": "Johannesburg",
+  "lat": -26.2,
+  "lon": 28.05,
+  "iso3": "ZAF"
+ },
+ {
+  "slug": "london",
+  "name": "London",
+  "lat": 51.51,
+  "lon": -0.13,
+  "iso3": "GBR"
+ },
+ {
+  "slug": "madrid",
+  "name": "Madrid",
+  "lat": 40.42,
+  "lon": -3.7,
+  "iso3": "ESP"
+ },
+ {
+  "slug": "moscow",
+  "name": "Moscow",
+  "lat": 55.76,
+  "lon": 37.62,
+  "iso3": "RUS"
+ },
+ {
+  "slug": "reykjavik",
+  "name": "Reykjavik",
+  "lat": 64.15,
+  "lon": -21.94,
+  "iso3": "ISL"
+ },
+ {
+  "slug": "mexico-city",
+  "name": "Mexico City",
+  "lat": 19.43,
+  "lon": -99.13,
+  "iso3": "MEX"
+ },
+ {
+  "slug": "sao-paulo",
+  "name": "Sao Paulo",
+  "lat": -23.55,
+  "lon": -46.63,
+  "iso3": "BRA"
+ },
+ {
+  "slug": "lima",
+  "name": "Lima",
+  "lat": -12.05,
+  "lon": -77.04,
+  "iso3": "PER"
+ },
+ {
+  "slug": "new-york",
+  "name": "New York",
+  "lat": 40.71,
+  "lon": -74.01,
+  "iso3": "USA"
+ },
+ {
+  "slug": "vancouver",
+  "name": "Vancouver",
+  "lat": 49.28,
+  "lon": -123.12,
+  "iso3": "CAN"
+ },
+ {
+  "slug": "sydney",
+  "name": "Sydney",
+  "lat": -33.87,
+  "lon": 151.21,
+  "iso3": "AUS"
+ }
+]

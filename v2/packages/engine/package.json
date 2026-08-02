@@ -1,0 +1,7 @@
+{
+  "name": "@onrecord/engine",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Place-record engine ported from the v1 single-file build, with an injected clock so it is testable.",
+  "scripts": { "test": "node --experimental-strip-types --test test/parity.test.mts" }
+}

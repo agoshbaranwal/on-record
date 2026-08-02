@@ -10,3 +10,8 @@ mockup*.json
 compute_mockup.py
 .DS_Store
 __pycache__/
+
+# v2 rebuild
+v2/**/node_modules/
+v2/**/fixtures/*.json
+v2/.next/
