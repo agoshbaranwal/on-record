@@ -1064,7 +1064,7 @@ button.rr-row:hover{padding-left:6px}
       <div id="hzn-hi" aria-hidden="true"><span class="hl" id="hlab-hi"></span></div>
       <div id="hzn-lo" aria-hidden="true"><span class="hl" id="hlab-lo"></span></div>
       <div id="skyaxis" aria-hidden="true"></div>
-      <div id="band" tabindex="0" role="button" aria-describedby="band-whisper"><span class="band-tag" id="band-tag" aria-hidden="true">two ledgers, one answer</span><span class="whisper" id="band-whisper"></span></div>
+      <div id="band" tabindex="0" role="button" aria-describedby="band-whisper"><span class="band-tag" id="band-tag" aria-hidden="true">counted twice, same answer</span><span class="whisper" id="band-whisper"></span></div>
       <div id="ghost" aria-hidden="true"><span id="ghost-lab"></span></div>
     </div>
     <div id="skycap"><span class="zsub" id="skyctx"></span><span class="zname" id="skyname"></span><span class="zsub" id="skysub"></span>
@@ -1178,7 +1178,7 @@ button.rr-row:hover{padding-left:6px}
                 smoke blocks &mdash; calibrated to named sources (AERONET, NASA, NOAA); descriptive, not a claim that
                 CO&#8322; colours the air on any given day.</p>
             </div>
-            <button class="drawbtn" data-drawer="sky">Receipts &amp; why this is smoke, not carbon</button>
+            <button class="drawbtn" data-drawer="sky">Sources &amp; why this is smoke, not carbon</button>
           </div>
 
           <!-- the ground tease rides the END of the smoke beat: a whole snapped screen whose
@@ -1247,7 +1247,7 @@ button.rr-row:hover{padding-left:6px}
             <div id="g-fact"></div>
             <p class="fact-line" id="g-freq"></p>
             <p class="receipt" id="g-receipt"></p>
-            <button class="drawbtn" data-drawer="ground">Receipts &amp; the full record</button>
+            <button class="drawbtn" data-drawer="ground">Sources &amp; the full record</button>
           </div>
 
           <!-- BEAT 3 — today against 86 versions of today, and the finder -->
@@ -1309,7 +1309,7 @@ button.rr-row:hover{padding-left:6px}
               <p id="n-ex-lead"></p>
               <p class="receipt" id="n-rec-ex"></p>
             </section>
-            <button class="drawbtn" data-drawer="night">Receipts &amp; why the split</button>
+            <button class="drawbtn" data-drawer="night">Sources &amp; why days and nights differ</button>
             <p class="beat-cue">one more count before the good news &mdash; the people on your side &darr;</p>
           </div>
         </div>
@@ -1361,7 +1361,7 @@ button.rr-row:hover{padding-left:6px}
               </div>
               <p class="sep89 show" id="pg-give"></p>
             </div>
-            <button class="drawbtn" data-drawer="firstlight">Receipts &amp; the study</button>
+            <button class="drawbtn" data-drawer="firstlight">Sources &amp; the study</button>
             <p class="beat-cue">time for the numbers moving the right way &mdash; daylight &darr;</p>
           </div>
         </div>
@@ -1373,7 +1373,7 @@ button.rr-row:hover{padding-left:6px}
           <!-- BEAT 1 — the measured good news -->
           <div class="beat">
             <h2 tabindex="-1">The record also holds good news,<br>all of it measured.</h2>
-            <p class="lead">None of this is a promise. It is a ledger of what has already moved &mdash;
+            <p class="lead">None of this is a promise. It is a list of what has already moved &mdash;
               each with a source, each still short of safe.</p>
             <div class="ledger">
               <!-- 1. a SHARE of a named whole: the world's electricity -->
@@ -2652,7 +2652,7 @@ function buildGround(V){
     ("measured against "+t.n+" years of this date.")));
   el("g-today").innerHTML=(t.tmax!=null?t.tmax.toFixed(1)+"°":"—")+
    "<small> forecast, "+t.dateLabel+" <span class=\"chip\">"+
-   (t.mode==="live"?"live · provisional":"snapshot · built "+t.fetched)+"</span></small>";
+   (t.mode==="live"?"live · not final until the day ends":"snapshot · built "+t.fetched)+"</span></small>";
   /* the then→now doubling, DRAWN — two bars scaled to a shared max, then one sharp line + the honest caveat.
      All numbers are live (thenN/nowN/wn* recompute per city via the picker); nothing hardcoded. */
   var gThen=Math.round(thenN),gNow=Math.round(nowN),gMax=Math.max(gThen,gNow,1),gD=gNow-gThen;
@@ -2688,7 +2688,7 @@ function buildGround(V){
     "forecast provisional, unadjusted (forecast and reanalysis differ slightly)":
     "forecast adjusted "+(t.bias<0?"+":"−")+Math.abs(t.bias).toFixed(1)+
     " °C for the measured reanalysis offset · newest observation "+F.newest_obs)+
-   " · baselines 1951–80 vs "+(LF-9)+"–"+LF;
+   " · compared against 1951–80 and "+(LF-9)+"–"+LF;
   var off=(function(){var d=new Date(t.dateISO+"T00:00:00Z");
    var a=CUSTOM?new Date(V.anchorISO+"T00:00:00Z"):new Date(Date.UTC(+t.dateISO.slice(0,4),5,8));
    return Math.round((d.getTime()-a.getTime())/864e5);})();
@@ -2794,7 +2794,7 @@ var buildNight=function(NV){
  el("delhi-receipt").innerHTML="days ≥"+thrHs+" °C: <b>"+(+dThen).toFixed(1)+"→"+(+dNow).toFixed(1)+
   "</b>/yr · nights ≥"+thrNs+" °C: <b>"+(+nThen).toFixed(1)+"→"+(+nNow).toFixed(1)+"</b>/yr · "+
   (CUSTOM?"thresholds are the place&rsquo;s own 1951–80 95th percentiles · ":"")+
-  "1951–80 avg vs "+(LF-9)+"–"+LF+" avg · ERA5 · 11-yr rolling mean bold · descriptive, not attribution"+
+  "1951–80 avg vs "+(LF-9)+"–"+LF+" avg · ERA5 · 11-year average in bold · we show the record, not the cause"+
   (CUSTOM?"":" · pick any city in Ground and this chapter follows it");
  var dTrend=dayFell?"— edging down":(dNow>dThen+1?"— climbing":"— flat");
  var nTrend=nNow>nThen+1?"— climbing":(nNow<nThen-1?"— edging down":"— flat");
@@ -3220,7 +3220,7 @@ var __ART=(function(){
  }
  function twoLedgers(x,rx,ry,r,story){var rows=[[r.loName,R(r.lo),r.loYrs],[r.hiName,R(r.hi),r.hiYrs]];
   var lh=story?58:52;
-  put(x,"two ledgers, one answer",rx,ry-26,story?26:18,SG,INK2,"left",0);
+  put(x,"counted twice, same answer",rx,ry-26,story?26:18,SG,INK2,"left",0);
   rows.forEach(function(row,i){var y=ry+i*lh;
    x.strokeStyle=HAIR;x.lineWidth=1;x.beginPath();x.moveTo(rx,y+8);x.lineTo(rx+(story?940:440),y+8);x.stroke();
    put(x,row[0],rx,y,story?28:21,MONO,INK,"left",0);
@@ -3278,7 +3278,7 @@ var __ART=(function(){
   if(key==="seville"){L.push("year,days_ge_35C,warm_nights_ge_25C,anomaly_C_vs_1951-80");
    var nb={};G.warm_nights_ge25_per_year.forEach(function(d){nb[d.year]=d.n;});var y0=S.year0;
    G.days_ge35_per_year.filter(function(d){return d.year<=LASTFULL;}).forEach(function(d){L.push(d.year+","+d.n+","+(nb[d.year]!=null?nb[d.year]:"")+","+(S.anom[d.year-y0]!=null?S.anom[d.year-y0].toFixed(2):""));});
-  }else if(key==="budget"){L.push("ledger,gtco2_remaining_now,gt_per_year,years_left,exhaustion_year");
+  }else if(key==="budget"){L.push("source,gtco2_remaining_now,gt_per_year,years_left,exhaustion_year");
    [B.estimates[0],B.estimates[1]].forEach(function(e){var sn=/IGCC/i.test(e.label||"")?"IGCC 2025":"GCB 2025";
     L.push(sn+","+e.remaining_now_gt.toFixed(1)+","+B.rate_now_gt+","+e.years_at_now.toFixed(2)+","+R(B.now_dec+e.remaining_now_gt/B.rate_now_gt));});
   }else if(key==="perception"){L.push("measure,percent,note");
@@ -3414,8 +3414,8 @@ window.__ART=__ART;   // exposed for the build-time OG bake
 
 /* ============ DRAWER ============ */
 var DRAWERS={
- sky:{t:"The sky's arithmetic",h:function(){
-  return "<h4>Two ledgers, one date</h4><p>"+B.notes.join(" ")+"</p>"+
+ sky:{t:"How this number is worked out",h:function(){
+  return "<h4>Two teams, one date</h4><p>"+B.notes.join(" ")+"</p>"+
    tableHTML(["Estimate","Published","From","Emitted since","Remaining","Years @ "+RNOW],
     B.estimates.map(function(e){return [e.label,e.gt+" Gt",e.anchor.replace("counted from ",""),
      e.elapsed_gt+" Gt",e.remaining_now_gt+" Gt",e.years_at_now.toFixed(2)];}))+
@@ -3577,7 +3577,7 @@ function buildNightExample(){
  el("n-rec-ex").innerHTML="Delhi &middot; days &ge;35&nbsp;&deg;C: <b>"+(+dThen).toFixed(1)+"&rarr;"+(+dNow).toFixed(1)+
   "</b>/yr &middot; nights &ge;25&nbsp;&deg;C: <b>"+(+nThen).toFixed(1)+"&rarr;"+(+nNow).toFixed(1)+
   "</b>/yr &middot; 1951&ndash;80 average vs the last ten full years &middot; ERA5 via Open-Meteo &middot; "+
-  "descriptive, not attribution.";
+  "we show the record, not the cause.";
 }
 
 var __PLACE=(function(){
@@ -3651,8 +3651,8 @@ var __PLACE=(function(){
     S:{year0:1940,anom:anom},
     G:{days_ge35_per_year:series(cH),warm_nights_ge25_per_year:series(cN)},
     thr:{hot:thrHot,night:thrNight,
-     hotLabel:"above its own old-normal 95th percentile ("+thrHot.toFixed(1)+" °C)",
-     nightLabel:"below its night 95th percentile ("+thrNight.toFixed(1)+" °C)"}},
+     hotLabel:"hotter than 95% of days here in 1951\u201380 (above "+thrHot.toFixed(1)+" °C)",
+     nightLabel:"below "+thrNight.toFixed(1)+" °C \u2014 warmer than 95% of nights here in 1951\u201380"}},
    t:{mode:"live",tmax:fc,comparable:fc,dateISO:todayISO,dateLabel:dLabel(todayISO),
       fetched:todayISO,rec:rec,recy:recy,n:exact.length,pct:pct,   // null when this place has no same-date record — never synthesize a "0.0 °C" mark
       bias:0,h40a:0,h40b:0}};}
