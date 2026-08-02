@@ -576,6 +576,12 @@ body.ch-bedrock #mast,body.ch-bedrock #budget-band{opacity:0!important;pointer-e
   max-width:54ch;margin:0 0 14px;padding:10px 14px;border-left:2px solid var(--amber);
   background:rgba(3,16,18,.34);border-radius:0 6px 6px 0;text-shadow:var(--halo)}
 @media(max-width:640px){.page-what{font-size:14.5px;margin-bottom:12px;padding:9px 12px}}
+/* the page says whose numbers these are whenever it is not the place named above them */
+#place-state{font-family:var(--sg);font-size:14.5px;line-height:1.5;max-width:54ch;margin:0 0 12px;
+  padding:10px 14px;border-radius:6px;text-shadow:var(--halo)}
+#place-state.ps-wait{color:var(--bone-2);background:rgba(3,16,18,.4);border-left:2px solid var(--bone-3)}
+#place-state.ps-warn{color:var(--bone);background:rgba(240,188,98,.14);border-left:2px solid var(--amber)}
+#place-state[hidden]{display:none}
 #homepick{margin:14px 0 6px;max-width:640px}
 #homenow{font-size:15px;line-height:1.5;color:var(--bone-2);margin:12px 0 4px;text-shadow:var(--halo)}
 #homenow b{color:var(--bone);font-weight:600}
@@ -4291,7 +4297,9 @@ var __HOME=(function(){
   try{if(__SKY&&__SKY.setPlace)__SKY.setPlace({name:h.name,lat:h.lat,lon:h.lon,tz:h.tz,tzl:""},false);}catch(e){}
   pgSync(h);labelsRefresh();
   if(h.ex==="seville"){if(__PLACE&&__PLACE.reset)__PLACE.reset();}
-  else if(__PLACE&&__PLACE.pick)__PLACE.pick(h.lat,h.lon,h.name,GEN,{scroll:opts.scroll!==false});
+  else if(__PLACE&&__PLACE.pick){
+   placeState("pending",h.name);
+   __PLACE.pick(h.lat,h.lon,h.name,GEN,{scroll:opts.scroll!==false});}
   if(opts.persist!==false&&h.src!=="link")put(KEY,JSON.stringify(h));}
  /* the ONLY caller of getCurrentPosition in the file, and only ever from a real click */
  function ask(origin,onDone){
@@ -4326,8 +4334,23 @@ var __HOME=(function(){
  /* the record __PLACE just computed for this home, so the Morning letter and the share card
     can quote the reader's OWN numbers instead of the worked example's */
  var LASTV=null;
- function drawn(g,out){if(g===GEN&&out&&out.V)LASTV=out.V;}
- function failed(g){if(g===GEN)LASTV=null;}
+ function drawn(g,out){if(g!==GEN)return;LASTV=out&&out.V?out.V:null;placeState("ok");}
+ function failed(g,transient){if(g!==GEN)return;LASTV=null;
+  placeState(transient?"retry":"failed",HOME&&HOME.name);}
+ /* The page states which place its NUMBERS belong to whenever that is not the place named above
+    them. A mixed state is survivable if it explains itself; it is only dishonest when silent. */
+ function placeState(state,name){
+  var pane=el("p-ground"),bar=el("place-state");
+  if(!bar){bar=document.createElement("p");bar.id="place-state";bar.setAttribute("aria-live","polite");
+   var host=el("homepick");if(host&&host.parentNode)host.parentNode.insertBefore(bar,host);}
+  if(pane)pane.classList.toggle("mixed",state!=="ok");
+  if(state==="ok"){bar.hidden=true;bar.textContent="";return;}
+  bar.hidden=false;
+  bar.className=state==="pending"?"ps-wait":"ps-warn";
+  bar.textContent=
+   state==="pending"?("Drawing "+(name||"your place")+"\u2019s record\u2026 the figures below are still Seville, the worked example."):
+   state==="retry" ?("Couldn\u2019t reach the weather archive for "+(name||"your place")+" just now \u2014 the figures below are Seville, the worked example. Try again in a moment."):
+                    ("We don\u2019t have a long enough record for "+(name||"that place")+" \u2014 the figures below are Seville, the worked example.");}
  return {get:function(){return HOME;},gen:function(){return GEN;},set:set,boot:boot,ask:ask,
          drawn:drawn,failed:failed,series:function(){return LASTV?LASTV.G:null;},
          cities:function(){return WORLD_CITIES;},regions:REGN,examples:EXAMPLES,city:city,
