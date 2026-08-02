@@ -522,6 +522,12 @@ svg{display:block;width:100%;height:auto}
   #recwin::after{content:"swipe the chart sideways \2192";display:block;font-family:var(--mono);
     font-size:11px;color:var(--bone-4);margin-top:6px}
 }
+/* the masthead steps aside in the one chapter that scrolls with the page */
+body.ch-bedrock #mast,body.ch-bedrock #budget-band{opacity:0!important;pointer-events:none!important;transition:opacity .35s ease}
+/* receipts were running the full width of a desktop screen in 11px mono — unreadable as a line
+   length and shapeless as a block. Cap them like every other reading column. */
+.receipt,#g-receipt,#delhi-receipt,#n-rec-ex{max-width:62ch;font-size:12.5px;line-height:1.65}
+@media(max-width:640px){.receipt,#g-receipt,#delhi-receipt,#n-rec-ex{font-size:12px}}
 #homepick{margin:14px 0 6px;max-width:640px}
 #homenow{font-size:15px;line-height:1.5;color:var(--bone-2);margin:12px 0 4px;text-shadow:var(--halo)}
 #homenow b{color:var(--bone);font-weight:600}
@@ -2104,6 +2110,13 @@ function scrollToChamber(i){var a=chamberAnchor(i);
 var chamberSettled=-1;
 var fdReset=null;   // the fire-day beat exposes its reset here so leaving Sky can re-arm it
 function enterChamber(i){
+ /* Bedrock scrolls with the page now, so its text would slide under the FIXED masthead — the
+    overlap Agosh screenshotted. The mast carries "where you are" and "what is this", neither of
+    which the sources chapter needs, so it steps aside there. */
+ try{var _bd=!!(CH[i]&&CH[i].id==="bedrock");
+  document.body.classList.toggle("ch-bedrock",_bd);
+  ["mast","budget-band"].forEach(function(id){var e=el(id);if(!e)return;
+   e.style.opacity=_bd?"0":"";e.style.pointerEvents=_bd?"none":"";});}catch(e){}
  i=Math.max(0,Math.min(CH.length-1,i));
  if(i===chamberSettled)return;
  var c=CH[i],prevI=chamberSettled<0?i:chamberSettled,prev=CH[prevI];
@@ -2683,9 +2696,9 @@ function buildGround(V){
   el("g-freq").textContent=(t.h40a||t.h40b)?
    ("A 40 °C day within two weeks of this date came "+t.h40a+" summers in 30 (1951–80). "+
     "In the last thirty years: "+t.h40b+" in 30."):"";
-  el("g-receipt").innerHTML=(t.pct!=null?(ord(t.pct)+" percentile of the two weeks around "+t.dateLabel+" since 1940 · "):"")+
-   "ERA5 reanalysis via Open-Meteo · "+(CUSTOM?
-    "forecast provisional, unadjusted (forecast and reanalysis differ slightly)":
+  el("g-receipt").innerHTML=(t.pct!=null?("Hotter than "+t.pct+"% of days around this date since 1940 · "):"")+
+   "ERA5 via Open-Meteo · "+(CUSTOM?
+    "today is a forecast, not yet measured":
     "forecast adjusted "+(t.bias<0?"+":"−")+Math.abs(t.bias).toFixed(1)+
     " °C for the measured reanalysis offset · newest observation "+F.newest_obs)+
    " · compared against 1951–80 and "+(LF-9)+"–"+LF;
@@ -2918,7 +2931,7 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
  if(D.giving)el("pg-give").innerHTML="Rather give than talk? The 1% has somewhere vetted to go: <b>"+
   D.giving.orgs.map(function(o){return o.n;}).join("</b> · <b>")+
   "</b> (Giving Green 2025&ndash;26), or the pooled <b>"+
-  D.giving.funds.map(function(f){return f.n;}).join("</b> / <b>")+"</b>. Names and honest caveats in the receipts.";
+  D.giving.funds.map(function(f){return f.n;}).join("</b> / <b>")+"</b>. Names and honest caveats in the sources.";
 
  /* ---- Ask one: the finding becomes an act, and propagates ---- */
  var askText="";
