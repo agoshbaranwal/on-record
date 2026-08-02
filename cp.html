@@ -1,0 +1,14 @@
+<!doctype html><meta charset=utf-8><style>iframe{width:900px;height:800px;border:0}</style>
+<iframe id="f" src="index.html?intro=0&live=0"></iframe>
+<script>setTimeout(function(){try{var d=document.getElementById("f").contentDocument,o=[];
+ d.getElementById("wg-in").value="40"; d.getElementById("wg-go").click();
+ setTimeout(function(){
+  var box=d.getElementById("wg-dots"), dots=box.querySelectorAll("i");
+  o.push("dots="+dots.length);
+  var yes=box.querySelectorAll("i.yes").length, ex=box.querySelectorAll("i.extra").length;
+  o.push("guessed(yes)="+yes+" extra="+ex+" total lit="+(yes+ex));
+  o.push("markPlaced="+(box.querySelectorAll("i.mark").length===1));
+  o.push("key="+(d.getElementById("wg-key").textContent||"").replace(/\s+/g," "));
+  o.push("out="+(d.getElementById("wg-out").textContent||"").slice(0,60));
+  document.title="PROBE::"+o.join(" ~ ");},4200);
+ }catch(e){document.title="ERR "+e.message;}},3000);</script>

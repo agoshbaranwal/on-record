@@ -499,6 +499,22 @@ svg{display:block;width:100%;height:auto}
 #yr-out .yr-val{font-family:var(--mono);font-size:17px;font-weight:700;color:var(--amber);letter-spacing:-.01em}
 
 /* --- the ONE place picker: your location, or a city, or any place on Earth --- */
+/* ── the crowd: 100 people, and the ones you did not know were with you ───────── */
+#wg-dots{display:grid;grid-template-columns:repeat(20,1fr);gap:5px;max-width:420px;margin:16px 0 8px}
+#wg-dots.on{margin-top:20px}
+#wg-dots i{display:block;aspect-ratio:1;border-radius:50%;background:rgba(242,231,204,.13);
+  transform:scale(.55);opacity:.5;transition:background .45s ease,transform .45s ease,opacity .45s ease}
+#wg-dots i.yes{background:var(--amber);transform:scale(1);opacity:1;
+  box-shadow:0 0 7px rgba(240,188,98,.55)}
+#wg-dots i.extra{background:var(--amber);transform:scale(1);opacity:1;
+  box-shadow:0 0 12px rgba(240,188,98,.85)}
+#wg-dots i.mark{outline:2px solid rgba(242,231,204,.75);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){#wg-dots i{transition:none}}
+#wg-key{font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--bone-3);
+  max-width:44ch;margin:2px 0 0;text-shadow:var(--halo)}
+#wg-key b{color:var(--amber)}
+#wg-key .kx{color:var(--bone-2)}
+@media(max-width:640px){#wg-dots{grid-template-columns:repeat(20,1fr);gap:4px;max-width:100%}}
 /* FIRST LIGHT — guess before you are told */
 #wg-ask{margin:14px 0 6px;max-width:52ch}
 #wg-ask label{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.05em;
@@ -1340,14 +1356,18 @@ button.rr-row:hover{padding-left:6px}
               <button type="button" id="wg-go">show me</button></span>
             </div>
             <p id="wg-out" aria-live="polite"></p>
+            <!-- 100 people. The finding stops being a sentence and becomes a thing you look at:
+                 the crowd lights up past where you guessed it would stop. -->
+            <div id="wg-dots" aria-hidden="true"></div>
+            <p id="wg-key" aria-hidden="true"></p>
             <p class="beat-cue">now find your own country &darr;</p>
           </div>
           <!-- BEAT 2 — your country, the lamps, and where money helps -->
           <div class="beat">
             <h2>Not one country. All of them.</h2>
-            <p class="lead">Every surveyed country is a thread here, from what people <b>guess</b> (cold)
-              to what is <b>true</b> (gold). In all 125, the truth sits further right. Pick your country
-              to find its thread.</p>
+            <!-- the explanation of what "guess vs true" means now happens in the crowd above,
+                 by watching it. This screen only has to say: it is every country, not just yours. -->
+            <p class="lead">Every surveyed country, same gap. Find yours.</p>
             <div id="pgwrap">
               <div id="pg-pick">
                 <select id="pg-sel" aria-label="Choose a country"></select>
@@ -2915,8 +2935,8 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
      surveyed are under 50% — so an Egyptian reader was told "31 of every 100 … the majority is
      real" on the same screen as the number that contradicts it. The gap is the finding; whether
      it clears half is a separate fact, and the sentence now follows the data either way. */
-  el("pg-kick").innerHTML="In <b>"+c.place+"</b>, <b>"+A+" of every 100</b> would give 1% of their income, "+
-   "every month, to fight warming. People "+(c.place==="World"?"":"there ")+"guess just <b>"+G+"</b>. "+
+  el("pg-kick").innerHTML="In <b>"+c.place+"</b>: <b>"+A+"</b> of every 100 would give. "+
+   "People "+(c.place==="World"?"":"there ")+"guess <b>"+G+"</b>. "+
    (A>=50?"The majority is real &mdash; it just can&rsquo;t see itself."
          :"Still far more than anyone there thinks &mdash; the support is undercounted, by the people who hold it.");
   el("pg-sep").innerHTML=(c.govt!=null?
@@ -4388,12 +4408,35 @@ window.__HOME=__HOME;
   var v=parseInt(inp.value,10);
   var head=isFinite(v)?("You guessed <b>"+Math.max(0,Math.min(100,v))+"</b>. "):"";
   var mine=isFinite(v)?Math.max(0,Math.min(100,v)):null;
-  out.innerHTML=head+"Worldwide, <b>"+TRUE_YES+" of every 100</b> said yes. "+
-   "The average guess was <b>"+TRUE_GUESS+"</b>"+
-   (mine!=null&&mine<TRUE_YES?" &mdash; and you undercounted them too."
-    :mine!=null?" &mdash; you saw them more clearly than most.":".")+
-   " Almost everyone is surrounded by more support than they can see.";
-  el("wg-ask").hidden=true;}
+  out.innerHTML=head+"Worldwide, <b>"+TRUE_YES+" of every 100</b> said yes.";
+  el("wg-ask").hidden=true;
+  /* draw the hundred, then let the crowd fill past the guess — the gap is the point, and it is
+     something you watch happen rather than a sentence you are asked to believe */
+  var box=el("wg-dots");if(!box)return;
+  box.className="on";box.innerHTML="";
+  var dots=[];
+  for(var i=0;i<100;i++){var s=document.createElement("i");box.appendChild(s);dots.push(s);}
+  var start=(mine!=null?mine:TRUE_GUESS);
+  var slow=(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches);
+  function light(from,to,cls,step,done){
+   var k=from;
+   (function tick(){
+    if(k>=to){if(done)done();return;}
+    dots[k].className=cls;k++;
+    if(slow){while(k<to){dots[k].className=cls;k++;}if(done)done();return;}
+    setTimeout(tick,step);})();}
+  /* first: the number you expected */
+  light(0,start,"yes",slow?0:14,function(){
+   if(dots[start-1])dots[start-1].classList.add("mark");
+   setTimeout(function(){
+    /* then: the ones you did not know were there */
+    light(start,TRUE_YES,"extra",slow?0:26,function(){
+     var extra=TRUE_YES-start;
+     el("wg-key").innerHTML=(mine!=null
+      ? ("<span class=\"kx\">you guessed "+start+"</span> &middot; <b>"+extra+" more</b> than you thought"+
+         (extra>0?" were already with you":""))
+      : ("<span class=\"kx\">most people guess "+TRUE_GUESS+"</span> &middot; <b>"+extra+" more</b> are already with them"));
+    });},slow?0:420);});}
  go.addEventListener("click",reveal);
  inp.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();reveal();}});})();
 
