@@ -440,6 +440,20 @@ svg{display:block;width:100%;height:auto}
 #n-diverge .nd .lab{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--bone-2);max-width:11ch;line-height:1.3;text-shadow:var(--halo)}
 #n-diverge .nd-day .ar,#n-diverge .nd-day .val{color:#8FC0EA}
 #n-diverge .nd-night .ar,#n-diverge .nd-night .val{color:#EE9E80}
+/* the risk gradient: calm on the left, severe on the right, the reader's choice marked on it */
+#warmscale{margin:14px 0 2px;max-width:460px}
+#warmscale .ws-bar{position:relative;height:9px;border-radius:6px;
+  background:linear-gradient(90deg,#3E7F8C 0%,#6E9E7A 22%,#C9B26A 45%,#D98B52 68%,#B4472F 100%)}
+#warmscale .ws-tick{position:absolute;top:-3px;bottom:-3px;width:1px;background:rgba(3,16,18,.55)}
+#warmscale .ws-mark{position:absolute;top:50%;width:15px;height:15px;border-radius:50%;
+  background:var(--bone);border:2px solid rgba(3,16,18,.55);transform:translate(-50%,-50%);left:0;
+  box-shadow:0 0 10px rgba(3,16,18,.5);transition:left .7s cubic-bezier(.3,.6,.2,1)}
+#warmscale .ws-lab{position:relative;height:15px;margin-top:5px}
+#warmscale .ws-lab span{position:absolute;transform:translateX(-50%);font-family:var(--mono);
+  font-size:10.5px;letter-spacing:.04em;color:var(--bone-3);text-shadow:var(--halo)}
+#warmscale .ws-note{margin-top:7px;font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;
+  color:var(--bone-2);text-shadow:var(--halo);min-height:1.5em}
+@media(prefers-reduced-motion:reduce){#warmscale .ws-mark{transition:none}}
 .verdict{margin-top:14px;font-size:16px;line-height:1.5;color:var(--bone);max-width:52ch;
   text-wrap:pretty;text-shadow:var(--halo)}
 .verdict b{color:var(--amber);font-weight:500}
@@ -1188,6 +1202,19 @@ button.rr-row:hover{padding-left:6px}
                 <button type="button" data-rate="63">a world that speeds up</button>
               </div>
               <p class="verdict" id="verdict" aria-live="off"></p>
+              <!-- The dial answered with a bare decimal. "1.5 C is a gradient of rising risk, not a
+                   cliff" is the site's own charter line — so show the gradient and put the reader's
+                   choice ON it. No new number: the same 2100 figure, placed instead of stated. -->
+              <div id="warmscale" aria-hidden="true">
+                <div class="ws-bar"><i class="ws-mark" id="ws-mark"></i>
+                  <span class="ws-tick" style="left:16.7%"></span>
+                  <span class="ws-tick" style="left:33.3%"></span>
+                  <span class="ws-tick" style="left:66.7%"></span>
+                </div>
+                <div class="ws-lab"><span style="left:16.7%">1.5&deg;</span><span style="left:33.3%">2&deg;</span>
+                  <span style="left:66.7%">3&deg;</span></div>
+                <p class="ws-note" id="ws-note"></p>
+              </div>
               <p class="burnedtick num" id="burned" aria-live="off"></p>
               <p class="foot"><button type="button" id="reset">reset to today</button><button
                 type="button" id="copysky">copy this sky</button></p>
@@ -2444,7 +2471,15 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
   var w21=SKYW.warm(target,74);
   if(el("verdict")){
    el("verdict").innerHTML="2100 arrives about <b>"+w21.toFixed(1)+"&nbsp;&deg;C</b> hotter than the 1800s. The budget runs dry around <b>"+yA+"</b>."+
-    (target<=12?" <span class=\"vsig\">The calm blue future.</span>":(target>=55?" <span class=\"vsig\">The sky to fear.</span>":""));}
+    (target<=12?" <span class=\"vsig\">The calm blue future.</span>":(target>=55?" <span class=\"vsig\">The sky to fear.</span>":""));
+   /* place that same figure on the gradient: 1 C at the left edge, 4 C at the right */
+   var mk=el("ws-mark");
+   if(mk){var f=Math.max(0,Math.min(1,(w21-1)/3));mk.style.left=(f*100).toFixed(1)+"%";}
+   var nt=el("ws-note");
+   if(nt)nt.textContent=(w21<1.5?"inside 1.5 °C — no version of this is on the table today"
+     :w21<2?"past 1.5 °C, short of 2 — every tenth of a degree is more risk"
+     :w21<3?"past 2 °C — the range the Paris agreement was written to avoid"
+     :"past 3 °C — beyond anything the modern world has lived in");}
   el("hlab-lo").innerHTML="<b>"+Math.round(LO.remaining_now_gt)+" Gt</b> · "+srcShort(LO)+" · runs out ~"+yA;
   if(el("lead-gt"))el("lead-gt").textContent=Math.round(LO.remaining_now_gt);
   el("hlab-hi").innerHTML="<b>"+Math.round(HIe.remaining_now_gt)+" Gt</b> · "+srcShort(HIe)+" · same answer";
