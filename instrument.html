@@ -569,6 +569,13 @@ body.ch-bedrock #mast,body.ch-bedrock #budget-band{opacity:0!important;pointer-e
    length and shapeless as a block. Cap them like every other reading column. */
 .receipt,#g-receipt,#delhi-receipt,#n-rec-ex{max-width:62ch;font-size:12.5px;line-height:1.65}
 @media(max-width:640px){.receipt,#g-receipt,#delhi-receipt,#n-rec-ex{font-size:12px}}
+/* Stated, never inferred. Agosh's test users could not tell what the site was or what to take
+   from it, because every heading was written as if the reader already knew. Each chapter now
+   opens by saying plainly what it shows. This is the first line on the page, deliberately. */
+.page-what{font-family:var(--sg);font-size:15px;line-height:1.5;color:var(--bone-2);
+  max-width:54ch;margin:0 0 14px;padding:10px 14px;border-left:2px solid var(--amber);
+  background:rgba(3,16,18,.34);border-radius:0 6px 6px 0;text-shadow:var(--halo)}
+@media(max-width:640px){.page-what{font-size:14.5px;margin-bottom:12px;padding:9px 12px}}
 #homepick{margin:14px 0 6px;max-width:640px}
 #homenow{font-size:15px;line-height:1.5;color:var(--bone-2);margin:12px 0 4px;text-shadow:var(--halo)}
 #homenow b{color:var(--bone);font-weight:600}
@@ -1120,7 +1127,7 @@ button.rr-row:hover{padding-left:6px}
       <div id="hzn-hi" aria-hidden="true"><span class="hl" id="hlab-hi"></span></div>
       <div id="hzn-lo" aria-hidden="true"><span class="hl" id="hlab-lo"></span></div>
       <div id="skyaxis" aria-hidden="true"></div>
-      <div id="band" tabindex="0" role="button" aria-describedby="band-whisper"><span class="band-tag" id="band-tag" aria-hidden="true">counted twice, same answer</span><span class="whisper" id="band-whisper"></span></div>
+      <div id="band" tabindex="0" role="button" aria-describedby="band-whisper"><span class="whisper" id="band-whisper"></span></div>
       <div id="ghost" aria-hidden="true"><span id="ghost-lab"></span></div>
     </div>
     <div id="skycap"><span class="zsub" id="skyctx"></span><span class="zname" id="skyname"></span><span class="zsub" id="skysub"></span>
@@ -1144,7 +1151,7 @@ button.rr-row:hover{padding-left:6px}
     <header id="mast">
       <div>
         <p class="word">On Record</p>
-        <h1 class="plain" id="mast-tag">Every number measured. Every source shown.</h1>
+        <h1 class="plain" id="mast-tag">What the climate record actually says about the place you live.</h1>
         <div id="mast-controls">
         <button id="pulse" type="button" hidden title="Today's reading — open the Ground chapter"></button>
         <button id="whatis" type="button" aria-label="What is this? Replay the introduction" hidden>What is this? <span aria-hidden="true">↺</span></button>
@@ -1158,6 +1165,7 @@ button.rr-row:hover{padding-left:6px}
 
       <!-- SKY -->
       <section class="pane on" id="p-sky" aria-label="The sky — the remaining carbon budget">
+        <p class="page-what">What this page shows: how much carbon the world can still burn before 1.5&nbsp;°C is out of reach &mdash; and how fast we are using it up.</p>
         <div class="beats">
           <!-- BEAT 1 — the plain thesis, and the number that carries the page -->
           <div class="beat">
@@ -1263,6 +1271,7 @@ button.rr-row:hover{padding-left:6px}
 
       <!-- GROUND -->
       <section class="pane" id="p-ground" aria-label="Ground — your city on its own record">
+        <p class="page-what">What this page shows: how many dangerously hot days your own town gets now, compared with your grandparents&rsquo; time.</p>
         <div class="beats">
           <!-- BEAT 1 — whose ground this is, and that you can change it -->
           <div class="beat">
@@ -1344,6 +1353,7 @@ button.rr-row:hover{padding-left:6px}
 
       <!-- NIGHT -->
       <section class="pane" id="p-night" aria-label="Night — the danger after dark">
+        <p class="page-what">What this page shows: where you live, the nights are warming faster than the days &mdash; and the nights are the dangerous half.</p>
         <div class="beats">
           <!-- BEAT 1 — the danger people miss, and the number -->
           <div class="beat">
@@ -1383,6 +1393,7 @@ button.rr-row:hover{padding-left:6px}
 
       <!-- FIRST LIGHT -->
       <section class="pane" id="p-firstlight" aria-label="First light — the majority that thinks it is a minority">
+        <p class="page-what">What this page shows: far more people around you want action on climate change than you think.</p>
         <div class="beats">
           <!-- BEAT 1 — the plain finding -->
           <div class="beat">
@@ -1439,6 +1450,7 @@ button.rr-row:hover{padding-left:6px}
 
       <!-- MORNING -->
       <section class="pane" id="p-morning" aria-label="Morning — what is already moving">
+        <p class="page-what">What this page shows: what has genuinely improved so far, and the few things one person can do that actually matter.</p>
         <div class="beats">
           <!-- BEAT 1 — the measured good news -->
           <div class="beat">
@@ -1532,6 +1544,7 @@ button.rr-row:hover{padding-left:6px}
 
       <!-- BEDROCK -->
       <section class="pane" id="p-bedrock" aria-label="Bedrock — how we know">
+        <p class="page-what">What this page shows: every source behind every number on this site, and the things it cannot tell you.</p>
         <h2 tabindex="-1">The ground this page stands on.</h2>
         <p class="lead" style="max-width:60ch;margin-bottom:8px">Everything above rests on what is here.
           Every dataset, every paper, every line of arithmetic is named so you can check it yourself.
