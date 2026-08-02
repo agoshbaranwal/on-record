@@ -1,0 +1,13 @@
+{
+  "ingested_at": "2026-08-02T11:12:41.252Z",
+  "archive_end": "2026-07-27",
+  "last_full_year": 2025,
+  "counts": {
+    "sources": 6,
+    "places": 6,
+    "place_baselines": 6,
+    "place_records": 516,
+    "indicators": 1
+  },
+  "problems": []
+}

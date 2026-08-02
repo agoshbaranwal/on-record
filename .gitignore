@@ -15,7 +15,6 @@ __pycache__/
 v2/**/node_modules/
 v2/**/fixtures/*.json
 v2/.next/
-v2/seed/
 v2/apps/web/.next/
 v2/**/*.tsbuildinfo
 v2/**/next-env.d.ts
