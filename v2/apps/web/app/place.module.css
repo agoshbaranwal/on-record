@@ -8,3 +8,6 @@
 .link { display: inline-block; margin-top: var(--s-2); }
 .chart { display: grid; grid-template-columns: auto 1fr; gap: var(--s-3); align-items: stretch; }
 .scale { display: flex; flex-direction: column; justify-content: space-between; color: var(--c-ink-3); }
+/* Nav links are anchors, and margin-top does nothing to an inline box — so they collapsed onto
+   each other's lines and the rendered gate caught the overlap. Block them out explicitly. */
+.nav a { display: block; padding: var(--s-1) 0; }

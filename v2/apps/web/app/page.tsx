@@ -50,6 +50,16 @@ export default function Home() {
         );
       })}
 
+      <hr className="rule" />
+      <nav className={s.nav} aria-label="Sections">
+        <Link className="t-body" href="/whats-left">What&rsquo;s left &mdash; the world&rsquo;s carbon budget</Link>
+        <Link className="t-body" href="/whats-coming">What&rsquo;s coming</Link>
+        <Link className="t-body" href="/why-it-matters">Why it matters</Link>
+        <Link className="t-body" href="/whats-working">What&rsquo;s working</Link>
+        <Link className="t-body" href="/how-we-know">How we know</Link>
+        <Link className="t-body" href="/privacy">What we collect</Link>
+      </nav>
+
       <p className={`t-label ${s.meta}`}>
         Ingested {m.ingested_at.slice(0, 10)} · archive complete to {m.archive_end} · last full year {m.last_full_year}
       </p>
