@@ -858,6 +858,15 @@ button.rr-row:hover{padding-left:6px}
 #p-bedrock .srcs b{display:block;color:var(--bone-2);letter-spacing:.1em;text-transform:uppercase;
   font-size:11px;margin-bottom:3px}
 #p-bedrock .limits{margin-top:18px;max-width:60ch;font-size:13px;line-height:1.6;color:var(--bone-2)}
+/* a limits section is scanned, not read: term on the left, admission on the right */
+#p-bedrock .lim{margin:10px 0 0;max-width:70ch}
+#p-bedrock .lim dt{font-family:var(--sg);font-size:13.5px;font-weight:600;color:var(--bone);margin-top:11px}
+#p-bedrock .lim dd{margin:2px 0 0;font-size:13px;line-height:1.6;color:var(--bone-2)}
+#p-bedrock .lim-x{margin-top:14px;font-family:var(--mono);font-size:11.5px;color:var(--bone-3);max-width:66ch}
+#p-bedrock .lim-q{color:var(--bone-2)}
+@media(min-width:900px){#p-bedrock .lim{display:grid;grid-template-columns:16ch 1fr;gap:4px 20px}
+  #p-bedrock .lim dt{margin-top:8px;text-align:right}
+  #p-bedrock .lim dd{margin-top:8px}}
 #p-bedrock .limits b{color:var(--bone-2)}
 #p-bedrock .colophon{margin-top:18px;border-top:1px solid var(--bone-hair);padding-top:10px;
   font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--bone-2);max-width:74ch}
@@ -1221,9 +1230,7 @@ button.rr-row:hover{padding-left:6px}
           <div class="beat">
             <h2 tabindex="-1" id="g-h2">Here is Seville, day by day, since 1940.</h2>
             <p class="place-tag" hidden>worked example &mdash; not your place &middot; set your place above</p>
-                        <p class="lead">Every temperature in this chapter comes from ERA5, a scientific
-              reconstruction of past weather used by meteorologists worldwide. This is not a
-              global average. It is the ground under your feet.</p>
+                        <p class="lead">Not a global average &mdash; the ground under your feet, measured since 1940.</p>
             <!-- the ONE place picker. #gplace is kept inside it so its existing CSS still applies. -->
             <div id="homepick">
               <!-- once a place is set, the whole picker collapses to this one line: the reader
@@ -1303,9 +1310,8 @@ button.rr-row:hover{padding-left:6px}
           <!-- BEAT 1 — the danger people miss, and the number -->
           <div class="beat">
             <h2 tabindex="-1">Hot nights are the danger most people miss.</h2>
-            <p class="lead">Your body recovers at night, and it needs the cool to do it. When nights
-              stop cooling down, a hot spell stops giving people a break. That is what heat-and-health
-              research warns about most.</p>
+            <p class="lead">Your body cools down at night to recover. When the nights stop cooling,
+              a heatwave stops giving anyone a break &mdash; which is what heat-health research warns about most.</p>
             <p class="bignum" id="n-big">– <small>more hot nights a year<br>than the 1951&ndash;80 average</small></p>
             <p class="beat-cue">why you can trust that number &darr;</p>
           </div>
@@ -1399,8 +1405,7 @@ button.rr-row:hover{padding-left:6px}
           <!-- BEAT 1 — the measured good news -->
           <div class="beat">
             <h2 tabindex="-1">The record also holds good news,<br>all of it measured.</h2>
-            <p class="lead">None of this is a promise. It is a list of what has already moved &mdash;
-              each with a source, each still short of safe.</p>
+            <p class="lead">Not a promise &mdash; a list of what has already moved. Each sourced, each still short of safe.</p>
             <div class="ledger">
               <!-- 1. a SHARE of a named whole: the world's electricity -->
               <div class="li"><div class="big">33.8% &gt; 33.0%</div>
@@ -1429,9 +1434,8 @@ button.rr-row:hover{padding-left:6px}
             <!-- This screen and the next both used to crown themselves "the most useful thing",
                  one scroll apart, so neither read as the answer. This one is now the FIRST step and
                  says so; the record room below is where the leverage actually is. -->
-            <p class="lead">Most people underestimate how many of their neighbours want climate action.
-              Telling someone the true numbers closes that gap, and no study has found it pushes people
-              the other way. It is the smallest useful thing &mdash; and the one you can do now.</p>
+            <p class="lead">You just watched the gap yourself. Telling one person the true number closes it &mdash;
+              the smallest useful thing, and the one you can do now.</p>
             <div class="sharecard">
               <div class="mini" id="share-mini" aria-hidden="true"></div>
               <button id="share-btn" type="button">Save this record <span aria-hidden="true">&rarr;</span></button>
@@ -1448,12 +1452,9 @@ button.rr-row:hover{padding-left:6px}
           <div class="beat" id="record-room">
             <p class="rr-eyebrow">Where one person has leverage</p>
             <h2>Now put it on the record.</h2>
-            <p class="lead" style="max-width:52ch">Sorted by how far it reaches. The biggest levers are collective &mdash; a vote,
-              a voice, where your money pushes the system. The personal ones are real, and worth making, but they&rsquo;re
-              small next to policy. Both are here on purpose.</p>
-            <p class="rr-disclose">Naming that isn&rsquo;t giving up &mdash; it&rsquo;s the opposite. It keeps &ldquo;I recycle&rdquo;
-              from quietly standing in for &ldquo;I asked my representative to act.&rdquo; Hiding the size of personal cuts turns
-              out to be both the dishonest move and the less effective one (Hagmann, Ho &amp; Loewenstein 2019).</p>
+            <p class="lead" style="max-width:52ch">Sorted by how far it reaches. The big ones are collective; the personal
+              ones are real but smaller. Both are here on purpose.</p>
+            <p class="rr-disclose">Saying so isn&rsquo;t giving up. It stops &ldquo;I recycle&rdquo; standing in for &ldquo;I asked my representative to act&rdquo; &mdash; and hiding the size of personal cuts turns out to be the less effective move too (Hagmann, Ho &amp; Loewenstein 2019).</p>
             <div class="rr-menu">
               <button class="rr-row rr-lever rr-default" data-act="letter" type="button">
                 <span class="rr-head"><span class="rr-chip">Start here</span><span class="rr-label">Put your city on the record.</span><span class="rr-wedge" aria-hidden="true"></span></span>
@@ -1504,34 +1505,27 @@ button.rr-row:hover{padding-left:6px}
           <div class="dtable" id="t-budget" tabindex="0"></div>
           <div class="srcs" id="srcs"></div>
           <h2 style="font-size:15px;margin-top:22px">Take it with you</h2>
-          <p class="hww" style="margin-top:6px;max-width:64ch">Every record can leave as a self-attributing image, a one-line
-            citation, or a CSV — each carries its own named source, permalink and date, so a screenshot or a downloaded file
-            can never lose where it came from. All computed outputs are <b>CC BY 4.0</b>.</p>
+          <p class="hww" style="margin-top:6px;max-width:64ch">Image, citation or CSV &mdash; each carries its own source,
+            link and date, so it can never lose where it came from. Everything computed here is <b>CC BY 4.0</b>.</p>
           <div id="takeaway"></div>
           <h2 style="font-size:15px;margin-top:22px">The tab dot, and a promise</h2>
-          <p class="hww" style="margin-top:6px;max-width:64ch">When this page shows a <b>&#9679;</b> before its name in the browser tab, it means one auditable
-            thing: today reached at least the 95th percentile for this date, or tied or passed a same-date record, in the
-            city shown. Nothing else earns it — an ordinary day leaves the tab plain, and the page says so in as many words.
-            The dot is attention, never alarm.</p>
-          <p class="hww" style="margin-top:6px;max-width:64ch">And a promise you can check in the source: <b>this site cannot and will not send
-            notifications.</b> It is a static page with no server and no push — nothing reaches you unless you open it. Your
-            last visit is remembered only in this browser, and never sent anywhere. Return when you like; the record waits.</p>
+          <p class="hww" style="margin-top:6px;max-width:64ch">A <b>&#9679;</b> in the browser tab means one thing: today
+            hit the hottest 5% for this date, or matched a same-date record, in the city shown. Nothing else earns it.</p>
+          <p class="hww" style="margin-top:6px;max-width:64ch"><b>This site cannot send notifications.</b> No server, no push.
+            Your last visit is remembered in this browser and sent nowhere.</p>
 
           <h2 style="font-size:15px;margin-top:22px">What we can honestly know</h2>
           <div id="impact-refuse">
-            <p class="hww" style="margin-top:6px;max-width:64ch"><b>What we refuse to measure.</b> We do not know you are here. There is no analytics
-              script on this page, no pixel, no beacon, no cookie set for us to read. We do not count visitors, sessions or
-              devices; we do not know how long you stayed, how far you scrolled, or which chamber held you; we do not know your
-              city, your country, or your network. There is no funnel, no A/B test, no heatmap, no session replay — the code is
-              open, and you can confirm all of this is absent.</p>
-            <p class="hww" style="margin-top:6px;max-width:64ch"><b>Why.</b> A climate record that surveilled its readers to prove it mattered would be
-              answering the wrong question. The figures below are the honest ones we can gather without touching you — public
-              traces the code and the archive leave in the open. They are small on purpose: a star is a bookmark, not a reader;
-              a fork is a copy, not a use; an archive snapshot is a robot, not a person; a rebuild is our activity, not your attention.</p>
+            <p class="hww" style="margin-top:6px;max-width:64ch"><b>We do not know you are here.</b> No analytics, no pixel,
+              no beacon, no cookie. We do not count visitors or sessions, or know how far you scrolled. The code is open &mdash;
+              you can confirm all of it is absent.</p>
+            <p class="hww" style="margin-top:6px;max-width:64ch">A climate record that surveilled its readers to prove it
+              mattered would be answering the wrong question. So the figures below are small on purpose: a star is a bookmark,
+              not a reader; a snapshot is a robot, not a person.</p>
           </div>
           <div id="impact-know" class="impwrap"></div>
           <p class="hww" style="margin-top:16px;max-width:64ch"><a class="reuse-link" href="reuse.html">Reuse &amp; cite this &rarr;</a>
-            — the method in plain words, ready-made embeds, citations you can paste, the licence in one paragraph, and a printable classroom worksheet.</p>
+            &mdash; the method in plain words, embeds, citations, the licence, and a printable classroom worksheet.</p>
           <div class="bfb">
             <p class="hww" style="margin:0 0 8px"><b>Found an error in a number or a source?</b> Nothing is sent unless you press send — these open a pre-filled draft you review and send yourself.</p>
             <a class="bfb-btn bfb-teal" href="mailto:agoshbaranwal@gmail.com?subject=On%20Record%20%E2%80%94%20correction&amp;body=Chamber%3A%20Bedrock%0AWhat%20looks%20wrong%3A%0A%0AWhere%20it%20should%20come%20from%20(source)%3A%0A">Report a correction</a>
@@ -3386,29 +3380,31 @@ window.__ART=__ART;   // exposed for the build-time OG bake
   "<div><b>The fire-day sky</b>Abatzoglou &amp; Williams 2016, PNAS 113(42):11770 — anthropogenic warming ≈doubled western-US forest area burned, 1984–2015<br>Burke et al. 2023, Nature 622:761 — wildfire smoke reversing US clean-air gains since 2016<br>Childs et al. 2022, Environ. Sci. Technol. 56(19):13607 — ~25M people had ≥1 smoke-PM2.5 day &gt;100 µg/m³ in 2020<br>optics calibrated to AERONET &amp; NASA aerosol-optical-depth ranges (AOD&gt;3 “Sun obscured”) — a labelled render, never a per-day attribution</div>";
  document.querySelectorAll("#srcs>div").forEach(function(d,i){   // catalogue numbers: this is an archive
   d.setAttribute("data-cat","REC "+("0"+(i+1)).slice(-2));});
- el("limits").innerHTML="<b>Limitations, plainly.</b> ERA5's ~30 km grid smooths valley heat — day-counts are "+
-  "model-dependent, presented as a descriptive reanalysis record, not station ground-truth. The 0.88 °C "+
-  "pre-industrial offset is a stated assumption. Carbon budgets are revised yearly; each is published against "+
-  "its own start date, so we subtract emissions elapsed since that date (2025 rate held — an assumption, flagged) "+
-  "to bring both to one day. The dial is arithmetic, not a pathway model; linking it to this city's future "+
-  "summers needs a projection layer that hasn't shipped. Local readings are descriptive, never causal — for "+
-  "“is this climate change?” we point to WWA, ClimaMeter, Climate Central. The atmospheres on these pages are "+
-  "<b>instruments</b> — declared renderings of the data, not weather simulations — with one exception: the night "+
-  "chamber's star field is the real sky, computed from catalogue positions for its place and moment. "+
-  "The fire-day sky is the mirror case: a labelled render at measured aerosol optical depth — a real phenomenon "+
-  "shown as illustration, on demand and reversible; the dial speaks only in frequency and never claims CO₂ "+
-  "colours the air on any given day. "+
-  /* the location promise, kept where the limits are admitted rather than buried in a settings screen */
-  "<br><br><b>Where you are.</b> If you allow location, your coordinates are rounded to two decimals "+
-  "(about a kilometre) and sent only to Open-Meteo, the weather archive. Your city is named WITHOUT a "+
-  "reverse-geocoding service: the browser downloads a list of the world’s cities over 100,000 people "+
-  "(GeoNames, CC BY 4.0) and finds the nearest one on your own device, so your position is never sent "+
-  "anywhere to be identified. We name it only when a city is within 30 km, say “near” out to 90 km, and "+
-  "call it “your place” beyond that rather than guess. Nothing about your position is stored anywhere but this browser, "+
-  "and it is never added to a link you share. The twenty-four cities in the picker are fixed points, not "+
-  "whole cities: two decimals is about a kilometre while ERA5’s grid cell is about 28 km across, so each "+
-  "record is that cell’s, not that street’s. ?place= and ?loc= are verification links, not something the "+
-  "share button produces. Corrections will be listed here, dated.";
+ /* This was one 380-word paragraph carrying nine separate admissions. Nobody reads a wall to find
+    the caveat they care about — a limits section has to be SCANNED. Same facts, same sources,
+    nothing softened; it just has a shape now. */
+ el("limits").innerHTML="<b>What this page cannot tell you.</b>"+
+  "<dl class='lim'>"+
+  "<dt>The grid is coarse</dt><dd>ERA5 averages over ~30 km, so it smooths valley heat. Day-counts are a "+
+   "reconstruction, not a thermometer on your street.</dd>"+
+  "<dt>One number is an assumption</dt><dd>The 0.88 °C pre-industrial offset is stated, not measured here.</dd>"+
+  "<dt>The budgets are moving</dt><dd>Revised yearly, each published against its own start date. We subtract "+
+   "what has been emitted since, holding the 2025 rate — an assumption, flagged.</dd>"+
+  "<dt>The dial is arithmetic</dt><dd>Not a pathway model. It cannot tell you this city's future summers; "+
+   "that needs a projection layer we have not built.</dd>"+
+  "<dt>We show the record, not the cause</dt><dd>For &ldquo;is this climate change?&rdquo; go to WWA, "+
+   "ClimaMeter or Climate Central. We do not answer it.</dd>"+
+  "<dt>The skies are drawings</dt><dd>Declared renderings of the data, not weather. Two exceptions: the night "+
+   "sky is real, computed from catalogue star positions; the fire-day sky is a labelled render at measured "+
+   "smoke levels — reversible, and never a claim about today.</dd>"+
+  "<dt>Where you are</dt><dd>Coordinates rounded to ~1 km and sent only to Open-Meteo. Your city is named on "+
+   "your own device from a downloaded list (GeoNames, CC BY 4.0) — your position is never sent anywhere to be "+
+   "identified, never stored outside this browser, never added to a link you share. Named within 30 km, "+
+   "&ldquo;near&rdquo; to 90 km, &ldquo;your place&rdquo; beyond rather than guess.</dd>"+
+  "<dt>The picker's cities are points</dt><dd>Not whole cities. Each record is that grid cell's, not that street's.</dd>"+
+  "</dl>"+
+  "<p class='lim-x'>Corrections will be listed here, dated. <span class='lim-q'>?place=</span> and "+
+   "<span class='lim-q'>?loc=</span> are verification links, not something the share button makes.</p>";
  /* this said "place data frozen at 3 July 2026" long after the nightly build began refreshing it —
     the last sentence of the site contradicted the build date printed two hundred words above it */
  el("colophon").innerHTML="On Record rebuilds every night: this page was last built <b>"+D._meta.today+
