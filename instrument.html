@@ -3330,7 +3330,8 @@ var __ART=(function(){
  }
  function twoLedgers(x,rx,ry,r,story){var rows=[[r.loName,R(r.lo),r.loYrs],[r.hiName,R(r.hi),r.hiYrs]];
   var lh=story?58:52;
-  put(x,"counted twice, same answer",rx,ry-26,story?26:18,SG,INK2,"left",0);
+  // Says what the two rows ARE, for someone who has never been told there are two estimates.
+  put(x,"two research teams, working separately:",rx,ry-26,story?26:18,SG,INK2,"left",0);
   rows.forEach(function(row,i){var y=ry+i*lh;
    x.strokeStyle=HAIR;x.lineWidth=1;x.beginPath();x.moveTo(rx,y+8);x.lineTo(rx+(story?940:440),y+8);x.stroke();
    put(x,row[0],rx,y,story?28:21,MONO,INK,"left",0);
