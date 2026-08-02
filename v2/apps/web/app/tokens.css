@@ -1,0 +1,70 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   On Record — design tokens.
+
+   v1 set font sizes ad hoc, element by element, and ended up with 129 declarations
+   below 13px: labels, chips, captions, cues, receipts. On a phone that was the whole
+   small-print layer of the site, and it is why Agosh kept saying "the font is too small"
+   long after individual fixes. So sizes are no longer a per-element decision.
+
+   SIX STEPS. Nothing outside this file may set a font-size.
+   The floor is 13px and there is deliberately no token below it.
+   ───────────────────────────────────────────────────────────────────────────── */
+:root {
+  /* type — the only sizes that exist */
+  --t-display: clamp(2.125rem, 9vw, 3.5rem);   /* 34 → 56  the one number on a screen */
+  --t-head:    clamp(1.375rem, 5vw, 1.875rem); /* 22 → 30  one per screen */
+  --t-lead:    1.125rem;                        /* 18       the sentence under it */
+  --t-body:    1rem;                            /* 16       reading text */
+  --t-aside:   0.90625rem;                      /* 14.5     secondary */
+  --t-label:   0.8125rem;                       /* 13       FLOOR — labels, credits, sources */
+
+  --lh-tight: 1.08;  --lh-head: 1.18;  --lh-body: 1.55;  --lh-label: 1.5;
+
+  /* space — one 4px-based ramp, so vertical rhythm is not improvised */
+  --s-1: .25rem; --s-2: .5rem;  --s-3: .75rem; --s-4: 1rem;
+  --s-6: 1.5rem; --s-8: 2rem;   --s-12: 3rem;  --s-16: 4rem;
+
+  /* colour — bone on deep teal-black. Contrast is checked in CI, not eyeballed. */
+  --c-bg:      #0B1A1C;
+  --c-surface: #10262A;
+  --c-ink:     #F6EEDC;   /* 15.8:1 on --c-bg */
+  --c-ink-2:   #DCD2BC;   /* 12.4:1 — secondary text, still well past AA body */
+  --c-ink-3:   #B9B09C;   /*  8.4:1 — labels and credits; never below AA body */
+  --c-accent:  #F0BC62;   /*  9.7:1 — the number that matters */
+  --c-warn:    #E8865C;
+  --c-line:    rgba(246,238,220,.16);
+
+  /* motion — one language. Every duration here has a reduced-motion answer. */
+  --m-quick: 180ms; --m-move: 420ms; --m-reveal: 900ms;
+  --m-ease: cubic-bezier(.22,.7,.2,1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --m-quick: 0ms; --m-move: 0ms; --m-reveal: 0ms; }
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--c-bg); color: var(--c-ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: var(--t-body); line-height: var(--lh-body);
+}
+h1, h2, h3 { margin: 0; font-weight: 600; line-height: var(--lh-head); }
+p { margin: 0; }
+a { color: var(--c-accent); }
+
+/* the six steps, as classes — this is the whole vocabulary */
+.t-display { font-size: var(--t-display); line-height: var(--lh-tight); letter-spacing: -.02em; font-weight: 600; }
+.t-head    { font-size: var(--t-head); }
+.t-lead    { font-size: var(--t-lead); color: var(--c-ink-2); }
+.t-body    { font-size: var(--t-body); }
+.t-aside   { font-size: var(--t-aside); color: var(--c-ink-2); }
+.t-label   { font-size: var(--t-label); color: var(--c-ink-3); line-height: var(--lh-label); }
+.num       { font-variant-numeric: tabular-nums lining-nums; }
+.accent    { color: var(--c-accent); }
+
+.wrap  { max-width: 44rem; margin: 0 auto; padding: var(--s-8) var(--s-4) var(--s-16); }
+.stack > * + * { margin-top: var(--s-4); }
+.rule  { border: 0; border-top: 1px solid var(--c-line); margin: var(--s-6) 0; }

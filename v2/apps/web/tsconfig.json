@@ -26,6 +26,9 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "@onrecord/engine/*": [
+        "../../packages/engine/src/*"
       ]
     }
   },

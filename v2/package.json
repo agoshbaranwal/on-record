@@ -9,7 +9,9 @@
     "test": "node --experimental-strip-types --test packages/engine/test/parity.test.mts",
     "check:schema": "node scripts/check-schema.mjs",
     "ingest": "node --experimental-strip-types packages/ingest/src/run.mts",
-    "verify": "npm run check:schema && npm test"
+    "verify": "npm run check:schema && npm run check:design && npm test",
+    "check:design": "node scripts/check-design.mjs",
+    "check:rendered": "node scripts/check-rendered.mjs"
   },
   "overrides": {
     "postcss": "^8.5.25",

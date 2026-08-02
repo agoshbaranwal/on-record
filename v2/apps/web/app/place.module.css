@@ -1,0 +1,10 @@
+/* Layout only. No font-size lives here — that is tokens.css's job, enforced by check-design.mjs. */
+.head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); }
+.row { padding: var(--s-3) 0; border-top: 1px solid var(--c-line); }
+.rowTop { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-3); }
+.meta { color: var(--c-ink-3); margin-top: var(--s-6); }
+.badge { display: inline-block; padding: var(--s-1) var(--s-2); border: 1px solid var(--c-line);
+  border-radius: 999px; color: var(--c-warn); }
+.link { display: inline-block; margin-top: var(--s-2); }
+.chart { display: grid; grid-template-columns: auto 1fr; gap: var(--s-3); align-items: stretch; }
+.scale { display: flex; flex-direction: column; justify-content: space-between; color: var(--c-ink-3); }
