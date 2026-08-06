@@ -3225,12 +3225,29 @@ var __ART=(function(){
   var yrs=yrsLo.toFixed(1)===yrsHi.toFixed(1)?yrsLo.toFixed(1):yrsLo.toFixed(1)+"–"+yrsHi.toFixed(1);
   var pw=R(P.world.actual),pg=R(P.world.guess);
   return {
-   seville:{key:"seville",kind:"climb",place:"SEVILLE",title:"Seville, on record",
+   seville:(function(){
+    /* the reader's own place when one is loaded; Seville only as the worked example */
+    var hm=window.__HOME&&__HOME.get(),V=window.__HOME&&__HOME.record&&__HOME.record();
+    if(hm&&!hm.ex&&V&&V.G){
+     var LFy=V.G.days_ge35_per_year[V.G.days_ge35_per_year.length-1].year;
+     var w2=R(mean(V.G.days_ge35_per_year,1951,1980)),n2=R(mean(V.G.days_ge35_per_year,LFy-9,LFy));
+     var verb=n2>w2?"rose":n2<w2?"fell":"held steady at";
+     var nm=hm.name,NM=nm.toUpperCase();
+     return {key:"seville",kind:"climb",place:NM,title:nm+", on record",
+      hero:String(n2),wasN:w2,label:"days a year above "+V.thr.hot.toFixed(1)+" °C — hotter than 95% of its 1951–80 days",
+      sub:(LFy-9)+"–"+LFy+" average · was "+w2+" a year in 1951–80",
+      series:V.G.days_ge35_per_year,
+      src:"ERA5 via Open-Meteo · "+nm+" · daily max ≥ "+V.thr.hot.toFixed(1)+" °C",url:BASE+"?chamber=ground",
+      cite:"In "+nm+", days above "+V.thr.hot.toFixed(1)+" °C (its own 1951–80 95th percentile) "+
+       (verb==="held steady at"?("held steady at about "+n2+" a year"):(verb+" from "+w2+" a year (1951–80 average) to "+n2+" ("+(LFy-9)+"–"+LFy+")"))+
+       ". Source: ERA5 reanalysis via Open-Meteo. On Record — "+BASE+"?chamber=ground"};
+    }
+    return {key:"seville",kind:"climb",place:"SEVILLE",title:"Seville, on record",
     hero:String(now),wasN:was,label:"days a year at or above 35 °C",
     sub:"2016–25 average · was "+was+" a year in 1951–80",
     series:G.days_ge35_per_year.filter(function(r){return r.year<=LASTFULL;}),
     src:"ERA5 via Open-Meteo · Seville · daily max ≥ 35 °C",url:BASE+"?chamber=ground",
-    cite:"In Seville, days at or above 35 °C rose from "+was+" a year (1951–80 average) to "+now+" (2016–25). Source: ERA5 reanalysis via Open-Meteo. On Record — "+BASE+"?chamber=ground"},
+    cite:"In Seville, days at or above 35 °C rose from "+was+" a year (1951–80 average) to "+now+" (2016–25). Source: ERA5 reanalysis via Open-Meteo. On Record — "+BASE+"?chamber=ground"};})(),
    budget:{key:"budget",kind:"ledger",place:"THE SKY",title:"The carbon budget, on record",
     hero:yrs,heroUnit:"years",label:"of budget left for a ~50% chance of staying under 1.5 °C",
     sub:"at today’s ~"+R(B.rate_now_gt)+" GtCO₂/yr · "+R(lo.remaining_now_gt)+"–"+R(hi.remaining_now_gt)+" Gt remaining · spent ~"+R(B.now_dec+yrsLo),
@@ -3244,7 +3261,15 @@ var __ART=(function(){
     cite:"Across 125 countries, "+pw+"% say they would give 1% of income to fight climate change; people guess only "+pg+"%. Source: Andre et al. 2024 (Our World in Data). On Record — "+BASE+"?chamber=firstlight"}
   };
  }
- var REC=null;function rec(k){if(!REC)REC=recs();return REC[k];}
+ /* The memo invalidates when the reader's place changes. Before this, the FIRST call froze the
+    cards forever — and recs() never read __HOME anyway, so every reader's "Save this record"
+    card said SEVILLE with Seville's numbers. The one artifact built to leave the site broke the
+    site's central promise at exactly the moment someone chose to share it. */
+ var REC=null,RECGEN=-1;
+ function rec(k){
+  var g=window.__HOME&&__HOME.rev?__HOME.rev():0;
+  if(!REC||g!==RECGEN){REC=recs();RECGEN=g;}
+  return REC[k];}
 
  function spine(x,W,hpx){var a=S.anom,n=a.length,w=W/n;
   for(var i=0;i<n;i++){x.fillStyle=tcol(a[i]);x.fillRect(Math.floor(i*w),0,Math.ceil(w)+1,hpx);}}
@@ -4334,8 +4359,9 @@ var __HOME=(function(){
  /* the record __PLACE just computed for this home, so the Morning letter and the share card
     can quote the reader's OWN numbers instead of the worked example's */
  var LASTV=null;
- function drawn(g,out){if(g!==GEN)return;LASTV=out&&out.V?out.V:null;placeState("ok");}
- function failed(g,transient){if(g!==GEN)return;LASTV=null;
+ var REV=0;   /* bumps when the choice OR the data changes — gen() alone misses the data arriving */
+ function drawn(g,out){if(g!==GEN)return;LASTV=out&&out.V?out.V:null;REV++;placeState("ok");}
+ function failed(g,transient){if(g!==GEN)return;LASTV=null;REV++;
   placeState(transient?"retry":"failed",HOME&&HOME.name);}
  /* The page states which place its NUMBERS belong to whenever that is not the place named above
     them. A mixed state is survivable if it explains itself; it is only dishonest when silent. */
@@ -4353,6 +4379,8 @@ var __HOME=(function(){
                     ("We don\u2019t have a long enough record for "+(name||"that place")+" \u2014 the figures below are Seville, the worked example.");}
  return {get:function(){return HOME;},gen:function(){return GEN;},set:set,boot:boot,ask:ask,
          drawn:drawn,failed:failed,series:function(){return LASTV?LASTV.G:null;},
+         record:function(){return LASTV;},   /* the full computed V, so the share card can be YOURS */
+         rev:function(){return GEN*1000+REV;},  /* invalidation key: choice AND arrival */
          cities:function(){return WORLD_CITIES;},regions:REGN,examples:EXAMPLES,city:city,
          fromCity:fromCity,preflight:preflight,asked:askedAlready,markAsked:markAsked,
          isExample:function(){return !!(HOME&&HOME.ex);},
