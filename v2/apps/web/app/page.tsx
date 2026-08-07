@@ -51,6 +51,7 @@ export default function Home() {
 
       <hr className="rule" />
       <nav className={s.nav} aria-label="Sections">
+        <Link className="t-body" href="/places">Every place on record</Link>
         <Link className="t-body" href="/whats-left">What&rsquo;s left &mdash; the world&rsquo;s carbon budget</Link>
         <Link className="t-body" href="/whats-coming">What&rsquo;s coming</Link>
         <Link className="t-body" href="/why-it-matters">Why it matters</Link>

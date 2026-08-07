@@ -1,3 +1,3 @@
 :HL["/on-record/preview/_next/static/chunks/42_xjwtj53wht.css","style"]
 :HL["/on-record/preview/_next/static/chunks/09bsh0q_b_8f_.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"place","param":null,"prefetchHints":0,"slots":{"children":{"name":"slug","param":{"type":"d","key":"sao-paulo","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"vBTBSnOT_-myUu_wgH8pU"}
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"place","param":null,"prefetchHints":0,"slots":{"children":{"name":"slug","param":{"type":"d","key":"sao-paulo","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"QJc0sAq8-MNRQ4-c9OcZH"}
