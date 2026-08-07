@@ -6,7 +6,7 @@
    so the browser always detects an update and every older cache is purged — no
    stale copy can linger (the trap that must never recur). There is no push and
    no notification code here: the site cannot send notifications. */
-const BUILD = "20260807043339-323b3fd8";
+const BUILD = "20260807043339-9103718f";
 const CACHE = "onrecord-" + BUILD;
 const SHELL = ["./", "./index.html", "./reuse.html", "./manifest.webmanifest",
   "./data/perday-seville.json", "./data/impact.json",   // site-data is inlined into index.html; only these are fetched at runtime
@@ -15,7 +15,7 @@ const SHELL = ["./", "./index.html", "./reuse.html", "./manifest.webmanifest",
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) {
     return Promise.all(SHELL.map(function (u) {
-      return fetch(u, { cache: "reload" }).then(function (r) { if (r && r.ok) return c.put(u, r); }).catch(function () {});
+      return fetch(u, { cache: "no-cache" }).then(function (r) { if (r && r.ok) return c.put(u, r); }).catch(function () {});
     }));
   }));
   self.skipWaiting();
@@ -47,7 +47,7 @@ self.addEventListener("fetch", function (e) {
   if (isFresh(u)) {
     e.respondWith((async function () {
       try {
-        var net = await fetch(req, { cache: "reload" });       // never let the HTTP cache interpose stale bytes
+        var net = await fetch(req, { cache: "no-cache" });       // never let the HTTP cache interpose stale bytes
         if (net && net.ok) {                                   // only a good response may become the offline fallback — never a 4xx/5xx or captive-portal page
           var c = await caches.open(CACHE); c.put(req, net.clone());
           if (isNav(req, u)) tell("fresh");

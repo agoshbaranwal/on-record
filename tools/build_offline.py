@@ -17,6 +17,16 @@ def fetch(url, tries=3):
             if i == tries - 1: raise
 
 tpl = (ROOT / "instrument.html").read_text()
+# the inline script must PARSE before anything is built — a broken template must never
+# reach index.html (it did once: an edit was committed with a syntax error because this
+# builder happily assembled it)
+import subprocess as _sp, tempfile as _tf, re as _re
+_js = _re.findall(r'<script(?![^>]*\bsrc=)(?![^>]*type="application/json")[^>]*>(.*?)</script>', tpl, _re.S)[0]
+with _tf.NamedTemporaryFile("w", suffix=".js", delete=False) as _f:
+    _f.write(_js); _jp = _f.name
+_r = _sp.run(["node", "--check", _jp], capture_output=True, text=True)
+import os as _os; _os.unlink(_jp)
+assert _r.returncode == 0, "instrument.html inline script does not parse:\n" + _r.stderr[:500]
 fonts = json.loads((ROOT / "fonts" / "fonts-b64.json").read_text())
 css = "".join(
     "@font-face{font-family:'SpaceGroteskX';font-style:normal;font-weight:%d;font-display:swap;"

@@ -20,9 +20,14 @@
   /* the halo does the work the box used to: a crisp dark rim hugs each glyph so
      light text reads on ANY sky — light sage or dark ember — with no box seam.
      Invisible over dark backgrounds, so it is safe to apply to all light chrome. */
-  --halo:0 0 1px rgba(3,16,18,.92),0 1px 2px rgba(3,16,18,.85),0 0 8px rgba(3,16,18,.55);
-  --halo2:0 0 1px rgba(3,16,18,.98),0 0 2px rgba(3,16,18,.92),0 1px 2px rgba(3,16,18,.88),0 0 6px rgba(3,16,18,.62);
-  --halo-h:0 1px 2px rgba(3,16,18,.55),0 0 12px rgba(3,16,18,.5),0 0 34px rgba(15,8,6,.4);
+  /* the design-language tokens the patches never had: ONE glass, THREE radii, ONE data pair.
+     The census found six near-blacks doing one job and thirteen border radii — the visible
+     archaeology of months of patches. New work uses these; old sites are being migrated. */
+  --glass:3,15,17; --r-ctl:3px; --r-card:8px; --r-pill:999px;
+  --data-cool:#8FC0EA; --data-warm:#EE9E80;
+  --halo:0 0 1px rgba(var(--glass),.92),0 1px 2px rgba(var(--glass),.85),0 0 8px rgba(var(--glass),.55);
+  --halo2:0 0 1px rgba(var(--glass),.98),0 0 2px rgba(var(--glass),.92),0 1px 2px rgba(var(--glass),.88),0 0 6px rgba(var(--glass),.62);
+  --halo-h:0 1px 2px rgba(var(--glass),.55),0 0 12px rgba(var(--glass),.5),0 0 34px rgba(15,8,6,.4);
   /* on the ink (morning) chamber the light behind is pale, so dark text gets a light rim */
   --halo-ink:0 0 1px rgba(251,247,232,.9),0 1px 3px rgba(251,247,232,.7);
 }
@@ -103,7 +108,7 @@ a{color:inherit}
   font-weight:500;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
   color:var(--bone-2);background:none;border:0;border-bottom:1px solid rgba(242,231,204,.30);
   border-radius:0;padding:9px 2px;min-height:40px;transition:border-color .3s,color .3s;
-  text-shadow:0 1px 5px rgba(3,16,18,.55),0 0 12px rgba(3,16,18,.4)}
+  text-shadow:0 1px 5px rgba(var(--glass),.55),0 0 12px rgba(var(--glass),.4)}
 #soundbtn:hover{color:var(--bone);border-color:rgba(242,231,204,.6)}
 .thm-ink #soundbtn{color:var(--ink-2);border-color:rgba(62,18,8,.35);text-shadow:0 1px 5px rgba(244,244,241,.7),0 0 12px rgba(244,244,241,.55)}
 .thm-ink #soundbtn:hover{color:var(--ink);border-color:rgba(62,18,8,.6)}
@@ -181,7 +186,7 @@ a{color:inherit}
    The card is a calm, dismissible information reward for coming back, never a nag. */
 #sincecard{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);z-index:14;
   width:min(440px,calc(100vw - 32px));opacity:0;pointer-events:none;transition:opacity .5s ease,transform .5s ease;
-  background:rgba(6,20,22,.92);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
+  background:rgba(var(--glass),.92);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
   border:1px solid rgba(242,231,204,.16);border-radius:12px;padding:16px 18px 15px;
   box-shadow:0 10px 40px rgba(0,0,0,.4);color:var(--bone-2)}
 #sincecard.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
@@ -203,7 +208,7 @@ a{color:inherit}
 /* offline as-of stamp — persistent, calm, honest */
 #offline-chip{position:fixed;left:50%;top:6px;transform:translateX(-50%);z-index:15;display:none;
   max-width:calc(100vw - 24px);font-family:var(--mono);font-size:11px;letter-spacing:.03em;
-  color:var(--bone-2);background:rgba(6,20,22,.9);border:1px solid rgba(240,188,98,.4);
+  color:var(--bone-2);background:rgba(var(--glass),.9);border:1px solid rgba(240,188,98,.4);
   border-radius:20px;padding:5px 14px;text-shadow:none;box-shadow:0 3px 14px rgba(0,0,0,.35)}
 #offline-chip.show{display:block}
 .thm-ink #offline-chip{color:var(--ink);background:rgba(250,246,236,.94);border-color:rgba(178,24,43,.4)}
@@ -213,7 +218,8 @@ body.embed #drawer,body.embed #offline-chip,body.embed #sincecard,body.embed #sk
 body.embed{overflow-x:hidden;overflow-y:auto}
 body.embed #panes>.pane{display:none}
 body.embed #panes>.pane.embed-show{display:block}
-body.embed .beat.embed-hide{display:none!important}   /* &beat=n pins a single beat */
+body.embed .beat.embed-hide{display:none!important}
+body.embed .drawbtn{display:none!important}   /* a drawer in a chrome-less iframe is a soft-lock */   /* &beat=n pins a single beat */
 #embed-cred{position:fixed;bottom:10px;right:12px;z-index:60;font-family:var(--mono);font-size:11px;
   letter-spacing:.02em;color:#fff;background:rgba(20,22,28,.72);padding:3px 9px;border-radius:999px;
   text-decoration:none;text-shadow:0 1px 2px rgba(0,0,0,.6);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
@@ -228,7 +234,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 #ladder{position:fixed;right:0;top:50%;transform:translateY(-50%);display:flex;
   flex-direction:column;gap:2px;text-align:right;z-index:6;
   padding:44px 38px 44px 110px;
-  background:linear-gradient(270deg,rgba(3,16,18,.16) 0%,rgba(3,16,18,.10) 55%,rgba(3,16,18,0) 100%);
+  background:linear-gradient(270deg,rgba(var(--glass),.16) 0%,rgba(var(--glass),.10) 55%,rgba(var(--glass),0) 100%);
   -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 14%,#000 86%,transparent 100%);
   mask-image:linear-gradient(180deg,transparent 0%,#000 14%,#000 86%,transparent 100%)}
 .thm-ink #ladder{background:linear-gradient(270deg,rgba(244,244,241,.20) 0%,rgba(244,244,241,.12) 55%,rgba(244,244,241,0) 100%)}
@@ -236,7 +242,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
   background:rgba(242,231,204,.26)}                    /* the rail itself */
 .thm-ink #ladder::after{background:rgba(62,18,8,.30)}
 /* legibility comes from a halo, not a slab: dark chambers get a dark halo, ink chambers a light one */
-.rung .lab,.rung .fact{text-shadow:0 1px 3px rgba(3,16,18,.75),0 0 9px rgba(3,16,18,.65),0 0 20px rgba(3,16,18,.5)}
+.rung .lab,.rung .fact{text-shadow:0 1px 3px rgba(var(--glass),.75),0 0 9px rgba(var(--glass),.65),0 0 20px rgba(var(--glass),.5)}
 .thm-ink .rung .lab,.thm-ink .rung .fact{text-shadow:0 1px 5px rgba(244,244,241,.75),0 0 14px rgba(244,244,241,.6)}
 /* on the ink chambers the rail speaks in ink, not bone */
 .thm-ink .rung .lab{color:var(--ink-2)}
@@ -340,11 +346,11 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 .drawbtn{margin-top:auto;align-self:flex-start;font-weight:500;font-size:11px;
   letter-spacing:.18em;text-transform:uppercase;color:var(--bone-2);
   background:none;border:0;border-bottom:1px solid rgba(242,231,204,.30);border-radius:0;
-  padding:10px 2px;min-height:40px;transition:border-color .3s,color .3s;text-shadow:0 1px 5px rgba(3,16,18,.55),0 0 12px rgba(3,16,18,.4)}
+  padding:10px 2px;min-height:40px;transition:border-color .3s,color .3s;text-shadow:0 1px 5px rgba(var(--glass),.55),0 0 12px rgba(var(--glass),.4)}
 .drawbtn:hover{color:var(--bone);border-color:rgba(242,231,204,.6)}
 .thm-ink .drawbtn{color:var(--ink-2);border-color:rgba(62,18,8,.35);text-shadow:0 1px 5px rgba(244,244,241,.7),0 0 12px rgba(244,244,241,.55)}
 .thm-ink .drawbtn:hover{color:var(--ink);border-color:rgba(62,18,8,.6)}
-.plate{background:rgba(3,14,16,.42);border:1px solid var(--bone-hair);border-radius:4px;
+.plate{background:rgba(var(--glass),.42);border:1px solid var(--bone-hair);border-radius:4px;
   padding:14px 16px;backdrop-filter:blur(3px)}
 .thm-ink .plate{background:rgba(255,251,240,.5);border-color:var(--ink-hair)}
 svg{display:block;width:100%;height:auto}
@@ -372,7 +378,7 @@ svg{display:block;width:100%;height:auto}
    that is bright at midday and dark at night. */
 #skycount{position:relative;display:inline-block;padding:16px 30px 14px;margin-left:-30px;
   border-radius:26px;
-  background:radial-gradient(115% 105% at 26% 46%,rgba(3,13,15,.78) 0%,rgba(3,13,15,.62) 42%,rgba(3,13,15,.22) 72%,rgba(3,13,15,0) 100%)}
+  background:radial-gradient(115% 105% at 26% 46%,rgba(var(--glass),.78) 0%,rgba(var(--glass),.62) 42%,rgba(var(--glass),.22) 72%,rgba(var(--glass),0) 100%)}
 .thm-ink #skycount{background:radial-gradient(115% 105% at 26% 46%,rgba(255,251,240,.80) 0%,rgba(255,251,240,.60) 45%,rgba(255,251,240,.20) 74%,rgba(255,251,240,0) 100%)}
 /* the caption cluster lives on shifting light — it gets its own dark glass, like the pills */
 #skycount .capplate{display:inline-block;position:relative;margin-top:9px;max-width:60ch}
@@ -390,7 +396,7 @@ svg{display:block;width:100%;height:auto}
   font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:rgba(242,231,204,.80);
   text-shadow:var(--halo)}
 #skyaxis .rung i{display:block;width:26px;border-top:1px solid rgba(242,231,204,.30);
-  box-shadow:0 1px 3px rgba(3,16,18,.35)}
+  box-shadow:0 1px 3px rgba(var(--glass),.35)}
 .hl{position:absolute;right:210px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
   text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
 .hl b{color:var(--ink);font-weight:600}
@@ -444,10 +450,10 @@ svg{display:block;width:100%;height:auto}
 #warmscale{margin:14px 0 2px;max-width:460px}
 #warmscale .ws-bar{position:relative;height:9px;border-radius:6px;
   background:linear-gradient(90deg,#3E7F8C 0%,#6E9E7A 22%,#C9B26A 45%,#D98B52 68%,#B4472F 100%)}
-#warmscale .ws-tick{position:absolute;top:-3px;bottom:-3px;width:1px;background:rgba(3,16,18,.55)}
+#warmscale .ws-tick{position:absolute;top:-3px;bottom:-3px;width:1px;background:rgba(var(--glass),.55)}
 #warmscale .ws-mark{position:absolute;top:50%;width:15px;height:15px;border-radius:50%;
-  background:var(--bone);border:2px solid rgba(3,16,18,.55);transform:translate(-50%,-50%);left:0;
-  box-shadow:0 0 10px rgba(3,16,18,.5);transition:left .7s cubic-bezier(.3,.6,.2,1)}
+  background:var(--bone);border:2px solid rgba(var(--glass),.55);transform:translate(-50%,-50%);left:0;
+  box-shadow:0 0 10px rgba(var(--glass),.5);transition:left .7s cubic-bezier(.3,.6,.2,1)}
 #warmscale .ws-lab{position:relative;height:15px;margin-top:5px}
 #warmscale .ws-lab span{position:absolute;transform:translateX(-50%);font-family:var(--mono);
   font-size:10.5px;letter-spacing:.04em;color:var(--bone-3);text-shadow:var(--halo)}
@@ -465,7 +471,7 @@ svg{display:block;width:100%;height:auto}
 #tease .big{font-weight:500;font-size:24px;color:var(--bone);font-variant-numeric:tabular-nums;text-shadow:var(--halo)}
 #tease .sub{font-size:13px;color:var(--bone-2);margin-top:3px;text-shadow:var(--halo)}
 #tease button{margin-top:8px;font-weight:500;font-size:11px;background:none;border:0;
-  border-bottom:1px solid rgba(242,231,204,.30);border-radius:0;text-shadow:0 1px 5px rgba(3,16,18,.55),0 0 12px rgba(3,16,18,.4);letter-spacing:.2em;
+  border-bottom:1px solid rgba(242,231,204,.30);border-radius:0;text-shadow:0 1px 5px rgba(var(--glass),.55),0 0 12px rgba(var(--glass),.4);letter-spacing:.2em;
   text-transform:uppercase;color:var(--amber);min-height:36px}
 #tease button::after{content:" ↓"}
 /* fire-day: the labelled wildfire-smoke illustration — the one sky the dial can't paint */
@@ -516,7 +522,7 @@ svg{display:block;width:100%;height:auto}
 .finder{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--bone-2);text-shadow:var(--halo)}
 .finder input{font-family:var(--mono);font-size:13px;width:76px;padding:7px 4px;min-height:38px;
   border:0;border-bottom:1px solid rgba(242,231,204,.35);border-radius:0;
-  background:rgba(3,16,18,.22);color:var(--bone)}
+  background:rgba(var(--glass),.22);color:var(--bone)}
 .finder input:focus{outline:none;border-bottom-color:var(--amber)}
 .finder .out{font-family:var(--mono);font-size:11px;color:var(--amber);min-height:2.6em;display:block}
 /* the year finder's answer — a reserved block so it never jumps, with the value itself in loud amber */
@@ -534,6 +540,7 @@ svg{display:block;width:100%;height:auto}
 #wg-dots i.extra{background:var(--amber);transform:scale(1);opacity:1;
   box-shadow:0 0 12px rgba(240,188,98,.85)}
 #wg-dots i.mark{outline:2px solid rgba(242,231,204,.75);outline-offset:2px}
+#wg-dots i.over{background:none;border:1.5px solid rgba(242,231,204,.4);transform:scale(.9);opacity:.8}
 @media(prefers-reduced-motion:reduce){#wg-dots i{transition:none}}
 #wg-key{font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--bone-3);
   max-width:44ch;margin:2px 0 0;text-shadow:var(--halo)}
@@ -546,7 +553,7 @@ svg{display:block;width:100%;height:auto}
   color:var(--bone-3);margin-bottom:8px;text-shadow:var(--halo)}
 .wg-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 #wg-in{font-family:var(--mono);font-size:19px;width:120px;min-height:48px;padding:8px 12px;
-  border:1px solid rgba(242,231,204,.30);border-radius:8px;background:rgba(3,16,18,.32);color:var(--bone)}
+  border:1px solid rgba(242,231,204,.30);border-radius:8px;background:rgba(var(--glass),.32);color:var(--bone)}
 #wg-in:focus{outline:none;border-color:var(--amber)}
 #wg-go{font-family:var(--mono);font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;
   min-height:48px;padding:10px 16px;border:1px solid var(--amber);border-radius:8px;
@@ -572,14 +579,20 @@ body.ch-bedrock #mast,body.ch-bedrock #budget-band{opacity:0!important;pointer-e
 /* Stated, never inferred. Agosh's test users could not tell what the site was or what to take
    from it, because every heading was written as if the reader already knew. Each chapter now
    opens by saying plainly what it shows. This is the first line on the page, deliberately. */
+/* the chapter's one-line purpose, in the site's own eyebrow voice (the .rr-eyebrow / .tl2
+   pattern) rather than an admin box pasted over the sky */
 .page-what{font-family:var(--sg);font-size:15px;line-height:1.5;color:var(--bone-2);
-  max-width:54ch;margin:0 0 14px;padding:10px 14px;border-left:2px solid var(--amber);
-  background:rgba(3,16,18,.34);border-radius:0 6px 6px 0;text-shadow:var(--halo)}
-@media(max-width:640px){.page-what{font-size:14.5px;margin-bottom:12px;padding:9px 12px}}
+  max-width:54ch;margin:0 0 18px;padding:0;border:0;background:none;text-shadow:var(--halo)}
+.page-what::before{content:"What this page shows";display:block;font-family:var(--mono);
+  font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);
+  margin-bottom:5px;text-shadow:var(--halo)}
+.thm-ink .page-what{color:var(--ink-2);text-shadow:none}
+.thm-ink .page-what::before{color:var(--act)}
+@media(max-width:640px){.page-what{font-size:14.5px;margin-bottom:14px}}
 /* the page says whose numbers these are whenever it is not the place named above them */
 #place-state{font-family:var(--sg);font-size:14.5px;line-height:1.5;max-width:54ch;margin:0 0 12px;
   padding:10px 14px;border-radius:6px;text-shadow:var(--halo)}
-#place-state.ps-wait{color:var(--bone-2);background:rgba(3,16,18,.4);border-left:2px solid var(--bone-3)}
+#place-state.ps-wait{color:var(--bone-2);background:rgba(var(--glass),.4);border-left:2px solid var(--bone-3)}
 #place-state.ps-warn{color:var(--bone);background:rgba(240,188,98,.14);border-left:2px solid var(--amber)}
 #place-state[hidden]{display:none}
 #homepick{margin:14px 0 6px;max-width:640px}
@@ -589,6 +602,11 @@ body.ch-bedrock #mast,body.ch-bedrock #budget-band{opacity:0!important;pointer-e
   font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--bone-3);
   text-decoration:underline;text-underline-offset:3px}
 #homenow-change:hover,#homenow-change:focus-visible{color:var(--amber);outline:none}
+#homelink{margin-left:10px;background:none;border:0;padding:4px 0;min-height:44px;cursor:pointer;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--bone-3);
+  text-decoration:underline;text-underline-offset:3px}
+#homelink:hover,#homelink:focus-visible{color:var(--amber);outline:none}
+#homelink[hidden]{display:none}
 #homeask h3{font-family:var(--sg);font-size:19px;font-weight:600;color:var(--bone);margin:0 0 4px;text-shadow:var(--halo)}
 #homeask p{font-size:14.5px;line-height:1.5;color:var(--bone-2);margin:0 0 8px;max-width:52ch;text-shadow:var(--halo)}
 #homeask-privacy,#gq-barnote,#homeask-blocked{font-family:var(--mono);font-size:11.5px;line-height:1.6;
@@ -608,7 +626,7 @@ body.ch-bedrock #mast,body.ch-bedrock #budget-band{opacity:0!important;pointer-e
   gap:6px;align-content:start}
 .cb-chip{min-height:44px;min-width:0;padding:7px 9px;text-align:left;font-family:var(--sg);font-size:12.5px;
   line-height:1.25;overflow-wrap:break-word;border:1px solid rgba(242,231,204,.24);border-radius:7px;
-  background:rgba(3,16,18,.28);color:var(--bone-2);cursor:pointer;transition:border-color .25s,color .25s}
+  background:rgba(var(--glass),.28);color:var(--bone-2);cursor:pointer;transition:border-color .25s,color .25s}
 .cb-chip:hover,.cb-chip:focus-visible{border-color:var(--amber);color:var(--bone);outline:none}
 .cb-chip[aria-pressed=true]{border-color:var(--amber);color:var(--amber);background:rgba(240,188,98,.14)}
 @media(min-width:760px){#gq-bar .cb-chips,#pk-bar .cb-chips{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}}
@@ -648,20 +666,20 @@ body.ch-bedrock #mast,body.ch-bedrock #budget-band{opacity:0!important;pointer-e
   font-size:11px;letter-spacing:.08em;pointer-events:auto;max-width:26ch;overflow:hidden;
   text-overflow:ellipsis;white-space:nowrap;
   border:1px solid rgba(242,231,204,.26);border-radius:999px;padding:4px 10px;
-  background:rgba(3,16,18,.34);color:var(--bone-2);cursor:pointer}
+  background:rgba(var(--glass),.34);color:var(--bone-2);cursor:pointer}
 #homechip.unset{color:var(--amber);border-color:rgba(240,188,98,.5)}
 #homechip:hover,#homechip:focus-visible{color:var(--bone);border-color:var(--amber);outline:none}
 #gplace{display:flex;align-items:center;gap:10px 12px;flex-wrap:wrap;margin:12px 0 6px}
 /* the place you type is prose, so it reads in the body font (Space Grotesk), larger and clearer */
 #gplace input{font-family:var(--sg);font-size:15px;width:240px;max-width:64vw;padding:9px 10px;min-height:44px;
   border:1px solid rgba(242,231,204,.28);border-radius:8px;
-  background:rgba(3,16,18,.30);color:var(--bone)}
+  background:rgba(var(--glass),.30);color:var(--bone)}
 #gplace input:focus{outline:none;border-color:var(--amber)}
 #gplace input::placeholder{color:rgba(242,231,204,.66)}
 /* the actions stay in the instrument's control voice (mono, letter-spaced), but legibly sized; the primary one leads in amber */
 #gplace button{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
   padding:9px 6px;min-height:44px;border:0;border-bottom:1px solid rgba(242,231,204,.30);
-  border-radius:0;color:var(--bone-2);background:none;transition:color .3s,border-color .3s;text-shadow:0 1px 5px rgba(3,16,18,.6),0 0 12px rgba(3,16,18,.45)}
+  border-radius:0;color:var(--bone-2);background:none;transition:color .3s,border-color .3s;text-shadow:0 1px 5px rgba(var(--glass),.6),0 0 12px rgba(var(--glass),.45)}
 #gplace button:hover,#gplace button:focus-visible{color:var(--bone);border-color:var(--amber);outline:none}
 #gplace #gq-go{color:var(--amber)}                                   /* the primary action reads first */
 #gplace #gq-go:hover,#gplace #gq-go:focus-visible{color:#f6d089}
@@ -681,7 +699,7 @@ body.ch-bedrock #mast,body.ch-bedrock #budget-band{opacity:0!important;pointer-e
 .place-tabs button[aria-pressed=true]{background:var(--bone);color:#0B2B31;border-color:var(--bone)}
 #pg-pick{display:flex;align-items:center;gap:10px;margin:10px 0 12px;flex-wrap:wrap}
 #pg-sel{font-size:12.5px;letter-spacing:.03em;padding:9px 4px;min-height:40px;
-  background:rgba(3,16,18,.22);color:var(--bone);border:0;
+  background:rgba(var(--glass),.22);color:var(--bone);border:0;
   border-bottom:1px solid rgba(242,231,204,.35);border-radius:0;max-width:300px}
 #pg-sel:focus{outline:none;border-bottom-color:var(--amber)}
 #pg-guessed{font-family:var(--mono);font-size:11px;color:var(--bone-2);letter-spacing:.06em;text-shadow:var(--halo)}
@@ -719,7 +737,7 @@ body.ch-bedrock #mast,body.ch-bedrock #budget-band{opacity:0!important;pointer-e
 #ask-hint{font-size:12.5px;color:var(--bone-2);max-width:28ch;text-shadow:var(--halo)}
 #ask-fallback{display:none;width:100%;margin-top:8px}
 #ask-fallback textarea{width:100%;max-width:560px;min-height:70px;font-size:12px;
-  background:rgba(3,16,18,.4);color:var(--bone);border:1px solid var(--bone-4);border-radius:3px;padding:8px}
+  background:rgba(var(--glass),.4);color:var(--bone);border:1px solid var(--bone-4);border-radius:3px;padding:8px}
 .kick{font-size:14px;line-height:1.45;color:var(--bone);margin-top:12px;display:none;max-width:52ch;outline:none;text-shadow:var(--halo)}
 .kick.show{display:block}
 .kick b{color:var(--amber);font-weight:500}
@@ -910,8 +928,8 @@ button.rr-row:hover{padding-left:6px}
   font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--bone-2);max-width:74ch}
 
 /* ================= drawer ================= */
-#drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,92vw);z-index:9;
-  background:rgba(4,14,16,.96);border-left:1px solid var(--bone-hair);
+#drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,92vw);z-index:9;overscroll-behavior:contain;
+  background:rgba(var(--glass),.96);border-left:1px solid var(--bone-hair);
   transform:translateX(102%);transition:transform .45s ease;display:flex;flex-direction:column;
   padding:20px 24px;color:var(--bone-2)}
 #drawer.open{transform:none}
@@ -979,7 +997,7 @@ button.rr-row:hover{padding-left:6px}
   background:var(--amber);border:0;border-radius:3px;padding:13px 22px;min-height:46px;box-shadow:0 2px 18px -6px rgba(240,188,98,.6);transition:transform .2s}
 #intro .go:hover{transform:translateY(-1px)}
 #intro .skip{position:absolute;right:26px;top:88px;z-index:2;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--bone-2);min-height:40px;padding:8px 12px;background:rgba(3,16,18,.42);
+  text-transform:uppercase;color:var(--bone-2);min-height:40px;padding:8px 12px;background:rgba(var(--glass),.42);
   border:1px solid var(--bone-4);border-radius:2px;text-shadow:var(--halo)}
 #intro .skip:hover{color:var(--bone);border-color:var(--bone-2)}
 /* while the intro speaks, the instrument waits in the wings — chamber text & the budget fixtures held fully back
@@ -995,7 +1013,7 @@ button.rr-row:hover{padding-left:6px}
 .thm-ink #whatis:hover,.thm-ink #whatis:focus-visible{color:var(--ink)}
 @media(max-width:640px){
   #intro .box{padding:0 20px 15vh}
-  #intro .skip{right:16px;top:auto;bottom:calc(15vh + env(safe-area-inset-bottom));background:rgba(3,16,18,.55)}
+  #intro .skip{right:16px;top:auto;bottom:calc(15vh + env(safe-area-inset-bottom));background:rgba(var(--glass),.55)}
   .ib-h{font-size:clamp(24px,7vw,34px)}
   #intro-foot{gap:13px}}
 @media(prefers-reduced-motion:reduce){
@@ -1020,12 +1038,12 @@ button.rr-row:hover{padding-left:6px}
 #band:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 #band .band-tag{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
   font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--bone);white-space:nowrap;
-  background:rgba(4,14,16,.5);padding:3px 12px 3px 12px;border-radius:999px;pointer-events:none;
+  background:rgba(var(--glass),.5);padding:3px 12px 3px 12px;border-radius:999px;pointer-events:none;
   backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);text-shadow:var(--halo)}
 #band .band-tag::after{content:"  ⓘ";opacity:.75}
-#band:hover .band-tag,#band.band-open .band-tag,#band:focus-visible .band-tag{background:rgba(4,14,16,.78)}
+#band:hover .band-tag,#band.band-open .band-tag,#band:focus-visible .band-tag{background:rgba(var(--glass),.78)}
 #band .whisper{position:absolute;left:50%;top:100%;transform:translate(-50%,10px);
-  background:rgba(4,14,16,.94);border:1px solid var(--bone-hair);border-radius:3px;
+  background:rgba(var(--glass),.94);border:1px solid var(--bone-hair);border-radius:3px;
   padding:8px 12px;font-family:var(--mono);font-size:12px;line-height:1.6;color:var(--bone-2);
   white-space:nowrap;opacity:0;transition:opacity .25s;pointer-events:none;z-index:8}
 #band:hover .whisper,#band:focus-visible .whisper,#band.band-open .whisper{opacity:1;pointer-events:auto}
@@ -1103,7 +1121,7 @@ button.rr-row:hover{padding-left:6px}
 /* the sky's own labels sit over the brightest band of the gradient, where bone-on-haze loses
    contrast. On a phone there is no room to move them, so give them a plate instead. */
 @media(max-width:640px){
-  .hl{background:rgba(4,14,16,.55);padding:3px 7px;border-radius:4px;color:var(--bone-2)}
+  .hl{background:rgba(var(--glass),.55);padding:3px 7px;border-radius:4px;color:var(--bone-2)}
   .hl b{color:var(--bone)}
   #skyaxis .rung{font-size:10px}
 }
@@ -1171,10 +1189,10 @@ button.rr-row:hover{padding-left:6px}
 
       <!-- SKY -->
       <section class="pane on" id="p-sky" aria-label="The sky — the remaining carbon budget">
-        <p class="page-what">What this page shows: how much carbon the world can still burn before 1.5&nbsp;°C is out of reach &mdash; and how fast we are using it up.</p>
         <div class="beats">
           <!-- BEAT 1 — the plain thesis, and the number that carries the page -->
           <div class="beat">
+            <p class="page-what">How much carbon the world can still burn before 1.5&nbsp;°C is out of reach &mdash; and how fast we are using it up.</p>
             <!-- This used to repeat the cold-open word for word, teaching the reader that scrolling
                  returns nothing new — while the one sentence that stops "2.4-2.5" being read as
                  "the world ends in 2029" was stranded in the SKIPPABLE intro. The correction now
@@ -1277,10 +1295,10 @@ button.rr-row:hover{padding-left:6px}
 
       <!-- GROUND -->
       <section class="pane" id="p-ground" aria-label="Ground — your city on its own record">
-        <p class="page-what">What this page shows: how many dangerously hot days your own town gets now, compared with your grandparents&rsquo; time.</p>
         <div class="beats">
           <!-- BEAT 1 — whose ground this is, and that you can change it -->
           <div class="beat">
+            <p class="page-what">How many dangerously hot days your own town gets now, compared with your grandparents&rsquo; time.</p>
             <h2 tabindex="-1" id="g-h2">Here is Seville, day by day, since 1940.</h2>
             <p class="place-tag" hidden>worked example &mdash; not your place &middot; set your place above</p>
                         <p class="lead">Not a global average &mdash; the ground under your feet, measured since 1940.</p>
@@ -1289,7 +1307,8 @@ button.rr-row:hover{padding-left:6px}
               <!-- once a place is set, the whole picker collapses to this one line: the reader
                    answered "where are you?" in the cold-open and must not be asked again. -->
               <p id="homenow" hidden>Drawn for <b id="homenow-name"></b>
-                <button type="button" id="homenow-change" aria-expanded="false" aria-controls="homepick-body">not your place? change</button></p>
+                <button type="button" id="homenow-change" aria-expanded="false" aria-controls="homepick-body">not your place? change</button>
+                <button type="button" id="homelink" hidden>copy a link to this place</button></p>
               <div id="homepick-body">
               <div id="homeask">
                 <h3 id="homeask-h">Where are you?</h3>
@@ -1308,6 +1327,7 @@ button.rr-row:hover{padding-left:6px}
                 <button type="button" id="gq-go">draw its record</button>
                 <span id="gq-status" aria-live="polite"></span>
               </div>
+              <div id="gq-recent" role="group" aria-label="Places you looked at recently" hidden></div>
               <div id="gq-bar" role="group" aria-label="Cities you can choose"></div>
               <p id="gq-barnote" class="receipt">Each city is a single point, not the whole city, and
                 ERA5&rsquo;s grid cell is about 28&nbsp;km across &mdash; so the record is that cell&rsquo;s,
@@ -1340,7 +1360,7 @@ button.rr-row:hover{padding-left:6px}
             <div class="chartwrap"><div class="plate">
               <div id="recwin"></div>
               <div class="legend">
-                <span><i style="background:#5FA8DC"></i>1951–80 avg</span>
+                <span><i style="background:var(--data-cool)"></i>1951–80 avg</span>
                 <span><i style="background:#E8886B"></i>last-30-yr avg</span>
                 <span><i class="dash" style="color:var(--bone-4)"></i>hottest ever</span>
                 <span><i style="background:#F2E7CC"></i>this year</span>
@@ -1359,10 +1379,10 @@ button.rr-row:hover{padding-left:6px}
 
       <!-- NIGHT -->
       <section class="pane" id="p-night" aria-label="Night — the danger after dark">
-        <p class="page-what">What this page shows: where you live, the nights are warming faster than the days &mdash; and the nights are the dangerous half.</p>
         <div class="beats">
           <!-- BEAT 1 — the danger people miss, and the number -->
           <div class="beat">
+            <p class="page-what">Where you live, the nights are warming faster than the days &mdash; and the nights are the dangerous half.</p>
             <h2 tabindex="-1">Hot nights are the danger most people miss.</h2>
             <p class="lead">Your body cools down at night to recover. When the nights stop cooling,
               a heatwave stops giving anyone a break &mdash; which is what heat-health research warns about most.</p>
@@ -1382,6 +1402,9 @@ button.rr-row:hover{padding-left:6px}
                    already labelled on the chart itself, where the eye actually is. -->
             </div></div>
             <p class="receipt" id="delhi-receipt"></p>
+            <div id="showerbox"></div>   <!-- __SKY.enter() has written its sourced meteor-shower
+                 explainer here since Phase 4 of v5 — the element was lost in a later edit and the
+                 sourced content silently vanished -->
             <!-- THE KEYSTONE. Drawn from Delhi's own baked series and NEVER from the reader's
                  place, so the sourced aerosol explanation can never be attached to another city.
                  Rendered for every reader in every state: the lesson that the record is honest
@@ -1399,10 +1422,10 @@ button.rr-row:hover{padding-left:6px}
 
       <!-- FIRST LIGHT -->
       <section class="pane" id="p-firstlight" aria-label="First light — the majority that thinks it is a minority">
-        <p class="page-what">What this page shows: far more people around you want action on climate change than you think.</p>
         <div class="beats">
           <!-- BEAT 1 — the plain finding -->
           <div class="beat">
+            <p class="page-what">Far more people around you want action on climate change than you think.</p>
             <h2 tabindex="-1">Most people back climate action.<br>They just think most people don&rsquo;t.</h2>
             <p class="lead">Researchers asked people in 125 countries whether they would give
               <b>1% of their income</b>, every month, to fight warming. Before we tell you the
@@ -1456,10 +1479,10 @@ button.rr-row:hover{padding-left:6px}
 
       <!-- MORNING -->
       <section class="pane" id="p-morning" aria-label="Morning — what is already moving">
-        <p class="page-what">What this page shows: what has genuinely improved so far, and the few things one person can do that actually matter.</p>
         <div class="beats">
           <!-- BEAT 1 — the measured good news -->
           <div class="beat">
+            <p class="page-what">What has genuinely improved so far, and the few things one person can do that actually matter.</p>
             <h2 tabindex="-1">The record also holds good news,<br>all of it measured.</h2>
             <p class="lead">Not a promise &mdash; a list of what has already moved. Each sourced, each still short of safe.</p>
             <div class="ledger">
@@ -1550,7 +1573,7 @@ button.rr-row:hover{padding-left:6px}
 
       <!-- BEDROCK -->
       <section class="pane" id="p-bedrock" aria-label="Bedrock — how we know">
-        <p class="page-what">What this page shows: every source behind every number on this site, and the things it cannot tell you.</p>
+        <p class="page-what">Every source behind every number on this site, and the things it cannot tell you.</p>
         <h2 tabindex="-1">The ground this page stands on.</h2>
         <p class="lead" style="max-width:60ch;margin-bottom:8px">Everything above rests on what is here.
           Every dataset, every paper, every line of arithmetic is named so you can check it yourself.
@@ -2336,7 +2359,7 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
  function openBar(){
   var bar=el("pk-bar");if(!bar)return;
   if(!bar.getAttribute("data-built")){
-   try{if(window.__renderCityBar)__renderCityBar(bar);}catch(e){}
+   try{if(window.__renderCityBar)__renderCityBar(bar,{scroll:false});}catch(e){}
    bar.setAttribute("data-built","1");}
   bar.hidden=false;
   var lb=el("pk-list");if(lb)lb.hidden=true;}
@@ -2564,8 +2587,24 @@ el("vitals").innerHTML="<p><b>"+Math.round(N.co2_ppm)+" ppm</b> CO₂ in the air
    if(e.key==="Enter"||e.key===" "||e.key==="Spacebar"){e.preventDefault();toggle();}
    else if(e.key==="Escape")shut();});
   document.addEventListener("click",function(e){if(!bnd.contains(e.target))shut();});})();
+ /* The reveal stagger existed only as CSS that read var(--i) — which nothing ever set, so the
+    whole cascade fired at delay 0 and every beat appeared as one slab. Wired here, capped at 6
+    steps so a long beat never tails into seconds. */
+ document.querySelectorAll(".beat,.pane-screen").forEach(function(bb){
+  Array.prototype.forEach.call(bb.children,function(c,i){c.style.setProperty("--i",String(Math.min(i,6)));});});
+ /* a preset used to TELEPORT the sky, the count and both horizons — the one control whose whole
+    promise is "watch the century answer". It now travels there, so the answer is watched. */
+ var tweenRAF=0;
+ function tweenRate(to,ms){
+  cancelAnimationFrame(tweenRAF);
+  if(reduce||ms<=0){setRate(to);return;}
+  var from=target,t0=null;
+  (function step(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/ms);
+   setRate(from+(to-from)*(1-Math.pow(1-k,3)));
+   if(k<1)tweenRAF=requestAnimationFrame(step);})(0);
+  tweenRAF=requestAnimationFrame(step);}
  document.querySelectorAll(".presets button").forEach(function(b){
-  b.addEventListener("click",function(){setRate(parseFloat(b.getAttribute("data-rate"))||RNOW);});});
+  b.addEventListener("click",function(){tweenRate(parseFloat(b.getAttribute("data-rate"))||RNOW,700);});});
  var qr=parseFloat(Q.get("rate"));if(isFinite(qr))target=Math.max(RMIN,Math.min(RMAX,qr));
  sync();
  /* the live burn ticker — plain arithmetic: rate spread over real elapsed time */
@@ -2628,7 +2667,21 @@ function buildGround(V){
  var thenN=mean(Gc.days_ge35_per_year,1951,1980),nowN=mean(Gc.days_ge35_per_year,LF-9,LF);
  var wnThen=mean(Gc.warm_nights_ge25_per_year,1951,1980),wnNow=mean(Gc.warm_nights_ge25_per_year,LF-9,LF);
  if(el("g-h2"))el("g-h2").textContent="Here is "+PLACE+", day by day, since 1940.";
- if(el("g-then")){el("g-then").textContent=thenN.toFixed(0);el("g-now").textContent=nowN.toFixed(0);}
+ if(el("g-then")){
+  el("g-then").textContent=thenN.toFixed(0);el("g-now").textContent=nowN.toFixed(0);
+  /* the then-count lands first, the now-count 250ms later — the site's one sentence, in motion */
+  (function(){
+   var b=el("g-count-h2");if(!b||!window.IntersectionObserver)return;
+   if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+   var done=false;
+   function cnt(elx,to,delay){setTimeout(function(){var t0=null;
+    (function st(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/900);
+     elx.textContent=String(Math.round(to*(1-Math.pow(1-k,3))));
+     if(k<1)requestAnimationFrame(st);})(performance.now());},delay);}
+   try{var io=new IntersectionObserver(function(es){
+    for(var q=0;q<es.length;q++)if(es[q].isIntersecting&&!done){done=true;io.disconnect();
+     cnt(el("g-then"),Math.round(thenN),0);cnt(el("g-now"),Math.round(nowN),250);}},{threshold:.5});
+   io.observe(b);}catch(e){}})();}
  if(el("g-hotw"))el("g-hotw").textContent=CUSTOM?"Unusually hot":"Scorching";
 
  /* record-window chart */
@@ -2655,7 +2708,7 @@ function buildGround(V){
   var p0=E("path",{d:path(RWc.spaghetti[yr]),fill:"none",stroke:"#F2E7CC","stroke-width":.8,"stroke-opacity":.1});
   svg.appendChild(p0);spagP.push(p0);});
  svg.appendChild(E("path",{d:path(RWc.record_envelope),fill:"none",stroke:"rgba(242,231,204,.55)","stroke-width":1.1,"stroke-dasharray":"2 3"}));
- svg.appendChild(E("path",{d:path(RWc.old_normal_1951_1980),fill:"none",stroke:"#5FA8DC","stroke-width":2.4,"class":"dr"}));
+ svg.appendChild(E("path",{d:path(RWc.old_normal_1951_1980),fill:"none",stroke:"#8FC0EA","stroke-width":2.4,"class":"dr"}));
  svg.appendChild(E("path",{d:path(RWc.new_normal_last30),fill:"none",stroke:"#E8886B","stroke-width":2.4,"class":"dr"}));
  var s26=RWc.spaghetti[CY]||[],lastObs=-1;
  for(var i=0;i<s26.length;i++)if(s26[i]!=null)lastObs=i;
@@ -2680,7 +2733,7 @@ function buildGround(V){
   el("yr-out").innerHTML="<b>"+yr+"</b> ran <b class=\"yr-val\">"+(a>=0?"+":"−")+Math.abs(a).toFixed(2)+" °C</b> vs the 1951–80 average"+
    (pk!=null?(" — its hottest day hit <b class=\"yr-val\">"+pk.toFixed(1)+" °C</b>, now traced in amber on the chart."):".");}
  el("yr").addEventListener("input",function(){var v=+this.value;
-  if(v>=1940&&v<=2025)setYear(v);
+  if(v>=1940&&v<=LF)setYear(v);
   else{hiP.setAttribute("stroke-opacity",0);
    el("yr-out").textContent=(this.value.length>=4)?
     "The record runs 1940 to "+LF+". Try a year between those.":"";}});
@@ -2818,7 +2871,7 @@ function buildGround(V){
    if(b){el("yr").value=b;setYear(b);}});
   svg.addEventListener("pointerleave",function(){
    var v=+el("yr").value;
-   if(v>=1940&&v<=2025)setYear(v);
+   if(v>=1940&&v<=LF)setYear(v);
    else hiP.setAttribute("stroke-opacity",0);});
  })();
 }
@@ -2833,8 +2886,8 @@ var buildNight=function(NV){
   dThen=mean(days,1951,1980);dNow=mean(days,LF-9,LF);
   nThen=mean(nights,1951,1980);nNow=mean(nights,LF-9,LF);
  }else{place="Delhi";thrH=35;thrN=25;
-  days=DH.days_ge35_per_year.filter(function(r){return r.year<=2025;});
-  nights=DH.warm_nights_ge25_per_year.filter(function(r){return r.year<=2025;});
+  days=DH.days_ge35_per_year.filter(function(r){return r.year<=LF;});
+  nights=DH.warm_nights_ge25_per_year.filter(function(r){return r.year<=LF;});
   dThen=dr.days_ge35_then;dNow=dr.days_ge35_now;
   nThen=dr.warm_nights_then;nNow=dr.warm_nights_now;}
  var dayFell=dNow<dThen-1,thrHs=CUSTOM?thrH.toFixed(1):"35",thrNs=CUSTOM?thrN.toFixed(1):"25";
@@ -2922,13 +2975,13 @@ var buildNight=function(NV){
    var at={d:p,fill:"none",stroke:c,"stroke-width":w,"stroke-opacity":op||1,"stroke-linejoin":"round"};
    if(cls)at["class"]=cls;
    svg.appendChild(E("path",at));}
-  line(days,"#9aa39e",.75,.18);line(nights,"#D96C3A",.75,.2);
+  line(days,"#8FC0EA",.75,.18);line(nights,"#EE9E80",.75,.2);
   var rd=roll(days,11),rn=roll(nights,11);
-  line(rd,"#9aa39e",narrow?3:2.6,1,"dr");line(rn,"#D96C3A",narrow?3.6:3,1,"dr");
+  line(rd,"#8FC0EA",narrow?3:2.6,1,"dr");line(rn,"#EE9E80",narrow?3.6:3,1,"dr");
   if(!narrow){
    var dv=rd[rd.length-8]||rd[rd.length-1],nv=rn[rn.length-8]||rn[rn.length-1];
    svg.appendChild(txt({x:x(dv.year),y:y(dv.n)-12,"text-anchor":"middle","font-size":12,
-    fill:"#B9C2BC","font-family":MONO},"hot days "+dTrend,true));
+    fill:"#8FC0EA","font-family":MONO},"hot days "+dTrend,true));
    svg.appendChild(txt({x:x(nv.year),y:y(nv.n)-14,"text-anchor":"middle","font-size":12,
     fill:"#E8886B","font-family":MONO},"hot nights "+nTrend,true));}
   host.appendChild(svg);}
@@ -3069,12 +3122,19 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
     still cannot NAME the city (there is no reverse geocoder), so the letter leaves a marked blank
     and says why, rather than inventing a name or silently claiming Seville. */
  function LN(){
-  var hm=window.__HOME&&__HOME.get(),ser=(window.__HOME&&__HOME.series())||null;
-  var Gs=ser||G, named=!!(hm&&!hm.ex&&hm.src!=="device"&&hm.name), dev=!!(hm&&hm.src==="device");
+  var hm=window.__HOME&&__HOME.get(),V=(window.__HOME&&__HOME.record&&__HOME.record())||null;
+  var Gs=(V&&V.G)||G, named=!!(hm&&!hm.ex&&hm.src!=="device"&&hm.name), dev=!!(hm&&hm.src==="device");
+  var custom=!!(V&&V.G);
   var place=named?hm.name:(dev?"[your city]":"Seville");
   var w=Math.round(mean(Gs.days_ge35_per_year,1951,1980)),nw=Math.round(mean(Gs.days_ge35_per_year,LF-9,LF));
   var a=mean(Gs.warm_nights_ge25_per_year,1951,1980),b=mean(Gs.warm_nights_ge25_per_year,LF-9,LF);
+  /* the letter must describe the threshold its counts were made with. Custom places count against
+     their OWN 1951-80 95th percentile, not 35 °C — a representative's staffer who checks is
+     exactly the reader we cannot afford to mislead. */
+  var dayLbl=custom?("above "+V.thr.hot.toFixed(1)+" °C — hotter than 95% of its own 1951–80 days"):"at or above 35 °C";
+  var nightLbl=custom?("above "+V.thr.night.toFixed(1)+" °C"):"at or above 25 °C";
   return {place:place,was:w,now:nw,dev:dev,named:named,ex:!!(hm&&hm.ex),
+          dayLbl:dayLbl,nightLbl:nightLbl,
           nWasS:(a<1?"under one":(Math.round(a*10)/10)),nNowS:(Math.round(b*10)/10)};}
  function SUBJ(){var L=LN();return "A constituent from "+L.place+", about our summers";}
  var was=Math.round(mean(G.days_ge35_per_year,1951,1980)),now=Math.round(mean(G.days_ge35_per_year,LF-9,LF));  // SAME dynamic window (LF) the Ground chapter renders — the letter can never drift from the on-page number
@@ -3084,8 +3144,8 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
  function letterBody(v){var L=LN();
   return "Dear "+(v.to||"[your representative’s name]")+",\n\n"+
   "I live in "+L.place+". I want to tell you what the record already shows here, because it is my reason for writing.\n\n"+
-  "In the three decades from 1951 to 1980, "+L.place+" averaged "+L.was+" days a year at or above 35 °C. In the most recent decade, "+(LF-9)+" to "+LF+", that average is "+L.now+" days.\n\n"+
-  "The nights have changed too. Nights at or above 25 °C — the nights the body cannot cool down — went from "+L.nWasS+" a year to about "+L.nNowS+".\n\n"+
+  "In the three decades from 1951 to 1980, "+L.place+" averaged "+L.was+" days a year "+L.dayLbl+". In the most recent decade, "+(LF-9)+" to "+LF+", that average is "+L.now+" days.\n\n"+
+  "The nights have changed too. Nights "+L.nightLbl+" — the nights the body cannot cool down — went from "+L.nWasS+" a year to about "+L.nNowS+".\n\n"+
   "These are not projections. They are the measured record for the place we share.\n\n"+
   "I’m not writing to tell you what the science should mean to you. I’m writing to put on the record that it is already measurable here, and to ask you to treat climate policy as the local, present-day issue it is for "+L.place+(v.own?" — "+v.own:"")+".\n\n"+
   "Thank you for representing us.\n\n"+(v.name||"[Your name]")+"\n"+(v.pc||"[Your postcode, so they know I’m a constituent]");}
@@ -3136,12 +3196,14 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
  function icsEsc(s){return s.replace(/([\\,;])/g,"\\$1").replace(/\n/g,"\\n");}
  /* the letter already quotes the reader's own place via LN(); the calendar entry that reminds
     them to send it was still naming Seville's numbers as their reason to write */
- var PLAN={letter:{what:"Send "+LN().place+"’s record to my representative",sum:"On Record — put "+LN().place+"’s heat record on the record",
+ /* Computed per call. As `var PLAN = {...}` this evaluated ONCE at parse time — before any place
+    was chosen — so the calendar reminder said Seville forever, whatever the reader later picked. */
+ function PLANF(){return {letter:{what:"Send "+LN().place+"’s record to my representative",sum:"On Record — put "+LN().place+"’s heat record on the record",
     desc:"I said I’d send my letter. "+LN().place+" now averages "+LN().now+" days a year over 35°C (was "+LN().was+" in 1951–80). Open it: https://agoshbaranwal.github.io/on-record/?chamber=morning"},
    vote:{what:"Make my climate voting plan",sum:"On Record — my climate voting plan",
-    desc:"When, where, and how I’ll vote — with the climate on the ballot. Check candidates’ records; no party named for me. https://agoshbaranwal.github.io/on-record/?chamber=morning"}};
+    desc:"When, where, and how I’ll vote — with the climate on the ballot. Check candidates’ records; no party named for me. https://agoshbaranwal.github.io/on-record/?chamber=morning"}};}
  function twoDigit(n){return (n<10?"0":"")+n;}
- function planIcs(kind,dateStr,timeStr,note){var p=PLAN[kind]||PLAN.letter;
+ function planIcs(kind,dateStr,timeStr,note){var _P=PLANF(),p=_P[kind]||_P.letter;
   var parts=dateStr.split("-"),tp=(timeStr||"18:00").split(":");
   var dt=parts[0]+parts[1]+parts[2]+"T"+(tp[0]||"18")+(tp[1]||"00")+"00";          // floating local time — follows the user's own clock
   var un=new Date(),uid=""+un.getTime()+"-"+Math.floor((un.getSeconds()*1000+un.getMilliseconds()))+"@onrecord";
@@ -3151,7 +3213,7 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
    "UID:"+uid,"DTSTAMP:"+z(un),"DTSTART:"+dt,"DURATION:PT30M","SUMMARY:"+icsEsc(p.sum),"DESCRIPTION:"+icsEsc(desc),
    "BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:Your On Record plan","TRIGGER:-PT30M","END:VALARM",
    "END:VEVENT","END:VCALENDAR"].join("\r\n");}
- function openPlan(kind){var p=PLAN[kind]||PLAN.letter,fs=freshStart();
+ function openPlan(kind){var _P=PLANF(),p=_P[kind]||_P.letter,fs=freshStart();
   panel.hidden=false;
   panel.innerHTML='<h3>Make it a plan.</h3><p class="rr-hint">A plan you can see beats a good intention (Gollwitzer &amp; Sheeran) — and a date plus a time beats a date alone (Milkman 2011).</p>'+
    '<label class="rr-field"><span>What</span><input id="rr-what" type="text" value="'+p.what.replace(/"/g,"&quot;")+'"></label>'+
@@ -3237,6 +3299,7 @@ var __ART=(function(){
       hero:String(n2),wasN:w2,label:"days a year above "+V.thr.hot.toFixed(1)+" °C — hotter than 95% of its 1951–80 days",
       sub:(LFy-9)+"–"+LFy+" average · was "+w2+" a year in 1951–80",
       series:V.G.days_ge35_per_year,
+      nights:V.G.warm_nights_ge25_per_year,anomS:V.S,thrHot:V.thr.hot,thrNight:V.thr.night,
       src:"ERA5 via Open-Meteo · "+nm+" · daily max ≥ "+V.thr.hot.toFixed(1)+" °C",url:BASE+"?chamber=ground",
       cite:"In "+nm+", days above "+V.thr.hot.toFixed(1)+" °C (its own 1951–80 95th percentile) "+
        (verb==="held steady at"?("held steady at about "+n2+" a year"):(verb+" from "+w2+" a year (1951–80 average) to "+n2+" ("+(LFy-9)+"–"+LFy+")"))+
@@ -3246,8 +3309,26 @@ var __ART=(function(){
     hero:String(now),wasN:was,label:"days a year at or above 35 °C",
     sub:"2016–25 average · was "+was+" a year in 1951–80",
     series:G.days_ge35_per_year.filter(function(r){return r.year<=LASTFULL;}),
+    nights:G.warm_nights_ge25_per_year,anomS:S,thrHot:35,thrNight:25,
     src:"ERA5 via Open-Meteo · Seville · daily max ≥ 35 °C",url:BASE+"?chamber=ground",
     cite:"In Seville, days at or above 35 °C rose from "+was+" a year (1951–80 average) to "+now+" (2016–25). Source: ERA5 reanalysis via Open-Meteo. On Record — "+BASE+"?chamber=ground"};})(),
+   night:(function(){
+    var hm=window.__HOME&&__HOME.get(),V=window.__HOME&&__HOME.record&&__HOME.record();
+    function mk(nm,rows,thr,LFy){
+     var w2=R(mean(rows,1951,1980)),n2=R(mean(rows,LFy-9,LFy));
+     var verb=n2>w2?"rose":n2<w2?"fell":"held steady";
+     return {key:"night",kind:"climb",place:nm.toUpperCase(),title:nm+"’s nights, on record",
+      hero:String(n2),wasN:w2,label:"hot nights a year — above "+thr.toFixed(1)+" °C",
+      sub:(LFy-9)+"–"+LFy+" average · was "+w2+" a year in 1951–80",
+      series:rows,nights:rows,anomS:null,thrHot:thr,thrNight:thr,
+      src:"ERA5 via Open-Meteo · "+nm+" · nights ≥ "+thr.toFixed(1)+" °C",url:BASE+"?chamber=night",
+      cite:"In "+nm+", nights above "+thr.toFixed(1)+" °C "+verb+" from "+w2+" a year (1951–80 average) to "+
+       n2+" ("+(LFy-9)+"–"+LFy+"). We show the record, not the cause. Source: ERA5 via Open-Meteo. On Record — "+BASE+"?chamber=night"};}
+    if(hm&&!hm.ex&&V&&V.G){
+     var LFy=V.G.warm_nights_ge25_per_year[V.G.warm_nights_ge25_per_year.length-1].year;
+     return mk(hm.name,V.G.warm_nights_ge25_per_year,V.thr.night,LFy);}
+    return mk("Delhi",DH.warm_nights_ge25_per_year.filter(function(r){return r.year<=LF;}),25,LF);
+   })(),
    budget:{key:"budget",kind:"ledger",place:"THE SKY",title:"The carbon budget, on record",
     hero:yrs,heroUnit:"years",label:"of budget left for a ~50% chance of staying under 1.5 °C",
     sub:"at today’s ~"+R(B.rate_now_gt)+" GtCO₂/yr · "+R(lo.remaining_now_gt)+"–"+R(hi.remaining_now_gt)+" Gt remaining · spent ~"+R(B.now_dec+yrsLo),
@@ -3373,7 +3454,9 @@ var __ART=(function(){
  }
  function ready(){return (document.fonts&&document.fonts.ready)||Promise.resolve();}
  function stampSlug(){return ((typeof B!=="undefined"&&B.now_label)||"").replace(/ /g,"-");}
- function fname(r,format,ext){return "on-record_"+r.key+(format==="story"?"_story":"")+"_"+stampSlug()+"."+ext;}
+ function fname(r,format,ext){
+  var slug=(r.place&&r.place!=="SEVILLE"&&r.key==="seville")?r.place.toLowerCase().replace(/[^a-z0-9]+/g,"-"):r.key;
+  return "on-record_"+slug+(format==="story"?"_story":"")+"_"+stampSlug()+"."+ext;}
  function dl(blob,name){var u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=name;
   document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},1500);}
  function toBlob(cv){return new Promise(function(res){if(cv.toBlob)cv.toBlob(function(b){res(b);},"image/png");
@@ -3393,9 +3476,18 @@ var __ART=(function(){
  /* CSV: every file opens with #-prefixed provenance repeating the same named source + permalink + stamp as the card */
  function csvText(key){var r=rec(key),H=["# On Record — "+r.title,"# source: "+r.src,"# permalink: "+r.url,"# "+STAMP,
    "# license: computed outputs CC-BY-4.0; underlying data per the named source"],L=[];
-  if(key==="seville"){L.push("year,days_ge_35C,warm_nights_ge_25C,anomaly_C_vs_1951-80");
-   var nb={};G.warm_nights_ge25_per_year.forEach(function(d){nb[d.year]=d.n;});var y0=S.year0;
-   G.days_ge35_per_year.filter(function(d){return d.year<=LASTFULL;}).forEach(function(d){L.push(d.year+","+d.n+","+(nb[d.year]!=null?nb[d.year]:"")+","+(S.anom[d.year-y0]!=null?S.anom[d.year-y0].toFixed(2):""));});
+  if(key==="seville"||key==="night"){
+   /* The header already followed the reader's place; the ROWS still came from the baked Seville
+      globals — a Tokyo header over Seville numbers, which is actively mislabeled data. Rows now
+      come from the same record object as the header, and the column names carry the place's own
+      thresholds so the file is self-describing wherever it travels. */
+   L.push(key==="night"?("year,warm_nights_above_"+r.thrNight+"C,anomaly_C_vs_1951-80")
+                       :("year,days_above_"+r.thrHot+"C,warm_nights_above_"+r.thrNight+"C,anomaly_C_vs_1951-80"));
+   var nb={};(r.nights||[]).forEach(function(d){nb[d.year]=d.n;});var y0=(r.anomS&&r.anomS.year0)||1940;
+   (r.series||[]).forEach(function(d){
+    var an=((r.anomS&&r.anomS.anom||[])[d.year-y0]);
+    L.push(key==="night"?(d.year+","+d.n+","+(an!=null?an:""))
+                        :(d.year+","+d.n+","+(nb[d.year]!=null?nb[d.year]:"")+","+(an!=null?an:"")));});
   }else if(key==="budget"){L.push("source,gtco2_remaining_now,gt_per_year,years_left,exhaustion_year");
    [B.estimates[0],B.estimates[1]].forEach(function(e){var sn=/IGCC/i.test(e.label||"")?"IGCC 2025":"GCB 2025";
     L.push(sn+","+e.remaining_now_gt.toFixed(1)+","+B.rate_now_gt+","+e.years_at_now.toFixed(2)+","+R(B.now_dec+e.remaining_now_gt/B.rate_now_gt));});
@@ -3406,14 +3498,16 @@ var __ART=(function(){
   return H.join("\n")+"\n"+L.join("\n")+"\n";}
  function csv(key){var r=rec(key);dl(new Blob([csvText(key)],{type:"text/csv;charset=utf-8"}),fname(r,"","csv"));return "saved";}
  return {draw:draw,rec:rec,ready:ready,share:share,download:download,cite:cite,csv:csv,csvText:csvText,fname:fname,BASE:BASE,
-  keys:["seville","budget","perception"]};
+  keys:["seville","night","budget","perception"]};
 })();
 window.__ART=__ART;   // exposed for the build-time OG bake
 /* Bedrock toolkit — every record leaves as image / citation / CSV */
-(function(){var box=el("takeaway");if(!box||!window.__ART)return;
+function buildTakeaway(){var box=el("takeaway");if(!box||!window.__ART)return;
+ box.innerHTML="";   /* idempotent: called at boot and again whenever the place changes */
  function RM(n){return Math.round(n);}
  function meta(k){var r=__ART.rec(k);   // subtitles derived from the SAME numbers the card/CSV use — never hand-typed
-  if(k==="seville")return ["Seville’s heat record","days ≥ 35 °C: "+r.wasN+" → "+r.hero+" a year"];
+  if(k==="seville")return [(r.place==="SEVILLE"?"Seville’s":r.place.charAt(0)+r.place.slice(1).toLowerCase()+"’s")+" heat record","days above "+r.thrHot+" °C: "+r.wasN+" → "+r.hero+" a year"];
+  if(k==="night")return [(r.place==="DELHI"?"Delhi’s":r.place.charAt(0)+r.place.slice(1).toLowerCase()+"’s")+" nights","hot nights a year: "+r.wasN+" → "+r.hero];
   if(k==="budget")return ["The carbon budget","≈ "+r.hero+" years left · "+RM(r.lo)+"–"+RM(r.hi)+" Gt"];
   if(k==="perception")return ["The perception gap",r.a+"% would give · "+r.g+"% guessed"];
   return [k,""];}
@@ -3426,7 +3520,7 @@ window.__ART=__ART;   // exposed for the build-time OG bake
    btn("csv",'csv <span aria-hidden="true">&darr;</span>',"Download data as CSV")+'</div>';
   box.appendChild(row);});
  function copyCite(k){var t=__ART.cite(k);if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).catch(function(){});}
- box.addEventListener("click",function(e){var b=e.target.closest("button[data-a]");if(!b)return;
+ box.onclick=(function(e){var b=e.target.closest("button[data-a]");if(!b)return;
   var k=b.getAttribute("data-k"),a=b.getAttribute("data-a"),o=b.innerHTML;
   function flash(m){b.textContent=m;el("sr-status").textContent=m;setTimeout(function(){b.innerHTML=o;},1900);}
   if(a==="card"||a==="story")__ART.download(k,a==="story"?"story":"land").then(function(res){
@@ -3434,7 +3528,8 @@ window.__ART=__ART;   // exposed for the build-time OG bake
   else if(a==="csv"){__ART.csv(k);flash("saved ✓");}
   else{if(navigator.clipboard&&navigator.clipboard.writeText)
    navigator.clipboard.writeText(__ART.cite(k)).then(function(){flash("copied ✓");},function(){flash("—");});else flash("—");}});
-})();
+}
+buildTakeaway();
 /* print one-pager — built once, revealed only by @media print */
 (function(){if(!window.__ART)return;var ps=document.createElement("div");ps.id="print-sheet";ps.setAttribute("aria-hidden","true");
  var stripes="";for(var i=0;i<S.anom.length;i++)stripes+='<i style="background:'+tcol(S.anom[i])+'"></i>';
@@ -3571,7 +3666,8 @@ var DRAWERS={
    "<p class=\"receipt\">A labelled illustration — an event, on demand and reversible, not a permanent state. "+
    "AOD calibrated to named sources (AERONET · NASA · NOAA); descriptive, not a claim that CO₂ colours the air on "+
    "any given day. The dial never drives it.</p>";}},
- ground:{t:"Seville — the full record",h:function(){return groundDrawerExtra;}},
+ ground:{t:function(){var hm=window.__HOME&&__HOME.get();
+   return ((hm&&!hm.ex&&hm.name)||"Seville")+" — the full record";},h:function(){return groundDrawerExtra;}},
  night:{t:"Delhi — why the split",h:function(){
   return "<h4>Two directions, one city</h4><p>Studies of the Indo-Gangetic Plain link the daytime damping mainly to "+
    "<b>aerosol haze</b> reflecting sunlight before it can heat the ground (Padma Kumari et al. 2007, GRL), with a "+
@@ -3580,7 +3676,7 @@ var DRAWERS={
    "<p class=\"receipt\">counts are our own calculation from ERA5, shown descriptively · direction confirmed in published literature</p>"+
    "<h4>Every year</h4>"+
    tableHTML(["Year","Days ≥35 °C","Nights ≥25 °C"],
-    DH.days_ge35_per_year.filter(function(r){return r.year<=2025;}).map(function(r,i){
+    DH.days_ge35_per_year.filter(function(r){return r.year<=LF;}).map(function(r,i){
      return [String(r.year),String(r.n),String(DH.warm_nights_ge25_per_year[i].n)];}))+
    "<h4>The sky itself</h4><p>The stars behind this chart are the real sky over "+
    (window.__SKY?__SKY.place():"Delhi")+", drawn for this moment when it&rsquo;s dark there and for "+
@@ -3626,8 +3722,8 @@ var lastFocus=null;
 function drawerInert(on){ // the modal drawer makes the rest of the page inert (no tabbing/AT behind it)
  ["panes","sky-fixtures","ladder","mast","budget-band","soundbtn"].forEach(function(id){
   var e=el(id);if(e){if(on)e.setAttribute("inert","");else e.removeAttribute("inert");}});}
-function openDrawer(key){var d=DRAWERS[key];if(!d)return;
- el("d-title").textContent=d.t;el("dbody").innerHTML=d.h();
+function openDrawer(key){if(EMBED)return;var d=DRAWERS[key];if(!d)return;
+ el("d-title").textContent=(typeof d.t==="function"?d.t():d.t);el("dbody").innerHTML=d.h();
  var dw=el("drawer");dw.classList.add("open");dw.setAttribute("aria-hidden","false");dw.removeAttribute("inert");
  drawerInert(true);lastFocus=document.activeElement;el("dclose").focus();}
 function closeDrawer(){var dw=el("drawer");
@@ -4289,6 +4385,14 @@ var __HOME=(function(){
   if(chip){chip.hidden=false;
    chip.textContent=h.ex?"set your place":h.name;   /* the example is named by the .place-tag under each heading */
    chip.classList.toggle("unset",!!h.ex);}
+  /* the chapter ladder's Ground rung named Seville forever, whatever the reader chose */
+  try{var lad=el("ladder");
+   if(lad&&lad.children[1]){var lf=lad.children[1].querySelector(".fact");
+    if(lf&&!h.ex)lf.textContent=h.name+" · on its own record";
+    if(lf&&h.ex)lf.textContent=h.name+" · the worked example";}}catch(e){}
+  try{var hl=el("homelink");
+   if(hl){var lp=(window.__HOME&&__HOME.linkParam&&__HOME.linkParam())||"";
+    hl.hidden=!lp;hl.setAttribute("data-link",lp);}}catch(e){}
   var sw=el("skywhere");
   if(sw)sw.textContent="the sky over "+h.name+" · "+Math.abs(h.lat).toFixed(2)+"° "+(h.lat<0?"S":"N")+", "+
    Math.abs(h.lon).toFixed(2)+"° "+(h.lon<0?"W":"E");
@@ -4308,20 +4412,32 @@ var __HOME=(function(){
    if(!settled){body.hidden=false;body.removeAttribute("data-open");}}
   var bars=document.querySelectorAll(".cb-chip");
   for(var j=0;j<bars.length;j++)bars[j].setAttribute("aria-pressed",String(bars[j].getAttribute("data-slug")===h.slug));
-  try{if(typeof buildNightExample==="function")buildNightExample();}catch(e){}}
+  try{if(typeof buildNightExample==="function")buildNightExample();}catch(e){}
+  try{if(typeof buildTakeaway==="function")buildTakeaway();}catch(e){}
+  try{if(window.__renderRecents)__renderRecents();}catch(e){}}
  /* THE ONE MUTATOR. Stars + first light + labels are pure local work and land immediately;
     the ground record is a multi-second archive fetch, so it goes last and asynchronously. */
  function set(h,opts){
   opts=opts||{};h=normalize(h);if(!h)return;
   /* a located reader is named from the on-device list first, so the fan-out labels every
      chapter with their real city rather than the placeholder */
-  if(h.src==="device"&&!h.nearName){withCityName(h,function(h2){commit(h2,opts);});return;}
-  commit(h,opts);}
+  if(h.src==="device"&&!h.nearName){
+   var seq=++SETSEQ;   /* a slow device commit must never overwrite a quicker deliberate pick */
+   withCityName(h,function(h2){if(seq===SETSEQ)commit(h2,opts);});return;}
+  SETSEQ++;commit(h,opts);}
+ var SETSEQ=0;
  function commit(h,opts){
   HOME=h;GEN++;
+  LASTV=null;REV++;   /* the OLD place's record must never travel under the NEW place's name */
+  /* recents: the way back. Skips examples and respects the no-storage modes. */
+  try{if(STORE&&!h.ex&&h.name&&h.name!=="your place"){
+   var rc=JSON.parse(get("onrecord.recent.v1")||"[]");
+   rc=rc.filter(function(r){return r.name!==h.name;});
+   rc.unshift({name:h.name,slug:h.slug||null,lat:h.lat,lon:h.lon,tz:h.tz,iso3:h.iso3||null,src:h.src});
+   put("onrecord.recent.v1",JSON.stringify(rc.slice(0,5)));}}catch(e){}
   try{if(__SKY&&__SKY.setPlace)__SKY.setPlace({name:h.name,lat:h.lat,lon:h.lon,tz:h.tz,tzl:""},false);}catch(e){}
   pgSync(h);labelsRefresh();
-  if(h.ex==="seville"){if(__PLACE&&__PLACE.reset)__PLACE.reset();}
+  if(h.ex==="seville"){if(__PLACE&&__PLACE.reset)__PLACE.reset();placeState("ok");}
   else if(__PLACE&&__PLACE.pick){
    placeState("pending",h.name);
    __PLACE.pick(h.lat,h.lon,h.name,GEN,{scroll:opts.scroll!==false});}
@@ -4331,9 +4447,11 @@ var __HOME=(function(){
   markAsked();
   if(!navigator.geolocation){if(onDone)onDone("unsupported");return;}
   navigator.geolocation.getCurrentPosition(function(pos){
-   set({src:"device",lat:pos.coords.latitude,lon:pos.coords.longitude,tz:devTZ()},
-       {scroll:origin!=="intro"});
-   if(onDone)onDone("granted",HOME);},
+   /* built from pos.coords DIRECTLY: HOME commits behind the async city-naming step, so
+      reading it here showed the PREVIOUS place's coordinates in the confirmation */
+   var la=r2(pos.coords.latitude),lo=r2(pos.coords.longitude);
+   set({src:"device",lat:la,lon:lo,tz:devTZ()},{scroll:origin!=="intro"});
+   if(onDone)onDone("granted",{lat:la,lon:lo});},
    function(err){if(onDone)onDone(err&&err.code===1?"denied":"error");},
    {enableHighAccuracy:false,timeout:9000,maximumAge:600000});}
  function markAsked(){asked=true;put(KASK,"answered");}
@@ -4354,6 +4472,7 @@ var __HOME=(function(){
   var s=null;try{s=JSON.parse(get(KEY)||"null");}catch(e){}
   if(!s){var old=null;try{old=JSON.parse(get(KOLD)||"null");}catch(e){}   /* migrate "my sky" */
    if(old&&isFinite(old.lat)&&isFinite(old.lon)){s={src:"device",lat:old.lat,lon:old.lon,tz:devTZ()};drop(KOLD);}}
+  if(s&&s.ex){s=null;drop(KEY);}   /* a persisted EXAMPLE is legacy poison — the ask must return */
   if(s&&isFinite(s.lat)&&isFinite(s.lon)){set(s,{scroll:false});return;}
   HOME=normalize(EXAMPLES.seville);labelsRefresh();pgSync(HOME);}
  /* the record __PLACE just computed for this home, so the Morning letter and the share card
@@ -4385,7 +4504,11 @@ var __HOME=(function(){
          fromCity:fromCity,preflight:preflight,asked:askedAlready,markAsked:markAsked,
          isExample:function(){return !!(HOME&&HOME.ex);},
          /* a device-located or hand-typed place is never appended to a shareable link */
-         linkParam:function(){return (HOME&&HOME.slug&&HOME.src!=="device"&&HOME.src!=="search")?("?place="+HOME.slug):"";}};
+         linkParam:function(){
+          if(!HOME||HOME.src==="device"||HOME.ex)return "";           /* device + examples: never linkable */
+          if(HOME.slug&&HOME.src!=="search")return "?place="+HOME.slug;
+          if(HOME.src==="search")return "?place="+HOME.lat+","+HOME.lon+","+encodeURIComponent(HOME.name);
+          return "";}};
 })();
 window.__HOME=__HOME;
 /* ═══════════ the picker's UI — one component, rendered into up to two hosts ═══════════ */
@@ -4417,8 +4540,9 @@ window.__HOME=__HOME;
   /* "America/" spans two of our regions, so it is resolved by the zone list above, never guessed */
   return {asia:"asia",africa:"africa",europe:"europe",australia:"oceania",pacific:"oceania",
           atlantic:"europe",indian:"africa"}[area]||null;}
- function renderCityBar(host){
+ function renderCityBar(host,opts){
   if(!host)return;
+  opts=opts||{};
   var cs=H.cities(),order=["asia","mideast","africa","europe","latam","namerica","oceania"],out="";
   var lead=leadRegion();
   if(lead&&order.indexOf(lead)>0)order=[lead].concat(order.filter(function(r){return r!==lead;}));
@@ -4434,14 +4558,31 @@ window.__HOME=__HOME;
   host.addEventListener("click",function(e){
    var b=e.target&&e.target.closest?e.target.closest(".cb-chip"):null;if(!b)return;
    var c=H.city(b.getAttribute("data-slug"));if(!c)return;
-   H.markAsked();H.set(H.fromCity(c,"bar"),{scroll:true});});}
+   H.markAsked();H.set(H.fromCity(c,"bar"),{scroll:opts.scroll!==false});});}
+ function renderRecents(){
+  var host=el("gq-recent");if(!host)return;
+  var rc=[];try{rc=JSON.parse(localStorage.getItem("onrecord.recent.v1")||"[]");}catch(e){}
+  var cur=H.get&&H.get();
+  rc=rc.filter(function(r){return !(cur&&r.name===cur.name);}).slice(0,4);
+  if(!rc.length){host.hidden=true;host.innerHTML="";return;}
+  host.hidden=false;
+  host.innerHTML='<p class="cb-reg" aria-hidden="true">Recent</p><div class="cb-chips">'+
+   rc.map(function(r){return '<button type="button" class="cb-chip" data-rn="'+r.name.replace(/"/g,"&quot;")+'">'+r.name+'</button>';}).join("")+'</div>';
+  host.onclick=function(e){var b=e.target.closest(".cb-chip");if(!b)return;
+   var nm=b.getAttribute("data-rn");
+   var hit=rc.filter(function(r){return r.name===nm;})[0];if(!hit)return;
+   H.markAsked();
+   H.set({src:hit.slug?"bar":"search",slug:hit.slug,name:hit.name,full:hit.name,
+          lat:hit.lat,lon:hit.lon,tz:hit.tz,iso3:hit.iso3},{scroll:true});};}
+ window.__renderRecents=renderRecents;
+ renderRecents();
  renderCityBar(el("gq-bar"));
  window.__renderCityBar=renderCityBar;   /* the cold-open's #pk-bar is the second host */
  /* the examples row — always visible, so Seville is content rather than a home base you return to */
  var ex=el("gq-ex");
  if(ex)ex.addEventListener("click",function(e){
   var b=e.target&&e.target.closest?e.target.closest(".gq-exb"):null;if(!b)return;
-  H.markAsked();H.set(H.examples[b.getAttribute("data-slug")],{scroll:true});});
+  H.markAsked();H.set(H.examples[b.getAttribute("data-slug")],{scroll:true,persist:false});});
  /* the location button. The pre-flight is the anti-nag mechanism: if the browser has already
     refused, or cannot do this at all, we do not render a button whose only outcome is failure. */
  var mine=el("gq-mine"),blocked=el("homeask-blocked"),head=el("homeask-h");
@@ -4476,6 +4617,12 @@ window.__HOME=__HOME;
     var f=el("gq-bar")&&el("gq-bar").querySelector(".cb-chip");if(f)try{f.focus();}catch(e){}}
    else{mine.textContent="try location again";
     if(st)st.textContent="your browser couldn't fix a position just now — pick a city below, or try again.";}});});
+ (function(){var hl=el("homelink");if(!hl)return;
+  hl.addEventListener("click",function(){
+   var u=location.origin+location.pathname+(hl.getAttribute("data-link")||"");
+   function ok(){hl.textContent="link copied ✓";setTimeout(function(){hl.textContent="copy a link to this place";},1800);}
+   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(u).then(ok,function(){prompt("Copy this link:",u);});
+   else prompt("Copy this link:",u);});})();
  var chg=el("homenow-change"),bodyEl=el("homepick-body");
  if(chg&&bodyEl)chg.addEventListener("click",function(){
   var open=bodyEl.hidden;bodyEl.hidden=!open;
@@ -4535,18 +4682,29 @@ window.__HOME=__HOME;
     dots[k].className=cls;k++;
     if(slow){while(k<to){dots[k].className=cls;k++;}if(done)done();return;}
     setTimeout(tick,step);})();}
-  /* first: the number you expected */
-  light(0,start,"yes",slow?0:14,function(){
+  /* Sign-aware, because the count on screen IS the claim. Guessing LOW: light to the guess, then
+     the surplus fills past it. Guessing HIGH used to leave <guess> dots lit for a truth of
+     TRUE_YES — a false count — and printed a negative "more". Now the real count lights, and the
+     dots between truth and guess render as OUTLINES: the people you imagined who are not there.
+     Either way, exactly TRUE_YES dots are ever lit. */
+  var lo=Math.min(start,TRUE_YES);
+  light(0,lo,"yes",slow?0:14,function(){
    if(dots[start-1])dots[start-1].classList.add("mark");
    setTimeout(function(){
-    /* then: the ones you did not know were there */
-    light(start,TRUE_YES,"extra",slow?0:26,function(){
-     var extra=TRUE_YES-start;
-     el("wg-key").innerHTML=(mine!=null
-      ? ("<span class=\"kx\">you guessed "+start+"</span> &middot; <b>"+extra+" more</b> than you thought"+
-         (extra>0?" were already with you":""))
-      : ("<span class=\"kx\">most people guess "+TRUE_GUESS+"</span> &middot; <b>"+extra+" more</b> are already with them"));
-    });},slow?0:420);});}
+    if(start<=TRUE_YES){
+     light(start,TRUE_YES,"extra",slow?0:26,function(){
+      var extra=TRUE_YES-start;
+      el("wg-key").innerHTML=(mine!=null
+       ? (extra>0?("<span class=\"kx\">you guessed "+start+"</span> &middot; <b>"+extra+" more</b> than you thought were already with you")
+                 :("<span class=\"kx\">you guessed "+start+"</span> &middot; exactly right"))
+       : ("<span class=\"kx\">most people guess "+TRUE_GUESS+"</span> &middot; <b>"+extra+" more</b> are already with them"));
+     });
+    }else{
+     light(TRUE_YES,start,"over",slow?0:26,function(){
+      el("wg-key").innerHTML="<span class=\"kx\">you guessed "+start+"</span> &middot; <b>"+
+       (start-TRUE_YES)+" fewer</b> said yes than you hoped &mdash; still <b>"+TRUE_YES+" of every 100</b>.";
+     });
+    }},slow?0:420);});}
  go.addEventListener("click",reveal);
  inp.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();reveal();}});})();
 
@@ -4662,7 +4820,7 @@ var __SND=(function(){
   var b=el("soundbtn");b.setAttribute("aria-pressed",on?"true":"false");
   el("soundlab").textContent=on?"sound on":"sound off";
   el("sr-status").textContent=on?"Ambient sound on":"Ambient sound muted";
-  try{localStorage.setItem("onrecord_snd",on?"1":"0");}catch(e){}
+  try{!EMBED&&localStorage.setItem("onrecord_snd",on?"1":"0");}catch(e){}
   return on;}
  return {ok:true,toggle:toggle,
   chamber:function(n){st=n;if(started&&on)apply(n,1.4);},
