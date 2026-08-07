@@ -1,7 +1,7 @@
 import Link from "next/link";
 import s from "./place.module.css";
 import { places, baselines, records, indicators, sources, manifest, multiple } from "@/lib/seed";
-import { freshness } from "@onrecord/engine/staleness";
+import { Freshness } from "@/components/Freshness";
 
 export default function Home() {
   const m = manifest();
@@ -16,13 +16,12 @@ export default function Home() {
       <p className="t-lead">Every number here is measured, and says where it came from.</p>
 
       {indicators().map((i) => {
-        const f = freshness(i.as_of, i.stale_after_days, Date.now());
         return (
           <section key={i.slug} style={{ marginTop: "var(--s-8)" }}>
             <div className="t-display num accent">{i.value}<span className="t-aside"> {i.unit}</span></div>
             <div className="t-body">{i.label}</div>
             <p className="t-label">
-              {f.state === "fresh" ? `measured ${i.as_of}` : <span className={s.badge}>{f.note}</span>}
+              <Freshness asOf={i.as_of} staleAfterDays={i.stale_after_days} />
               {" · "}{src.get(i.source_slug)?.organisation}
             </p>
           </section>
