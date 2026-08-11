@@ -1,5 +1,32 @@
 <style>
 /*__FONTS__*/
+/* ── THE OPENING OWNS THE SCREEN ────────────────────────────────────────────────
+   A stranger's first screen used to carry, all at once: a truncated budget ticker, the
+   wordmark, a tagline, a sound toggle, a ghosted six-rung ladder, a place chip reading
+   SEVILLE — directly above a headline asking about THEIR town — and the opening itself.
+   Nine things competing, eight of them at ~11px. Nothing else may speak until the
+   opening has. */
+body.introing #budget-band,
+body.introing #mast .plain,
+body.introing #soundbtn,
+body.introing #skywhere,
+body.introing #homechip,
+body.introing #ladder,
+body.introing #pulse,
+body.introing #whatis,
+body.introing #intro-dots,
+body.introing #intro-hint{opacity:0!important;pointer-events:none!important;visibility:hidden!important}
+body.introing #mast{background:none}
+/* one way out, not three: the third button IS the skip */
+body.introing #intro-skip{display:none!important}
+/* the privacy answer is available, not imposed — it was longer than the pitch */
+#pk-note{max-height:0;overflow:hidden;opacity:0;transition:max-height .35s ease,opacity .25s ease;margin:0}
+#pk-note.open{max-height:22em;opacity:1;margin:10px 0 0}
+#pk-why{display:inline-block;margin-top:12px;background:none;border:0;padding:0;
+  color:var(--bone-2);border-bottom:1px solid rgba(242,231,204,.32);cursor:pointer;
+  font:inherit;font-size:var(--fs-label,13px)}
+#pk-why:hover{color:var(--bone)}
+
 /* ============================================================================
    ON RECORD — THE ONE-SCREEN INSTRUMENT (voice B · Space Grotesk)
    The sky fills the screen and IS the site. Six chambers are states of the
@@ -1613,33 +1640,25 @@ button.rr-row:hover{padding-left:6px}
     <p id="intro-live" class="sr-only" aria-live="polite"></p>
     <div class="box">
       <div id="intro-stack">
-        <section class="ib" data-beat="0">
-          <h2 class="ib-h">The world has a carbon budget.</h2>
-          <p class="ib-p">It is the CO₂ we can still release with a 50% chance of holding warming to
-            1.5&nbsp;°C above pre-industrial times. About <span class="inum count" data-key="budget" aria-hidden="true">–</span>
-            billion tonnes remain.<span class="ib-chip">IGCC 2025 · Global Carbon Budget 2025</span></p>
-        </section>
-        <section class="ib" data-beat="1">
-          <h2 class="ib-h">At today&rsquo;s pace, it&rsquo;s spent around <span class="inum" data-key="year">–</span>.</h2>
-          <p class="ib-p">The world emits roughly <span class="inum count" data-key="rate" aria-hidden="true">–</span> billion tonnes of
-            CO₂ a year — so the budget lasts about <span class="inum" data-key="years">–</span> years.<span
-            class="ib-chip">Global Carbon Budget 2025</span></p>
-        </section>
-        <!-- Two beats removed. The 1.5 C gradient correction now opens the SKY chamber itself, where
-             a reader who skips or deep-links also meets it, so repeating it here only delayed the
-             payload. And "This site turns the numbers into a sky" was the site announcing its own
-             architecture — demonstrate, never announce. -->
-        <!-- BEAT 5 — the ask, LAST. Asking a stranger where they are before they know what the
-             site is would be the creepy version; this comes after "every number is measured". -->
-        <section class="ib ib-ask" data-beat="4" id="pk-ask">
-          <h2 class="ib-h">Now &mdash; where are you?</h2>
-          <p class="ib-p">Two chapters are drawn for one place on Earth. Make them yours and the
-            whole record redraws: your heat, your nights, your sky.<span class="ib-chip">ERA5 &middot; 1940 to today</span></p>
+        <!-- ONE beat, not three. The cold-open used to spend a stranger's whole attention
+             budget on a GLOBAL abstraction — the carbon budget, in billions of tonnes — before
+             saying one word about them. Four rounds of clearer copy could not fix that, because
+             the copy was never the defect: the ORDER was. The budget is still here; it is now a
+             chapter you reach, not a gate you pass.
+             The headline is a QUESTION, deliberately. "Your town is hotter" would be a false
+             statement for the places whose record fell, and the charter does not bend for a
+             better hook — but a question is honest, personal, and still pulls. -->
+        <section class="ib ib-ask" data-beat="0" id="pk-ask">
+          <h2 class="ib-h">How much hotter is your town than when your grandparents were young?</h2>
+          <p class="ib-p">We counted it from the weather record &mdash; every day since 1940. Pick your
+            place and the whole page redraws around it: your hot days, your nights, your sky. Every
+            number shows where it came from.<span class="ib-chip">ERA5 &middot; 1940 to today</span></p>
           <div id="pk-btns">
             <button type="button" id="pk-geo">Use my location</button>
             <button type="button" id="pk-list">Pick a city instead</button>
             <button type="button" id="pk-skip">Skip &mdash; show me an example</button>
           </div>
+          <button type="button" id="pk-why" aria-expanded="false" aria-controls="pk-note">What happens to my location?</button>
           <p id="pk-note">Your coordinates are rounded to about a kilometre and sent only to the weather
             archive. Your city is named on your own device, from a list we download &mdash; your position
             is never sent anywhere to be identified, never stored off this device, and never added to
@@ -1652,7 +1671,7 @@ button.rr-row:hover{padding-left:6px}
       <div id="intro-foot">
         <div id="intro-dots" role="group" aria-label="Progress"></div>
         <p id="intro-hint" aria-hidden="true">Continue <span aria-hidden="true">&darr;</span></p>
-        <button class="go" id="intro-go" type="button" hidden>Enter the sky <span aria-hidden="true">&rarr;</span></button>
+        <button class="go" id="intro-go" type="button" hidden>Show me <span aria-hidden="true">&rarr;</span></button>
       </div>
     </div>
   </div>
@@ -2134,12 +2153,16 @@ var __ATMO=(function(){
 /* ============ chambers & navigation ============ */
 var LF=DH.days_ge35_per_year[DH.days_ge35_per_year.length-1].year; // last complete year in the data
 var CH=[
- {id:"sky",lab:"Sky",fact:yearsStr(RNOW)+" years left",ink:false},
- {id:"ground",lab:"Ground",fact:"Seville · "+(TS.tmax!=null?TS.tmax.toFixed(1)+"° today":"on its own record"),ink:false},
- {id:"night",lab:"Night",fact:"Delhi · +"+Math.round(dr.warm_nights_now-dr.warm_nights_then)+" hot nights",ink:false},
- {id:"firstlight",lab:"First light",fact:P.global_want_action_pct+"% want action",ink:false},
- {id:"morning",lab:"Morning",fact:"what's already turning",ink:true},
- {id:"bedrock",lab:"Bedrock",fact:"every source, shown",ink:false}
+ /* The labels were Sky / Ground / Night / First light / Morning / Bedrock — the only navigation
+    on the site, and not one of them told a stranger what was inside. A reader cannot decide to
+    read "Bedrock". They can decide to read "Where the numbers come from". Metaphor is a fine
+    name for a chapter you have already read; it is a terrible name for one you have not. */
+ {id:"sky",lab:"The world's budget",fact:yearsStr(RNOW)+" years left",ink:false},
+ {id:"ground",lab:"Your hot days",fact:"Seville · "+(TS.tmax!=null?TS.tmax.toFixed(1)+"° today":"on its own record"),ink:false},
+ {id:"night",lab:"Your hot nights",fact:"Delhi · +"+Math.round(dr.warm_nights_now-dr.warm_nights_then)+" hot nights",ink:false},
+ {id:"firstlight",lab:"What people want",fact:P.global_want_action_pct+"% want action",ink:false},
+ {id:"morning",lab:"What you can do",fact:"what's already turning",ink:true},
+ {id:"bedrock",lab:"Where the numbers come from",fact:"every source, shown",ink:false}
 ];
 /* how hard the sky darkens behind the text column, per chapter — lighter sky needs more.
    Morning is ink-on-pale (dark text) so it gets none; night/bedrock are already dark. */
@@ -2423,12 +2446,13 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
  startIntro=function(reopen){reopened=!!reopen;interacted=false;lastEx=.66;
   if(reopen){retScroll=window.scrollY||window.pageYOffset||0;seed();}
   intro.classList.remove("gone");stage.classList.add("introing");bgInert(true);
+  document.body.classList.add("introing");
   if(whatis)whatis.hidden=true;intro.setAttribute("tabindex","-1");
   if(__ATMO.ok&&!reopen&&!isDeep)__ATMO.setState("sky",{dur:reduce?0:2600});
   show(0);setTimeout(function(){try{intro.focus();}catch(e){}},20);};
  endIntro=function(reopen){if(intro.classList.contains("gone"))return;
   clearTimeout(settleTimer);cancelAnimationFrame(countRAF);
-  intro.classList.add("gone");stage.classList.remove("introing");bgInert(false);
+  intro.classList.add("gone");stage.classList.remove("introing");document.body.classList.remove("introing");bgInert(false);
   if(!reopen&&!EMBED){try{localStorage.setItem("onrecord_intro_seen","1");}catch(e){}}   // an embedded frame writes nothing
   if(whatis)whatis.hidden=false;
   if(reopen){window.scrollTo(0,retScroll);reopened=false;
@@ -2440,7 +2464,7 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
  if(whatis)whatis.addEventListener("click",function(){startIntro(true);});
  /* first-ever visit auto-plays; deep links, ?intro=0, and returning visitors bypass (recoverable via "What is this?") */
  var seen=false;try{seen=localStorage.getItem("onrecord_intro_seen")==="1";}catch(e){}
- if(Q.get("intro")==="0"||isDeep||seen){intro.classList.add("gone");stage.classList.remove("introing");
+ if(Q.get("intro")==="0"||isDeep||seen){intro.classList.add("gone");stage.classList.remove("introing");document.body.classList.remove("introing");
   if(whatis)whatis.hidden=false;}
  else startIntro(false);
 })();
