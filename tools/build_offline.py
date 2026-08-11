@@ -110,7 +110,7 @@ def _bake(doc):
 doc = _bake(doc)
 (ROOT / "index.html").write_text(doc)   # written AFTER the bake, not before
 
-_KEEP = ["years", "burned", "spent", "copysky", "share-btn", "t-budget", "takeaway", "g-verdict", "impact-know", "ledger-sr", "homepick", "gq-bar", "gq-ex", "homechip", "n-example", "pk-ask", "rc-1-n", "recap-list"]
+_KEEP = ["years", "burned", "spent", "copysky", "share-btn", "t-budget", "takeaway", "g-verdict", "impact-know", "ledger-sr", "homepick", "gq-bar", "gq-ex", "homechip", "n-example", "pk-ask", "rc-1-n", "cmp-grid", "recap-list"]
 _missing = [k for k in _KEEP if ('id="%s"' % k) not in doc]
 assert not _missing, "PROTECTED elements dropped: %s" % _missing
 assert doc.count("haze over the Indo-Gangetic") == 1

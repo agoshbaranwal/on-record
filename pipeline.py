@@ -410,6 +410,12 @@ out["impact"] = impact
 (DATA / "impact.json").write_text(json.dumps(impact, separators=(",", ":")))
 print(f"  impact.json: {len(impact['metrics'])} metrics, {len(impact['omitted'])} omitted")
 
+# The instant-place table (20 cities baked from the v2 ingest) is maintained OUTSIDE this
+# nightly build — attach it, never regenerate it here. Without this line the nightly would
+# silently drop D.instant and the zero-latency picker + the compare feature die overnight.
+_inst = DATA / "instant-places.json"
+if _inst.exists():
+    out["instant"] = json.loads(_inst.read_text())
 (DATA / "site-data.json").write_text(json.dumps(out, separators=(",", ":")))
 print(f"  site-data.json written ({(DATA/'site-data.json').stat().st_size:,} B)")
 
@@ -492,7 +498,7 @@ try:
 except Exception as _e:
     print("cities-lookup: SKIPPED (keeping the existing file) —", _e)
 
-_KEEP = ["years", "burned", "spent", "copysky", "share-btn", "t-budget", "takeaway", "g-verdict", "impact-know", "ledger-sr", "homepick", "gq-bar", "gq-ex", "homechip", "n-example", "pk-ask", "rc-1-n", "recap-list"]
+_KEEP = ["years", "burned", "spent", "copysky", "share-btn", "t-budget", "takeaway", "g-verdict", "impact-know", "ledger-sr", "homepick", "gq-bar", "gq-ex", "homechip", "n-example", "pk-ask", "rc-1-n", "cmp-grid", "recap-list"]
 _missing = [k for k in _KEEP if ('id="%s"' % k) not in doc]
 assert not _missing, "PROTECTED elements dropped from index.html: %s" % _missing
 

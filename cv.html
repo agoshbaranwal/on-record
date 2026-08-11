@@ -1,0 +1,12 @@
+<!doctype html><meta charset=utf-8>
+<style>html,body{margin:0;background:#111}iframe{width:1280px;height:800px;border:0;display:block}</style>
+<iframe id="f" src="index.html?intro=0&live=0"></iframe>
+<script>var f=document.getElementById("f");
+f.onload=function(){setTimeout(function(){var w=f.contentWindow,d=f.contentDocument;
+ d.querySelectorAll(".beat,.pane-screen").forEach(function(b){b.classList.add("seen");});
+ var g=d.getElementById("cmp-beat"); if(g)w.scrollTo(0,g.offsetTop-40);
+ setTimeout(function(){
+  var a=(d.getElementById("cmp-a")||{}).textContent||"";
+  var b=(d.getElementById("cmp-b-body")||{}).textContent||"";
+  document.title="C::A="+a.replace(/\s+/g," ").slice(0,90)+" ~B="+b.replace(/\s+/g," ").slice(0,80);},700);},1600);};
+</script>

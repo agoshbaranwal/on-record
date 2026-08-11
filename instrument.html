@@ -1,5 +1,28 @@
 <style>
 /*__FONTS__*/
+/* ── COMPARE ─────────────────────────────────────────────────────────────────── */
+#cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.cmp-card{background:rgba(242,231,204,.055);border:1px solid rgba(242,231,204,.13);
+  border-radius:12px;padding:18px 18px 16px;min-width:0}
+.thm-ink .cmp-card{background:rgba(62,18,8,.05);border-color:rgba(62,18,8,.16)}
+.cmp-name{font-size:15px;font-weight:500;color:var(--bone);margin:0 0 2px}
+.cmp-badge{font-family:var(--mono);font-size:13px;color:var(--amber);margin:0 0 6px}
+.cmp-x{font-size:32px;line-height:1.1;font-weight:500;color:var(--bone);margin:6px 0 4px;
+  letter-spacing:-.01em}
+.cmp-counts{font-size:14px;line-height:1.45;color:var(--bone-2);margin:0}
+.cmp-bars{margin:12px 0 4px}
+.cmp-bars i{display:block;height:9px;border-radius:3px;background:#8FC0EA;margin:5px 0 0;
+  min-width:3px;transition:width .5s cubic-bezier(.16,.84,.28,1)}
+.cmp-bars i.now{background:#EE9E80}
+.cmp-sub{font-family:var(--mono);font-size:13px;color:var(--bone-3);margin:6px 0 0}
+.cmp-sellab{display:block;font-family:var(--mono);font-size:13px;color:var(--bone-3);margin:0 0 6px}
+#cmp-sel{width:100%;background:rgba(3,15,17,.55);color:var(--bone);font:inherit;font-size:14px;
+  border:1px solid rgba(242,231,204,.25);border-radius:8px;padding:9px 10px;margin:0 0 12px}
+#cmp-sel:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+#cmp-note{margin-top:16px;font-size:13px;line-height:1.55;color:var(--bone-3);max-width:64ch}
+@media(max-width:640px){#cmp-grid{grid-template-columns:1fr}.cmp-x{font-size:28px}}
+@media(prefers-reduced-motion:reduce){.cmp-bars i{transition:none}}
+
 /* ── TIER 1 · THEME-AWARE CHROME ─────────────────────────────────────────────
    The Morning screenshot showed the ladder all but invisible and the place chip
    ghosted: fixed chrome was styled for dark sky only. Ink variants, like the text got. */
@@ -1536,6 +1559,29 @@ button.rr-row:hover{padding-left:6px}
             <p class="beat-cue">days are only half the record &mdash; the other half is after dark &darr;</p>
           </div>
         </div>
+        </div>
+        <!-- COMPARE — deferred twice, now cheap: the baked table answers with zero latency.
+             The honesty load-bearer: each town is measured against ITS OWN 1951-80 95th
+             percentile, so the two cards count DIFFERENT thresholds. The x is the comparable
+             number; the copy says so out loud. -->
+        <div class="beat" id="cmp-beat">
+          <div class="sheet sheet--wide">
+            <h2 class="page-what"><b class="pw-name">Compare</b><span class="pw-say">Two towns
+              side by side &mdash; each measured against its own past. The &times; is
+              what&rsquo;s comparable, not the raw counts.</span></h2>
+            <div id="cmp-grid">
+              <div class="cmp-card" id="cmp-a" aria-live="polite"></div>
+              <div class="cmp-card">
+                <label for="cmp-sel" class="cmp-sellab">against</label>
+                <select id="cmp-sel" aria-label="City to compare against"></select>
+                <div id="cmp-b-body" aria-live="polite"></div>
+              </div>
+            </div>
+            <p id="cmp-note">&ldquo;Dangerously hot&rdquo; is each town&rsquo;s own 1951&ndash;80
+              95th percentile &mdash; the two cards count different thresholds, so comparing raw
+              day-counts would be false precision. Compare the change. Averages: 1951&ndash;80 vs
+              the last ten full years &middot; ERA5 via Open-Meteo.</p>
+          </div>
         </div>
       </section>
 
@@ -4627,6 +4673,8 @@ var __HOME=(function(){
   for(var j=0;j<bars.length;j++)bars[j].setAttribute("aria-pressed",String(bars[j].getAttribute("data-slug")===h.slug));
   try{if(typeof buildNightExample==="function")buildNightExample();}catch(e){}
   try{if(typeof buildTakeaway==="function")buildTakeaway();}catch(e){}
+  try{if(typeof fillRecap==="function")fillRecap();}catch(e){}
+  try{if(typeof buildCompare==="function")buildCompare();}catch(e){}
   try{if(window.__renderRecents)__renderRecents();}catch(e){}}
  /* THE ONE MUTATOR. Stars + first light + labels are pure local work and land immediately;
     the ground record is a multi-second archive fetch, so it goes last and asynchronously. */
@@ -4967,6 +5015,58 @@ window.__HOME=__HOME;
   var hgt=Math.ceil(mt.getBoundingClientRect().height);
   document.documentElement.style.setProperty("--mast-h",hgt+"px");}
  m();addEventListener("resize",m);setTimeout(m,600);setTimeout(m,2200);})();
+ /* ── COMPARE: two towns, each on its own record ─────────────────────────────────
+    Deferred twice, affordable since the instant table: the right card answers in zero
+    milliseconds from the same 86-year series the v2 engine computed. The left card is
+    the reader's own place when its record is loaded, the worked example otherwise.
+    Honesty: the x-multiple is the only cross-town comparable (thresholds differ by
+    design); a cooled record reads "fewer" as plainly as "more". */
+ function cmpStats(rows){
+  var w=mean(rows,1951,1980),n=mean(rows,LF-9,LF);
+  return {w:w,n:n,wR:Math.round(w),nR:Math.round(n)};
+ }
+ function cmpHead(s){
+  if(s.w<1)return s.nR+" from almost none";        /* a multiple over ~zero would be noise */
+  var up=s.n>=s.w, f=up?s.n/Math.max(.01,s.w):s.w/Math.max(.01,s.n);
+  return f.toFixed(1)+"\u00D7 "+(up?"more":"fewer");
+ }
+ function cmpCard(hostId,name,rows,thr,exampleBadge){
+  var host=el(hostId);if(!host)return;
+  var s=cmpStats(rows),mx=Math.max(s.w,s.n,1);
+  host.innerHTML=
+   '<p class="cmp-name">'+name+'</p>'+
+   (exampleBadge?'<p class="cmp-badge">the worked example \u2014 set your place above</p>':'')+
+   '<p class="cmp-x num">'+cmpHead(s)+'</p>'+
+   '<p class="cmp-counts">days above '+(+thr).toFixed(1)+' \u00B0C: '+s.wR+' \u2192 '+s.nR+' a year</p>'+
+   '<div class="cmp-bars" aria-hidden="true">'+
+    '<i style="width:'+Math.max(2,s.w/mx*100).toFixed(1)+'%"></i>'+
+    '<i class="now" style="width:'+Math.max(2,s.n/mx*100).toFixed(1)+'%"></i></div>'+
+   '<p class="cmp-sub">then \u2192 now \u00B7 its own threshold</p>';
+ }
+ function instantRows(c){var r=[];for(var i=0;i<c.d.length;i++)r.push({year:c.y0+i,n:c.d[i]});return r;}
+ function buildCompare(){
+  var grid=el("cmp-grid"),sel=el("cmp-sel");
+  if(!grid||!sel||!D||!D.instant)return;
+  var hm=window.__HOME&&__HOME.get(),V=window.__HOME&&__HOME.record&&__HOME.record();
+  var aName,aRows,aThr,aEx=false;
+  if(hm&&!hm.ex&&V&&V.G){aName=hm.name;aRows=V.G.days_ge35_per_year;aThr=V.thr.hot;}
+  else{aName="Seville";aRows=G.days_ge35_per_year.filter(function(r){return r.year<=LF;});aThr=35;aEx=true;}
+  var slugs=Object.keys(D.instant).sort(function(x,y){return D.instant[x].n<D.instant[y].n?-1:1;});
+  var keep=sel.value;
+  sel.innerHTML=slugs.map(function(sl){
+   return '<option value="'+sl+'">'+D.instant[sl].n+'</option>';}).join("");
+  var aLow=(aName||"").toLowerCase();
+  var pick=keep&&D.instant[keep]&&D.instant[keep].n.toLowerCase()!==aLow?keep
+    :(aLow==="lagos"?"tokyo":"lagos");
+  sel.value=pick;
+  cmpCard("cmp-a",aName,aRows,aThr,aEx);
+  var c=D.instant[sel.value];
+  cmpCard("cmp-b-body",c.n,instantRows(c),c.th,false);
+ }
+ (function(){var sel=el("cmp-sel");
+  if(sel)sel.addEventListener("change",function(){buildCompare();});})();
+ try{buildCompare();}catch(e){}
+
 try{__HOME.boot();}catch(e){}
 
 
