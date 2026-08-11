@@ -1,0 +1,19 @@
+<!doctype html><meta charset=utf-8>
+<style>html,body{margin:0}iframe{width:390px;height:844px;border:0}</style>
+<iframe id="f" src="index.html?intro=0&live=0"></iframe>
+<script>var f=document.getElementById("f");
+f.onload=function(){setTimeout(function(){
+ var d=f.contentDocument,w=f.contentWindow,o=[];
+ d.querySelectorAll(".beat,.pane-screen").forEach(function(b){b.classList.add("seen");});
+ setTimeout(function(){
+  o.push("panes="+d.querySelectorAll(".pane").length);
+  o.push("rungs="+d.querySelectorAll("#ladder .rung").length);
+  var names=[];d.querySelectorAll("#ladder .pill .name").forEach(function(e){names.push(e.textContent.trim());});
+  if(!names.length)d.querySelectorAll("#ladder .pill").forEach(function(e){names.push(e.textContent.trim().slice(0,22));});
+  o.push("nav="+names.join("/"));
+  o.push("tagline="+(getComputedStyle(d.querySelector("#mast .plain")).display));
+  o.push("h2s="+d.querySelectorAll("h2").length);
+  o.push("recap="+(d.getElementById("rc-1-n")||{}).textContent);
+  var err=0;o.push("scrollW="+d.documentElement.scrollWidth);
+  document.title="G::"+o.join(" ~ ");},900);},1500);};
+</script>

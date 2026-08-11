@@ -83,7 +83,33 @@ head_meta = (
 doc = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
        '<meta name="viewport" content="width=device-width, initial-scale=1">'
        + head_meta + '</head><body>' + body + "</body></html>")
-(ROOT / "index.html").write_text(doc)
+# ── BAKE THE HEADLINE NUMBERS INTO THE STATIC DOCUMENT ────────────────────────────
+# The built page shipped "about – billion tonnes" and "– then, – now": every headline figure was
+# injected at runtime, so a JS-slow visitor, a search engine, or a reader on a bad connection met
+# a page of dashes. The JS writes the SAME values a moment later, so this cannot disagree with
+# itself — it only means the number is there before the script runs.
+def _bake(doc):
+    import re as _re
+    _est = sorted(_d["budget"]["estimates"], key=lambda e: e["remaining_now_gt"])
+    _lead = round(_est[0]["remaining_now_gt"])
+    _gt = [r["n"] for r in _gen]
+    _yrs = [r["year"] for r in _gen]
+    def _mean(a, b):
+        v = [n for y, n in zip(_yrs, _gt) if a <= y <= b]
+        return round(sum(v) / len(v)) if v else 0
+    subs = {"lead-gt": str(_lead),
+            "g-then": str(_mean(1951, 1980)),
+            "g-now":  str(_mean(LAST_FULL - 9, LAST_FULL))}
+    n_done = 0
+    for eid, val in subs.items():
+        pat = _re.compile(r'(id="%s"[^>]*>)[^<]*(</)' % _re.escape(eid))
+        doc, k = pat.subn(lambda m: m.group(1) + val + m.group(2), doc, count=1)
+        n_done += k
+    print("  baked %d headline numbers into the static document" % n_done)
+    return doc
+doc = _bake(doc)
+(ROOT / "index.html").write_text(doc)   # written AFTER the bake, not before
+
 _KEEP = ["years","odometer","burned","spent","hlab-hi","hlab-lo","ghost-lab","copysky",
          "share-btn","t-budget","takeaway","pulse","g-verdict","impact-know","ledger-sr",
          "homepick","gq-bar","gq-ex","homechip","n-example","skywhere","pk-ask"]
