@@ -1,5 +1,44 @@
 <style>
 /*__FONTS__*/
+/* ── TIER 1 · THEME-AWARE CHROME ─────────────────────────────────────────────
+   The Morning screenshot showed the ladder all but invisible and the place chip
+   ghosted: fixed chrome was styled for dark sky only. Ink variants, like the text got. */
+.thm-ink #ladder .lab{color:var(--ink-2)!important;text-shadow:none!important}
+.thm-ink #ladder .idx{color:var(--act)!important;text-shadow:none!important}
+.thm-ink .rung[aria-current="true"] .lab,.thm-ink .rung.on .lab{color:var(--ink)!important}
+.thm-ink #ladder::after{background:rgba(62,18,8,.25)}
+.thm-ink #homechip{color:var(--ink)!important;border-color:rgba(62,18,8,.45)!important;
+  background:rgba(244,244,241,.55)!important;text-shadow:none!important}
+@media(max-width:940px){
+  .thm-ink #ladder{background:linear-gradient(to top,rgba(244,244,241,.94) 65%,rgba(244,244,241,0))}
+  .thm-ink .rung .pill{background:rgba(244,244,241,.8);border-color:rgba(62,18,8,.3);color:var(--ink-2)}
+  .thm-ink .rung[aria-current="true"] .pill,.thm-ink .rung.on .pill{color:var(--ink);border-color:rgba(62,18,8,.55)}
+}
+
+/* ── TIER 1 · FLATTEN THE DOUBLE CARD ────────────────────────────────────────
+   #skycount carried its own radial glass from the open-sky era; inside a sheet that
+   read as a card floating on a card. The sheet IS the plate now. */
+.sheet #skycount,.thm-ink .sheet #skycount{background:none;padding:0;margin-left:0;border-radius:0}
+
+/* ── TIER 1 · ONE INTERNAL RHYTHM FOR EVERY SHEET ────────────────────────────
+   eyebrow -> promise -> headline -> lead -> instrument -> source, same intervals,
+   every chapter. Sameness is what makes seven cards read as one site. */
+.sheet .page-what{margin:0 0 22px}
+.sheet h2:not(.page-what){margin-top:0}
+.sheet>h2+p,.sheet>h2+div{margin-top:14px}
+.sheet>p+p{margin-top:12px}
+.sheet .drawbtn,.sheet .beat-cue{margin-top:26px}
+
+/* ── TIER 1 · THE SHEET COMPOSES ITSELF ──────────────────────────────────────
+   The card is the reveal unit: it rises once (the old beat reveal, now acting on its
+   single child), and its contents cascade inside it. */
+.beat:not(.seen) .sheet>*{opacity:0;transform:translateY(10px)}
+.sheet>*{transition:opacity .45s ease,transform .45s cubic-bezier(.16,.84,.28,1);
+  transition-delay:calc(var(--i,0)*70ms + 140ms)}
+.beat.seen .sheet>*{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .sheet>*,.beat:not(.seen) .sheet>*{opacity:1;transform:none;transition:none}}
+
 #homeask-privacy[data-collapsed]{display:none}
 #homeask-privacy.open{display:block}
 #hp-why{display:inline-block;margin:10px 0 0;background:none;border:0;padding:0;
@@ -381,8 +420,8 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 .beat .lead{font-size:clamp(18px,1.7vw,21px);line-height:1.55;color:var(--bone-2);
   max-width:52ch;text-wrap:pretty;text-shadow:var(--halo);font-weight:450}
 .thm-ink .beat .lead{color:var(--ink-2);text-shadow:none}
-.beat-cue{margin-top:auto;padding-top:24px;font-weight:500;font-size:12px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--bone-3);text-shadow:var(--halo)}
+.beat-cue{margin-top:auto;padding-top:24px;font-weight:500;font-size:13px;letter-spacing:.02em;
+  color:var(--bone-3);text-shadow:var(--halo)}
 .thm-ink .beat-cue{color:var(--ink-3);text-shadow:none}
 /* each beat's content fades up once as it enters view (IntersectionObserver adds .seen) */
 .beat>*,.pane-screen>*{opacity:0;transform:translateY(16px);
@@ -440,8 +479,8 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 .chip{display:inline-block;font-weight:500;font-size:11px;letter-spacing:.14em;
   text-transform:uppercase;border:1px solid rgba(240,188,98,.55);color:var(--amber);
   padding:2px 7px;border-radius:2px;vertical-align:2px}
-.drawbtn{margin-top:auto;align-self:flex-start;font-weight:500;font-size:11px;
-  letter-spacing:.18em;text-transform:uppercase;color:var(--bone-2);
+.drawbtn{margin-top:auto;align-self:flex-start;font-weight:500;font-size:13px;
+  letter-spacing:.02em;text-transform:none;color:var(--bone-2);
   background:none;border:0;border-bottom:1px solid rgba(242,231,204,.30);border-radius:0;
   padding:10px 2px;min-height:40px;transition:border-color .3s,color .3s;text-shadow:0 1px 5px rgba(var(--glass),.55),0 0 12px rgba(var(--glass),.4)}
 .drawbtn:hover{color:var(--bone);border-color:rgba(242,231,204,.6)}
@@ -809,7 +848,8 @@ body.ch-bedrock #mast,body.ch-bedrock #budget-band{opacity:0!important;pointer-e
   transition:stroke-dashoffset var(--dur,.9s) cubic-bezier(.2,.7,.2,1) var(--del,0s),
              stroke .6s ease}
 #pgfield .pgguess{fill:rgba(206,224,255,.45)}
-#pgfield .pgtrue{fill:#F0A45C;opacity:0;
+#pgfield .pgtrue{fill:#F0A45C; /* deliberately NOT the data-warm token: guess-vs-true is a different
+   semantic from then-vs-now, and sharing a hue would claim kinship the data does not have */opacity:0;
   transition:opacity .5s ease var(--del,0s),r .4s ease var(--del,0s)}
 .beat.seen #pgfield .pgthread,#pgfield.lit .pgthread{stroke-dashoffset:0;stroke:rgba(240,164,92,.42)}
 .beat.seen #pgfield .pgtrue,#pgfield.lit .pgtrue{opacity:1;filter:drop-shadow(0 0 3px rgba(255,200,130,.5))}
@@ -905,7 +945,7 @@ button.rr-row:hover{padding-left:6px}
 .rr-foot{cursor:default}
 .rr-foot .rr-t{font-family:var(--mono);font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums;margin-left:auto}
 .rr-bar{display:block;height:6px;margin-top:8px;max-width:320px;background:rgba(62,18,8,.10);border-radius:3px;position:relative}
-.rr-bar i{position:absolute;left:0;top:0;bottom:0;width:var(--w);background:linear-gradient(90deg,#D96C3A,#B4181D);border-radius:3px}
+.rr-bar i{position:absolute;left:0;top:0;bottom:0;width:var(--w);background:linear-gradient(90deg,#EE9E80,#D96C3A);border-radius:3px}
 .rr-omit{font-size:12.5px;line-height:1.55;color:var(--ink-2);margin-top:14px;max-width:60ch}
 /* letter builder / plan / pledge panels */
 .rr-panel{margin-top:16px;border:1px solid var(--ink-hair);border-radius:4px;padding:16px;background:rgba(255,251,240,.6);max-width:640px}
@@ -1482,7 +1522,7 @@ button.rr-row:hover{padding-left:6px}
               <div id="recwin"></div>
               <div class="legend">
                 <span><i style="background:var(--data-cool)"></i>1951–80 avg</span>
-                <span><i style="background:#E8886B"></i>last-30-yr avg</span>
+                <span><i style="background:#EE9E80"></i>last-30-yr avg</span>
                 <span><i class="dash" style="color:var(--bone-4)"></i>hottest ever</span>
                 <span><i style="background:#F2E7CC"></i>this year</span>
                 <span><i class="dot" style="background:#F0BC62"></i>today</span>
@@ -2358,6 +2398,9 @@ function enterChamber(i){
  if(__SND){__SND.chamber(c.id);if(__SND.gust)__SND.gust();}
  document.querySelectorAll(".atmo").forEach(function(a){a.classList.toggle("on",a.id==="atmo-"+c.id);});
  el("stage").classList.toggle("thm-ink",!!c.ink);
+ /* the ladder and drawer are SIBLINGS of #stage — the theme class never reached them,
+    which is why the ladder was invisible on every bright chapter since v5 */
+ document.body.classList.toggle("thm-ink",!!c.ink);
  if(__ATMO.textDim)__ATMO.textDim(TEXTDIM[c.id]!=null?TEXTDIM[c.id]:.45); // darken the sky behind the words, per chapter
  Array.prototype.forEach.call(ladder.children,function(b,j){b.setAttribute("aria-current",j===i?"true":"false");});
  if(window.__BAND)__BAND.at(i,CH.length);                            // the budget-band caret follows you through the story
@@ -2745,7 +2788,7 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
  /* The reveal stagger existed only as CSS that read var(--i) — which nothing ever set, so the
     whole cascade fired at delay 0 and every beat appeared as one slab. Wired here, capped at 6
     steps so a long beat never tails into seconds. */
- document.querySelectorAll(".beat,.pane-screen").forEach(function(bb){
+ document.querySelectorAll(".beat,.pane-screen,.sheet").forEach(function(bb){
   Array.prototype.forEach.call(bb.children,function(c,i){c.style.setProperty("--i",String(Math.min(i,6)));});});
  /* a preset used to TELEPORT the sky, the count and both horizons — the one control whose whole
     promise is "watch the century answer". It now travels there, so the answer is watched. */
@@ -2845,7 +2888,7 @@ function buildGround(V){
   svg.appendChild(p0);spagP.push(p0);});
  svg.appendChild(E("path",{d:path(RWc.record_envelope),fill:"none",stroke:"rgba(242,231,204,.55)","stroke-width":1.1,"stroke-dasharray":"2 3"}));
  svg.appendChild(E("path",{d:path(RWc.old_normal_1951_1980),fill:"none",stroke:"#8FC0EA","stroke-width":2.4,"class":"dr"}));
- svg.appendChild(E("path",{d:path(RWc.new_normal_last30),fill:"none",stroke:"#E8886B","stroke-width":2.4,"class":"dr"}));
+ svg.appendChild(E("path",{d:path(RWc.new_normal_last30),fill:"none",stroke:"#EE9E80","stroke-width":2.4,"class":"dr"}));
  var s26=RWc.spaghetti[CY]||[],lastObs=-1;
  for(var i=0;i<s26.length;i++)if(s26[i]!=null)lastObs=i;
  if(s26.length)svg.appendChild(E("path",{d:path(s26),fill:"none",stroke:"#F2E7CC","stroke-width":2.4,"stroke-linejoin":"round","class":"dr"}));
@@ -3119,7 +3162,7 @@ var buildNight=function(NV){
    svg.appendChild(txt({x:x(dv.year),y:y(dv.n)-12,"text-anchor":"middle","font-size":12,
     fill:"#8FC0EA","font-family":MONO},"hot days "+dTrend,true));
    svg.appendChild(txt({x:x(nv.year),y:y(nv.n)-14,"text-anchor":"middle","font-size":12,
-    fill:"#E8886B","font-family":MONO},"hot nights "+nTrend,true));}
+    fill:"#EE9E80","font-family":MONO},"hot nights "+nTrend,true));}
   host.appendChild(svg);}
  render();
  nightRenderRef=render;
