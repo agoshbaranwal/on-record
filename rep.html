@@ -1,0 +1,24 @@
+<!doctype html><meta charset=utf-8>
+<style>html,body{margin:0;background:#111}iframe{width:1995px;height:1295px;border:0}</style>
+<iframe id="f"></iframe>
+<script>
+// seed a persisted place BEFORE the site loads — Agosh's exact returning-user state
+var f=document.getElementById("f");
+f.src="about:blank";
+setTimeout(function(){
+ f.src="index.html";
+ f.addEventListener("load",function once(){
+  f.removeEventListener("load",once);
+  try{f.contentWindow.localStorage.setItem("onrecord.home.v1",
+   JSON.stringify({src:"search",name:"Barcelona",lat:41.39,lon:2.17,tz:"Europe/Madrid"}));}catch(e){}
+  f.src="index.html?cb=2";   // reload WITH the persisted place
+  setTimeout(function(){
+   var w=f.contentWindow,d=f.contentDocument;
+   var o=[];
+   o.push("beats="+d.querySelectorAll("#intro-stack .ib").length);
+   o.push("introGone="+d.getElementById("intro").classList.contains("gone"));
+   o.push("stageIntroing="+d.getElementById("stage").classList.contains("introing"));
+   o.push("panesOp="+w.getComputedStyle(d.getElementById("panes")).opacity);
+   document.title="REP "+o.join(" ");
+  },3500);});},300);
+</script>

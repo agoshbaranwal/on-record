@@ -2637,7 +2637,19 @@ var startIntro,endIntro;
   catch(e){answered=EMBED||KIOSK||!!Q.get("place")||!!Q.get("loc");}
   if(answered&&pk.parentNode)pk.parentNode.removeChild(pk);})();
  var beats=Array.prototype.slice.call(stackEl.querySelectorAll(".ib"));
- if(!beats.length){try{endIntro();}catch(e){}return;}   /* an intro with no beats must end, not crash */
+ if(!beats.length){
+  /* A RETURNING READER WITH A SAVED PLACE lands here: the ask-beat is dropped, so the
+     intro has nothing to show. The old guard called endIntro() — which is assigned
+     THIRTEEN THOUSAND characters further down and did not exist yet. The TypeError
+     vanished into the catch, the intro never initialised and never ended, and the
+     whole site sat at opacity:0 forever — for exactly the readers who had already
+     been here. The teardown below depends on nothing declared later. */
+  try{intro.classList.add("gone");}catch(e){}
+  try{stage.classList.remove("introing");}catch(e){}
+  try{document.body.classList.remove("introing");}catch(e){}
+  try{if(typeof bgInert==="function")bgInert(false);}catch(e){}
+  setTimeout(function(){try{if(typeof endIntro==="function")endIntro();}catch(e){}},0);
+  return;}
  /* SCROLLING AWAY IS AN ANSWER. The ask used to end only by button — a reader who
     scrolled (the most natural gesture there is) fell into the page beneath, which sits
     at opacity:0 behind the intro: a black site with no content. Now the first real
