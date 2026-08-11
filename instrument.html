@@ -1,5 +1,25 @@
 <style>
 /*__FONTS__*/
+@media(max-width:940px){
+  /* the masthead grew when the promise sentence was restored on phones; every chapter's first
+     beat must start below it or the chapter heading prints straight through the wordmark */
+  .pane > .beat:first-child,.pane-screen:first-child{padding-top:calc(var(--mast-h,150px) + 14px)}
+}
+
+#recap-list{list-style:none;margin:22px 0 0;padding:0;max-width:60ch;counter-reset:rc}
+#recap-list li{counter-increment:rc;position:relative;padding:0 0 0 34px;margin:0 0 20px}
+#recap-list li::before{content:counter(rc);position:absolute;left:0;top:2px;
+  font-family:var(--mono);font-size:13px;color:var(--amber);text-shadow:var(--halo)}
+#recap-list b{display:block;font-size:26px;line-height:1.15;font-weight:500;
+  color:var(--bone);text-shadow:var(--halo);letter-spacing:-.01em}
+#recap-list span{display:block;margin-top:5px;font-size:15px;line-height:1.45;
+  color:var(--bone-2);text-shadow:var(--halo)}
+#recap-foot{margin-top:26px;max-width:54ch;font-size:14px;line-height:1.5;color:var(--bone-3);text-shadow:var(--halo)}
+.thm-ink #recap-list b{color:var(--ink);text-shadow:none}
+.thm-ink #recap-list span{color:var(--ink-2);text-shadow:none}
+.thm-ink #recap-foot{color:var(--ink-3);text-shadow:none}
+@media(max-width:560px){#recap-list b{font-size:22px}}
+
 /* The heading outline used to read as fourteen riddles — "One sky you can't recolour",
    "The ground this page stands on" — and not one named a chapter. A skimmer, which is what a
    stranger IS for the first twenty seconds, got no structure at all. These are the only headings
@@ -1105,9 +1125,24 @@ button.rr-row:hover{padding-left:6px}
     flex-direction:row;gap:2px;padding:0;background:none}
   #ladder::after{display:none}
   .rung{padding:14px 10px;width:auto}                 /* ≥44px hit target around each dot (Phase 10) */
-  .rung .pill{position:absolute;width:1px;height:1px;overflow:hidden;
-    clip-path:inset(50%);padding:0;border:0}          /* name survives for screen readers */
-  .rung .dot{position:static;width:9px;height:9px;border-radius:50%}
+  /* The six chapter names were clip-path'd to 1px — "name survives for screen readers"
+     meant it survived for screen readers AND NOBODY ELSE. On the device we optimise for,
+     the six-part structure, and the fact that one part is about the reader's own city,
+     were invisible: six featureless dots indistinguishable from a carousel. The strip now
+     names the chapter you are in and scrolls to the rest. */
+  #ladder{width:100%;left:0;transform:none;overflow-x:auto;scrollbar-width:none;
+    justify-content:flex-start;padding:0 10px 2px;gap:6px;
+    -webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+  #ladder::-webkit-scrollbar{display:none}
+  .rung{padding:8px 0;width:auto;flex:0 0 auto;scroll-snap-align:center}
+  .rung .pill{position:static;width:auto;height:auto;overflow:visible;clip-path:none;
+    padding:5px 11px;border:1px solid rgba(242,231,204,.22);border-radius:999px;
+    background:rgba(3,15,17,.55);backdrop-filter:blur(3px);white-space:nowrap;
+    font-size:13px;color:var(--bone-2);text-shadow:none;display:block}
+  .rung[aria-current="true"] .pill,.rung.on .pill{color:var(--bone);
+    border-color:rgba(242,231,204,.5);background:rgba(3,15,17,.8)}
+  .rung .fact{display:none}       /* the name is the payload on a phone; the fact needs room */
+  .rung .dot{display:none}
   .duo{grid-template-columns:1fr;grid-template-rows:auto auto;flex:none;height:auto;gap:14px}
   #dial{width:100%}
   #skycap{right:12px;bottom:72px}
@@ -1138,7 +1173,13 @@ button.rr-row:hover{padding-left:6px}
   #skycount{margin-left:-20px;padding:14px 20px 12px;border-radius:20px}
   #mast{padding:12px 20px;gap:12px}
   #mast .word{font-size:10px;letter-spacing:.28em;margin-bottom:4px}
-  #mast .plain{display:none}                 /* the tagline is the cold-open's job on a phone */
+  /* This was display:none. On a phone the page's ENTIRE self-description was the 11px
+     wordmark — the one sentence saying what the site is never rendered at all, on the
+     device most first-time readers arrive on. The comment said "the cold-open's job";
+     the cold-open explains a carbon budget, it never says what the SITE is. */
+  #mast .plain{display:block;font-size:15px;line-height:1.35;max-width:20ch;
+    color:var(--bone);text-shadow:var(--halo);margin-top:3px}
+  body.introing #mast .plain{display:none}   /* except behind the opening, which says it bigger */
   #mast-controls{margin-top:6px;gap:6px 10px}
   #pulse{font-size:11px;max-width:none;line-height:1.35}
   #homechip{font-size:10.5px;padding:3px 9px;max-width:22ch}
@@ -1611,6 +1652,26 @@ button.rr-row:hover{padding-left:6px}
       </section>
 
       <!-- BEDROCK -->
+      <!-- ── WHAT TO REMEMBER ────────────────────────────────────────────────────────
+           The site had NO summary surface. Nowhere, at any scroll position, could a reader
+           see the argument whole — and it ended on a bibliography, so the last impression
+           was housekeeping. This screen is the answer to "what are the takeaways", which is
+           the second half of the complaint that has been raised four times. Every number in
+           it is written by the same code that draws the chapters, so it cannot drift. -->
+      <section class="pane" id="p-recap" aria-label="What to remember">
+        <div class="beat">
+          <h2 class="page-what"><b class="pw-name">What to remember</b><span class="pw-say">Four
+            things this page measured, in the order it measured them.</span></h2>
+          <ol id="recap-list">
+            <li><b id="rc-1-n">&mdash;</b><span id="rc-1-s">Your town&rsquo;s hot days, then and now.</span></li>
+            <li><b id="rc-2-n">&mdash;</b><span id="rc-2-s">Your nights, which warm faster than your days.</span></li>
+            <li><b id="rc-3-n">&mdash;</b><span id="rc-3-s">How many people around you want action.</span></li>
+            <li><b id="rc-4-n">&mdash;</b><span id="rc-4-s">How long the world&rsquo;s carbon budget lasts at today&rsquo;s pace.</span></li>
+          </ol>
+          <p id="recap-foot">Every figure above is measured from a named public source, and the
+            page shows you which. Nothing here is modelled, projected or estimated by us.</p>
+        </div>
+      </section>
       <section class="pane" id="p-bedrock" aria-label="Bedrock — how we know">
         <h2 class="page-what"><b class="pw-name">Where the numbers come from</b><span class="pw-say">Every source behind every number on this site, and the things it cannot tell you.</span></h2>
         <h2 tabindex="-1">The ground this page stands on.</h2>
@@ -2174,6 +2235,7 @@ var CH=[
  {id:"night",lab:"Your hot nights",fact:"Delhi · +"+Math.round(dr.warm_nights_now-dr.warm_nights_then)+" hot nights",ink:false},
  {id:"firstlight",lab:"What people want",fact:P.global_want_action_pct+"% want action",ink:false},
  {id:"morning",lab:"What you can do",fact:"what's already turning",ink:true},
+ {id:"recap",lab:"What to remember",fact:"the four numbers",ink:false},
  {id:"bedrock",lab:"Where the numbers come from",fact:"every source, shown",ink:false}
 ];
 /* how hard the sky darkens behind the text column, per chapter — lighter sky needs more.
@@ -3917,6 +3979,33 @@ var __PLACE=(function(){
  /* gen = the home generation this fetch belongs to. Two quick picks used to resolve
     last-to-RESOLVE rather than last-to-CLICK; a one-tap city bar makes that trivial to hit,
     so every continuation below bails if the reader has since chosen somewhere else. */
+
+ /* ── THE INSTANT ANSWER ──────────────────────────────────────────────────────────
+    The site opened on a GLOBAL abstraction — the carbon budget in billions of tonnes —
+    for one structural reason: the reader's own number needed a slow, rate-limited archive
+    call, so there was nothing personal to show at first paint. Twenty cities are now baked
+    into the build (20 KB, computed by the same engine from the same ERA5 series), so a
+    picked city answers in ZERO milliseconds and the live fetch only refines it.
+    Honesty: this is not a different number from a different source — it is the same
+    computation on an archive that ends earlier, and the receipt says which. */
+ function bakedRecord(lat,lon,name){
+  var T=(D&&D.instant)||null; if(!T)return null;
+  var best=null,bd=1e9;
+  for(var k in T){ if(!Object.prototype.hasOwnProperty.call(T,k))continue;
+   var c=T[k],dx=Math.abs(c.la-lat),dy=Math.abs(c.lo-lon);
+   var dd=dx*dx+dy*dy; if(dd<bd){bd=dd;best=c;} }
+  if(!best||bd>0.36)return null;      /* ~0.6 degrees — the same city, not a neighbour */
+  var days=[],nights=[],anom=[];
+  for(var i=0;i<best.d.length;i++){
+   days.push({year:best.y0+i,n:best.d[i]});
+   nights.push({year:best.y0+i,n:best.w[i]});
+   anom.push(best.a[i]); }
+  return {V:{G:{days_ge35_per_year:days,warm_nights_ge25_per_year:nights},
+             S:{year0:best.y0,anom:anom},
+             thr:{hot:best.th,night:best.tn},
+             baked:true,bakedName:best.n},
+          t:{pct:null,tmax:null}};
+ }
  function pick(lat,lon,name,gen,opts){
   var live=function(){return gen==null||!window.__HOME||gen===__HOME.gen();};
   busy(true);
@@ -3972,7 +4061,14 @@ var __PLACE=(function(){
   if(__ATMO.ok&&__ATMO.groundHeat)__ATMO.groundHeat(.55);idleHint();}
  /* the engine is exposed so ONE site-wide home place can drive ground+night, instead of
     this picker being the only way in (the buttons above are now just one caller of it). */
- return {active:function(){return act;},pick:pick,search:search,reset:reset,status:status};
+ function drawBaked(out,name){
+  act=true;buildGround(out.V);
+  if(typeof buildNight==="function")buildNight({custom:true,place:name,
+   days:out.V.G.days_ge35_per_year,nights:out.V.G.warm_nights_ge25_per_year,
+   thrHot:out.V.thr.hot,thrNight:out.V.thr.night});
+ }
+ return {active:function(){return act;},pick:pick,search:search,reset:reset,status:status,
+         baked:bakedRecord,draw:drawBaked};
 })();
 window.__PLACE=__PLACE;
 
@@ -4475,7 +4571,11 @@ var __HOME=(function(){
   pgSync(h);labelsRefresh();
   if(h.ex==="seville"){if(__PLACE&&__PLACE.reset)__PLACE.reset();placeState("ok");}
   else if(__PLACE&&__PLACE.pick){
-   placeState("pending",h.name);
+   var inst=(__PLACE.baked&&__PLACE.baked(h.lat,h.lon,h.name))||null;
+   if(inst){ /* an answer NOW, from the same engine on a slightly older archive */
+    try{__PLACE.draw(inst,h.name);}catch(e){}
+    LASTV=inst.V;REV++;placeState("ok");}
+   else placeState("pending",h.name);
    __PLACE.pick(h.lat,h.lon,h.name,GEN,{scroll:opts.scroll!==false});}
   if(opts.persist!==false&&h.src!=="link")put(KEY,JSON.stringify(h));}
  /* the ONLY caller of getCurrentPosition in the file, and only ever from a real click */
@@ -4745,6 +4845,47 @@ window.__HOME=__HOME;
  inp.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();reveal();}});})();
 
 /* and finally: adopt the reader's place (or the worked example) — the last thing the script does */
+ /* The recap is WRITTEN, never typed: each line is derived from the same values the chapters
+    draw, so a number here cannot disagree with the number above it. */
+ function fillRecap(){
+  var set=function(id,t){var e=el(id);if(e&&t!=null)e.textContent=t;};
+  try{
+   var hm=window.__HOME&&__HOME.get(),V=window.__HOME&&__HOME.record&&__HOME.record();
+   var nm=(hm&&hm.name)||"Seville";
+   if(V&&V.G){
+    var ds=V.G.days_ge35_per_year,LFy=ds[ds.length-1].year;
+    var w=Math.round(mean(ds,1951,1980)),n=Math.round(mean(ds,LFy-9,LFy));
+    var nw=Math.round(mean(V.G.warm_nights_ge25_per_year,1951,1980)),
+        nn=Math.round(mean(V.G.warm_nights_ge25_per_year,LFy-9,LFy));
+    set("rc-1-n",w+" \u2192 "+n+" days a year");
+    set("rc-1-s","Days above "+V.thr.hot.toFixed(1)+" \u00B0C in "+nm+
+      " \u2014 hotter than 95% of its own 1951\u201380 days. The first number is that baseline; the second is "+(LFy-9)+"\u2013"+LFy+".");
+    set("rc-2-n",nw+" \u2192 "+nn+" nights a year");
+    set("rc-2-s","Nights above "+V.thr.night.toFixed(1)+" \u00B0C in "+nm+
+      ", when the body cannot cool down. Nights warm faster than days almost everywhere.");
+   }else{
+    set("rc-1-n",Math.round(mean(G.days_ge35_per_year,1951,1980))+" \u2192 "+
+      Math.round(mean(G.days_ge35_per_year,LF-9,LF))+" days a year");
+    set("rc-1-s","Days at or above 35 \u00B0C in Seville, the worked example \u2014 set your place and this becomes yours.");
+    set("rc-2-n",Math.round(mean(G.warm_nights_ge25_per_year,1951,1980))+" \u2192 "+
+      Math.round(mean(G.warm_nights_ge25_per_year,LF-9,LF))+" nights a year");
+   }
+   set("rc-3-n",P.global_want_action_pct+"% want action");
+   set("rc-3-s","Across "+((P.all||P.countries||[]).length||125)+
+     " countries surveyed, most people back climate action \u2014 and badly underestimate how many others agree.");
+   var yl=yearsStr(RNOW);
+   set("rc-4-n",yl+" years of budget left");
+   set("rc-4-s","At today\u2019s "+Math.round(B.rate_now_gt)+" billion tonnes a year, that is what remains for a coin-flip chance of holding 1.5 \u00B0C. Not a cliff \u2014 the risk climbs a tenth of a degree at a time.");
+  }catch(e){}
+ }
+ try{fillRecap();}catch(e){}
+
+/* --mast-h measured, not assumed: the fixed masthead overprinted chapter headings at several
+   viewport heights because the beats' top padding was a fixed 16vh guess. */
+(function(){function m(){var mt=el("mast");if(!mt)return;
+  var hgt=Math.ceil(mt.getBoundingClientRect().height);
+  document.documentElement.style.setProperty("--mast-h",hgt+"px");}
+ m();addEventListener("resize",m);setTimeout(m,600);setTimeout(m,2200);})();
 try{__HOME.boot();}catch(e){}
 
 
