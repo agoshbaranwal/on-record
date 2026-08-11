@@ -1,0 +1,12 @@
+<!doctype html><meta charset=utf-8>
+<style>html,body{margin:0;background:#111}iframe{border:0;display:block}</style>
+<iframe id="f"></iframe>
+<script>
+var q=new URLSearchParams(location.search);
+var W=+q.get("w")||1280,H=+q.get("h")||800,tgt=q.get("t")||"p-ground";
+var f=document.getElementById("f");f.style.width=W+"px";f.style.height=H+"px";
+f.src="index.html?intro=0&live=0";
+f.onload=function(){setTimeout(function(){var w=f.contentWindow,d=f.contentDocument;
+ d.querySelectorAll(".beat,.pane-screen").forEach(function(b){b.classList.add("seen");});
+ var g=d.getElementById(tgt); if(g)w.scrollTo(0,g.offsetTop+2);},1600);};
+</script>

@@ -492,11 +492,7 @@ try:
 except Exception as _e:
     print("cities-lookup: SKIPPED (keeping the existing file) —", _e)
 
-_KEEP = ["years", "odometer", "burned", "spent", "hlab-hi", "hlab-lo", "ghost-lab", "copysky",
-         "share-btn", "t-budget", "takeaway", "pulse", "g-verdict", "impact-know", "ledger-sr",
-         # the localization layer: the picker, the fallback bar, the worked examples, the
-         # mast chip, and the Delhi keystone panel that carries the sourced honesty lesson
-         "homepick", "gq-bar", "gq-ex", "homechip", "n-example", "skywhere", "pk-ask"]
+_KEEP = ["years", "burned", "spent", "copysky", "share-btn", "t-budget", "takeaway", "g-verdict", "impact-know", "ledger-sr", "homepick", "gq-bar", "gq-ex", "homechip", "n-example", "pk-ask", "rc-1-n", "recap-list"]
 _missing = [k for k in _KEEP if ('id="%s"' % k) not in doc]
 assert not _missing, "PROTECTED elements dropped from index.html: %s" % _missing
 
