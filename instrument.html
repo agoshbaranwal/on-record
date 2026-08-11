@@ -1,5 +1,9 @@
 <style>
 /*__FONTS__*/
+/* Bedrock's sheet was dark glass on a near-black starfield — an invisible card, so the
+   chapter read as raw text floating in space. On this chapter the card must be seen. */
+#p-bedrock .sheet{background:rgba(16,28,30,.85);border-color:rgba(242,231,204,.16)}
+
 html body #gq{flex:1 1 auto;min-width:0}
 
 .subrung.on{color:var(--bone);border-right:2px solid var(--amber);padding-right:14px}
@@ -64,7 +68,6 @@ html #ladder .rgroup.open .subs{max-height:220px;opacity:1;margin:1px 0 7px}
 :root{--gut:max(38px,calc((100vw - 1400px)/2))}
 @media(min-width:1600px){
   .beats > .beat,.pane > .beat{padding-left:var(--gut);padding-right:var(--gut)}
-  #p-bedrock{padding-left:var(--gut);padding-right:var(--gut)}
   html #ladder{right:var(--gut)}
   html #rail-dock{right:var(--gut)}
   html #soundbtn{right:var(--gut)}
@@ -588,7 +591,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 .pane.seen>*{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.pane:has(>h2)>*{opacity:1;transform:none;transition:none}}
 /* bedrock is a free-scrolling archive, never snapped */
-#p-bedrock{scroll-snap-align:none;padding:clamp(64px,10vh,120px) 172px 12vh 38px;max-width:1400px;margin:0 auto;height:auto;display:block;overflow:visible}
+#p-bedrock{scroll-snap-align:none}  /* beats carry the frame now */
 #p-bedrock,#p-bedrock *{scroll-snap-align:none!important;scroll-snap-stop:normal!important}
 .pane h2{font-weight:500;font-size:clamp(21px,2.6vw,31px);line-height:1.12;letter-spacing:-.015em;
   max-width:24ch;text-wrap:balance;color:var(--bone);text-shadow:var(--halo-h)}
@@ -1910,27 +1913,38 @@ button.rr-row:hover{padding-left:6px}
         </div>
       </section>
       <section class="pane" id="p-bedrock" aria-label="Bedrock — how we know">
-        <div class="sheet sheet--wide" id="bedrock-sheet">
-        <h2 class="page-what"><b class="pw-name">Where the numbers come from</b><span class="sr-only">. </span><span class="pw-say">Every source behind every number on this site, and the things it cannot tell you.</span></h2>
-        <h2 tabindex="-1">The ground this page stands on.</h2>
-        <p class="lead" style="max-width:60ch;margin-bottom:8px">Everything above rests on what is here.
-          Every dataset, every paper, every line of arithmetic is named so you can check it yourself.
-          A claim you cannot check is an opinion. Everything here can be checked.</p>
-        <div class="arch">
-          <div class="hww" id="hww"></div>
-          <div class="limits" id="limits"></div>
-          <p class="hww" style="margin-top:18px;max-width:64ch">
-            <a class="reuse-link" href="reuse.html">Every source, the full method and the data &rarr;</a>
-            &mdash; the ~30 datasets and papers behind these numbers, the budget arithmetic in full,
-            citations you can paste, and a printable worksheet. It lives on its own page because a
-            reference is for looking things up, not for reading through.
-          </p>
-          <div class="bfb" id="takeaway"></div>
-          <p class="colophon" id="colophon"></p>
-
-          <div hidden aria-hidden="true"><div id="t-budget"></div><div id="srcs"></div><div id="impact-know"></div><div id="impact-refuse"></div><div id="budget-notes"></div></div>
-</div>
-      </div>
+        <div class="beats">
+        <div class="beat">
+          <div class="sheet">
+            <h2 class="page-what"><b class="pw-name">Where the numbers come from</b><span class="sr-only">. </span><span class="pw-say">Every source behind every number on this site, and the things it cannot tell you.</span></h2>
+            <h2 tabindex="-1">The ground this page stands on.</h2>
+            <p class="lead" style="max-width:60ch;margin-bottom:8px">Everything above rests on what is here.
+              Every dataset, every paper, every line of arithmetic is named so you can check it yourself.
+              A claim you cannot check is an opinion. Everything here can be checked.</p>
+            <div class="hww" id="hww"></div>
+            <p class="beat-cue">what this page cannot tell you &darr;</p>
+          </div>
+        </div>
+        <div class="beat">
+          <div class="sheet sheet--wide">
+            <div class="limits" id="limits"></div>
+            <p class="beat-cue">take the numbers with you &darr;</p>
+          </div>
+        </div>
+        <div class="beat">
+          <div class="sheet">
+            <p class="hww" style="margin-top:0;max-width:64ch">
+              <a class="reuse-link" href="reuse.html">Every source, the full method and the data &rarr;</a>
+              &mdash; the ~30 datasets and papers behind these numbers, the budget arithmetic in full,
+              citations you can paste, and a printable worksheet. It lives on its own page because a
+              reference is for looking things up, not for reading through.
+            </p>
+            <div class="bfb" id="takeaway"></div>
+            <p class="colophon" id="colophon"></p>
+            <div hidden aria-hidden="true"><div id="t-budget"></div><div id="srcs"></div><div id="impact-know"></div><div id="impact-refuse"></div><div id="budget-notes"></div></div>
+          </div>
+        </div>
+        </div>
       </section>
     </div>
   </div>
@@ -2498,7 +2512,8 @@ CH.forEach(function(c,i){
   ground:["Your record","Then vs now","Today","Compare two towns"],
   night:["The dangerous half","Days vs nights"],
   firstlight:["Take the guess","The whole world"],
-  morning:["Put it on the record","The personal levers","The good news"]
+  morning:["Put it on the record","The personal levers","The good news"],
+  bedrock:["The ground","What it cannot tell you","Take it with you"]
  };
  var wrap=document.createElement("div");wrap.className="rgroup";
  var b=document.createElement("a");b.className="rung";b.href="#p-"+c.id;
