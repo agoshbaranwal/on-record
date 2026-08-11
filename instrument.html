@@ -1,13 +1,21 @@
 <style>
 /*__FONTS__*/
+/* ── THE RAIL DOCK ────────────────────────────────────────────────────────────
+   The right gutter belongs to chrome (ladder, sound); the place chip joins it there,
+   where nothing ever scrolls underneath. No fixed element overlaps the reading column
+   at any scroll position — by construction, not mitigation. */
+#rail-dock{position:fixed;right:38px;top:64px;z-index:7;display:flex;justify-content:flex-end}
+#rail-dock #homechip{margin:0}
+@media(max-width:940px){
+  #rail-dock{position:absolute;top:14px;right:14px}   /* scrolls away with the page top */
+}
+
 .share-lead{margin-top:22px;font-size:14px;color:var(--ink-2)}
 
 #showerbox{max-width:min(38ch,30vw);margin-left:auto;font-size:13px;line-height:1.5;color:var(--bone-3);text-shadow:var(--halo);margin-bottom:6px}
 #showerbox b{color:var(--bone-2);font-weight:500}
 @media(max-width:640px){#showerbox{display:none}}  /* phones: the drawer keeps the detail */
 
-.thm-ink #mast,body.thm-ink #mast{background:linear-gradient(to bottom,rgba(244,244,241,.9) 55%,rgba(244,244,241,.55) 78%,transparent)}
-body.introing #mast{background:none!important}
 /* snap and anchors stop BELOW the mast, so no beat's first line ever slides under it */
 /* scroll-margin on the element governs snap stops, anchor jumps AND scrollIntoView —
    and no arbitrary 46px undershoot */
@@ -54,7 +62,6 @@ html{scroll-padding-top:0}
 .thm-ink #homechip{color:var(--ink)!important;border-color:rgba(62,18,8,.45)!important;
   background:rgba(244,244,241,.55)!important;text-shadow:none!important}
 @media(max-width:940px){
-  .thm-ink #ladder{background:linear-gradient(to top,rgba(244,244,241,.94) 65%,rgba(244,244,241,0))}
   .thm-ink .rung .pill{background:rgba(244,244,241,.8);border-color:rgba(62,18,8,.3);color:var(--ink-2)}
   .thm-ink .rung[aria-current="true"] .pill,.thm-ink .rung.on .pill{color:var(--ink);border-color:rgba(62,18,8,.55)}
 }
@@ -90,8 +97,7 @@ html{scroll-padding-top:0}
   font:inherit;font-size:var(--fs-label,13px)}
 #hp-why:hover{color:var(--bone)}
 @media(max-width:940px){
-  #ladder{background:linear-gradient(to top,rgba(3,15,17,.92) 65%,rgba(3,15,17,0));
-    padding-top:10px;padding-bottom:8px}
+  #ladder{padding-top:10px;padding-bottom:8px}
   .beats > .beat,.pane > .beat{padding-bottom:74px}
 }
 
@@ -123,10 +129,10 @@ html{scroll-padding-top:0}
 
 /* every chapter's first beat starts below the MEASURED masthead, at every width —
    the fixed 16vh guess is what let the mast print through headings and clip sheet corners */
-/* EVERY beat clears the measured masthead — not just the first, and via selectors that
-   actually match: beats are GRANDCHILDREN (.pane > .beats > .beat); compare and recap are
-   direct children. The previous rule (.pane > .beat:first-child) matched NOTHING. */
-.beats > .beat,.pane > .beat{padding-top:calc(var(--mast-h,150px) + 24px)}
+/* beats breathe at a constant rhythm; only the opening screen sits under the (absolute,
+   scrolls-away) masthead and clears its measured height */
+.beats > .beat,.pane > .beat{padding-top:clamp(56px,9vh,110px)}
+#p-sky .beats > .beat:first-child{padding-top:calc(var(--mast-h,150px) + 24px)}
 
 #recap-list{list-style:none;margin:22px 0 0;padding:0;max-width:60ch;counter-reset:rc}
 #recap-list li{counter-increment:rc;position:relative;padding:0 0 0 34px;margin:0 0 20px}
@@ -322,8 +328,7 @@ a{color:inherit}
 .thm-ink #bb-fill,.thm-ink #bb-you{background:var(--act)}
 @media(max-width:640px){#budget-band{font-size:10.5px;padding:0 20px}#bb-rail{max-width:88px}#bb-label{min-width:0;flex:0 1 auto;overflow:hidden;text-overflow:ellipsis}}
 @media(prefers-reduced-motion:reduce){#bb-fill,#bb-you{transition:none}}
-#mast{position:fixed;top:0;left:0;right:0;z-index:5;pointer-events:none;padding-top:22px;
-  background:linear-gradient(to bottom,rgba(3,15,17,.97) 72%,rgba(3,15,17,.78) 90%,transparent);
+#mast{position:absolute;top:0;left:0;right:0;z-index:5;pointer-events:none;padding-top:22px;
   display:flex;justify-content:space-between;align-items:flex-start;gap:30px;
   max-width:1400px;margin:0 auto;padding:22px 38px}
 #mast a,#mast button{pointer-events:auto}
@@ -489,7 +494,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 .pane.seen>*{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.pane:has(>h2)>*{opacity:1;transform:none;transition:none}}
 /* bedrock is a free-scrolling archive, never snapped */
-#p-bedrock{scroll-snap-align:none;padding:calc(var(--mast-h,150px) + 24px) 172px 12vh 38px;max-width:1400px;margin:0 auto;height:auto;display:block;overflow:visible}
+#p-bedrock{scroll-snap-align:none;padding:clamp(64px,10vh,120px) 172px 12vh 38px;max-width:1400px;margin:0 auto;height:auto;display:block;overflow:visible}
 #p-bedrock,#p-bedrock *{scroll-snap-align:none!important;scroll-snap-stop:normal!important}
 .pane h2{font-weight:500;font-size:clamp(21px,2.6vw,31px);line-height:1.12;letter-spacing:-.015em;
   max-width:24ch;text-wrap:balance;color:var(--bone);text-shadow:var(--halo-h)}
@@ -1037,8 +1042,9 @@ button.rr-row:hover{padding-left:6px}
 .take-h b{font-weight:500;color:var(--bone);font-size:13px}
 .take-h span{display:block;font-family:var(--mono);font-size:11px;color:var(--bone-2);margin-top:2px}
 .take-btns{display:flex;gap:6px;flex-wrap:wrap}
-.take-btns button{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--bone-2);background:none;border:1px solid var(--bone-4);border-radius:2px;padding:7px 11px;min-height:36px}
+.take-btns button{font-family:var(--mono);font-size:13px;letter-spacing:.02em;
+  color:var(--bone-2);background:none;border:0;border-bottom:1px solid rgba(242,231,204,.3);
+  border-radius:0;padding:7px 2px;min-height:36px}
 .take-btns button:hover{color:var(--bone);border-color:var(--bone-2)}
 /* print one-pager — the whole argument survives on paper, fully attributed */
 #print-sheet{display:none}
@@ -1364,6 +1370,9 @@ button.rr-row:hover{padding-left:6px}
            body.embed rule keep applying. The two old buttons were a second place-control. -->
       </div>
   </div>
+  <div id="rail-dock">
+    <button id="homechip" type="button" hidden title="The place this site is drawn for — opens the picker">where are you?</button>
+  </div>
   <button id="soundbtn" type="button" aria-pressed="false"
           title="Ambient sound — synthesised from the chamber you're in">
     <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span id="soundlab">sound off</span>
@@ -1375,9 +1384,7 @@ button.rr-row:hover{padding-left:6px}
       <div>
         <p class="word">On Record</p>
         <h1 class="plain" id="mast-tag">What the climate record actually says about the place you live.</h1>
-        <div id="mast-controls">
-        <button id="homechip" type="button" hidden title="The place this site is drawn for — opens the picker">where are you?</button>
-        </div>
+        <!-- the place chip docks to the rail: the sky gutter is chrome's own column -->
       </div>
       <!-- #vitals removed: three permanent readouts that restated facts the chapters
            state in context. One voice per screen. -->

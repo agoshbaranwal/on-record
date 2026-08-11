@@ -1,0 +1,27 @@
+<!doctype html><meta charset=utf-8>
+<style>html,body{margin:0}iframe{width:1995px;height:1295px;border:0}</style>
+<iframe id="f" src="index.html?intro=0&live=0"></iframe>
+<script>
+var f=document.getElementById("f");
+f.onload=function(){setTimeout(function(){
+ var w=f.contentWindow,d=f.contentDocument;
+ d.querySelectorAll(".beat,.pane-screen").forEach(function(b){b.classList.add("seen");});
+ var H=d.documentElement.scrollHeight,steps=24,k=0,hits=[];
+ var chrome=["rail-dock","soundbtn","ladder"].map(function(id){return d.getElementById(id);}).filter(Boolean);
+ function inter(a,b){var ox=Math.min(a.right,b.right)-Math.max(a.left,b.left);
+  var oy=Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top);return ox>4&&oy>4;}
+ (function step(){
+  if(k>steps){
+   var mastPos=w.getComputedStyle(d.getElementById("mast")).position;
+   document.title="X::hits="+(hits.length?hits.join(";"):"NONE")+" ~mast="+mastPos;return;}
+  w.scrollTo(0,Math.round(H*k/steps));
+  setTimeout(function(){
+   var sheets=d.querySelectorAll(".sheet");
+   chrome.forEach(function(c){
+    var cr=c.getBoundingClientRect(); if(cr.width<2)return;
+    sheets.forEach(function(s){
+     var sr=s.getBoundingClientRect();
+     if(sr.bottom<0||sr.top>1295)return;
+     if(inter(cr,sr)&&hits.length<6)hits.push(c.id+"@"+Math.round(H*k/steps));});});
+   k++;step();},110);})();},1600);};
+</script>
