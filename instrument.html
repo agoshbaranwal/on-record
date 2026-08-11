@@ -1,5 +1,16 @@
 <style>
 /*__FONTS__*/
+.subrung.on{color:var(--bone);border-right:2px solid var(--amber);padding-right:14px}
+.thm-ink .subrung.on{color:var(--ink);border-right-color:var(--act)}
+
+body.drawer-open{overflow:hidden}
+
+.take-mini{font-family:var(--mono);font-size:13px;color:var(--bone-3)}
+.take-mini button{background:none;border:0;padding:0;font:inherit;color:var(--bone-2);border-bottom:1px solid rgba(242,231,204,.3);cursor:pointer}
+.take-mini button:hover{color:var(--bone)}
+
+.linklike{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer}
+
 html #gq-go{text-transform:none;letter-spacing:.02em;font-size:13px}
 
 /* ══ PASS 3 · THE SYSTEM ══════════════════════════════════════════════════════ */
@@ -1602,6 +1613,10 @@ button.rr-row:hover{padding-left:6px}
             <h2 id="g-count-h2"><span id="g-hotw">Hot</span> days here: <b class="num" id="g-then">–</b> then,
               <b class="num" id="g-now">–</b> now.</h2>
             <div id="g-fact"><p class="gb-say">Days at or above 35&nbsp;&deg;C in Seville, the worked example &mdash; the 1951&ndash;80 average against the last ten full years. Set your place and the count becomes yours, against your own threshold.</p></div>
+            <p class="take-mini" id="g-take" hidden>save this record:
+              <button type="button" data-ga="card">card &darr;</button> &middot;
+              <button type="button" data-ga="csv">csv &darr;</button> &middot;
+              <button type="button" data-ga="cite">copy the sentence</button></p>
             <p class="fact-line" id="g-freq"></p>
             <p class="receipt" id="g-receipt">ERA5 reanalysis via Open-Meteo &middot; daily maxima since 1940 &middot; thresholds are the place&rsquo;s own record</p>
             <button class="drawbtn" data-drawer="ground">Sources &amp; the full record</button>
@@ -1650,7 +1665,7 @@ button.rr-row:hover{padding-left:6px}
               </div>
             </div>
             <p class="beat-cue">the other half of the record is after dark &darr;</p>
-            <p id="cmp-note">The &times; on each card is the change &mdash; that is the comparable part. &ldquo;Dangerously hot&rdquo; is each town&rsquo;s own 1951&ndash;80
+            <p id="cmp-note">The &times; on each card is the change &mdash; that is the comparable part. The list holds the 24 pre-computed towns; the picker above can draw any town on Earth. &ldquo;Dangerously hot&rdquo; is each town&rsquo;s own 1951&ndash;80
               95th percentile &mdash; the two cards count different thresholds, so comparing raw
               day-counts would be false precision. Compare the change. Averages: 1951&ndash;80 vs
               the last ten full years &middot; ERA5 via Open-Meteo.</p>
@@ -1736,6 +1751,7 @@ button.rr-row:hover{padding-left:6px}
             <div id="wg-dots" aria-hidden="true"></div>
             <p id="wg-claim" hidden><b>Most people back climate action. They just think most people don&rsquo;t.</b></p>
             <p id="wg-key" aria-hidden="true"></p>
+            <button type="button" id="wg-again" class="linklike" hidden>guess again</button>
             <p class="beat-cue">now find your own country &darr;</p>
           </div>
         </div>
@@ -2549,6 +2565,12 @@ function enterChamber(i){
  Array.prototype.forEach.call(ladder.querySelectorAll(".rung"),function(b,j){
   b.setAttribute("aria-current",j===i?"true":"false");
   if(b.parentNode&&b.parentNode.classList)b.parentNode.classList.toggle("open",j===i);});
+ /* mark the nearest sub-page within the open chapter */
+ try{var pane=el("p-"+CH[i].id);
+  if(pane){var bts=pane.querySelectorAll(".beat"),bi=0,sy=window.scrollY+innerHeight*0.4;
+   bts.forEach(function(bb,k){if(bb.offsetTop+ (bb.closest(".beats")?bb.closest(".beats").offsetTop:pane.offsetTop) <= sy)bi=k;});
+   var subs=ladder.querySelectorAll(".rgroup.open .subrung");
+   subs.forEach(function(s,k){s.classList.toggle("on",k===bi);});}}catch(e){}
  if(window.__BAND)__BAND.at(i,CH.length);                            // the budget-band caret follows you through the story
  if(location.hash!=="#p-"+c.id)try{history.replaceState(null,"","#p-"+c.id);}catch(e){}
  if(c.id==="ground"&&groundOverture)groundOverture();
@@ -2637,7 +2659,7 @@ var startIntro,endIntro;
  })(24);
  var hasAsk=!!el("pk-ask"),askResolved=!hasAsk;   /* the ask beat, when present, must be answered */
  /* a REAL deep link (?chamber= or a non-sky #p- hash captured BEFORE enterChamber(0) clobbered it) bypasses the cold-open */
- var isDeep=!!(Q.get("chamber")||Q.get("place")||Q.get("loc")||EMBED||KIOSK||(HASH0&&HASH0!=="sky"));
+ var isDeep=!!(Q.get("chamber")||Q.get("place")||Q.get("loc")||Q.get("rate")||EMBED||KIOSK||(HASH0&&HASH0!=="sky"));
 /* ?place/?loc ARE deep intent — they are the very links the copy-link button mints, and
    they used to run the intro machinery against an empty beat list */
  /* This averaged the two published budgets, which the site's own note explicitly disavows —
@@ -3060,10 +3082,10 @@ function buildGround(V){
   el("yr-out").innerHTML="<b>"+yr+"</b> ran <b class=\"yr-val\">"+(a>=0?"+":"−")+Math.abs(a).toFixed(2)+" °C</b> vs the 1951–80 average"+
    (pk!=null?(" — its hottest day hit <b class=\"yr-val\">"+pk.toFixed(1)+" °C</b>, now traced in amber on the chart."):".");}
  el("yr").addEventListener("input",function(){var v=+this.value;
-  if(v>=1940&&v<=LF)setYear(v);
+  if(v>=1940&&v<=LF+1)setYear(v);
   else{hiP.setAttribute("stroke-opacity",0);
    el("yr-out").textContent=(this.value.length>=4)?
-    "The record runs 1940 to "+LF+". Try a year between those.":"";}});
+    "The record runs 1940 to now. Try a year in that range.":"";}});
  var qy=parseInt(Q.get("yr"),10);if(isFinite(qy)){el("yr").value=qy;setYear(qy);}
 
  /* drawer content for ground: stripes + key + tables */
@@ -3212,7 +3234,7 @@ function buildGround(V){
    if(b){el("yr").value=b;setYear(b);}});
   svg.addEventListener("pointerleave",function(){
    var v=+el("yr").value;
-   if(v>=1940&&v<=LF)setYear(v);
+   if(v>=1940&&v<=LF+1)setYear(v);
    else hiP.setAttribute("stroke-opacity",0);});
  })();
 }
@@ -3492,6 +3514,17 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
  function vals(){return {to:gv("rr-to"),own:gv("rr-own"),name:gv("rr-name"),pc:gv("rr-pc")};}
  function refreshPrev(){var p=el("rr-prev");if(p)p.textContent=letterBody(vals());}
  function openLetter(){
+  var CIVIC={IND:["your MP (Lok Sabha)","sansad.in"],USA:["your Representative","house.gov/representatives/find"],
+   GBR:["your MP","writetothem.com"],PAK:["your MNA","na.gov.pk"],BGD:["your MP","parliament.gov.bd"],
+   IDN:["your DPR member","dpr.go.id"],PHL:["your Representative","congress.gov.ph"],CHN:["your local congress delegate",""],
+   JPN:["your Diet member","shugiin.go.jp"],ARE:["your FNC member","almajles.gov.ae"],TUR:["your MP","tbmm.gov.tr"],
+   NGA:["your Representative","nass.gov.ng"],EGY:["your MP","parliament.gov.eg"],KEN:["your MP","parliament.go.ke"],
+   TZA:["your MP","parliament.go.tz"],ZAF:["your MP","parliament.gov.za"],ESP:["your Diputado","congreso.es"],
+   RUS:["your Duma deputy","duma.gov.ru"],ISL:["your MP","althingi.is"],MEX:["your Diputado","diputados.gob.mx"],
+   BRA:["your Deputado","camara.leg.br"],PER:["your Congresista","congreso.gob.pe"],CAN:["your MP","ourcommons.ca"],
+   AUS:["your MP","aph.gov.au"],DEU:["your MdB","bundestag.de"],FRA:["your D\u00e9put\u00e9","assemblee-nationale.fr"]};
+  var hm3=window.__HOME&&__HOME.get(),cc=(hm3&&(hm3.iso3||hm3.c))||null,cv=cc&&CIVIC[cc];
+
   panel.hidden=false;
   panel.innerHTML='<h3>Your letter — every number already sourced.</h3>'+
    '<p class="rr-hint">The record does the arguing. You add only who it’s to and who you are — every figure is locked to what this page measured.</p>'+
@@ -3508,9 +3541,8 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
      return L.named?("This letter quotes <b>"+L.place+"</b>’s own measured record — the place this page is drawn for."):
       L.dev?("This letter quotes the record for your location. Your device could not match it to a city within 90 km, so fill in <b>[your city]</b> before sending."):
       ("This letter uses Seville’s record, the worked example. Set your place at the top of the Ground chapter and it will quote yours instead.");})()+'<br>'+
-   '&middot; Spain — your Diputado: <a href="https://www.congreso.es" target="_blank" rel="noopener">congreso.es<span class="sr-only"> (opens in a new tab)</span></a><br>'+
-   '&middot; European Parliament — your MEP: <a href="https://www.europarl.europa.eu" target="_blank" rel="noopener">europarl.europa.eu<span class="sr-only"> (opens in a new tab)</span></a><br>'+
-   '&middot; Somewhere else? Search &ldquo;[your country] find my representative&rdquo; — every democracy publishes a directory.</div>';
+  (cv?('&middot; '+((hm3&&hm3.name)||'Where you are')+' — '+cv[0]+(cv[1]?(': <a href="https://'+cv[1]+'" target="_blank" rel="noopener">'+cv[1]+'<span class="sr-only"> (opens in new tab)</span></a>'):'')+'<br>'):'')+
+  '&middot; Somewhere else? Search &ldquo;[your country] find my representative&rdquo; — every democracy publishes a directory.</div>';
   ["rr-to","rr-own","rr-name","rr-pc"].forEach(function(id){var e=el(id);if(e)e.addEventListener("input",refreshPrev);});
   refreshPrev();
   el("rr-mail").addEventListener("click",function(){
@@ -3930,7 +3962,9 @@ buildTakeaway();
   (_bm?(" · build "+_bm.content.slice(-8)):"")+
   "</b> from an archive complete to <b>"+D._meta.archive_end+"</b>. Every figure traces to the sources above "+
   "or is flagged “verify at build”. Nothing hand-typed or model-guessed. English first; Hindi is next. "+
-  "Made by Agosh Baranwal · agoshbaranwal@gmail.com";
+  "Made by Agosh Baranwal · agoshbaranwal@gmail.com"+
+  " &middot; <button type=\"button\" id=\"replay-q\" class=\"linklike\">replay the opening question</button>"+
+  " &middot; <button type=\"button\" id=\"back-top\" class=\"linklike\">back to the top &uarr;</button>";
 })();
 
 /* Phase 9 — the outcome-side "what we can honestly know" figures (reads D.impact, injected at build → no runtime fetch/beacon) */
@@ -4038,11 +4072,11 @@ var lastFocus=null;
 function drawerInert(on){ // the modal drawer makes the rest of the page inert (no tabbing/AT behind it)
  ["panes","sky-fixtures","ladder","mast","budget-band","soundbtn"].forEach(function(id){
   var e=el(id);if(e){if(on)e.setAttribute("inert","");else e.removeAttribute("inert");}});}
-function openDrawer(key){if(EMBED)return;var d=DRAWERS[key];if(!d)return;
+function openDrawer(key){if(EMBED)return;document.body.classList.add("drawer-open");var d=DRAWERS[key];if(!d)return;
  el("d-title").textContent=(typeof d.t==="function"?d.t():d.t);el("dbody").innerHTML=d.h();
  var dw=el("drawer");dw.classList.add("open");dw.setAttribute("aria-hidden","false");dw.removeAttribute("inert");
  drawerInert(true);lastFocus=document.activeElement;el("dclose").focus();}
-function closeDrawer(){var dw=el("drawer");
+function closeDrawer(){document.body.classList.remove("drawer-open");var dw=el("drawer");
  if(!dw.classList.contains("open"))return;
  dw.classList.remove("open");dw.setAttribute("aria-hidden","true");dw.setAttribute("inert","");drawerInert(false);
  if(lastFocus&&lastFocus.focus)lastFocus.focus();}
@@ -4270,6 +4304,7 @@ var __PLACE=(function(){
    "&count=1&language=en&format=json").then(jf).then(function(g){
    if(!g.results||!g.results.length){status("no such place found — try the nearest big town",true);return;}
    var p=g.results[0];
+   status("drawing "+p.name+(p.country?", "+p.country:"")+"\u2026 not yours? add the country to the search");
    pick(p.latitude,p.longitude,p.name+(p.country_code?", "+p.country_code:""));
   }).catch(function(){status("search failed — try again",true);});}
  /* The picker's buttons are wired ONCE, by the __HOME UI block below — not here. This module is
@@ -4778,7 +4813,8 @@ var __HOME=(function(){
      chapter with their real city rather than the placeholder */
   if(h.src==="device"&&!h.nearName){
    var seq=++SETSEQ;   /* a slow device commit must never overwrite a quicker deliberate pick */
-   withCityName(h,function(h2){if(seq===SETSEQ)commit(h2,opts);});return;}
+   withCityName(h,function(h2){if(seq===SETSEQ){commit(h2,opts);
+    try{var pd=el("pk-done");if(pd&&!pd.hidden&&h2.name)pd.textContent="You\u2019re set: "+h2.name+". Drawing its record\u2026";}catch(e){}}});return;}
   SETSEQ++;commit(h,opts);}
  var SETSEQ=0;
  function commit(h,opts){
@@ -4798,6 +4834,7 @@ var __HOME=(function(){
    if(inst){ /* an answer NOW, from the same engine on a slightly older archive */
     try{__PLACE.draw(inst,h.name);}catch(e){}
     LASTV=inst.V;REV++;placeState("ok");
+    try{document.dispatchEvent(new Event("onrecord:drawn"));}catch(e){}
     try{if(typeof fillRecap==="function")fillRecap();}catch(e){}
     try{if(typeof buildCompare==="function")buildCompare();}catch(e){}
     try{if(typeof buildTakeaway==="function")buildTakeaway();}catch(e){}}
@@ -4842,6 +4879,7 @@ var __HOME=(function(){
  var LASTV=null;
  var REV=0;   /* bumps when the choice OR the data changes — gen() alone misses the data arriving */
  function drawn(g,out){if(g!==GEN)return;LASTV=out&&out.V?out.V:null;REV++;placeState("ok");
+  try{document.dispatchEvent(new Event("onrecord:drawn"));}catch(e){}
   /* the arrival refreshes everything that quotes the record — recap, compare, exports */
   try{if(typeof fillRecap==="function")fillRecap();}catch(e){}
   try{if(typeof buildCompare==="function")buildCompare();}catch(e){}
@@ -5188,6 +5226,32 @@ window.__HOME=__HOME;
   c.addEventListener("click",go);
   c.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}});
  });})();
+
+ (function(){var r=el("replay-q"),t=el("back-top");
+  if(r)r.addEventListener("click",function(){try{startIntro(true);}catch(e){}});
+  if(t)t.addEventListener("click",function(){window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});});})();
+
+ (function(){var t=el("g-take");if(!t)return;
+  t.addEventListener("click",function(e){var b=e.target.closest("button[data-ga]");if(!b)return;
+   var a=b.getAttribute("data-ga"),o=b.textContent;
+   function done(m){b.textContent=m;setTimeout(function(){b.textContent=o;},1600);}
+   if(!window.__ART)return;
+   if(a==="card")__ART.download("seville","land").then(function(r){done(r==="saved"?"saved \u2713":"couldn\u2019t");});
+   else if(a==="csv"){__ART.csv("seville");done("saved \u2713");}
+   else{try{navigator.clipboard.writeText(__ART.cite("seville")).then(function(){done("copied \u2713");});}catch(e){done("\u2014");}}});
+  /* visible once any record is on screen */
+  var show=function(){t.hidden=false;};
+  if(window.__HOME&&__HOME.record&&__HOME.record())show();
+  document.addEventListener("onrecord:drawn",show);})();
+
+ (function(){var ag=el("wg-again"),ask=el("wg-ask"),key=el("wg-key"),cl=el("wg-claim");
+  if(!ag)return;
+  var obs=new MutationObserver(function(){if(key&&key.textContent)ag.hidden=false;});
+  if(key)obs.observe(key,{childList:true});
+  ag.addEventListener("click",function(){
+   if(ask)ask.hidden=false;if(cl)cl.hidden=true;ag.hidden=true;
+   if(key)key.textContent="";
+   document.querySelectorAll("#wg-dots i").forEach(function(d){d.className="";});});})();
 
 try{__HOME.boot();}catch(e){}
 

@@ -1,0 +1,11 @@
+<!doctype html><meta charset=utf-8>
+<style>iframe{width:1995px;height:1295px;border:0}</style>
+<iframe id="f" src="index.html?intro=0&live=0"></iframe>
+<script>var f=document.getElementById("f");
+f.onload=function(){setTimeout(function(){var w=f.contentWindow,d=f.contentDocument;
+ w.fetch=function(){return new Promise(function(){});};
+ var tok=null;d.querySelectorAll(".cb-chip").forEach(function(b){if(/Mumbai/.test(b.textContent))tok=b;});
+ if(tok)tok.click();
+ setTimeout(function(){
+  document.title="W4::g-take="+((d.getElementById("g-take")||{}).hidden===false);},900);},1700);};
+</script>

@@ -1,0 +1,26 @@
+<!doctype html><meta charset=utf-8>
+<style>iframe{width:1995px;height:1295px;border:0}</style>
+<iframe id="f" src="index.html?intro=0&live=0"></iframe>
+<script>var f=document.getElementById("f");
+f.onload=function(){setTimeout(function(){var w=f.contentWindow,d=f.contentDocument;
+ d.querySelectorAll(".beat,.pane-screen").forEach(function(b){b.classList.add("seen");});
+ w.fetch=function(){return new Promise(function(){});};
+ var tok=null;d.querySelectorAll(".cb-chip").forEach(function(b){if(/Mumbai/.test(b.textContent))tok=b;});
+ if(tok)tok.click();
+ setTimeout(function(){
+  var o=[];
+  // the letter flow for an Indian reader
+  var lb=null;d.querySelectorAll("button").forEach(function(b){if(/letter|record/i.test(b.textContent)&&/START/i.test((b.textContent||"")))lb=b;});
+  try{w.eval&&0;}catch(e){}
+  // call openLetter directly if exposed via the action row click
+  var start=d.querySelector('.rr-row[data-act="letter"], .rr-row.rr-start, .rr-row');
+  if(start)start.click();
+  setTimeout(function(){
+   var body=(d.body.textContent||"");
+   o.push("civic-lokSabha="+(body.indexOf("Lok Sabha")>=0));
+   o.push("civic-spainGone="+(body.indexOf("Diputado: congreso.es")<0));
+   o.push("g-take-visible="+((d.getElementById("g-take")||{}).hidden===false));
+   o.push("wg-claim-hidden="+((d.getElementById("wg-claim")||{}).hidden));
+   o.push("subOn="+d.querySelectorAll(".subrung.on").length);
+   document.title="W3::"+o.join(" | ");},900);},1400);},1700);};
+</script>
