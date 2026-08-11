@@ -1,5 +1,17 @@
 <style>
 /*__FONTS__*/
+/* The heading outline used to read as fourteen riddles — "One sky you can't recolour",
+   "The ground this page stands on" — and not one named a chapter. A skimmer, which is what a
+   stranger IS for the first twenty seconds, got no structure at all. These are the only headings
+   on the site that say what a chapter contains, so they are headings now, not paragraphs. */
+.page-what{margin:0 0 20px;padding:0;border:0;background:none;max-width:56ch;font-weight:400}
+.pw-name{display:block;font-family:var(--mono);font-size:var(--fs-label,13px);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--amber);margin-bottom:6px;text-shadow:var(--halo);font-weight:400}
+.pw-say{display:block;font-size:15px;line-height:1.5;color:var(--bone-2);text-shadow:var(--halo)}
+.thm-ink .pw-say{color:var(--ink-2);text-shadow:none}
+.thm-ink .pw-name{color:var(--act)}
+@media(max-width:560px){.pw-say{font-size:14px}}
+
 /* ── THE OPENING OWNS THE SCREEN ────────────────────────────────────────────────
    A stranger's first screen used to carry, all at once: a truncated budget ticker, the
    wordmark, a tagline, a sound toggle, a ghosted six-rung ladder, a place chip reading
@@ -305,7 +317,9 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 .beats{display:block}
 .beat,.pane-screen{position:relative;box-sizing:border-box;
   min-height:100svh;min-height:100vh;
-  scroll-snap-align:start;scroll-snap-stop:always;
+  scroll-snap-align:start;scroll-snap-stop:normal;   /* was ALWAYS — 13 forced stops meant a
+     reader physically could not flick through to see what was here. Skimming is the first thing a
+     stranger does; the page forbade it. Snap still settles a beat you land on. */
   display:flex;flex-direction:column;justify-content:center;
   max-width:1400px;margin:0 auto;padding:16vh 172px 12vh 38px}
 .beat .lead{font-size:clamp(18px,1.7vw,21px);line-height:1.55;color:var(--bone-2);
@@ -323,7 +337,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
   .beat>*,.pane-screen>*{opacity:1;transform:none;transition:none}}
 /* chapters not yet split into beats (night/first-light/morning) are one screen each */
 .pane:has(>h2){box-sizing:border-box;min-height:100svh;min-height:100vh;
-  scroll-snap-align:start;scroll-snap-stop:always;
+  scroll-snap-align:start;scroll-snap-stop:normal;
   display:flex;flex-direction:column;justify-content:center;
   max-width:1400px;margin:0 auto;padding:16vh 172px 12vh 38px}
 .pane:has(>h2)>*{opacity:0;transform:translateY(16px);
@@ -610,11 +624,9 @@ body.ch-bedrock #mast,body.ch-bedrock #budget-band{opacity:0!important;pointer-e
    pattern) rather than an admin box pasted over the sky */
 .page-what{font-family:var(--sg);font-size:15px;line-height:1.5;color:var(--bone-2);
   max-width:54ch;margin:0 0 18px;padding:0;border:0;background:none;text-shadow:var(--halo)}
-.page-what::before{content:"What this page shows";display:block;font-family:var(--mono);
-  font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);
-  margin-bottom:5px;text-shadow:var(--halo)}
+
 .thm-ink .page-what{color:var(--ink-2);text-shadow:none}
-.thm-ink .page-what::before{color:var(--act)}
+.thm-ink 
 @media(max-width:640px){.page-what{font-size:14.5px;margin-bottom:14px}}
 /* the page says whose numbers these are whenever it is not the place named above them */
 #place-state{font-family:var(--sg);font-size:14.5px;line-height:1.5;max-width:54ch;margin:0 0 12px;
@@ -1219,7 +1231,7 @@ button.rr-row:hover{padding-left:6px}
         <div class="beats">
           <!-- BEAT 1 — the plain thesis, and the number that carries the page -->
           <div class="beat">
-            <p class="page-what">How much carbon the world can still burn before 1.5&nbsp;°C is out of reach &mdash; and how fast we are using it up.</p>
+            <h2 class="page-what"><b class="pw-name">The world's carbon budget</b><span class="pw-say">How much carbon the world can still burn before 1.5&nbsp;°C is out of reach &mdash; and how fast we are using it up.</span></h2>
             <!-- This used to repeat the cold-open word for word, teaching the reader that scrolling
                  returns nothing new — while the one sentence that stops "2.4-2.5" being read as
                  "the world ends in 2029" was stranded in the SKIPPABLE intro. The correction now
@@ -1325,7 +1337,7 @@ button.rr-row:hover{padding-left:6px}
         <div class="beats">
           <!-- BEAT 1 — whose ground this is, and that you can change it -->
           <div class="beat">
-            <p class="page-what">How many dangerously hot days your own town gets now, compared with your grandparents&rsquo; time.</p>
+            <h2 class="page-what"><b class="pw-name">Your hot days</b><span class="pw-say">How many dangerously hot days your own town gets now, compared with your grandparents&rsquo; time.</span></h2>
             <h2 tabindex="-1" id="g-h2">Here is Seville, day by day, since 1940.</h2>
             <p class="place-tag" hidden>worked example &mdash; not your place &middot; set your place above</p>
                         <p class="lead">Not a global average &mdash; the ground under your feet, measured since 1940.</p>
@@ -1409,7 +1421,7 @@ button.rr-row:hover{padding-left:6px}
         <div class="beats">
           <!-- BEAT 1 — the danger people miss, and the number -->
           <div class="beat">
-            <p class="page-what">Where you live, the nights are warming faster than the days &mdash; and the nights are the dangerous half.</p>
+            <h2 class="page-what"><b class="pw-name">Your hot nights</b><span class="pw-say">Where you live, the nights are warming faster than the days &mdash; and the nights are the dangerous half.</span></h2>
             <h2 tabindex="-1">Hot nights are the danger most people miss.</h2>
             <p class="lead">Your body cools down at night to recover. When the nights stop cooling,
               a heatwave stops giving anyone a break &mdash; which is what heat-health research warns about most.</p>
@@ -1452,7 +1464,7 @@ button.rr-row:hover{padding-left:6px}
         <div class="beats">
           <!-- BEAT 1 — the plain finding -->
           <div class="beat">
-            <p class="page-what">Far more people around you want action on climate change than you think.</p>
+            <h2 class="page-what"><b class="pw-name">What people actually want</b><span class="pw-say">Far more people around you want action on climate change than you think.</span></h2>
             <h2 tabindex="-1">Most people back climate action.<br>They just think most people don&rsquo;t.</h2>
             <p class="lead">Researchers asked people in 125 countries whether they would give
               <b>1% of their income</b>, every month, to fight warming. Before we tell you the
@@ -1509,7 +1521,7 @@ button.rr-row:hover{padding-left:6px}
         <div class="beats">
           <!-- BEAT 1 — the measured good news -->
           <div class="beat">
-            <p class="page-what">What has genuinely improved so far, and the few things one person can do that actually matter.</p>
+            <h2 class="page-what"><b class="pw-name">What you can do</b><span class="pw-say">What has genuinely improved so far, and the few things one person can do that actually matter.</span></h2>
             <h2 tabindex="-1">The record also holds good news,<br>all of it measured.</h2>
             <p class="lead">Not a promise &mdash; a list of what has already moved. Each sourced, each still short of safe.</p>
             <div class="ledger">
@@ -1600,7 +1612,7 @@ button.rr-row:hover{padding-left:6px}
 
       <!-- BEDROCK -->
       <section class="pane" id="p-bedrock" aria-label="Bedrock — how we know">
-        <p class="page-what">Every source behind every number on this site, and the things it cannot tell you.</p>
+        <h2 class="page-what"><b class="pw-name">Where the numbers come from</b><span class="pw-say">Every source behind every number on this site, and the things it cannot tell you.</span></h2>
         <h2 tabindex="-1">The ground this page stands on.</h2>
         <p class="lead" style="max-width:60ch;margin-bottom:8px">Everything above rests on what is here.
           Every dataset, every paper, every line of arithmetic is named so you can check it yourself.
