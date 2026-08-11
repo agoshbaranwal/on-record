@@ -2638,6 +2638,34 @@ var startIntro,endIntro;
   if(answered&&pk.parentNode)pk.parentNode.removeChild(pk);})();
  var beats=Array.prototype.slice.call(stackEl.querySelectorAll(".ib"));
  if(!beats.length){try{endIntro();}catch(e){}return;}   /* an intro with no beats must end, not crash */
+ /* SCROLLING AWAY IS AN ANSWER. The ask used to end only by button — a reader who
+    scrolled (the most natural gesture there is) fell into the page beneath, which sits
+    at opacity:0 behind the intro: a black site with no content. Now the first real
+    scroll resolves the ask exactly like "Skip — show me an example". */
+ (function(){
+  var armed=true,armed2=false;
+  function bail(){
+   if(armed){armed=false;armed2=true;
+    var sk=el("pk-skip");
+    try{if(sk)sk.click();else endIntro();}catch(e){try{endIntro();}catch(e2){}}
+    return;}
+   if(armed2){armed2=false;
+    /* the second scroll releases the confirmation too — a scrolling reader never
+       meets a button they must click */
+    var go=el("intro-go");
+    try{if(go&&!go.hidden)go.click();else endIntro();}catch(e){try{endIntro();}catch(e2){}}}}
+  function onWheel(e){if(Math.abs(e.deltaY)>8)bail();}
+  var t0=null;
+  function onTS(e){t0=e.touches&&e.touches[0]?e.touches[0].clientY:null;}
+  function onTM(e){if(t0==null)return;
+   var y=e.touches&&e.touches[0]?e.touches[0].clientY:t0;
+   if(Math.abs(y-t0)>24)bail();}
+  function onKey(e){if(e.key==="PageDown"||e.key===" "||e.key==="ArrowDown")bail();}
+  addEventListener("wheel",onWheel,{passive:true});
+  addEventListener("touchstart",onTS,{passive:true});
+  addEventListener("touchmove",onTM,{passive:true});
+  addEventListener("keydown",onKey);
+ })();
  var N=beats.length,idx=0,settled=false,countRAF=0,settleTimer=0,
      interacted=false,reopened=false,retScroll=0,lastEx=.66,REVEAL=1300,NUM={};
 
