@@ -3848,7 +3848,9 @@ buildTakeaway();
    "<span class='lim-q'>?loc=</span> are verification links, not something the share button makes.</p>";
  /* this said "place data frozen at 3 July 2026" long after the nightly build began refreshing it —
     the last sentence of the site contradicted the build date printed two hundred words above it */
+ var _bm=document.querySelector('meta[name="build"]');
  el("colophon").innerHTML="On Record rebuilds every night: this page was last built <b>"+D._meta.today+
+  (_bm?(" · build "+_bm.content.slice(-8)):"")+
   "</b> from an archive complete to <b>"+D._meta.archive_end+"</b>. Every figure traces to the sources above "+
   "or is flagged “verify at build”. Nothing hand-typed or model-guessed. English first; Hindi from launch. "+
   "Made by Agosh Baranwal · agoshbaranwal@gmail.com";

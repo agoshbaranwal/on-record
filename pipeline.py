@@ -560,7 +560,31 @@ assert not ({"seville", "delhi"} & {s for s, c in _bar}), \
 _swstamp = re.sub(r"[^0-9]", "", out["_meta"]["built_utc"])[:14] + "-" + hashlib.sha1(doc.encode()).hexdigest()[:8]
 _sw = (ROOT / "sw.js").read_text()
 _sw = re.sub(r'const BUILD = "[^"]*";', 'const BUILD = "%s";' % _swstamp, _sw, count=1)
+# the build id becomes visible ON THE PAGE (colophon) — "which build am I on" must never
+# need DevTools again
+_doc2 = (ROOT / "index.html").read_text()
+if '<meta name="build"' not in _doc2:
+    _doc2 = _doc2.replace("</head>", '<meta name="build" content="%s"></head>' % _swstamp, 1)
+else:
+    _doc2 = re.sub(r'<meta name="build" content="[^"]*">', '<meta name="build" content="%s">' % _swstamp, _doc2, count=1)
+(ROOT / "index.html").write_text(_doc2)
 (ROOT / "sw.js").write_text(_sw)
+# CONFLICT-MARKER GUARD: sw.js shipped to production with unresolved merge markers for a
+# day — a syntax error that silently broke every service-worker update while the deploy
+# check read the first line of the broken file and said "live". Never again: any artifact
+# containing conflict markers, or an unparseable sw.js, refuses to build.
+for _name in ["index.html", "sw.js", "reuse.html", "onrecord-heat-mockup.html"]:
+    _fp = ROOT / _name
+    if _fp.exists():
+        assert "<<<<<<<" not in _fp.read_text() and ">>>>>>>" not in _fp.read_text(), \
+            _name + " contains merge conflict markers - REFUSING to ship"
+try:
+    import subprocess as _sp
+    _r = _sp.run(["node", "--check", str(ROOT / "sw.js")], capture_output=True)
+    assert _r.returncode == 0, "sw.js does not parse: " + _r.stderr.decode()[:200]
+except FileNotFoundError:
+    pass  # no node on this runner; the marker check above still holds
+
 print(f"[pipeline] built index.html ({len(doc):,} B) — sw BUILD {_swstamp} — done")
 
 # ---------------- build reuse.html (teachers + press) ----------------
