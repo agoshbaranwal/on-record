@@ -1,5 +1,7 @@
 <style>
 /*__FONTS__*/
+html body #gq{flex:1 1 auto;min-width:0}
+
 .subrung.on{color:var(--bone);border-right:2px solid var(--amber);padding-right:14px}
 .thm-ink .subrung.on{color:var(--ink);border-right-color:var(--act)}
 
@@ -11,7 +13,7 @@ body.drawer-open{overflow:hidden}
 
 .linklike{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer}
 
-html #gq-go{text-transform:none;letter-spacing:.02em;font-size:13px}
+html body #gq-go{text-transform:none;letter-spacing:.02em;font-size:13px}
 
 /* ══ PASS 3 · THE SYSTEM ══════════════════════════════════════════════════════ */
 *{-webkit-tap-highlight-color:transparent}
@@ -1587,7 +1589,7 @@ button.rr-row:hover{padding-left:6px}
                 <p id="homeask-blocked" class="receipt" hidden></p>
               </div>
               <div id="gplace">
-                <input id="gq" type="search" placeholder="Search any city" aria-label="Search a place to draw its record">
+                <input id="gq" type="search" placeholder="Search a city" aria-label="Search a place to draw its record">
                 <button type="button" id="gq-go">Draw its record</button>
                 <span id="gq-status" aria-live="polite"></span>
               </div>
