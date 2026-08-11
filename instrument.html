@@ -1,5 +1,41 @@
 <style>
 /*__FONTS__*/
+/* ══ PASS 2 · THE STAGE ═══════════════════════════════════════════════════════
+   The mast was capped at 1400px and centered; the content and the rail were not —
+   chrome and column hung on different grids and the diagnosis called the result
+   "~750px of dead sky". One gutter token now frames the whole stage. */
+:root{--gut:max(38px,calc((100vw - 1400px)/2))}
+@media(min-width:1600px){
+  .beats > .beat,.pane > .beat{padding-left:var(--gut);padding-right:var(--gut)}
+  #p-bedrock{padding-left:var(--gut);padding-right:var(--gut)}
+  html #ladder{right:var(--gut)}
+  html #rail-dock{right:var(--gut)}
+  html #soundbtn{right:var(--gut)}
+}
+/* item 17 · the rail gets ground where the sky turns cream — masked so the edge is
+   seamless, not a strip */
+@media(min-width:941px){
+  #ladder{background:linear-gradient(to left,rgba(3,15,17,.44),rgba(3,15,17,0));
+    padding:18px 0 18px 64px;
+    -webkit-mask-image:linear-gradient(to bottom,transparent,#000 12%,#000 88%,transparent);
+    mask-image:linear-gradient(to bottom,transparent,#000 12%,#000 88%,transparent)}
+  body.thm-ink #ladder{background:linear-gradient(to left,rgba(244,244,241,.55),rgba(244,244,241,0))}
+}
+/* item 18 · consecutive cards share edges */
+.sheet{width:min(660px,100%)}
+.sheet--wide{width:min(980px,100%);max-width:980px}
+/* item 13 · the 24-city wall becomes a chip cloud */
+html #gq-bar .cb-chips,html #pk-bar .cb-chips{display:flex;flex-wrap:wrap;gap:8px}
+html #gq-bar .cb-chip,html #pk-bar .cb-chip{min-height:36px;width:auto;padding:7px 14px;border-radius:999px;font-size:13px}
+@media(pointer:coarse){html #gq-bar .cb-chip,html #pk-bar .cb-chip{min-height:44px}}
+/* item 15 · Bedrock's definition rows align at the top, two-line labels included */
+dl.lim{display:grid;grid-template-columns:minmax(130px,max-content) 1fr;column-gap:18px;row-gap:16px}
+dl.lim dt{grid-column:1;align-self:start;text-align:right}
+dl.lim dd{grid-column:2;align-self:start;margin:0}
+/* item 16 · the opening sits centered over a LIVE, dimmed sky — the product's face */
+html #intro .box{left:50%;right:auto;transform:translateX(-50%);width:min(700px,92vw);max-width:none;padding:0 0 12vh}
+@media(max-width:640px){html #intro .box{width:100%;padding:0 20px 15vh;left:0;transform:none}}
+
 /* ── THE RAIL'S SUB-PAGES: the active chapter opens to show its beats ── */
 #ladder .rgroup{display:flex;flex-direction:column;align-items:flex-end}
 #ladder .subs{display:none;flex-direction:column;align-items:flex-end;gap:1px;margin:1px 0 7px}
@@ -1747,7 +1783,14 @@ button.rr-row:hover{padding-left:6px}
               <button class="rr-row rr-give" data-act="give" type="button">
                 <span class="rr-head"><span class="rr-label">Give where a dollar buys the most.</span><span class="rr-ev">~$1 / tonne CO₂e · uncertain</span></span>
                 <span class="rr-note">An uncertain bet on systemic change (CATF, Carbon180) &mdash; <b>not</b> an offset that cancels your own emissions. <span class="rr-src">Founders Pledge / Giving Green</span></span></button>
-              <p class="rr-divider">The personal levers &mdash; real, smaller, fully in your hands</p>
+
+            <p class="beat-cue">and the smaller levers, fully in your own hands &darr;</p>
+          </div>
+        </div>
+        <div class="beat">
+          <div class="sheet">
+            <h2>The personal levers.</h2>
+            <p class="lead">Real, smaller, and entirely yours &mdash; each one measured.</p>
               <div class="rr-row rr-foot">
                 <span class="rr-head"><span class="rr-label">Live car-free, or car-light.</span><span class="rr-t">2.4 t</span></span>
                 <span class="rr-bar" style="--w:96%" aria-hidden="true"><i></i></span>
@@ -1834,6 +1877,7 @@ button.rr-row:hover{padding-left:6px}
         </div>
       </section>
       <section class="pane" id="p-bedrock" aria-label="Bedrock — how we know">
+        <div class="sheet sheet--wide" id="bedrock-sheet">
         <h2 class="page-what"><b class="pw-name">Where the numbers come from</b><span class="sr-only">. </span><span class="pw-say">Every source behind every number on this site, and the things it cannot tell you.</span></h2>
         <h2 tabindex="-1">The ground this page stands on.</h2>
         <p class="lead" style="max-width:60ch;margin-bottom:8px">Everything above rests on what is here.
@@ -1853,6 +1897,7 @@ button.rr-row:hover{padding-left:6px}
 
           <div hidden aria-hidden="true"><div id="t-budget"></div><div id="srcs"></div><div id="impact-know"></div><div id="impact-refuse"></div><div id="budget-notes"></div></div>
 </div>
+      </div>
       </section>
     </div>
   </div>
@@ -2420,7 +2465,7 @@ CH.forEach(function(c,i){
   ground:["Your record","Then vs now","Today","Compare two towns"],
   night:["The dangerous half","Days vs nights"],
   firstlight:["Take the guess","The whole world"],
-  morning:["Put it on the record","The good news"]
+  morning:["Put it on the record","The personal levers","The good news"]
  };
  var wrap=document.createElement("div");wrap.className="rgroup";
  var b=document.createElement("a");b.className="rung";b.href="#p-"+c.id;
@@ -2585,6 +2630,19 @@ var startIntro,endIntro;
  (function(){var b=el("n-ex-open"),bd=el("n-ex-body");
   if(b&&bd)b.addEventListener("click",function(){var on=bd.hidden;
    bd.hidden=!on;b.setAttribute("aria-expanded",on?"true":"false");});})();
+ /* the product's face is visible from the first frame: the living sky runs dimmed
+    behind the opening. The shader compiles ASYNC — at eval time __ATMO.ok is still false,
+    so this retries until the atmosphere is ready (and stops if the intro has ended). */
+ (function introSky(tries){
+  if(isDeep)return;
+  try{
+   var st=el("stage");
+   if(st&&!st.classList.contains("introing"))return;
+   if(__ATMO&&__ATMO.ok){__ATMO.setState("sky",{dur:reduce?0:1800});
+    if(__ATMO.textDim)__ATMO.textDim(.5);return;}
+  }catch(e){}
+  if(tries>0)setTimeout(function(){introSky(tries-1);},250);
+ })(24);
  var hasAsk=!!el("pk-ask"),askResolved=!hasAsk;   /* the ask beat, when present, must be answered */
  /* a REAL deep link (?chamber= or a non-sky #p- hash captured BEFORE enterChamber(0) clobbered it) bypasses the cold-open */
  var isDeep=!!(Q.get("chamber")||Q.get("place")||Q.get("loc")||EMBED||KIOSK||(HASH0&&HASH0!=="sky"));
@@ -2716,7 +2774,9 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
   if(Math.abs(dx)>44&&Math.abs(dx)>Math.abs(dy)){if(dx<0)advance();else back();}},{passive:true});
  function bgInert(on){["panes","sky-fixtures","ladder","mast","budget-band","soundbtn"].forEach(function(id){
    var e=el(id);if(e){if(on)e.setAttribute("inert","");else e.removeAttribute("inert");}});}  // no tabbing into the dimmed instrument behind the cold-open
- startIntro=function(reopen){reopened=!!reopen;interacted=false;lastEx=.66;
+ startIntro=function(reopen){reopened=!!reopen;interacted=false;
+  try{if(__ATMO.ok){__ATMO.setState("sky",{dur:reduce?0:1800});
+   if(__ATMO.textDim)__ATMO.textDim(.5);}}catch(e){}lastEx=.66;
   if(reopen){retScroll=window.scrollY||window.pageYOffset||0;seed();}
   intro.classList.remove("gone");stage.classList.add("introing");bgInert(true);
   document.body.classList.add("introing");
