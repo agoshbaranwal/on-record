@@ -1,8 +1,50 @@
 <style>
 /*__FONTS__*/
+#dbody h3,#drawer h3,.sheet h3{font-size:17px}
+
+.beat{content-visibility:auto;contain-intrinsic-size:auto 900px}
+
+/* ══ THE RAIL IS A SPINE, NOT A FADED LIST ═══════════════════════════════════
+   The gradient behind the labels never blended with a sky that changes colour every
+   chapter — it read as a smudge. There is no backdrop now: a hairline spine carries a
+   filled portion showing how far through the page you are, the chapter you are IN is
+   the only one labelled, and the rest are ticks until you hover the rail. Less ink,
+   and for the first time a real answer to "where am I". */
+@media(min-width:941px){
+  #ladder{position:fixed;right:0;top:50%;transform:translateY(-50%);
+    padding:10px 26px 10px 18px}
+  #ladder::before{content:"";position:absolute;right:16px;top:0;bottom:0;width:1px;
+    background:rgba(242,231,204,.16)}
+  #ladder::after{content:"";position:absolute;right:16px;top:0;width:1px;
+    height:calc(var(--prog,0) * 100%);background:var(--amber);opacity:.75;
+    transition:height .25s linear;display:block}
+  body.thm-ink #ladder::before{background:rgba(62,18,8,.2)}
+  body.thm-ink #ladder::after{background:var(--act)}
+  .rung{position:relative;padding:9px 0}
+  .rung .dot{display:block;position:absolute;right:-11px;top:50%;width:9px;height:1px;
+    background:rgba(242,231,204,.34);transform:translateY(-50%);transition:width .2s ease,background .2s ease}
+  body.thm-ink .rung .dot{background:rgba(62,18,8,.35)}
+  .rung[aria-current="true"] .dot{width:16px;background:var(--amber)}
+  body.thm-ink .rung[aria-current="true"] .dot{background:var(--act)}
+  /* labels: the current chapter always; the others only while the rail has attention */
+  .rung .lab{opacity:0;transform:translateX(6px);
+    transition:opacity .22s ease,transform .22s ease;text-shadow:none}
+  .rung[aria-current="true"] .lab{opacity:1;transform:none}
+  #ladder:hover .rung .lab,#ladder:focus-within .rung .lab{opacity:.85;transform:none}
+  #ladder:hover,#ladder:focus-within{background:rgba(4,14,16,.72);border-radius:14px}
+  body.thm-ink #ladder:hover,body.thm-ink #ladder:focus-within{background:rgba(246,245,242,.8)}
+  #ladder .subs{padding-right:2px}
+}
+@media(prefers-reduced-motion:reduce){
+  #ladder::after,.rung .dot,.rung .lab{transition:none}
+}
+
+/* the compare dropdown was the site's third typeface (Arial) — 126 options */
+select,option{font-family:var(--sg)}
+
 /* Bedrock's sheet was dark glass on a near-black starfield — an invisible card, so the
    chapter read as raw text floating in space. On this chapter the card must be seen. */
-#p-bedrock .sheet{background:rgba(16,28,30,.85);border-color:rgba(242,231,204,.16)}
+#p-bedrock .sheet{background:rgba(14,26,28,.94);border-color:rgba(242,231,204,.16)}
 
 html body #gq{flex:1 1 auto;min-width:0}
 
@@ -28,12 +70,10 @@ html :focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-rad
 body.thm-ink :focus-visible{outline-color:var(--act)}
 /* 23/24 · phones: no auto-zoom, no sub-44px targets */
 @media(pointer:coarse){
-  input,select,textarea{font-size:16px!important}
+  input,select,textarea{font-size:17px!important}
   button,select,input[type="text"],input[type="search"]{min-height:44px}
 }
 /* 30 · sheets clear AA even over the cream band */
-html .sheet{background:rgba(4,16,18,.78)}
-html .thm-ink .sheet{background:rgba(244,244,241,.86)}
 /* 31 · scrollbars in the site's voice */
 html{scrollbar-color:rgba(242,231,204,.28) transparent}
 #dbody::-webkit-scrollbar{width:8px}
@@ -67,23 +107,18 @@ html #ladder .rgroup.open .subs{max-height:220px;opacity:1;margin:1px 0 7px}
    "~750px of dead sky". One gutter token now frames the whole stage. */
 :root{--gut:max(38px,calc((100vw - 1400px)/2))}
 @media(min-width:1600px){
-  .beats > .beat,.pane > .beat{padding-left:var(--gut);padding-right:var(--gut)}
+  /* The beats already self-centre (max-width:1400px;margin:0 auto), so the wide-screen
+     frame is theirs — adding a pane gutter on top double-framed it. The one card that
+     was ever misaligned was a DOM nesting error in the Morning split, fixed at source. */
+  .beat{padding-right:172px}
   html #ladder{right:var(--gut)}
   html #rail-dock{right:var(--gut)}
   html #soundbtn{right:var(--gut)}
 }
 /* item 17 · the rail gets ground where the sky turns cream — masked so the edge is
    seamless, not a strip */
-@media(min-width:941px){
-  #ladder{background:linear-gradient(to left,rgba(3,15,17,.44),rgba(3,15,17,0));
-    padding:18px 0 18px 64px;
-    -webkit-mask-image:linear-gradient(to bottom,transparent,#000 12%,#000 88%,transparent);
-    mask-image:linear-gradient(to bottom,transparent,#000 12%,#000 88%,transparent)}
-  body.thm-ink #ladder{background:linear-gradient(to left,rgba(244,244,241,.55),rgba(244,244,241,0))}
-}
+
 /* item 18 · consecutive cards share edges */
-.sheet{width:min(660px,100%)}
-.sheet--wide{width:min(980px,100%);max-width:980px}
 /* item 13 · the 24-city wall becomes a chip cloud */
 html #gq-bar .cb-chips,html #pk-bar .cb-chips{display:flex;flex-wrap:wrap;gap:8px}
 html #gq-bar .cb-chip,html #pk-bar .cb-chip{min-height:36px;width:auto;padding:7px 14px;border-radius:999px;font-size:13px}
@@ -126,7 +161,7 @@ html #intro .box{left:50%;right:auto;transform:translateX(-50%);width:min(700px,
   #rail-dock{position:absolute;top:14px;right:14px}   /* scrolls away with the page top */
 }
 
-.share-lead{margin-top:22px;font-size:14px;color:var(--ink-2)}
+.share-lead{margin-top:22px;font-size:15px;color:var(--ink-2)}
 
 #showerbox{max-width:min(38ch,30vw);margin-left:auto;font-size:13px;line-height:1.5;color:var(--bone-3);text-shadow:var(--halo);margin-bottom:6px}
 #showerbox b{color:var(--bone-2);font-weight:500}
@@ -154,14 +189,14 @@ html{scroll-padding-top:0}
 .cmp-badge{font-family:var(--mono);font-size:13px;color:var(--amber);margin:0 0 6px}
 .cmp-x{font-size:32px;line-height:1.1;font-weight:500;color:var(--bone);margin:6px 0 4px;
   letter-spacing:-.01em}
-.cmp-counts{font-size:14px;line-height:1.45;color:var(--bone-2);margin:0}
+.cmp-counts{font-size:15px;line-height:1.45;color:var(--bone-2);margin:0}
 .cmp-bars{margin:12px 0 4px}
 .cmp-bars i{display:block;height:9px;border-radius:3px;background:#8FC0EA;margin:5px 0 0;
   min-width:3px;transition:width .5s cubic-bezier(.16,.84,.28,1)}
 .cmp-bars i.now{background:#EE9E80}
 .cmp-sub{font-family:var(--mono);font-size:13px;color:var(--bone-3);margin:6px 0 0}
 .cmp-sellab{display:block;font-family:var(--mono);font-size:13px;color:var(--bone-3);margin:0 0 6px}
-#cmp-sel{width:100%;background:rgba(3,15,17,.55);color:var(--bone);font:inherit;font-size:14px;
+#cmp-sel{width:100%;background:rgba(3,15,17,.55);color:var(--bone);font:inherit;font-size:15px;
   border:1px solid rgba(242,231,204,.25);border-radius:8px;padding:9px 10px;margin:0 0 12px}
 #cmp-sel:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 #cmp-note{margin-top:16px;font-size:13px;line-height:1.55;color:var(--bone-3);max-width:64ch}
@@ -224,16 +259,20 @@ html{scroll-padding-top:0}
    global decision. The reading layer now has its own surface: one recipe, one radius,
    guaranteed AA at any sky state. The sky lives AROUND the sheets — in the margins, the
    transitions, behind the dial — where it can be beautiful without being in the way. */
-.sheet{background:rgba(4,16,18,.66);
-  -webkit-backdrop-filter:blur(16px) saturate(1.05);backdrop-filter:blur(16px) saturate(1.05);
-  border:1px solid rgba(242,231,204,.10);border-radius:16px;
-  padding:clamp(22px,4.5vw,40px);max-width:660px;width:fit-content;
-  box-shadow:0 10px 40px rgba(0,0,0,.25)}
+/* ONE geometry, defined once. width:fit-content made every card a different width
+   (measured: 562/582/595/660/786/805 across 17 beats) — cards that never share an edge
+   read as a page with no grid. And backdrop-filter on 17 cards repainted the blur on
+   every scroll frame: the single biggest cause of the scroll not feeling smooth. It is
+   gone; the fill is opaque enough to carry the text without it. */
+.sheet{background:rgba(6,18,20,.90);
+  border:1px solid rgba(242,231,204,.11);border-radius:16px;
+  padding:clamp(24px,3vw,38px);width:100%;max-width:660px;
+  box-shadow:0 10px 40px rgba(0,0,0,.28)}
 .sheet--wide{max-width:980px}
 .sheet .sheet{background:none;border:0;box-shadow:none;padding:0;-webkit-backdrop-filter:none;backdrop-filter:none}
 /* inside a sheet the halo hacks are unnecessary — and they blur the very text they saved */
 .sheet,.sheet *{text-shadow:none!important}
-.thm-ink .sheet{background:rgba(244,244,241,.82);border-color:rgba(62,18,8,.10);
+.thm-ink .sheet{background:rgba(246,245,242,.94);border-color:rgba(62,18,8,.10);
   box-shadow:0 10px 40px rgba(62,18,8,.08)}
 @media(max-width:640px){.sheet{padding:18px 16px;border-radius:12px;max-width:100%;width:auto}}
 
@@ -258,11 +297,11 @@ html{scroll-padding-top:0}
   color:var(--bone);text-shadow:var(--halo);letter-spacing:-.01em}
 #recap-list span{display:block;margin-top:5px;font-size:15px;line-height:1.45;
   color:var(--bone-2);text-shadow:var(--halo)}
-#recap-foot{margin-top:26px;max-width:54ch;font-size:14px;line-height:1.5;color:var(--bone-3);text-shadow:var(--halo)}
+#recap-foot{margin-top:26px;max-width:54ch;font-size:15px;line-height:1.5;color:var(--bone-3);text-shadow:var(--halo)}
 .thm-ink #recap-list b{color:var(--ink);text-shadow:none}
 .thm-ink #recap-list span{color:var(--ink-2);text-shadow:none}
 .thm-ink #recap-foot{color:var(--ink-3);text-shadow:none}
-@media(max-width:560px){#recap-list b{font-size:22px}}
+@media(max-width:560px){#recap-list b{font-size:21px}}
 
 /* The heading outline used to read as fourteen riddles — "One sky you can't recolour",
    "The ground this page stands on" — and not one named a chapter. A skimmer, which is what a
@@ -274,7 +313,7 @@ html{scroll-padding-top:0}
 .pw-say{display:block;font-size:15px;line-height:1.5;color:var(--bone-2);text-shadow:var(--halo)}
 .thm-ink .pw-say{color:var(--ink-2);text-shadow:none}
 .thm-ink .pw-name{color:var(--act)}
-@media(max-width:560px){.pw-say{font-size:14px}}
+@media(max-width:560px){.pw-say{font-size:15px}}
 
 /* ── THE OPENING OWNS THE SCREEN ────────────────────────────────────────────────
    A stranger's first screen used to carry, all at once: a truncated budget ticker, the
@@ -330,7 +369,7 @@ body.introing #intro-skip{display:none!important}
 html{scroll-behavior:smooth}   /* snap retired: it pinned beat edges to screen edges,
    slicing headings at rest — flagged twice. A normal document never rests mid-glyph. */
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;scroll-snap-type:none}}
-body{background:var(--deep);color:var(--bone);font-family:var(--sg);font-size:16px;
+body{background:var(--deep);color:var(--bone);font-family:var(--sg);font-size:17px;
   line-height:1.5;-webkit-font-smoothing:antialiased}
 button{font:inherit;cursor:pointer;color:inherit;background:none;border:0}
 a{color:inherit}
@@ -385,13 +424,13 @@ a{color:inherit}
 #skycap{position:absolute;right:6%;bottom:5%;z-index:2;pointer-events:none;text-align:right;
   opacity:0;transition:opacity 1.6s ease}
 #skycap.on{opacity:1}
-#skycap .zname{display:block;color:rgba(220,232,255,.82);font-family:var(--mono);font-size:11px;text-shadow:var(--halo);
+#skycap .zname{display:block;color:rgba(220,232,255,.82);font-family:var(--mono);font-size:12px;text-shadow:var(--halo);
   letter-spacing:.34em;text-transform:uppercase}
 #skycap .zsub{display:block;margin-top:5px;color:rgba(220,232,255,.72);font-family:var(--mono);text-shadow:var(--halo);
-  font-size:11px;letter-spacing:.05em}
+  font-size:12px;letter-spacing:.05em}
 #skycap #skyctx{margin:0 0 6px;color:rgba(220,232,255,.6)}
 #skyloc{margin-top:9px;display:flex;gap:6px;justify-content:flex-end;pointer-events:auto}
-#skyloc button{font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+#skyloc button{font-weight:500;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
   padding:6px 3px;min-height:30px;border:0;border-bottom:1px solid rgba(220,232,255,.25);
   border-radius:0;color:rgba(220,232,255,.55);background:none;transition:color .3s,border-color .3s}
 #skyloc button:hover{color:rgba(232,240,255,.9);border-color:rgba(220,232,255,.6)}
@@ -400,7 +439,7 @@ a{color:inherit}
 
 /* ================= sound ================= */
 #soundbtn{position:fixed;right:38px;top:114px;z-index:7;display:flex;align-items:center;gap:8px;
-  font-weight:500;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  font-weight:500;font-size:12px;letter-spacing:.18em;text-transform:uppercase;
   color:var(--bone-2);background:none;border:0;border-bottom:1px solid rgba(242,231,204,.30);
   border-radius:0;padding:9px 2px;min-height:40px;transition:border-color .3s,color .3s;
   text-shadow:0 1px 5px rgba(var(--glass),.55),0 0 12px rgba(var(--glass),.4)}
@@ -430,7 +469,7 @@ a{color:inherit}
 
 
 
-@media(max-width:640px){#budget-band{font-size:11px;padding:0 20px}#bb-rail{max-width:88px}#bb-label{min-width:0;flex:0 1 auto;overflow:hidden;text-overflow:ellipsis}}
+@media(max-width:640px){#budget-band{font-size:12px;padding:0 20px}#bb-rail{max-width:88px}#bb-label{min-width:0;flex:0 1 auto;overflow:hidden;text-overflow:ellipsis}}
 @media(prefers-reduced-motion:reduce){#bb-fill,#bb-you{transition:none}}
 #mast{position:absolute;top:0;left:0;right:0;z-index:5;pointer-events:none;padding-top:22px;
   display:flex;justify-content:space-between;align-items:flex-start;gap:30px;
@@ -440,11 +479,11 @@ a{color:inherit}
 
 
 
-#mast .word{font-family:var(--mono);font-size:11px;letter-spacing:.34em;color:var(--bone-2);
+#mast .word{font-family:var(--mono);font-size:12px;letter-spacing:.34em;color:var(--bone-2);
   text-transform:uppercase;margin-bottom:7px;text-shadow:var(--halo)}
-#mast .plain{font-weight:500;font-size:clamp(15px,1.7vw,20px);letter-spacing:-.01em;
+#mast .plain{font-weight:500;font-size:clamp(15px,1.7vw,21px);letter-spacing:-.01em;
   line-height:1.3;max-width:40ch;color:rgba(242,231,204,.95);text-shadow:var(--halo-h)}
-#vitals{text-align:right;font-family:var(--mono);font-size:11px;line-height:1.8;
+#vitals{text-align:right;font-family:var(--mono);font-size:12px;line-height:1.8;
   color:var(--bone-3);text-shadow:var(--halo);flex:none}
 #vitals b{color:var(--bone);font-weight:500}
 .thm-ink #mast .plain{color:var(--ink);text-shadow:none}
@@ -466,7 +505,7 @@ a{color:inherit}
 
 
 
-@media(max-width:640px){#pulse{font-size:11px;max-width:34ch}}
+@media(max-width:640px){#pulse{font-size:12px;max-width:34ch}}
 /* Phase 8 — the return card ("since you were last here") and the offline stamp.
    The card is a calm, dismissible information reward for coming back, never a nag. */
 #sincecard{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);z-index:14;
@@ -476,13 +515,13 @@ a{color:inherit}
   box-shadow:0 10px 40px rgba(0,0,0,.4);color:var(--bone-2)}
 #sincecard.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
 #sincecard .sc-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:9px}
-#sincecard .sc-k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-2)}
+#sincecard .sc-k{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-2)}
 #sincecard .sc-x{flex:none;background:none;border:0;cursor:pointer;color:var(--bone-3);
-  font-size:16px;line-height:1;padding:2px 4px;border-radius:6px}
+  font-size:17px;line-height:1;padding:2px 4px;border-radius:6px}
 #sincecard .sc-x:hover,#sincecard .sc-x:focus-visible{color:var(--bone);outline:none;background:rgba(242,231,204,.1)}
 #sincecard p{margin:0 0 8px;font-size:13px;line-height:1.5;color:var(--bone-2)}
 #sincecard p.sc-num b{font-family:var(--mono);font-weight:500;color:var(--bone);letter-spacing:.01em}
-#sincecard .sc-note{margin:9px 0 0;font-family:var(--mono);font-size:11px;letter-spacing:.04em;
+#sincecard .sc-note{margin:9px 0 0;font-family:var(--mono);font-size:12px;letter-spacing:.04em;
   line-height:1.5;color:var(--bone-4)}
 .thm-ink #sincecard{background:rgba(250,246,236,.94);border-color:rgba(62,18,8,.16);color:var(--ink-2)}
 .thm-ink #sincecard p,.thm-ink #sincecard p.sc-num b{color:var(--ink)}
@@ -492,7 +531,7 @@ a{color:inherit}
 @media(prefers-reduced-motion:reduce){#sincecard{transition:opacity .01s}}
 /* offline as-of stamp — persistent, calm, honest */
 #offline-chip{position:fixed;left:50%;top:6px;transform:translateX(-50%);z-index:15;display:none;
-  max-width:calc(100vw - 24px);font-family:var(--mono);font-size:11px;letter-spacing:.03em;
+  max-width:calc(100vw - 24px);font-family:var(--mono);font-size:12px;letter-spacing:.03em;
   color:var(--bone-2);background:rgba(var(--glass),.9);border:1px solid rgba(240,188,98,.4);
   border-radius:20px;padding:5px 14px;text-shadow:none;box-shadow:0 3px 14px rgba(0,0,0,.35)}
 #offline-chip.show{display:block}
@@ -504,7 +543,7 @@ body.embed #panes>.pane{display:none}
 body.embed #panes>.pane.embed-show{display:block}
 body.embed .beat.embed-hide{display:none!important}
 body.embed .drawbtn{display:none!important}   /* a drawer in a chrome-less iframe is a soft-lock */   /* &beat=n pins a single beat */
-#embed-cred{position:fixed;bottom:10px;right:12px;z-index:60;font-family:var(--mono);font-size:11px;
+#embed-cred{position:fixed;bottom:10px;right:12px;z-index:60;font-family:var(--mono);font-size:12px;
   letter-spacing:.02em;color:#fff;background:rgba(20,22,28,.72);padding:3px 9px;border-radius:999px;
   text-decoration:none;text-shadow:0 1px 2px rgba(0,0,0,.6);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
 #embed-cred:hover,#embed-cred:focus-visible{background:rgba(20,22,28,.85);outline:none}
@@ -516,11 +555,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 
 /* ladder — an instrument rail: one scrim, one hairline, ticks. No boxes. */
 #ladder{position:fixed;right:0;top:50%;transform:translateY(-50%);display:flex;
-  flex-direction:column;gap:2px;text-align:right;z-index:6;
-  padding:44px 38px 44px 110px;
-  background:linear-gradient(270deg,rgba(var(--glass),.16) 0%,rgba(var(--glass),.10) 55%,rgba(var(--glass),0) 100%);
-  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 14%,#000 86%,transparent 100%);
-  mask-image:linear-gradient(180deg,transparent 0%,#000 14%,#000 86%,transparent 100%)}
+  flex-direction:column;align-items:flex-end;gap:0;z-index:7;padding:10px 0 10px 18px}
 .thm-ink #ladder{background:linear-gradient(270deg,rgba(244,244,241,.20) 0%,rgba(244,244,241,.12) 55%,rgba(244,244,241,0) 100%)}
 #ladder::after{content:"";position:absolute;right:38px;top:44px;bottom:44px;width:1px;
   background:rgba(242,231,204,.26)}                    /* the rail itself */
@@ -567,7 +602,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
      stranger does; the page forbade it. Snap still settles a beat you land on. */
   display:flex;flex-direction:column;justify-content:center;
   max-width:1400px;margin:0 auto;padding:16vh 172px 12vh 38px}
-.beat .lead{font-size:clamp(18px,1.7vw,21px);line-height:1.55;color:var(--bone-2);
+.beat .lead{font-size:clamp(17px,1.6vw,21px);line-height:1.55;color:var(--bone-2);
   max-width:52ch;text-wrap:pretty;text-shadow:var(--halo);font-weight:450}
 .thm-ink .beat .lead{color:var(--ink-2);text-shadow:none}
 .beat-cue{margin-top:auto;padding-top:24px;font-weight:500;font-size:13px;letter-spacing:.02em;
@@ -593,7 +628,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 /* bedrock is a free-scrolling archive, never snapped */
 #p-bedrock{scroll-snap-align:none}  /* beats carry the frame now */
 #p-bedrock,#p-bedrock *{scroll-snap-align:none!important;scroll-snap-stop:normal!important}
-.pane h2{font-weight:500;font-size:clamp(21px,2.6vw,31px);line-height:1.12;letter-spacing:-.015em;
+.pane h2{font-weight:500;font-size:clamp(21px,2.6vw,32px);line-height:1.12;letter-spacing:-.015em;
   max-width:24ch;text-wrap:balance;color:var(--bone);text-shadow:var(--halo-h)}
 .thm-ink .pane h2{color:var(--ink);text-shadow:none}
 .pane .fact-line{margin-top:8px;font-size:15px;line-height:1.55;color:var(--bone-2);max-width:52ch;text-wrap:pretty;text-shadow:var(--halo)}
@@ -607,7 +642,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 /* Ground: the then→now comparison, drawn — two bars scaled to a shared max, revealing as the beat scrolls in */
 #g-bars{margin:16px 0 4px;max-width:460px}
 #g-bars .gb-row{display:flex;align-items:center;gap:12px;margin:9px 0}
-#g-bars .gb-lab{flex:0 0 78px;font-family:var(--mono);font-size:11px;letter-spacing:.03em;color:var(--bone-3);text-align:right;text-shadow:var(--halo)}
+#g-bars .gb-lab{flex:0 0 78px;font-family:var(--mono);font-size:12px;letter-spacing:.03em;color:var(--bone-3);text-align:right;text-shadow:var(--halo)}
 #g-bars .gb-track{position:relative;flex:1;height:15px;background:rgba(242,231,204,.10);border-radius:3px;overflow:hidden}
 #g-bars .gb-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:3px;transition:width 1.05s cubic-bezier(.3,.7,.2,1)}
 .beat.seen #g-bars .gb-fill{width:var(--w)}
@@ -616,17 +651,17 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 #g-bars .gb-num{flex:0 0 auto;min-width:2.6ch;font-family:var(--mono);font-size:15px;font-weight:500;
   color:var(--bone-2);font-variant-numeric:tabular-nums}
 #g-bars .gb-num.on{color:var(--amber)}
-#g-bars .gb-delta{margin:8px 0 0 90px;font-family:var(--mono);font-size:14px;font-weight:500;color:var(--amber);letter-spacing:.01em;text-shadow:var(--halo)}
+#g-bars .gb-delta{margin:8px 0 0 90px;font-family:var(--mono);font-size:15px;font-weight:500;color:var(--amber);letter-spacing:.01em;text-shadow:var(--halo)}
 #g-bars .gb-delta.gb-ease{color:var(--bone-2);font-weight:500}   /* a DECLINE is not an alarm — neutral, never amber */
 #g-fact .gb-say{font-size:15px;line-height:1.55;color:var(--bone);max-width:52ch;margin-top:14px;text-shadow:var(--halo)}
 #g-fact .gb-say b{color:var(--bone);font-weight:500}
 #g-fact .gb-caveat{font-family:var(--mono);font-size:12px;color:var(--bone-3);letter-spacing:.02em;margin-top:8px;text-shadow:var(--halo)}
-#g-fact .gb-global{margin-top:14px;padding-left:12px;border-left:2px solid rgba(240,188,98,.5);font-size:14px;line-height:1.5;color:var(--bone-2);max-width:52ch;text-shadow:var(--halo)}
+#g-fact .gb-global{margin-top:14px;padding-left:12px;border-left:2px solid rgba(240,188,98,.5);font-size:15px;line-height:1.5;color:var(--bone-2);max-width:52ch;text-shadow:var(--halo)}
 #g-fact .gb-global b{color:var(--amber);font-family:var(--mono);font-weight:500}
 #g-fact .gb-tosky{background:none;border:0;padding:0;font:inherit;color:var(--amber);font-weight:500;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 #g-fact .gb-tosky:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:2px}
 @media(prefers-reduced-motion:reduce){#g-bars .gb-fill{transition:none;width:var(--w)}}
-.chip{display:inline-block;font-weight:500;font-size:11px;letter-spacing:.14em;
+.chip{display:inline-block;font-weight:500;font-size:12px;letter-spacing:.14em;
   text-transform:uppercase;border:1px solid rgba(240,188,98,.55);color:var(--amber);
   padding:2px 7px;border-radius:2px;vertical-align:2px}
 .drawbtn{margin-top:auto;align-self:flex-start;font-weight:500;font-size:13px;
@@ -674,18 +709,18 @@ svg{display:block;width:100%;height:auto}
   color:var(--bone);max-width:44ch}
 #p-sky .spent{margin-top:6px;font-family:var(--mono);font-size:13px;letter-spacing:.02em;
   color:var(--bone-2)}
-#p-sky .burnedtick{margin-top:7px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;
+#p-sky .burnedtick{margin-top:7px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;
   color:var(--amber);text-shadow:var(--halo);font-variant-numeric:tabular-nums}
 #skycount{margin-top:18px}   /* (the plate above also sets padding/negative margin to keep the left edge aligned) */
 #hzn-hi,#hzn-lo{position:absolute;left:-38px;right:-38px;border-top:1px solid rgba(62,18,8,.5);pointer-events:none}
 /* the century axis: altitude is time, and the axis is drawn, not implied */
 #skyaxis{position:absolute;inset:0;pointer-events:none}
 #skyaxis .rung{position:absolute;right:24%;display:flex;align-items:center;gap:8px;
-  font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:rgba(242,231,204,.80);
+  font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:rgba(242,231,204,.80);
   text-shadow:var(--halo)}
 #skyaxis .rung i{display:block;width:26px;border-top:1px solid rgba(242,231,204,.30);
   box-shadow:0 1px 3px rgba(var(--glass),.35)}
-.hl{position:absolute;right:210px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+.hl{position:absolute;right:210px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;
   text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
 .hl b{color:var(--ink);font-weight:500}
 #hzn-hi .hl{bottom:5px}
@@ -695,7 +730,7 @@ svg{display:block;width:100%;height:auto}
 #dial h3{font-weight:500;font-size:13px;letter-spacing:.22em;
   text-transform:uppercase;color:var(--bone);text-shadow:var(--halo)}
 #dial .dv{font-family:var(--mono);font-size:12px;color:var(--bone-2);white-space:nowrap;text-shadow:var(--halo)}
-#dial .dv b{font-family:var(--sg);font-size:22px;font-weight:500;color:var(--bone);
+#dial .dv b{font-family:var(--sg);font-size:21px;font-weight:500;color:var(--bone);
   font-variant-numeric:tabular-nums;margin-right:3px;text-shadow:var(--halo)}
 #dial .dv em{font-style:normal;display:inline-block;min-width:9ch;margin-left:6px;color:var(--bone-2)}
 .dim{position:relative;height:36px;cursor:ew-resize;touch-action:none;outline-offset:5px}
@@ -706,9 +741,9 @@ svg{display:block;width:100%;height:auto}
 .dimKnob{position:absolute;top:5px;width:2px;height:25px;margin-left:-1px;background:var(--bone);
   box-shadow:0 0 14px rgba(242,231,204,.8)}
 .dim:focus-visible .dimKnob,.dim:hover .dimKnob{height:31px;top:2px}
-.dimEnds{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;
+.dimEnds{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;
   color:var(--bone-3);margin-top:3px;text-shadow:var(--halo)}
-#dial .foot{margin-top:8px;font-family:var(--mono);font-size:11px;color:var(--bone-3);text-shadow:var(--halo)}
+#dial .foot{margin-top:8px;font-family:var(--mono);font-size:12px;color:var(--bone-3);text-shadow:var(--halo)}
 .presets{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px}
 .presets button{font-weight:500;font-size:12px;letter-spacing:.08em;color:var(--bone-2);
   background:none;border:0;border-bottom:1px solid rgba(242,231,204,.30);border-radius:0;
@@ -731,7 +766,7 @@ svg{display:block;width:100%;height:auto}
 #n-diverge .nd{display:flex;align-items:center;gap:10px}
 #n-diverge .nd .ar{font-size:26px;line-height:1;font-weight:500}
 #n-diverge .nd .val{font-family:var(--mono);font-size:32px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
-#n-diverge .nd .lab{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--bone-2);max-width:11ch;line-height:1.3;text-shadow:var(--halo)}
+#n-diverge .nd .lab{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--bone-2);max-width:11ch;line-height:1.3;text-shadow:var(--halo)}
 #n-diverge .nd-day .ar,#n-diverge .nd-day .val{color:#8FC0EA}
 #n-diverge .nd-night .ar,#n-diverge .nd-night .val{color:#EE9E80}
 /* the risk gradient: calm on the left, severe on the right, the reader's choice marked on it */
@@ -744,11 +779,11 @@ svg{display:block;width:100%;height:auto}
   box-shadow:0 0 10px rgba(var(--glass),.5);transition:left .7s cubic-bezier(.3,.6,.2,1)}
 #warmscale .ws-lab{position:relative;height:15px;margin-top:5px}
 #warmscale .ws-lab span{position:absolute;transform:translateX(-50%);font-family:var(--mono);
-  font-size:11px;letter-spacing:.04em;color:var(--bone-3);text-shadow:var(--halo)}
+  font-size:12px;letter-spacing:.04em;color:var(--bone-3);text-shadow:var(--halo)}
 #warmscale .ws-note{margin-top:7px;font-family:var(--mono);font-size:12px;letter-spacing:.03em;
   color:var(--bone-2);text-shadow:var(--halo);min-height:1.5em}
 @media(prefers-reduced-motion:reduce){#warmscale .ws-mark{transition:none}}
-.verdict{margin-top:14px;font-size:16px;line-height:1.5;color:var(--bone);max-width:52ch;
+.verdict{margin-top:14px;font-size:17px;line-height:1.5;color:var(--bone);max-width:52ch;
   text-wrap:pretty;text-shadow:var(--halo)}
 .verdict b{color:var(--amber);font-weight:500}
 #dial .foot button{color:var(--bone-2);border-bottom:1px solid var(--bone-4);letter-spacing:.05em;
@@ -766,11 +801,11 @@ svg{display:block;width:100%;height:auto}
 
 
 
-.fd-chip{font-family:var(--mono);font-size:11px;letter-spacing:.03em;color:var(--bone-2);
+.fd-chip{font-family:var(--mono);font-size:12px;letter-spacing:.03em;color:var(--bone-2);
   margin-top:14px;max-width:58ch;line-height:1.55;text-shadow:var(--halo)}
 .fd-chip b{color:var(--amber);font-weight:500}
 
-.fd-caption{font-size:14px;line-height:1.55;color:var(--bone);text-shadow:var(--halo);text-wrap:pretty}
+.fd-caption{font-size:15px;line-height:1.55;color:var(--bone);text-shadow:var(--halo);text-wrap:pretty}
 .fd-caption b{color:var(--amber);font-weight:500}
 .fd-freq{margin-top:12px;font-size:13px;line-height:1.5;color:var(--bone-2);text-shadow:var(--halo)}
 .fd-freq,.fd-off{max-width:56ch}
@@ -794,7 +829,7 @@ svg{display:block;width:100%;height:auto}
   line-height:1.3;margin-top:5px;text-shadow:var(--halo)}
 .thm-ink .bignum small,.thm-ink .bignum{text-shadow:none}
 .thm-ink .bignum{color:var(--ink)}
-.legend{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;
   letter-spacing:.04em;color:var(--bone-3);margin-top:8px}
 .legend i{display:inline-block;width:13px;height:3px;border-radius:2px;margin-right:5px;vertical-align:2px}
 .legend i.dot{width:8px;height:8px;border-radius:50%}
@@ -804,7 +839,7 @@ svg{display:block;width:100%;height:auto}
   border:0;border-bottom:1px solid rgba(242,231,204,.35);border-radius:0;
   background:rgba(var(--glass),.22);color:var(--bone)}
 .finder input:focus{outline:none;border-bottom-color:var(--amber)}
-.finder .out{font-family:var(--mono);font-size:11px;color:var(--amber);min-height:2.6em;display:block}
+.finder .out{font-family:var(--mono);font-size:12px;color:var(--amber);min-height:2.6em;display:block}
 /* the year finder's answer — a reserved block so it never jumps, with the value itself in loud amber */
 #yr-out{display:block;min-height:2.7em;margin-top:10px;font-family:var(--sg);font-size:13px;line-height:1.5;color:var(--bone-2);text-shadow:var(--halo)}
 #yr-out .yr-val{font-family:var(--mono);font-size:17px;font-weight:500;color:var(--amber);letter-spacing:-.01em}
@@ -832,14 +867,14 @@ svg{display:block;width:100%;height:auto}
 #wg-ask label{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.05em;
   color:var(--bone-3);margin-bottom:8px;text-shadow:var(--halo)}
 .wg-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-#wg-in{font-family:var(--mono);font-size:19px;width:120px;min-height:48px;padding:8px 12px;
+#wg-in{font-family:var(--mono);font-size:21px;width:120px;min-height:48px;padding:8px 12px;
   border:1px solid rgba(242,231,204,.30);border-radius:8px;background:rgba(var(--glass),.32);color:var(--bone)}
 #wg-in:focus{outline:none;border-color:var(--amber)}
 #wg-go{font-family:var(--mono);font-size:13px;letter-spacing:.09em;text-transform:uppercase;
   min-height:48px;padding:10px 16px;border:1px solid var(--amber);border-radius:8px;
   background:rgba(240,188,98,.14);color:var(--amber);cursor:pointer}
 #wg-go:hover,#wg-go:focus-visible{background:rgba(240,188,98,.26);outline:none}
-#wg-out{margin-top:12px;font-size:16px;line-height:1.55;color:var(--bone);max-width:52ch;text-shadow:var(--halo)}
+#wg-out{margin-top:12px;font-size:17px;line-height:1.55;color:var(--bone);max-width:52ch;text-shadow:var(--halo)}
 #wg-out:empty{display:none}
 #wg-out b{color:var(--amber);font-family:var(--mono)}
 /* GROUND — the record chart had NO mobile rule at all: a 940x400 viewBox scaled into a ~350px
@@ -848,7 +883,7 @@ svg{display:block;width:100%;height:auto}
   #recwin{overflow-x:auto;-webkit-overflow-scrolling:touch}
   #recwin svg{min-width:620px}
   #recwin::after{content:"swipe the chart sideways \2192";display:block;font-family:var(--mono);
-    font-size:11px;color:var(--bone-4);margin-top:6px}
+    font-size:12px;color:var(--bone-4);margin-top:6px}
 }
 /* the masthead steps aside in the one chapter that scrolls with the page */
 
@@ -885,7 +920,7 @@ svg{display:block;width:100%;height:auto}
   text-decoration:underline;text-underline-offset:3px}
 #homelink:hover,#homelink:focus-visible{color:var(--amber);outline:none}
 #homelink[hidden]{display:none}
-#homeask h3{font-family:var(--sg);font-size:19px;font-weight:500;color:var(--bone);margin:0 0 4px;text-shadow:var(--halo)}
+#homeask h3{font-family:var(--sg);font-size:21px;font-weight:500;color:var(--bone);margin:0 0 4px;text-shadow:var(--halo)}
 #homeask p{font-size:15px;line-height:1.5;color:var(--bone-2);margin:0 0 8px;max-width:52ch;text-shadow:var(--halo)}
 #homeask-privacy,#gq-barnote,#homeask-blocked{font-family:var(--mono);font-size:12px;line-height:1.6;
   color:var(--bone-3);max-width:60ch;margin:6px 0 10px;text-shadow:var(--halo)}
@@ -898,7 +933,7 @@ svg{display:block;width:100%;height:auto}
   font-family:var(--sg);font-size:13px;text-decoration:underline;text-underline-offset:3px;min-height:0}
 /* the city bar — a grid that WRAPS. No nowrap anywhere and min-width:0 on the items, so
    "Dar es Salaam" and "Johannesburg" break instead of pushing the page sideways on a phone. */
-#gq-bar .cb-reg,#pk-bar .cb-reg{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+#gq-bar .cb-reg,#pk-bar .cb-reg{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--bone-4);margin:12px 0 5px;text-shadow:var(--halo)}
 #gq-bar .cb-chips,#pk-bar .cb-chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));
   gap:6px;align-content:start}
@@ -909,7 +944,7 @@ svg{display:block;width:100%;height:auto}
 .cb-chip[aria-pressed=true]{border-color:var(--amber);color:var(--amber);background:rgba(240,188,98,.14)}
 @media(min-width:760px){#gq-bar .cb-chips,#pk-bar .cb-chips{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}}
 #gq-ex{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 4px}
-.gq-exlab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-4);text-shadow:var(--halo)}
+.gq-exlab{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-4);text-shadow:var(--halo)}
 .gq-exb{font-family:var(--sg);font-size:13px;min-height:44px;padding:8px 12px;border:1px dashed rgba(242,231,204,.30);
   border-radius:7px;background:none;color:var(--bone-3);cursor:pointer;transition:color .25s,border-color .25s}
 .gq-exb:hover,.gq-exb:focus-visible{color:var(--bone);border-color:var(--bone-3);outline:none}
@@ -927,21 +962,21 @@ svg{display:block;width:100%;height:auto}
 #pk-skip{border:0;text-decoration:underline;text-underline-offset:3px;color:var(--bone-3);padding-left:4px}
 #pk-list:hover,#pk-list:focus-visible,#pk-skip:hover,#pk-skip:focus-visible{color:var(--bone);border-color:var(--amber);outline:none}
 #pk-note,#pk-wait{font-family:var(--mono);font-size:12px;line-height:1.6;color:var(--bone-3);max-width:58ch;margin:4px 0 0}
-#pk-done{font-size:14px;line-height:1.5;color:var(--bone);margin:10px 0 0;max-width:52ch}
+#pk-done{font-size:15px;line-height:1.5;color:var(--bone);margin:10px 0 0;max-width:52ch}
 #pk-done b{color:var(--amber);font-family:var(--mono)}
 #pk-bar{margin-top:14px;max-height:38vh;overflow-y:auto;overscroll-behavior:contain}
 /* the keystone panel — compact by default so it is never absent and never in the way */
 #n-example{margin:22px 0 6px;padding:14px 0 2px;border-top:1px solid rgba(242,231,204,.16);max-width:640px}
 #n-example h3{font-family:var(--sg);font-size:15px;font-weight:500;letter-spacing:.01em;
   color:var(--bone-2);margin:0 0 6px;text-shadow:var(--halo)}
-#n-ex-lead{font-size:14px;line-height:1.55;color:var(--bone-2);margin:0 0 8px;max-width:56ch;text-shadow:var(--halo)}
+#n-ex-lead{font-size:15px;line-height:1.55;color:var(--bone-2);margin:0 0 8px;max-width:56ch;text-shadow:var(--halo)}
 #n-ex-lead b{color:var(--bone)}
 #n-rec-ex{margin-top:8px}
 /* the honest label that stops "example" reading as "default" */
 .place-tag{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--amber);
   margin:2px 0 8px;text-shadow:var(--halo)}
 #homechip{display:inline-block;vertical-align:middle;margin:0;font-family:var(--mono);
-  font-size:11px;letter-spacing:.08em;pointer-events:auto;max-width:26ch;overflow:hidden;
+  font-size:12px;letter-spacing:.08em;pointer-events:auto;max-width:26ch;overflow:hidden;
   text-overflow:ellipsis;white-space:nowrap;
   border:1px solid rgba(242,231,204,.26);border-radius:999px;padding:4px 10px;
   background:rgba(var(--glass),.34);color:var(--bone-2);cursor:pointer}
@@ -961,7 +996,7 @@ svg{display:block;width:100%;height:auto}
 #gplace button:hover,#gplace button:focus-visible{color:var(--bone);border-color:var(--amber);outline:none}
 #gplace #gq-go{color:var(--amber)}                                   /* the primary action reads first */
 #gplace #gq-go:hover,#gplace #gq-go:focus-visible{color:#f6d089}
-#gq-status{font-family:var(--sg);font-size:14px;color:var(--bone);letter-spacing:0;max-width:52ch;
+#gq-status{font-family:var(--sg);font-size:15px;color:var(--bone);letter-spacing:0;max-width:52ch;
   line-height:1.5;text-shadow:var(--halo);flex-basis:100%}
 #gq-status:empty{display:none}
 #gq-status.err{color:var(--amber)}
@@ -972,7 +1007,7 @@ svg{display:block;width:100%;height:auto}
 /* --- first light --- */
 #pgwrap{max-width:640px;width:100%}
 .place-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 12px}
-.place-tabs button{font-family:var(--mono);font-size:11px;letter-spacing:.06em;padding:8px 13px;
+.place-tabs button{font-family:var(--mono);font-size:12px;letter-spacing:.06em;padding:8px 13px;
   min-height:40px;border:1px solid var(--bone-4);border-radius:2px;color:var(--bone-2)}
 .place-tabs button[aria-pressed=true]{background:var(--bone);color:#0B2B31;border-color:var(--bone)}
 #pg-pick{display:flex;align-items:center;gap:10px;margin:10px 0 12px;flex-wrap:wrap}
@@ -980,7 +1015,7 @@ svg{display:block;width:100%;height:auto}
   background:rgba(var(--glass),.22);color:var(--bone);border:0;
   border-bottom:1px solid rgba(242,231,204,.35);border-radius:0;max-width:300px}
 #pg-sel:focus{outline:none;border-bottom-color:var(--amber)}
-#pg-guessed{font-family:var(--mono);font-size:11px;color:var(--bone-2);letter-spacing:.06em;text-shadow:var(--halo)}
+#pg-guessed{font-family:var(--mono);font-size:12px;color:var(--bone-2);letter-spacing:.06em;text-shadow:var(--halo)}
 #pg-give b{color:var(--bone)}
 /* 125 threads at dawn: every country, from what people guess to what is true */
 #pgfield{position:relative;width:100%;max-width:640px;margin:16px 0 4px}
@@ -1003,13 +1038,13 @@ svg{display:block;width:100%;height:auto}
 #pgfield .pglab{font-family:var(--mono);font-size:2.4px;letter-spacing:.02px;
   fill:rgba(242,231,204,.80)}
 #pgfield .pglab-you{fill:#FFE9B8;font-weight:500}
-.pgaxis{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;
+.pgaxis{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;
   text-shadow:var(--halo);color:var(--bone-3);margin-top:8px;max-width:640px}
 .pgaxis span:nth-child(2){color:var(--bone-2)}
 @media(prefers-reduced-motion:reduce){#pgfield .pgthread,#pgfield .pgtrue{transition:none}}
 /* Ask one — the finding becomes an act */
 #pg-ask{margin-top:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-#ask-btn{font-weight:500;font-size:14px;letter-spacing:.01em;color:var(--deep);
+#ask-btn{font-weight:500;font-size:15px;letter-spacing:.01em;color:var(--deep);
   background:var(--amber);border:0;border-radius:3px;padding:11px 18px;min-height:44px;
   transition:transform .2s ease,box-shadow .3s ease;box-shadow:0 2px 16px -6px rgba(240,188,98,.6)}
 #ask-btn:hover{transform:translateY(-1px);box-shadow:0 4px 22px -6px rgba(240,188,98,.8)}
@@ -1017,7 +1052,7 @@ svg{display:block;width:100%;height:auto}
 #ask-fallback{display:none;width:100%;margin-top:8px}
 #ask-fallback textarea{width:100%;max-width:560px;min-height:70px;font-size:12px;
   background:rgba(var(--glass),.4);color:var(--bone);border:1px solid var(--bone-4);border-radius:3px;padding:8px}
-.kick{font-size:14px;line-height:1.45;color:var(--bone);margin-top:12px;display:none;max-width:52ch;outline:none;text-shadow:var(--halo)}
+.kick{font-size:15px;line-height:1.45;color:var(--bone);margin-top:12px;display:none;max-width:52ch;outline:none;text-shadow:var(--halo)}
 .kick.show{display:block}
 .kick b{color:var(--amber);font-weight:500}
 .sep89{font-size:13px;color:var(--bone-2);margin-top:8px;display:none;max-width:52ch;text-shadow:var(--halo)}
@@ -1029,7 +1064,7 @@ svg{display:block;width:100%;height:auto}
   margin-top:14px;max-width:900px}
 #p-morning .li{border:1px solid var(--ink-hair);border-radius:3px;padding:12px 14px;
   background:#FBF4E2;box-shadow:0 2px 14px rgba(62,18,8,.08)}
-#p-morning .li .big{font-family:var(--mono);font-size:16px;color:var(--act);font-variant-numeric:tabular-nums}
+#p-morning .li .big{font-family:var(--mono);font-size:17px;color:var(--act);font-variant-numeric:tabular-nums}
 #p-morning .li .txt{font-size:12px;color:var(--ink-2);margin-top:4px;line-height:1.4}
 /* Every mark sits on a NAMED axis, so the bar can never be a mystery:
    a share of a stated whole (electricity, cars), or a real scale (°C, years). */
@@ -1053,10 +1088,10 @@ svg{display:block;width:100%;height:auto}
 #p-morning .scale .redu::before{content:"";position:absolute;left:-1px;top:-2.5px;
   border:3px solid transparent;border-right-color:rgba(62,18,8,.6)}   /* arrowhead, pointing left = falling */
 #p-morning .scale .mk{position:absolute;top:-16px;transform:translateX(-50%);white-space:nowrap;
-  font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--ink-2)}
+  font-family:var(--mono);font-size:12px;letter-spacing:.02em;color:var(--ink-2)}
 #p-morning .scale .mk.thrlab{color:rgba(62,18,8,.7)}
 #p-morning .axlab{display:flex;justify-content:space-between;gap:8px;margin-top:7px;
-  font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--ink-2)}
+  font-family:var(--mono);font-size:12px;letter-spacing:.02em;color:var(--ink-2)}
 #p-morning .axlab .mid{color:var(--ink-2);text-align:center}
 @media(prefers-reduced-motion:reduce){
   #p-morning .scale .fill{transition:none;width:var(--w)}
@@ -1065,9 +1100,9 @@ svg{display:block;width:100%;height:auto}
 #p-morning .action{margin-top:16px;border:1px solid rgba(21,80,72,.5);border-radius:3px;
   padding:16px 18px;background:rgba(255,251,240,.55);max-width:640px}
 #p-morning .leadline{font-weight:500;font-size:clamp(16px,1.9vw,21px);line-height:1.3;color:var(--ink);max-width:34ch}
-#p-morning .action p{font-size:14px;line-height:1.55;color:var(--ink-2);margin-top:8px;max-width:56ch}
+#p-morning .action p{font-size:15px;line-height:1.55;color:var(--ink-2);margin-top:8px;max-width:56ch}
 /* --- Morning Beat 3: the action layer --- */
-#record-room .rr-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--act);margin-bottom:6px}
+#record-room .rr-eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--act);margin-bottom:6px}
 #record-room .rr-disclose{font-size:13px;line-height:1.55;color:var(--ink-2);max-width:58ch;margin-top:8px}
 .rr-menu{margin-top:18px;display:flex;flex-direction:column;gap:1px;max-width:640px}
 .rr-row{text-align:left;background:none;border:0;border-top:1px solid var(--ink-hair);padding:13px 0;display:block;width:100%;font-family:inherit}
@@ -1075,15 +1110,15 @@ svg{display:block;width:100%;height:auto}
 .rr-label{font-weight:500;font-size:15px;color:var(--ink)}
 .rr-note{display:block;font-size:13px;line-height:1.55;color:var(--ink-2);margin-top:5px;max-width:58ch}
 .rr-note b{color:var(--ember)}
-.rr-src{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-2);white-space:nowrap}
+.rr-src{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--ink-2);white-space:nowrap}
 button.rr-row{cursor:pointer;transition:padding-left .18s,background .2s;min-height:auto}
 button.rr-row:hover .rr-label,button.rr-row:focus-visible .rr-label{color:var(--act)}
 button.rr-row:hover{padding-left:6px}
 .rr-wedge{flex:1 1 70px;min-width:60px;max-width:150px;height:14px;background:var(--act);clip-path:polygon(0 40%,100% 0,100% 100%,0 60%);opacity:.5}
 .rr-row.rr-default{border:1px solid rgba(21,80,72,.5);border-radius:3px;padding:13px 14px;background:rgba(21,80,72,.05)}
-.rr-chip{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#F2E7CC;background:var(--act);padding:3px 7px;border-radius:2px}
-.rr-give .rr-ev{font-family:var(--mono);font-size:11px;color:var(--act);white-space:nowrap}
-.rr-divider{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:16px;padding-top:2px}
+.rr-chip{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#F2E7CC;background:var(--act);padding:3px 7px;border-radius:2px}
+.rr-give .rr-ev{font-family:var(--mono);font-size:12px;color:var(--act);white-space:nowrap}
+.rr-divider{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:16px;padding-top:2px}
 .rr-foot{cursor:default}
 .rr-foot .rr-t{font-family:var(--mono);font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums;margin-left:auto}
 .rr-bar{display:block;height:6px;margin-top:8px;max-width:320px;background:rgba(62,18,8,.10);border-radius:3px;position:relative}
@@ -1091,10 +1126,10 @@ button.rr-row:hover{padding-left:6px}
 .rr-omit{font-size:13px;line-height:1.55;color:var(--ink-2);margin-top:14px;max-width:60ch}
 /* letter builder / plan / pledge panels */
 .rr-panel{margin-top:16px;border:1px solid var(--ink-hair);border-radius:4px;padding:16px;background:rgba(255,251,240,.6);max-width:640px}
-.rr-panel h3{font-weight:500;font-size:14px;color:var(--ink);margin-bottom:4px}
+.rr-panel h3{font-weight:500;font-size:15px;color:var(--ink);margin-bottom:4px}
 .rr-panel .rr-hint{font-size:13px;color:var(--ink-2);line-height:1.5;margin-bottom:12px;max-width:56ch}
 .rr-field{display:block;margin:10px 0}
-.rr-field span{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-2);margin-bottom:4px}
+.rr-field span{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--ink-2);margin-bottom:4px}
 .rr-field input,.rr-field select{width:100%;max-width:340px;font-family:var(--sg);font-size:13px;color:var(--ink);
   background:#FFFBF0;border:1px solid var(--ink-hair);border-radius:3px;padding:9px 10px;min-height:40px}
 .rr-field input:focus,.rr-field select:focus{outline:none;border-color:var(--act)}
@@ -1102,7 +1137,7 @@ button.rr-row:hover{padding-left:6px}
   background:#FFFDF6;border:1px solid var(--ink-hair);border-radius:3px;padding:12px;margin:10px 0;max-height:240px;overflow:auto}
 .rr-btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:8px}
 .rr-btns .rr-primary{background:var(--act);color:#F2E7CC;border:0;border-radius:3px;padding:11px 16px;font-size:13px;font-weight:500;min-height:44px}
-.rr-btns .rr-minor{background:none;color:var(--ink-2);border:0;border-bottom:1px solid var(--ink-hair);border-radius:0;padding:8px 2px;font-size:11px;min-height:38px}
+.rr-btns .rr-minor{background:none;color:var(--ink-2);border:0;border-bottom:1px solid var(--ink-hair);border-radius:0;padding:8px 2px;font-size:12px;min-height:38px}
 .rr-btns .rr-minor:hover{color:var(--ink)}
 .rr-panel .rr-note{margin-top:10px}
 .rr-reps{margin-top:12px;font-size:13px;line-height:1.7;color:var(--ink-2);border-top:1px solid var(--ink-hair);padding-top:10px}
@@ -1111,25 +1146,25 @@ button.rr-row:hover{padding-left:6px}
 .rr-pledge{margin-top:16px;font-size:13px;color:var(--ink-2);max-width:56ch}
 .rr-pledge .rr-keep{background:none;border:1px solid var(--act);color:var(--act);border-radius:2px;padding:8px 14px;font-size:12px;min-height:40px;margin-left:8px}
 .rr-pledge .rr-keep:hover{background:rgba(21,80,72,.08)}
-.rr-pledge .rr-clear{font-family:var(--mono);font-size:11px;color:var(--ink-3);background:none;border:0;border-bottom:1px solid transparent;margin-left:10px;min-height:32px}
+.rr-pledge .rr-clear{font-family:var(--mono);font-size:12px;color:var(--ink-3);background:none;border:0;border-bottom:1px solid transparent;margin-left:10px;min-height:32px}
 .rr-pledge .rr-clear:hover{color:var(--ink-2);border-bottom-color:var(--ink-hair)}
-.rr-pledge .rr-recall{font-family:var(--mono);font-size:11px;color:var(--act);line-height:1.5}
+.rr-pledge .rr-recall{font-family:var(--mono);font-size:12px;color:var(--act);line-height:1.5}
 .sharecard{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}
 .sharecard .mini{height:26px;flex:1 1 180px;min-width:150px;border-radius:2px;overflow:hidden}
 .sharecard button{background:var(--act);color:#F2E7CC;border-radius:2px;padding:10px 16px;
   font-size:12px;min-height:44px;font-weight:500}
 .sharefallback{display:none;width:100%;margin-top:8px}
-.sharefallback textarea{width:100%;font-family:var(--mono);font-size:11px;padding:9px;
+.sharefallback textarea{width:100%;font-family:var(--mono);font-size:12px;padding:9px;
   border:1px solid var(--ink-hair);border-radius:3px;background:#FFFBF0;color:var(--ink);min-height:64px}
 .sharecard button.share-minor{background:none;color:var(--ink-2);border:0;border-bottom:1px solid var(--ink-hair);
-  border-radius:0;padding:8px 2px;font-size:11px;letter-spacing:.04em;min-height:38px}
+  border-radius:0;padding:8px 2px;font-size:12px;letter-spacing:.04em;min-height:38px}
 .sharecard button.share-minor:hover{color:var(--ink)}
 /* Bedrock "take it with you" toolkit — every record leaves as image / citation / CSV */
 #takeaway{margin-top:12px;display:flex;flex-direction:column;max-width:660px}
 .take-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
   padding:11px 0;border-top:1px solid var(--bone-hair)}
 .take-h b{font-weight:500;color:var(--bone);font-size:13px}
-.take-h span{display:block;font-family:var(--mono);font-size:11px;color:var(--bone-2);margin-top:2px}
+.take-h span{display:block;font-family:var(--mono);font-size:12px;color:var(--bone-2);margin-top:2px}
 .take-btns{display:flex;gap:6px;flex-wrap:wrap}
 .take-btns button{font-family:var(--mono);font-size:13px;letter-spacing:.02em;
   color:var(--bone-2);background:none;border:0;border-bottom:1px solid rgba(242,231,204,.3);
@@ -1147,10 +1182,10 @@ button.rr-row:hover{padding-left:6px}
   #print-sheet .pstripes{display:flex;height:30px;margin:0;border-radius:2px;overflow:hidden;
     -webkit-print-color-adjust:exact;print-color-adjust:exact}
   #print-sheet .pstripes i{flex:1 1 0}
-  #print-sheet .pcap{font-family:var(--mono);font-size:11px;color:#555!important;margin:5px 0 12px}
+  #print-sheet .pcap{font-family:var(--mono);font-size:12px;color:#555!important;margin:5px 0 12px}
   #print-sheet .pcites{list-style:none;padding:0;margin:8px 0}
   #print-sheet .pcites li{font-size:12px;line-height:1.5;margin-bottom:11px;padding-left:12px;border-left:2px solid #b91c2b}
-  #print-sheet .pfoot{font-family:var(--mono);font-size:11px;color:#555!important;margin-top:18px;border-top:1px solid #ccc;padding-top:8px}
+  #print-sheet .pfoot{font-family:var(--mono);font-size:12px;color:#555!important;margin-top:18px;border-top:1px solid #ccc;padding-top:8px}
 }
 
 /* --- bedrock (the archive chamber may scroll internally) --- */
@@ -1159,18 +1194,18 @@ button.rr-row:hover{padding-left:6px}
    scrollbar, and nothing telling the reader an inner scroller existed. The chapter that proves the
    site's honesty was the hardest thing on it to read. It now scrolls with the page, like a page. */
 #p-bedrock .arch{margin-top:12px}
-#p-bedrock .hww{max-width:60ch;font-size:14px;line-height:1.6;color:var(--bone-2);margin-top:10px}
+#p-bedrock .hww{max-width:60ch;font-size:15px;line-height:1.6;color:var(--bone-2);margin-top:10px}
 #p-bedrock .hww b{color:var(--bone);font-weight:500}
 /* Phase 9 — the honest-measurement surface: outcome-side figures, the caveat at the label's weight */
 #p-bedrock .impwrap{max-width:64ch;margin-top:6px}
-#p-bedrock .impwrap h3{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+#p-bedrock .impwrap h3{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--amber);margin:16px 0 4px;font-weight:400}
 #p-bedrock .imp{display:grid;grid-template-columns:auto 1fr;gap:1px 12px;padding:7px 0;border-bottom:1px solid var(--bone-hair)}
-#p-bedrock .imp-n{grid-row:1/3;font-family:var(--mono);font-size:19px;font-variant-numeric:tabular-nums;
+#p-bedrock .imp-n{grid-row:1/3;font-family:var(--mono);font-size:21px;font-variant-numeric:tabular-nums;
   color:var(--bone);align-self:center;min-width:2ch}
 #p-bedrock .imp-l{color:var(--bone-2);font-size:13px;align-self:end}
 #p-bedrock .imp-c{font-size:13px;line-height:1.5;color:var(--bone-2)}
-#p-bedrock .imp-omit{font-family:var(--mono);font-size:11px;color:var(--bone-4);margin-top:9px}
+#p-bedrock .imp-omit{font-family:var(--mono);font-size:12px;color:var(--bone-4);margin-top:9px}
 #p-bedrock .imp-limits{max-width:64ch;font-size:13px;line-height:1.6;color:var(--bone-2);
   border-top:1px solid var(--bone-hair);padding-top:11px;margin-top:14px}
 #p-bedrock .imp-limits b{color:var(--bone-2)}
@@ -1190,9 +1225,9 @@ button.rr-row:hover{padding-left:6px}
 #p-bedrock .srcs>div{position:relative;padding:8px 0 10px 16px;
   border-left:1px solid rgba(242,231,204,.22);border-bottom:1px solid rgba(242,231,204,.10)}
 #p-bedrock .srcs>div::before{content:attr(data-cat);position:absolute;left:-1px;top:-9px;
-  font-size:11px;letter-spacing:.2em;color:rgba(240,188,98,.7);background:transparent;padding-right:6px}
+  font-size:12px;letter-spacing:.2em;color:rgba(240,188,98,.7);background:transparent;padding-right:6px}
 #p-bedrock .srcs b{display:block;color:var(--bone-2);letter-spacing:.1em;text-transform:uppercase;
-  font-size:11px;margin-bottom:3px}
+  font-size:12px;margin-bottom:3px}
 #p-bedrock .limits{margin-top:18px;max-width:60ch;font-size:13px;line-height:1.6;color:var(--bone-2)}
 /* a limits section is scanned, not read: term on the left, admission on the right */
 #p-bedrock .lim{margin:10px 0 0;max-width:70ch}
@@ -1217,24 +1252,24 @@ button.rr-row:hover{padding-left:6px}
 #drawer header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
   border-bottom:1px solid var(--bone-hair);padding-bottom:10px}
 #drawer header h3{font-weight:500;font-size:15px;color:var(--bone)}
-#drawer header .k{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--bone-3)}
-#dclose{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--bone-3);
+#drawer header .k{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--bone-3)}
+#dclose{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--bone-3);
   border:1px solid var(--bone-4);border-radius:2px;padding:7px 12px;min-height:38px}
 #dclose:hover{color:var(--bone)}
 #dbody{flex:1;overflow-y:auto;padding:14px 2px 20px;scrollbar-width:thin}
-#dbody h4{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+#dbody h4{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;
   color:var(--bone-3);margin:18px 0 8px}
 #dbody h4:first-child{margin-top:0}
 #dbody p{font-size:13px;line-height:1.6;max-width:58ch;margin-bottom:10px}
 #dbody p b{color:var(--bone);font-weight:500}
 #dbody .receipt{display:block;margin:6px 0 12px}
 .dtable{margin:8px 0 16px;max-height:300px;overflow:auto;border:1px solid var(--bone-hair)}
-.dtable table{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:11px;
+.dtable table{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:12px;
   font-variant-numeric:tabular-nums}
 .dtable th,.dtable td{padding:4px 10px;text-align:right;border-bottom:1px solid var(--bone-hair);color:var(--bone-2)}
 .dtable th{position:sticky;top:0;background:#0A2226;color:var(--bone-3);font-weight:500}
 .dtable td:first-child,.dtable th:first-child{text-align:left}
-.scalekey{margin:10px 0 16px;font-family:var(--mono);font-size:11px;color:var(--bone-3)}
+.scalekey{margin:10px 0 16px;font-family:var(--mono);font-size:12px;color:var(--bone-3)}
 .scalekey .rampwrap{position:relative;width:260px;max-width:80%;padding-bottom:16px}
 .scalekey .tk{position:absolute;top:14px;transform:translateX(-50%);white-space:nowrap}
 
@@ -1254,7 +1289,7 @@ button.rr-row:hover{padding-left:6px}
   color:var(--bone);text-shadow:0 2px 34px rgba(3,10,12,.9);max-width:19ch;margin-bottom:16px;text-wrap:balance}
 .ib-p{font-size:clamp(15px,1.5vw,18px);line-height:1.55;color:var(--bone-2);max-width:42ch;text-shadow:0 1px 20px rgba(3,10,12,.85)}
 .inum{color:var(--amber);font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
-.ib-chip{display:block;margin-top:12px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--bone-3);opacity:0}
+.ib-chip{display:block;margin-top:12px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--bone-3);opacity:0}
 .ib.on .ib-h{animation:ibh .6s cubic-bezier(.2,.7,.2,1) both}
 .ib.on .ib-p{animation:ibp .5s ease .28s both}
 .ib.on .ib-chip{animation:ibp .5s ease .95s both}
@@ -1267,16 +1302,16 @@ button.rr-row:hover{padding-left:6px}
   transition:background .3s,border-color .3s,transform .3s}
 .idot.done{background:var(--bone-3);border-color:var(--bone-3)}
 .idot.cur{background:var(--amber);border-color:var(--amber);transform:scale(1.35)}
-#intro-hint{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-3);text-shadow:var(--halo);animation:hintpulse 2.4s ease-in-out infinite}
+#intro-hint{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-3);text-shadow:var(--halo);animation:hintpulse 2.4s ease-in-out infinite}
 @keyframes hintpulse{0%,100%{opacity:.55}50%{opacity:.95}}
 /* a one-shot amber pulse so an action's result is FELT — used when we jump to an already-visible target */
 @keyframes flashring{0%{box-shadow:0 0 0 0 rgba(240,188,98,0)}18%{box-shadow:0 0 0 3px rgba(240,188,98,.6),0 0 26px rgba(240,188,98,.4)}100%{box-shadow:0 0 0 0 rgba(240,188,98,0)}}
 .flash-ring{animation:flashring 1s ease-out;border-radius:10px}
 @media(prefers-reduced-motion:reduce){.flash-ring{animation:none}}
-#intro .go{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--deep);
+#intro .go{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--deep);
   background:var(--amber);border:0;border-radius:3px;padding:13px 22px;min-height:46px;box-shadow:0 2px 18px -6px rgba(240,188,98,.6);transition:transform .2s}
 #intro .go:hover{transform:translateY(-1px)}
-#intro .skip{position:absolute;right:26px;top:88px;z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+#intro .skip{position:absolute;right:26px;top:88px;z-index:2;font-family:var(--mono);font-size:12px;letter-spacing:.18em;
   text-transform:uppercase;color:var(--bone-2);min-height:40px;padding:8px 12px;background:rgba(var(--glass),.42);
   border:1px solid var(--bone-4);border-radius:2px;text-shadow:var(--halo)}
 #intro .skip:hover{color:var(--bone);border-color:var(--bone-2)}
@@ -1314,7 +1349,7 @@ button.rr-row:hover{padding-left:6px}
 #band{position:absolute;left:0;right:0;cursor:pointer;pointer-events:auto}
 #band:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 #band .band-tag{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
-  font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--bone);white-space:nowrap;
+  font-family:var(--mono);font-size:12px;letter-spacing:.05em;color:var(--bone);white-space:nowrap;
   background:rgba(var(--glass),.5);padding:3px 12px 3px 12px;border-radius:999px;pointer-events:none;
   backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);text-shadow:var(--halo)}
 #band .band-tag::after{content:"  ⓘ";opacity:.75}
@@ -1328,7 +1363,7 @@ button.rr-row:hover{padding-left:6px}
 /* ghost horizon — where the sky stood on your first visit */
 #ghost{position:absolute;left:0;right:0;border-top:1px dashed rgba(62,18,8,.38);
   pointer-events:none;display:none}
-#ghost span{position:absolute;left:12px;bottom:4px;font-family:var(--mono);font-size:11px;
+#ghost span{position:absolute;left:12px;bottom:4px;font-family:var(--mono);font-size:12px;
   letter-spacing:.08em;color:rgba(62,18,8,.62);white-space:nowrap}
 /* copy-this-sky */
 #copysky{color:var(--bone-2);border-bottom:1px solid var(--bone-4);letter-spacing:.05em;
@@ -1364,15 +1399,15 @@ button.rr-row:hover{padding-left:6px}
   .duo{grid-template-columns:1fr;grid-template-rows:auto auto;flex:none;height:auto;gap:14px}
   #dial{width:100%}
   #skycap{right:12px;bottom:72px}
-  #skycap .zname{font-size:11px}
-  #skycap .zsub{font-size:11px;max-width:60vw}
+  #skycap .zname{font-size:12px}
+  #skycap .zsub{font-size:12px;max-width:60vw}
   #showerbox{margin:12px 0 20px;max-width:100%}
   #gplace input{width:140px}
   #soundbtn{right:14px;bottom:auto;top:12px;padding:8px 10px}   /* vitals hide here — corner is free */
   /* #hzn-hi/#hzn-lo deliberately bleed 38px past each edge, so a small `right` on the label
      puts the budget numbers OFF-SCREEN on a phone (measured: right edge at 420px on a 390px
      viewport — the figure was simply cut in half). Clear the bleed, then inset. */
-  .hl{right:46px;font-size:11px;letter-spacing:.06em}
+  .hl{right:46px;font-size:12px;letter-spacing:.06em}
   #p-sky .years{font-size:clamp(56px,15vw,96px)}
   #mast .plain{font-size:13px}
   #vitals{display:none}
@@ -1390,7 +1425,7 @@ button.rr-row:hover{padding-left:6px}
   /* the plate's negative margin must not punch through the 20px beat padding on a phone */
   #skycount{margin-left:-20px;padding:14px 20px 12px;border-radius:20px}
   #mast{padding:12px 20px;gap:12px}
-  #mast .word{font-size:11px;letter-spacing:.28em;margin-bottom:4px}
+  #mast .word{font-size:12px;letter-spacing:.28em;margin-bottom:4px}
   /* This was display:none. On a phone the page's ENTIRE self-description was the 11px
      wordmark — the one sentence saying what the site is never rendered at all, on the
      device most first-time readers arrive on. The comment said "the cold-open's job";
@@ -1400,12 +1435,12 @@ button.rr-row:hover{padding-left:6px}
   body.introing #mast .plain{display:none}   /* except behind the opening, which says it bigger */
   #mast-controls{margin-top:6px;gap:6px 10px}
 
-  #homechip{font-size:11px;padding:3px 9px;max-width:22ch}
+  #homechip{font-size:12px;padding:3px 9px;max-width:22ch}
 
   /* the picker is the busiest new block on the page — tighten it without shrinking the type */
   #homepick{margin-top:10px}
   #homeask h3{font-size:17px}
-  #homeask p{font-size:14px}
+  #homeask p{font-size:15px}
   #gq-bar .cb-reg{margin:9px 0 4px}
   #gq-ex{gap:8px;margin-top:12px}
   .gq-exb{font-size:13px;padding:8px 10px}
@@ -1421,7 +1456,7 @@ button.rr-row:hover{padding-left:6px}
 @media(max-width:640px){
   .hl{background:rgba(var(--glass),.55);padding:3px 7px;border-radius:4px;color:var(--bone-2)}
   .hl b{color:var(--bone)}
-  #skyaxis .rung{font-size:11px}
+  #skyaxis .rung{font-size:12px}
 }
 /* touch: raise the small secondary controls to a 44px tap target (desktop untouched — coarse-only) */
 @media(pointer:coarse){
@@ -1823,6 +1858,7 @@ button.rr-row:hover{padding-left:6px}
             <p class="beat-cue">and the smaller levers, fully in your own hands &darr;</p>
           </div>
         </div>
+        </div>
         <div class="beat">
           <div class="sheet">
             <h2>The personal levers.</h2>
@@ -1856,7 +1892,6 @@ button.rr-row:hover{padding-left:6px}
             <button class="drawbtn" data-drawer="morning" style="color:var(--ink-3);border-color:var(--ink-hair)">Sources &amp; the honest caveats</button>
             <p class="beat-cue">and the record already shows movement &darr;</p>
           </div>
-        </div>
         <!-- "Start by telling one person" removed: a full screen duplicating the action
              menu's "Have the conversation" item — same advice, same chapter, two screens
              apart. The menu item carries the insight now. -->
@@ -2608,6 +2643,10 @@ var __sections=[];
   else{p.__ch=idx;__sections.push(p);}});
  var ticking=false;
  function read(){ticking=false;
+  /* the spine fill is computed HERE — inside the reader that provably runs on every
+     scroll (chapters change) — after two decoupled attempts stayed pinned at 0 */
+  try{var _de=document.documentElement,_mx=Math.max(1,_de.scrollHeight-window.innerHeight);
+   _de.style.setProperty("--prog",Math.min(1,Math.max(0,window.pageYOffset/_mx)).toFixed(4));}catch(e){}
   var vh=window.innerHeight||document.documentElement.clientHeight||
    (__sections[0]&&__sections[0].getBoundingClientRect().height)||800;
   var mid=vh*0.5,best=null,bestD=1e9;
@@ -2619,10 +2658,22 @@ var __sections=[];
   if(best==null){for(i=0;i<__sections.length;i++){var r2=__sections[i].getBoundingClientRect();
    if(r2.bottom>0&&r2.top<vh){best=__sections[i].__ch;break;}}}
   if(best!=null)enterChamber(best);}
+ function progress(){
+  var de=document.documentElement;
+  var max=Math.max(1,de.scrollHeight-innerHeight);
+  var p=Math.min(1,Math.max(0,window.scrollY/max));
+  de.style.setProperty("--prog",p.toFixed(4));}
  function onScroll(){if(!ticking){ticking=true;requestAnimationFrame(read);}}
+ /* the spine's fill runs on its OWN rAF gate — coupling it to the chapter reader left it
+    pinned at 0 (the reader's tick flag never released it for this purpose) */
+ (function(){var t=false;
+  function tick(){t=false;progress();}
+  addEventListener("scroll",function(){if(!t){t=true;requestAnimationFrame(tick);}},{passive:true});
+  addEventListener("resize",function(){if(!t){t=true;requestAnimationFrame(tick);}},{passive:true});
+  progress();})();
  window.addEventListener("scroll",onScroll,{passive:true});
  window.addEventListener("resize",onScroll,{passive:true});
- enterChamber(0);                                                    // the sky is set before anything scrolls
+ enterChamber(0);progress();                                                    // the sky is set before anything scrolls
  read();setTimeout(read,300);setTimeout(read,900);                   // catch the settled first frame
 })();
 document.querySelectorAll("[data-go]").forEach(function(b){
@@ -5662,7 +5713,7 @@ if(Q.get("debug")){setTimeout(function(){
    bad.push(nn.tagName+"."+c+" r"+Math.round(r.right));}});
  var d=document.createElement("pre");d.id="debug-out";
  d.textContent="vw="+vw+" docW="+document.documentElement.scrollWidth+" || "+bad.slice(0,20).join(" | ");
- d.style.cssText="position:fixed;left:4px;bottom:4px;z-index:99;background:#000;color:#0f0;font-size:11px;max-width:96vw;white-space:pre-wrap";
+ d.style.cssText="position:fixed;left:4px;bottom:4px;z-index:99;background:#000;color:#0f0;font-size:12px;max-width:96vw;white-space:pre-wrap";
  document.body.appendChild(d);},1200);}
 })();
 </script>

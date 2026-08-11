@@ -1,0 +1,17 @@
+<!doctype html><meta charset=utf-8>
+<style>html,body{margin:0}iframe{width:1995px;height:1295px;border:0}</style>
+<iframe id="f" src="index.html?intro=0&live=0"></iframe>
+<script>var f=document.getElementById("f");
+f.onload=function(){setTimeout(function(){var w=f.contentWindow,d=f.contentDocument;
+ d.querySelectorAll(".beat,.pane-screen").forEach(function(b){b.classList.add("seen");});
+ var odd=[],fs={};
+ d.querySelectorAll(".beat .sheet").forEach(function(s){var r=s.getBoundingClientRect();
+  if(Math.round(r.left)!==595)odd.push(Math.round(r.left)+"/"+Math.round(r.width)+" "+(s.className)+" in "+(s.closest(".pane")||{}).id+" beatsParent="+!!s.closest(".beats"));});
+ d.querySelectorAll("body *").forEach(function(e){var cs=w.getComputedStyle(e);
+  if(cs.display==="none")return;var t=(e.textContent||"").trim();if(!t)return;
+  var own=false;for(var n=e.firstChild;n;n=n.nextSibling)if(n.nodeType===3&&n.textContent.trim()){own=true;break;}
+  if(!own)return;var v=Math.round(parseFloat(cs.fontSize)*10)/10;
+  (fs[v]=fs[v]||[]).push((e.className||e.tagName).toString().slice(0,18));});
+ var rare={};Object.keys(fs).forEach(function(k){if(fs[k].length<=6)rare[k]=fs[k].slice(0,4);});
+ document.title="V2::"+JSON.stringify({odd:odd,allSizes:Object.keys(fs).map(Number).sort(function(a,b){return a-b;}),rare:rare});},1800);};
+</script>

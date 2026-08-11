@@ -1,0 +1,20 @@
+<!doctype html><meta charset=utf-8>
+<style>html,body{margin:0}iframe{width:1995px;height:1295px;border:0}</style>
+<iframe id="f" src="index.html?intro=0&live=0"></iframe>
+<script>var f=document.getElementById("f");
+f.onload=function(){setTimeout(function(){var w=f.contentWindow,d=f.contentDocument;
+ d.querySelectorAll(".beat,.pane-screen").forEach(function(b){b.classList.add("seen");});
+ var L=[],W=[],fs={};
+ d.querySelectorAll(".beat .sheet").forEach(function(s){var r=s.getBoundingClientRect();
+  L.push(Math.round(r.left));W.push(Math.round(r.width));});
+ d.querySelectorAll("body *").forEach(function(e){var cs=w.getComputedStyle(e);
+  if(cs.display==="none")return;var t=(e.textContent||"").trim();if(!t)return;
+  var own=false;for(var n=e.firstChild;n;n=n.nextSibling)if(n.nodeType===3&&n.textContent.trim()){own=true;break;}
+  if(!own)return;var v=Math.round(parseFloat(cs.fontSize)*10)/10;fs[v]=(fs[v]||0)+1;});
+ var bf=w.getComputedStyle(d.querySelector(".sheet")).backdropFilter;
+ w.scrollTo(0,d.body.scrollHeight*0.5);
+ setTimeout(function(){
+  var prog=d.documentElement.style.getPropertyValue("--prog");
+  document.title="V::"+JSON.stringify({lefts:[...new Set(L)],widths:[...new Set(W)],
+   sizes:Object.keys(fs).length,backdrop:bf,prog:prog});},700);},1800);};
+</script>

@@ -1,0 +1,15 @@
+<!doctype html><meta charset=utf-8>
+<style>html,body{margin:0}iframe{width:1995px;height:1295px;border:0}</style>
+<iframe id="f" src="index.html?intro=0&live=0"></iframe>
+<script>var f=document.getElementById("f");
+f.onload=function(){setTimeout(function(){var w=f.contentWindow,d=f.contentDocument;
+ d.querySelectorAll(".beat,.pane-screen").forEach(function(b){b.classList.add("seen");});
+ var L=[],W=[];
+ d.querySelectorAll(".beat .sheet").forEach(function(s){var r=s.getBoundingClientRect();
+  L.push(Math.round(r.left));W.push(Math.round(r.width));});
+ d.documentElement.scrollTop=2400;
+ setTimeout(function(){
+  var pr=w.getComputedStyle(d.documentElement).getPropertyValue("--prog");
+  document.title="V4::"+JSON.stringify({lefts:[...new Set(L)],widths:[...new Set(W)],
+   prog:pr.trim(),y:Math.round(w.scrollY)});},700);},1800);};
+</script>

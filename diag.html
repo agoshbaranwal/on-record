@@ -1,0 +1,13 @@
+<!doctype html><meta charset=utf-8>
+<style>html,body{margin:0}iframe{width:1995px;height:1295px;border:0}</style>
+<iframe id="f" src="index.html?intro=0&live=0"></iframe>
+<script>var f=document.getElementById("f");
+f.onload=function(){setTimeout(function(){var w=f.contentWindow,d=f.contentDocument;
+ var before=(d.querySelector('.rung[aria-current="true"] .lab')||{}).textContent||"?";
+ var fired=0; w.addEventListener("scroll",function(){fired++;},{passive:true});
+ w.scrollTo(0,8000);
+ setTimeout(function(){
+  var after=(d.querySelector('.rung[aria-current="true"] .lab')||{}).textContent||"?";
+  document.title="DIAG:: scrollEvents="+fired+" chapterBefore="+before.trim()+" chapterAfter="+after.trim()
+   +" prog="+(d.documentElement.style.getPropertyValue("--prog")||"none");},1200);},2200);};
+</script>
