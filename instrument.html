@@ -1,5 +1,14 @@
 <style>
 /*__FONTS__*/
+#showerbox{max-width:min(38ch,30vw);margin-left:auto;font-size:13px;line-height:1.5;color:var(--bone-3);text-shadow:var(--halo);margin-bottom:6px}
+#showerbox b{color:var(--bone-2);font-weight:500}
+@media(max-width:640px){#showerbox{display:none}}  /* phones: the drawer keeps the detail */
+
+.thm-ink #mast,body.thm-ink #mast{background:linear-gradient(to bottom,rgba(244,244,241,.9) 55%,rgba(244,244,241,.55) 78%,transparent)}
+body.introing #mast{background:none!important}
+/* snap and anchors stop BELOW the mast, so no beat's first line ever slides under it */
+html{scroll-padding-top:calc(var(--mast-h,150px) - 46px)}
+
 /* the trust explainer is a disclosure: ~100 words a reader can ask for, not wade through.
    (An earlier toggle here opened an EMPTY panel and was removed — this one is verified.) */
 #n-ex-open{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;
@@ -305,7 +314,8 @@ a{color:inherit}
 .thm-ink #bb-fill,.thm-ink #bb-you{background:var(--act)}
 @media(max-width:640px){#budget-band{font-size:10.5px;padding:0 20px}#bb-rail{max-width:88px}#bb-label{min-width:0;flex:0 1 auto;overflow:hidden;text-overflow:ellipsis}}
 @media(prefers-reduced-motion:reduce){#bb-fill,#bb-you{transition:none}}
-#mast{position:fixed;top:22px;left:0;right:0;z-index:5;pointer-events:none;
+#mast{position:fixed;top:0;left:0;right:0;z-index:5;pointer-events:none;padding-top:22px;
+  background:linear-gradient(to bottom,rgba(3,15,17,.97) 72%,rgba(3,15,17,.78) 90%,transparent);
   display:flex;justify-content:space-between;align-items:flex-start;gap:30px;
   max-width:1400px;margin:0 auto;padding:22px 38px}
 #mast a,#mast button{pointer-events:auto}
@@ -1341,7 +1351,7 @@ button.rr-row:hover{padding-left:6px}
       <div id="skyaxis" aria-hidden="true"></div>
       <div id="band" tabindex="0" role="button" aria-describedby="band-whisper"><span class="whisper" id="band-whisper"></span></div>
     </div>
-    <div id="skycap"><span class="zsub" id="skyctx"></span><span class="zname" id="skyname"></span><span class="zsub" id="skysub"></span>
+    <div id="skycap"><div id="showerbox"></div><span class="zsub" id="skyctx"></span><span class="zname" id="skyname"></span><span class="zsub" id="skysub"></span>
       <!-- the sky follows the ONE home place; the container id stays so its CSS and the
            body.embed rule keep applying. The two old buttons were a second place-control. -->
       </div>
@@ -1390,6 +1400,7 @@ button.rr-row:hover{padding-left:6px}
               </div>
             </div>
             <p id="ledger-sr" class="sr-only"></p>
+            <button class="drawbtn" data-drawer="sky">Sources &amp; the budget arithmetic</button>
             <p class="beat-cue">scroll &mdash; you can change this sky &darr;</p>
           </div>
         </div>
@@ -1589,7 +1600,8 @@ button.rr-row:hover{padding-left:6px}
                    already labelled on the chart itself, where the eye actually is. -->
             </div></div>
             <p class="receipt" id="delhi-receipt"></p>
-            <div id="showerbox"></div>   <!-- __SKY.enter() has written its sourced meteor-shower
+<!-- showerbox moved to the night sky caption cluster: comet provenance is sky
+                 furniture, not heat evidence -->   <!-- __SKY.enter() has written its sourced meteor-shower
                  explainer here since Phase 4 of v5 — the element was lost in a later edit and the
                  sourced content silently vanished -->
             <!-- THE KEYSTONE. Drawn from Delhi's own baked series and NEVER from the reader's
@@ -3785,13 +3797,8 @@ buildTakeaway();
    "that needs a projection layer we have not built.</dd>"+
   "<dt>We show the record, not the cause</dt><dd>For &ldquo;is this climate change?&rdquo; go to WWA, "+
    "ClimaMeter or Climate Central. We do not answer it.</dd>"+
-  "<dt>The skies are drawings</dt><dd>Declared renderings of the data, not weather. Two exceptions: the night "+
-   "sky is real, computed from catalogue star positions; the fire-day sky is a labelled render at measured "+
-   "smoke levels — reversible, and never a claim about today.</dd>"+
-  "<dt>Where you are</dt><dd>Coordinates rounded to ~1 km and sent only to Open-Meteo. Your city is named on "+
-   "your own device from a downloaded list (GeoNames, CC BY 4.0) — your position is never sent anywhere to be "+
-   "identified, never stored outside this browser, never added to a link you share. Named within 30 km, "+
-   "&ldquo;near&rdquo; to 90 km, &ldquo;your place&rdquo; beyond rather than guess.</dd>"+
+  "<dt>The skies are drawings</dt><dd>Declared renderings of the data, not weather. One exception: the night sky is real, computed from catalogue star positions.</dd>"+
+  "<dt>Where you are</dt><dd>Coordinates rounded to ~1 km, sent only to the weather archive; your city is named on your own device. The full promise is beside the picker, in Ground.</dd>"+
   "<dt>The picker's cities are points</dt><dd>Not whole cities. Each record is that grid cell's, not that street's.</dd>"+
   "</dl>"+
   "<p class='lim-x'>Corrections will be listed here, dated. <span class='lim-q'>?place=</span> and "+
