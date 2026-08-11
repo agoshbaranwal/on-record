@@ -7,7 +7,7 @@
    stale copy can linger (the trap that must never recur). There is no push and
    no notification code here: the site cannot send notifications. */
 <<<<<<< HEAD
-const BUILD = "20260811035627-a24fc2ac";
+const BUILD = "20260811035627-df859bde";
 =======
 const BUILD = "20260807043339-4e9af4d6";
 >>>>>>> 6ec19ed (The opening finally says what the site is — the copy was never the defect, the order was)
