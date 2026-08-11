@@ -444,25 +444,24 @@ body = (tpl.replace("/*__FONTS__*/", css)
 OG = "https://agoshbaranwal.github.io/on-record/"
 _was = round(mean_over(g35, 1951, 1980))                    # same decade means the card/noscript use — never hand-typed
 _now = round(mean_over(g35, LAST_FULL - 9, LAST_FULL))
-DESC = ("An honest climate instrument: the world&#39;s carbon budget as a living sky, and one city&#39;s heat record "
-        "measured against its own past. Every number measured, every source shown.")
-CARD = (f"In Seville, days at or above 35&#176;C rose from {_was} a year (1951–80 average) to {_now} "
-        f"({LAST_FULL-9}–{LAST_FULL}). Every number sourced — ERA5 via Open-Meteo.")
+DESC = ("We counted it from the weather record &mdash; every day since 1940. Pick your place and the page redraws around it: your hot days, your nights, your sky. Every number shows where it came from.")
+CARD = (f"How much hotter is your town? We counted every day since 1940. The worked example: Seville, "
+        f"{_was} days at or above 35&#176;C a year then, {_now} now. Find yours &mdash; every number sourced.")
 ALT = f"On Record card: in Seville, days at or above 35C rose from {_was} a year to {_now}."
 head_meta = (
-    "<title>On Record — the carbon budget, drawn as a living sky</title>"
+    "<title>On Record — how much hotter is your town than when your grandparents were young?</title>"
     '<meta name="description" content="' + DESC + '">'
     '<link rel="canonical" href="' + OG + '">'
     '<meta property="og:type" content="website">'
     '<meta property="og:site_name" content="On Record">'
-    '<meta property="og:title" content="On Record — Seville, on record">'
+    '<meta property="og:title" content="On Record — your town&#39;s heat, on record">'
     '<meta property="og:description" content="' + CARD + '">'
     '<meta property="og:url" content="' + OG + '">'
     '<meta property="og:image" content="' + OG + 'og/seville.png">'
     '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
     '<meta property="og:image:alt" content="' + ALT + '">'
     '<meta name="twitter:card" content="summary_large_image">'
-    '<meta name="twitter:title" content="On Record — Seville, on record">'
+    '<meta name="twitter:title" content="On Record — your town&#39;s heat, on record">'
     '<meta name="twitter:description" content="' + CARD + '">'
     '<meta name="twitter:image" content="' + OG + 'og/seville.png">'
     # PWA: installable, offline-capable (network-first SW), zero tracking
@@ -474,6 +473,39 @@ doc = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
        '<meta name="viewport" content="width=device-width, initial-scale=1">'
        + head_meta +
        '</head><body>' + body + "</body></html>")
+# ── bake the headline + recap numbers into the static document ─────────────────────
+# Ported from tools/build_offline.py: without this, the nightly regeneration REVERTS every
+# baked number to an em-dash and the served page claims nothing again. The JS writes the
+# same values a moment later, so the two cannot disagree.
+def _bake(doc):
+    import re as _re
+    _est = sorted(out["budget"]["estimates"], key=lambda e: e["remaining_now_gt"])
+    _hi = _est[-1]; _rate = out["budget"]["rate_now_gt"]; _nowdec = out["budget"]["now_dec"]
+    def _src(e): return "IGCC 2025" if "IGCC" in (e.get("label") or "") else "GCB 2025"
+    _ylo = _est[0]["remaining_now_gt"] / _rate; _yhi = _hi["remaining_now_gt"] / _rate
+    _yrs = f"{_ylo:.1f}" if f"{_ylo:.1f}" == f"{_yhi:.1f}" else f"{_ylo:.1f}\u2013{_yhi:.1f}"
+    _nights = out["seville_generational"]["warm_nights_ge25_per_year"]
+    def _nmean(a, b):
+        v = [r["n"] for r in _nights if a <= r["year"] <= b]
+        return round(sum(v) / len(v)) if v else 0
+    _P = out["perception_gap"]
+    subs = {"lead-gt": str(round(_est[0]["remaining_now_gt"])),
+            "g-then": str(round(mean_over(g35, 1951, 1980))),
+            "g-now": str(round(mean_over(g35, LAST_FULL - 9, LAST_FULL))),
+            "rc-1-n": f"{round(mean_over(g35,1951,1980))} \u2192 {round(mean_over(g35,LAST_FULL-9,LAST_FULL))} days a year",
+            "rc-2-n": f"{_nmean(1951,1980)} \u2192 {_nmean(LAST_FULL-9,LAST_FULL)} nights a year",
+            "rc-3-n": f"{round(_P['global_want_action_pct'])}% want action",
+            "rc-4-n": f"{_yrs} years of budget left",
+            "spent": (f"{round(_est[0]['remaining_now_gt'])}\u2013{round(_hi['remaining_now_gt'])} Gt remain "
+                      f"\u00b7 {_src(_est[0])} and {_src(_hi)} agree \u00b7 spent around {round(_nowdec+_ylo)}")}
+    n_done = 0
+    for eid, val in subs.items():
+        pat = _re.compile(r'(id="%s"[^>]*>)[^<]*(</)' % _re.escape(eid))
+        doc, k = pat.subn(lambda m: m.group(1) + val + m.group(2), doc, count=1)
+        n_done += k
+    print(f"  baked {n_done} static numbers")
+    return doc
+doc = _bake(doc)
 (ROOT / "index.html").write_text(doc)
 # ---- protected-requirement invariant (Phase 10 kill-list): fail the build if a distinct capability is dropped ----
 # ---- cities-lookup.json: names a located reader's city ON THEIR DEVICE ----
