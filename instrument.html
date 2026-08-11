@@ -1,5 +1,25 @@
 <style>
 /*__FONTS__*/
+/* ── THE RAIL'S SUB-PAGES: the active chapter opens to show its beats ── */
+#ladder .rgroup{display:flex;flex-direction:column;align-items:flex-end}
+#ladder .subs{display:none;flex-direction:column;align-items:flex-end;gap:1px;margin:1px 0 7px}
+#ladder .rgroup.open .subs{display:flex}
+.subrung{background:none;border:0;padding:3px 16px 3px 0;cursor:pointer;font:inherit;
+  font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--bone-3);
+  text-shadow:var(--halo);text-align:right}
+.subrung:hover,.subrung:focus-visible{color:var(--bone)}
+.thm-ink .subrung{color:var(--ink-3);text-shadow:none}
+.thm-ink .subrung:hover{color:var(--ink)}
+@media(max-width:940px){#ladder .subs{display:none!important}}  /* the strip stays chapters-only */
+
+/* beat-cues are real controls now — they always looked like links */
+.beat-cue{cursor:pointer;-webkit-user-select:none;user-select:none}
+.beat-cue:hover{color:var(--bone-2)}
+.thm-ink .beat-cue:hover{color:var(--ink-2)}
+/* text selection carries the site's accent instead of browser default */
+::selection{background:rgba(240,188,98,.35);color:var(--bone)}
+.thm-ink ::selection{background:rgba(201,138,46,.3);color:var(--ink)}
+
 /* ── THE RAIL DOCK ────────────────────────────────────────────────────────────
    The right gutter belongs to chrome (ladder, sound); the place chip joins it there,
    where nothing ever scrolls underneath. No fixed element overlaps the reading column
@@ -220,7 +240,8 @@ body.introing #intro-skip{display:none!important}
 }
 *{box-sizing:border-box;margin:0;padding:0}
 /* the viewport scrolls the tall body naturally; the sky is a fixed backdrop behind it */
-html{scroll-snap-type:y proximity;scroll-behavior:smooth}
+html{scroll-behavior:smooth}   /* snap retired: it pinned beat edges to screen edges,
+   slicing headings at rest — flagged twice. A normal document never rests mid-glyph. */
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;scroll-snap-type:none}}
 body{background:var(--deep);color:var(--bone);font-family:var(--sg);font-size:16px;
   line-height:1.5;-webkit-font-smoothing:antialiased}
@@ -1481,7 +1502,7 @@ button.rr-row:hover{padding-left:6px}
           <div class="sheet">
             <h2 class="page-what"><b class="pw-name">Your hot days</b><span class="sr-only">. </span><span class="pw-say">How many dangerously hot days your own town gets now, compared with your grandparents&rsquo; time.</span></h2>
             <h2 tabindex="-1" id="g-h2">Here is Seville, day by day, since 1940.</h2>
-            <p class="place-tag" hidden>worked example &mdash; not your place &middot; set your place above</p>
+            <p class="place-tag" hidden>worked example &mdash; not your place &middot; set your place below</p>
                         <p class="lead">Not a global average &mdash; the ground under your feet, measured since 1940.</p>
             <!-- the ONE place picker. #gplace is kept inside it so its existing CSS still applies. -->
             <div id="homepick">
@@ -1605,7 +1626,7 @@ button.rr-row:hover{padding-left:6px}
           <div class="beat">
           <div class="sheet">
             <h2 id="n-h2">Delhi&rsquo;s hot days fell. Its hot nights rose.</h2>
-            <p class="place-tag" hidden>worked example &mdash; not your place &middot; set your place above</p>
+            <p class="place-tag" hidden>worked example &mdash; not your place &middot; set it in Your hot days</p>
                         <div id="n-diverge" aria-hidden="true"></div>
             <p class="lead" id="n-honest"></p>
             <div class="chartwrap"><div class="plate">
@@ -2391,12 +2412,30 @@ var ladder=el("ladder");
 ladder.innerHTML="";   /* static rungs served to crawlers/no-JS; the live build replaces them */
 /* the rail: numbered chapters, each a real anchor into the one scroll */
 CH.forEach(function(c,i){
+ var SUBS={
+  sky:["The number","Change the pace"],
+  ground:["Your record","Then vs now","Today","Compare two towns"],
+  night:["The dangerous half","Days vs nights"],
+  firstlight:["Take the guess","The whole world"],
+  morning:["Put it on the record","The good news"]
+ };
+ var wrap=document.createElement("div");wrap.className="rgroup";
  var b=document.createElement("a");b.className="rung";b.href="#p-"+c.id;
  b.setAttribute("aria-current",i===0?"true":"false");
  b.innerHTML='<span class="pill"><span class="lab"><em class="rnum">'+("0"+(i+1)).slice(-2)+
   '</em> '+c.lab+'</span><span class="fact">'+c.fact+'</span></span><span class="dot"></span>';
  b.addEventListener("click",function(e){e.preventDefault();scrollToChamber(i);});
- ladder.appendChild(b);});
+ wrap.appendChild(b);
+ if(SUBS[c.id]){var sd=document.createElement("div");sd.className="subs";
+  SUBS[c.id].forEach(function(lab,si){
+   var sb=document.createElement("button");sb.type="button";sb.className="subrung";
+   sb.textContent=lab;
+   sb.addEventListener("click",function(){
+    var bt=document.querySelectorAll("#p-"+c.id+" .beat")[si];
+    if(bt)bt.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});});
+   sd.appendChild(sb);});
+  wrap.appendChild(sd);}
+ ladder.appendChild(wrap);});
 /* the pulse is a shortcut into the chapter it reads from */
 (function(){var p=el("pulse");if(!p)return;p.addEventListener("click",function(){
  var i=CH.findIndex(function(c){return c.id==="ground";});if(i>=0)scrollToChamber(i);});})();
@@ -2444,7 +2483,9 @@ function enterChamber(i){
     which is why the ladder was invisible on every bright chapter since v5 */
  document.body.classList.toggle("thm-ink",!!c.ink);
  if(__ATMO.textDim)__ATMO.textDim(TEXTDIM[c.id]!=null?TEXTDIM[c.id]:.45); // darken the sky behind the words, per chapter
- Array.prototype.forEach.call(ladder.children,function(b,j){b.setAttribute("aria-current",j===i?"true":"false");});
+ Array.prototype.forEach.call(ladder.querySelectorAll(".rung"),function(b,j){
+  b.setAttribute("aria-current",j===i?"true":"false");
+  if(b.parentNode&&b.parentNode.classList)b.parentNode.classList.toggle("open",j===i);});
  if(window.__BAND)__BAND.at(i,CH.length);                            // the budget-band caret follows you through the story
  if(location.hash!=="#p-"+c.id)try{history.replaceState(null,"","#p-"+c.id);}catch(e){}
  if(c.id==="ground"&&groundOverture)groundOverture();
@@ -2989,7 +3030,7 @@ function buildGround(V){
  /* ---- everything today-dependent renders through here (snapshot now, live later) ---- */
  applyToday=function(t){
   var isRec=t.tmax!=null&&t.comparable!=null&&t.rec!=null&&t.comparable>t.rec;
-  var lr=ladder.children[1]&&ladder.children[1].querySelector(".fact");
+  var lr=ladder.querySelectorAll(".rung")[1]&&ladder.querySelectorAll(".rung")[1].querySelector(".fact");
   if(lr)lr.textContent=PLACE+" · "+(t.tmax!=null?t.tmax.toFixed(1)+"° today":"on its own record");
   if(el("tease-temp"))el("tease-temp").textContent=t.tmax!=null?t.tmax.toFixed(1)+" °C":"—";
   if(el("tease-sub"))el("tease-sub").textContent=PLACE+", "+t.dateLabel+" — "+(isRec?
@@ -3166,7 +3207,7 @@ var buildNight=function(NV){
   "1951–80 vs "+(LF-9)+"–"+LF+" · ERA5 · the record, not the cause";
  var dTrend=dayFell?"— edging down":(dNow>dThen+1?"— climbing":"— flat");
  var nTrend=nNow>nThen+1?"— climbing":(nNow<nThen-1?"— edging down":"— flat");
- var lr2=ladder.children[2]&&ladder.children[2].querySelector(".fact");
+ var lr2=ladder.querySelectorAll(".rung")[2]&&ladder.querySelectorAll(".rung")[2].querySelector(".fact");
  if(lr2)lr2.textContent=place+" · "+(Math.round(nNow-nThen)>=0?"+":"−")+
   Math.abs(Math.round(nNow-nThen))+" hot nights";
  var host=el("delhi"),MONO="ui-monospace,Menlo,monospace",lastB="";
@@ -5054,6 +5095,22 @@ window.__HOME=__HOME;
  (function(){var sel=el("cmp-sel");
   if(sel)sel.addEventListener("change",function(){buildCompare();});})();
  try{buildCompare();}catch(e){}
+
+/* the cue under each beat advances to the next beat — it always looked like a link */
+(function(){
+ document.querySelectorAll(".beat-cue").forEach(function(c){
+  c.setAttribute("role","button");c.setAttribute("tabindex","0");
+  function go(){
+   var beat=c.closest(".beat"),pane=c.closest(".pane");
+   var nxt=beat&&beat.nextElementSibling;
+   while(nxt&&!nxt.classList.contains("beat"))nxt=nxt.nextElementSibling;
+   if(!nxt&&pane){var np=pane.nextElementSibling;
+    while(np&&!np.classList.contains("pane"))np=np.nextElementSibling;
+    if(np)nxt=np.querySelector(".beat")||np;}
+   if(nxt)nxt.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});}
+  c.addEventListener("click",go);
+  c.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}});
+ });})();
 
 try{__HOME.boot();}catch(e){}
 

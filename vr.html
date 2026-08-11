@@ -1,0 +1,21 @@
+<!doctype html><meta charset=utf-8>
+<style>html,body{margin:0;background:#111}iframe{width:1995px;height:1295px;border:0}</style>
+<iframe id="f" src="index.html?intro=0&live=0"></iframe>
+<script>var f=document.getElementById("f");
+f.onload=function(){setTimeout(function(){var w=f.contentWindow,d=f.contentDocument;
+ d.querySelectorAll(".beat,.pane-screen").forEach(function(b){b.classList.add("seen");});
+ var o=[];
+ o.push("snap="+w.getComputedStyle(d.documentElement).scrollSnapType);
+ o.push("rgroups="+d.querySelectorAll("#ladder .rgroup").length);
+ o.push("subs.total="+d.querySelectorAll(".subrung").length);
+ // simulate being in Ground: click rung 2 then measure visible subs
+ var rungs=d.querySelectorAll("#ladder .rung");
+ rungs[1].click();
+ setTimeout(function(){
+  var vis=0;d.querySelectorAll(".subrung").forEach(function(s){
+   if(s.getBoundingClientRect().height>2)vis++;});
+  o.push("visibleSubsInGround="+vis);
+  var sr=d.querySelectorAll("#ladder .rgroup.open .subrung");
+  o.push("openGroupSubs="+sr.length+(sr[0]?("· first="+sr[0].textContent):""));
+  document.title="V::"+o.join(" | ");},900);},1700);};
+</script>
