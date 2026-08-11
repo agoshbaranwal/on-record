@@ -1538,7 +1538,7 @@ button.rr-row:hover{padding-left:6px}
               <div id="gq-ex" role="group" aria-label="Worked examples">
                 <span class="gq-exlab">worked examples</span>
                 <button type="button" class="gq-exb" id="ex-seville" data-slug="seville">Seville &mdash; heat that doubled</button>
-                <button type="button" class="gq-exb" id="ex-delhi" data-slug="delhi">Delhi &mdash; days flat, nights climbing</button>
+                <button type="button" class="gq-exb" id="ex-delhi" data-slug="delhi">Delhi &mdash; days edged down, nights climbing</button>
               </div>
               </div>
             </div>
@@ -1616,16 +1616,17 @@ button.rr-row:hover{padding-left:6px}
           <div class="sheet">
             <h2 class="page-what"><b class="pw-name">Your hot nights</b><span class="sr-only">. </span><span class="pw-say">Where you live, the nights are warming faster than the days &mdash; and the nights are the dangerous half.</span></h2>
             <h2 tabindex="-1">Hot nights are the danger most people miss.</h2>
+            <p class="place-tag" hidden>worked example &mdash; not your place &middot; set it in Your hot days</p>
             <p class="lead">Your body cools down at night to recover. When the nights stop cooling,
               a heatwave stops giving anyone a break &mdash; which is what heat-health research warns about most.</p>
-            <p class="bignum" id="n-big">– <small>more hot nights a year<br>than the 1951&ndash;80 average</small></p>
+            <p class="bignum" id="n-big">– <small>more hot nights a year in Delhi, the worked example<br>than the 1951&ndash;80 average</small></p>
             <p class="beat-cue">why you can trust that number &darr;</p>
           </div>
         </div>
           <!-- BEAT 2 — the honesty test: the line that fell -->
           <div class="beat">
           <div class="sheet">
-            <h2 id="n-h2">Delhi&rsquo;s hot days fell. Its hot nights rose.</h2>
+            <h2 id="n-h2">Delhi&rsquo;s hot days edged down. Its hot nights rose.</h2>
             <p class="place-tag" hidden>worked example &mdash; not your place &middot; set it in Your hot days</p>
                         <div id="n-diverge" aria-hidden="true"></div>
             <p class="lead" id="n-honest"></p>
@@ -1820,10 +1821,10 @@ button.rr-row:hover{padding-left:6px}
       <section class="pane" id="p-recap" aria-label="What to remember">
         <div class="beat">
           <div class="sheet">
-          <h2 class="page-what"><b class="pw-name">What to remember</b><span class="sr-only">. </span><span class="pw-say">Four things this page measured &mdash; yours first.</span></h2>
+          <h2 class="page-what"><b class="pw-name">What to remember</b><span class="sr-only">. </span><span class="pw-say" id="recap-say">Four things this page measured, each from a named source.</span></h2>
           <ol id="recap-list">
             <li><b id="rc-1-n">&mdash;</b><span id="rc-1-s">Your town&rsquo;s hot days, then and now.</span></li>
-            <li><b id="rc-2-n">&mdash;</b><span id="rc-2-s">Your nights, which warm faster than your days.</span></li>
+            <li><b id="rc-2-n">&mdash;</b><span id="rc-2-s">Hot nights a year in Delhi, the worked example &mdash; set your place and this becomes yours.</span></li>
             <li><b id="rc-3-n">&mdash;</b><span id="rc-3-s">How many people around you want action.</span></li>
             <li><b id="rc-4-n">&mdash;</b><span id="rc-4-s">How long the world&rsquo;s carbon budget lasts at today&rsquo;s pace.</span></li>
           </ol>
@@ -1849,7 +1850,9 @@ button.rr-row:hover{padding-left:6px}
           </p>
           <div class="bfb" id="takeaway"></div>
           <p class="colophon" id="colophon"></p>
-\n          <div hidden aria-hidden="true"><div id="t-budget"></div><div id="srcs"></div><div id="impact-know"></div><div id="impact-refuse"></div><div id="budget-notes"></div></div>\n</div>
+
+          <div hidden aria-hidden="true"><div id="t-budget"></div><div id="srcs"></div><div id="impact-know"></div><div id="impact-refuse"></div><div id="budget-notes"></div></div>
+</div>
       </section>
     </div>
   </div>
@@ -2569,6 +2572,7 @@ var startIntro,endIntro;
   catch(e){answered=EMBED||KIOSK||!!Q.get("place")||!!Q.get("loc");}
   if(answered&&pk.parentNode)pk.parentNode.removeChild(pk);})();
  var beats=Array.prototype.slice.call(stackEl.querySelectorAll(".ib"));
+ if(!beats.length){try{endIntro();}catch(e){}return;}   /* an intro with no beats must end, not crash */
  var N=beats.length,idx=0,settled=false,countRAF=0,settleTimer=0,
      interacted=false,reopened=false,retScroll=0,lastEx=.66,REVEAL=1300,NUM={};
 
@@ -2583,7 +2587,9 @@ var startIntro,endIntro;
    bd.hidden=!on;b.setAttribute("aria-expanded",on?"true":"false");});})();
  var hasAsk=!!el("pk-ask"),askResolved=!hasAsk;   /* the ask beat, when present, must be answered */
  /* a REAL deep link (?chamber= or a non-sky #p- hash captured BEFORE enterChamber(0) clobbered it) bypasses the cold-open */
- var isDeep=!!(Q.get("chamber")||EMBED||KIOSK||(HASH0&&HASH0!=="sky"));
+ var isDeep=!!(Q.get("chamber")||Q.get("place")||Q.get("loc")||EMBED||KIOSK||(HASH0&&HASH0!=="sky"));
+/* ?place/?loc ARE deep intent — they are the very links the copy-link button mints, and
+   they used to run the intro machinery against an empty beat list */
  /* This averaged the two published budgets, which the site's own note explicitly disavows —
    "we show both current estimates, never an average" — and produced 104 in the cold-open against
    the 103 that #lead-gt renders for the same quantity fifteen seconds later. Use the same lower,
@@ -2785,7 +2791,7 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
      :w21<2?"past 1.5 °C, short of 2 — every tenth of a degree is more risk"
      :w21<3?"past 2 °C — the range the Paris agreement was written to avoid"
      :"past 3 °C — beyond anything the modern world has lived in");}
-  if(el("lead-gt"))el("lead-gt").textContent=Math.round(LO.remaining_now_gt);
+  if(el("lead-gt"))el("lead-gt").textContent=Math.round(LO.remaining_now_gt)+"\u2013"+Math.round(HIe.remaining_now_gt);
   if(el("ledger-sr"))el("ledger-sr").textContent="The two published carbon budgets, brought to today: "+  // the horizon rails are aria-hidden; give their numbers a text path
    Math.round(LO.remaining_now_gt)+" gigatonnes ("+srcShort(LO)+") and "+Math.round(HIe.remaining_now_gt)+" gigatonnes ("+srcShort(HIe)+") — the same answer.";
   var dim=el("dim");
@@ -2950,7 +2956,9 @@ function buildGround(V){
    io.observe(b);}catch(e){}})();}
  if(el("g-hotw"))el("g-hotw").textContent=CUSTOM?"Unusually hot":"Scorching";
 
- /* record-window chart */
+ /* record-window chart — RW is the day-by-day archive; the baked instant record has none,
+    and the honest instant state says so instead of borrowing anyone else's days */
+ if(RWc){
  var W=940,Hh=400,mL=38,mR=14,mT=12,mB=24,n=RWc.labels.length;
  function sc(d0,d1,r0,r1){return function(v){return r0+(v-d0)/(d1-d0)*(r1-r0);};}
  var yd=CUSTOM?V.ydom:[18,45];
@@ -3026,6 +3034,20 @@ function buildGround(V){
   tableHTML(["Calendar day","1951–80 avg",RWc.new_normal_label+" avg","Hottest ever"],
    RWc.labels.map(function(l,i){function f(v){return v==null?"—":v.toFixed(1);}
     return [l,f(RWc.old_normal_1951_1980[i]),f(RWc.new_normal_last30[i]),f(RWc.record_envelope[i])];}));
+ if(el("yr"))el("yr").disabled=false;
+ }else{
+  el("recwin").innerHTML='<p class="receipt">'+PLACE+"&rsquo;s counts above are its own, from the "+
+   "pre-computed record &middot; the day-by-day chart is drawing from the live archive&hellip;</p>";
+  if(el("yr")){el("yr").disabled=true;}
+  if(el("yr-out"))el("yr-out").textContent="";
+  var st2='<svg viewBox="0 0 860 64" preserveAspectRatio="none" role="img" aria-label="Warming stripes, one per year">';
+  Sc.anom.forEach(function(a,i){st2+='<rect x="'+(i*10).toFixed(0)+'" y="0" width="10.4" height="64" fill="'+tcol(a)+'"/>';});
+  st2+='</svg>';
+  groundDrawerExtra="<h4>The record, one stripe per year</h4>"+st2+
+   "<p class=\"receipt\">annual mean daily-high anomaly vs 1951\u20131980 \u00b7 "+PLACE+"\u2019s own record \u00b7 day-by-day tables arrive with the live archive</p>"+
+   tableHTML(["Year","Anomaly vs 1951\u201380 (\u00b0C)"],
+    Sc.anom.map(function(a,i){return [String(Sc.year0+i),(a>=0?"+":"")+a.toFixed(2)];}));
+ }
 
  /* ---- everything today-dependent renders through here (snapshot now, live later) ---- */
  applyToday=function(t){
@@ -3159,9 +3181,9 @@ var buildNight=function(NV){
  var dayFell=dNow<dThen-1,thrHs=CUSTOM?thrH.toFixed(1):"35",thrNs=CUSTOM?thrN.toFixed(1):"25";
  var dN=Math.round(nNow-nThen);
  el("n-big").innerHTML=(dN>=0?"+":"&minus;")+Math.abs(dN)+
-  "<small> "+(dN>=0?"more":"fewer")+" hot nights a year<br>than the 1951&ndash;80 average</small>";
+  "<small> "+(dN>=0?"more":"fewer")+" hot nights a year in "+place+(NV&&NV.custom?"":", the worked example")+"<br>than the 1951&ndash;80 average</small>";
  if(el("n-h2"))el("n-h2").innerHTML=dayFell?
-  (place+"&rsquo;s hot days fell. Its hot nights rose."):
+  (place+"&rsquo;s hot days edged down. Its hot nights rose."):
   ("In "+place+", the nights climbed.");
  var dDelta=Math.round(dNow-dThen),nDelta=Math.round(nNow-nThen);
  if(el("n-diverge")){
@@ -3616,7 +3638,10 @@ var __ART=(function(){
   if(!REC||g!==RECGEN){REC=recs();RECGEN=g;}
   return REC[k];}
 
- function spine(x,W,hpx){var a=S.anom,n=a.length,w=W/n;
+ function spine(x,W,hpx,r){
+  /* the spine used to read the global Seville anomalies whatever the card claimed */
+  var a=(r&&r.anomS&&r.anomS.anom)||null;if(!a)return;
+  var n=a.length,w=W/n;
   for(var i=0;i<n;i++){x.fillStyle=tcol(a[i]);x.fillRect(Math.floor(i*w),0,Math.ceil(w)+1,hpx);}}
  function mast(x,W,r,m){put(x,"ON RECORD",m,m+2,20,SG,INK,"left",3);
   x.beginPath();x.arc(m+152,m-4,4,0,6.2832);x.fillStyle=AMBER;x.fill();
@@ -3708,7 +3733,7 @@ var __ART=(function(){
   var cv=document.createElement("canvas");cv.width=W*DPR;cv.height=H*DPR;
   var x=cv.getContext("2d");x.scale(DPR,DPR);x.textBaseline="alphabetic";
   x.fillStyle=BONE;x.fillRect(0,0,W,H);
-  spine(x,W,story?90:16);
+  spine(x,W,story?90:16,r);
   mast(x,W,r,story?150:44);
   if(r.kind==="climb")climb(x,W,H,r,story);
   else if(r.kind==="ledger")ledger(x,W,H,r,story);
@@ -3826,8 +3851,7 @@ buildTakeaway();
   "<div><b>The counterweights</b>Ember GER 2026 · IEA EV Outlook 2026<br>Climate Action Tracker · WMO/UNEP Ozone — all “verify at build”</div>"+
   "<div><b>The night sky</b>Yale Bright Star Catalogue via d3-celestial (BSD-3, O. Frohn)<br>alt/az computed client-side for Delhi — IAU 1982 sidereal time; Sun/Moon/Venus per Schlyter (display-grade)</div>"+
   "<div><b>The meteors</b>IMO Meteor Shower Calendar 2026, ed. J. Rendtel — imo.net<br>parent bodies per the IMO working list · display compression declared</div>"+
-  "<div><b>The giving</b>Giving Green Top Climate Nonprofits 2025–26<br>Founders Pledge Climate Fund · framings quoted with their caveats</div>"+
-  "<div><b>The fire-day sky</b>Abatzoglou &amp; Williams 2016, PNAS 113(42):11770 — anthropogenic warming ≈doubled western-US forest area burned, 1984–2015<br>Burke et al. 2023, Nature 622:761 — wildfire smoke reversing US clean-air gains since 2016<br>Childs et al. 2022, Environ. Sci. Technol. 56(19):13607 — ~25M people had ≥1 smoke-PM2.5 day &gt;100 µg/m³ in 2020<br>optics calibrated to AERONET &amp; NASA aerosol-optical-depth ranges (AOD&gt;3 “Sun obscured”) — a labelled render, never a per-day attribution</div>";
+  "<div><b>The giving</b>Giving Green Top Climate Nonprofits 2025–26<br>Founders Pledge Climate Fund · framings quoted with their caveats</div>";
  document.querySelectorAll("#srcs>div").forEach(function(d,i){   // catalogue numbers: this is an archive
   d.setAttribute("data-cat","REC "+("0"+(i+1)).slice(-2));});
  /* This was one 380-word paragraph carrying nine separate admissions. Nobody reads a wall to find
@@ -3904,25 +3928,7 @@ var DRAWERS={
    "<h4>For the balance-sheet reader</h4><p>The U.S. EPA's central social cost of carbon is ~$"+B.scc.usd_per_t+
    "/tCO₂ (Dec 2023, "+B.scc.discount+" — higher rates give much lower values). At "+RNOW+
    " Gt/yr that prices a year of world emissions in the trillions — an illustration of scale, not a damage estimate. "+
-   "Scope 1/2/3, SBTi and IFRS S2 all draw on this same finite budget.</p>"+
-   "<h4>The fire-day sky — why it’s smoke, not carbon</h4><p>Carbon dioxide is invisible; it cannot colour clean "+
-   "air. The orange sky is <b>smoke</b> — a labelled render at real aerosol optical depth (AOD, the light a column "+
-   "of aerosol blocks at 550&nbsp;nm). The first press sits at <b>AOD ≈ 0.77</b>, the mean of heavy-smoke days in "+
-   "the 2020 US fire season (AERONET); the record press at <b>AOD ≈ 5</b>, San Francisco’s ‘orange noon’ of "+
-   "9 Sep 2020 (satellite &amp; AERONET retrievals put that day at 3–7; NASA calls AOD&gt;3 “Sun obscured”). Blue "+
-   "light is scattered out ~1.6× faster than red, so the disc reddens then vanishes and the sky’s gradient "+
-   "collapses — the real optics, computed, not painted.</p><p>The dial changes how <i>often</i> such skies arrive, "+
-   "never their colour. Human-caused warming has roughly <b>doubled</b> western-US forest area burned over "+
-   "1984&ndash;2015 (Abatzoglou &amp; Williams, PNAS 2016; ≈4.2 Mha added, ~55% of the fuel-aridity rise); since 2016 "+
-   "wildfire smoke has erased about <b>a quarter</b> of two decades of clean-air progress across most US states "+
-   "(over half in several western states; Burke et al., Nature 2023); and "+
-   "the number of Americans hit by ≥1 day of extreme smoke (&gt;100 µg/m³) rose <b>27-fold</b> in a decade — about "+
-   "<b>25 million</b> people in 2020 (Childs et al., Environ. Sci. Technol. 2022). Recent modelling attributes "+
-   "roughly half of western-US surface smoke to human-caused warming (Feng et al., PNAS 2025). All western-US and "+
-   "trend-level; no single day’s sky is attributable.</p>"+
-   "<p class=\"receipt\">A labelled illustration — an event, on demand and reversible, not a permanent state. "+
-   "AOD calibrated to named sources (AERONET · NASA · NOAA); descriptive, not a claim that CO₂ colours the air on "+
-   "any given day. The dial never drives it.</p>";}},
+   "Scope 1/2/3, SBTi and IFRS S2 all draw on this same finite budget.</p>";}},
  ground:{t:function(){var hm=window.__HOME&&__HOME.get();
    return ((hm&&!hm.ex&&hm.name)||"Seville")+" — the full record";},h:function(){return groundDrawerExtra;}},
  night:{t:"Delhi — why the split",h:function(){
@@ -4159,7 +4165,11 @@ var __PLACE=(function(){
    days.push({year:best.y0+i,n:best.d[i]});
    nights.push({year:best.y0+i,n:best.w[i]});
    anom.push(best.a[i]); }
-  return {V:{G:{days_ge35_per_year:days,warm_nights_ge25_per_year:nights},
+  /* custom:true + place were MISSING here — buildGround gated on V.custom, fell back to
+     the Seville globals, and the "instant answer" drew Seville's record under the picked
+     city's name. The one feature built to honour the localization promise broke it. */
+  return {V:{custom:true,place:name,RW:null,
+             G:{days_ge35_per_year:days,warm_nights_ge25_per_year:nights},
              S:{year0:best.y0,anom:anom},
              thr:{hot:best.th,night:best.tn},
              baked:true,bakedName:best.n},
@@ -4735,7 +4745,10 @@ var __HOME=(function(){
    var inst=(__PLACE.baked&&__PLACE.baked(h.lat,h.lon,h.name))||null;
    if(inst){ /* an answer NOW, from the same engine on a slightly older archive */
     try{__PLACE.draw(inst,h.name);}catch(e){}
-    LASTV=inst.V;REV++;placeState("ok");}
+    LASTV=inst.V;REV++;placeState("ok");
+    try{if(typeof fillRecap==="function")fillRecap();}catch(e){}
+    try{if(typeof buildCompare==="function")buildCompare();}catch(e){}
+    try{if(typeof buildTakeaway==="function")buildTakeaway();}catch(e){}}
    else placeState("pending",h.name);
    __PLACE.pick(h.lat,h.lon,h.name,GEN,{scroll:opts.scroll!==false});}
   if(opts.persist!==false&&h.src!=="link")put(KEY,JSON.stringify(h));}
@@ -4776,7 +4789,11 @@ var __HOME=(function(){
     can quote the reader's OWN numbers instead of the worked example's */
  var LASTV=null;
  var REV=0;   /* bumps when the choice OR the data changes — gen() alone misses the data arriving */
- function drawn(g,out){if(g!==GEN)return;LASTV=out&&out.V?out.V:null;REV++;placeState("ok");}
+ function drawn(g,out){if(g!==GEN)return;LASTV=out&&out.V?out.V:null;REV++;placeState("ok");
+  /* the arrival refreshes everything that quotes the record — recap, compare, exports */
+  try{if(typeof fillRecap==="function")fillRecap();}catch(e){}
+  try{if(typeof buildCompare==="function")buildCompare();}catch(e){}
+  try{if(typeof buildTakeaway==="function")buildTakeaway();}catch(e){}}
  function failed(g,transient){if(g!==GEN)return;LASTV=null;REV++;
   placeState(transient?"retry":"failed",HOME&&HOME.name);}
  /* The page states which place its NUMBERS belong to whenever that is not the place named above
@@ -5022,14 +5039,18 @@ window.__HOME=__HOME;
     set("rc-1-s","Days above "+V.thr.hot.toFixed(1)+" \u00B0C in "+nm+
       " \u2014 hotter than 95% of its own 1951\u201380 days. The first number is that baseline; the second is "+(LFy-9)+"\u2013"+LFy+".");
     set("rc-2-n",nw+" \u2192 "+nn+" nights a year");
+    var rs2=el("recap-say");if(rs2)rs2.textContent="Four things this page measured \u2014 yours first.";
     set("rc-2-s","Nights above "+V.thr.night.toFixed(1)+" \u00B0C in "+nm+
       ", when the body cannot cool down. Nights warm faster than days almost everywhere.");
    }else{
     set("rc-1-n",Math.round(mean(G.days_ge35_per_year,1951,1980))+" \u2192 "+
       Math.round(mean(G.days_ge35_per_year,LF-9,LF))+" days a year");
     set("rc-1-s","Days at or above 35 \u00B0C in Seville, the worked example \u2014 set your place and this becomes yours.");
-    set("rc-2-n",Math.round(mean(G.warm_nights_ge25_per_year,1951,1980))+" \u2192 "+
-      Math.round(mean(G.warm_nights_ge25_per_year,LF-9,LF))+" nights a year");
+    /* the night line quotes what the Night chapter actually shows (Delhi, the worked
+       example) — it used to quote Seville's nights while the chapter showed Delhi's */
+    set("rc-2-n",Math.round(dr.warm_nights_then)+" \u2192 "+Math.round(dr.warm_nights_now)+" nights a year");
+    set("rc-2-s","Hot nights a year in Delhi, the worked example \u2014 set your place and this becomes yours.");
+    var rs=el("recap-say");if(rs)rs.textContent="Four things this page measured, each from a named source.";
    }
    set("rc-3-n",P.global_want_action_pct+"% want action");
    set("rc-3-s","Of every 100 people worldwide, "+Math.round(P.world.actual)+" would give 1% of their income and "+Math.round(P.global_want_action_pct)+"% want stronger government action (Andre et al. 2024, 125 countries) \u2014 most underestimate both.");

@@ -489,12 +489,12 @@ def _bake(doc):
         v = [r["n"] for r in _nights if a <= r["year"] <= b]
         return round(sum(v) / len(v)) if v else 0
     _P = out["perception_gap"]
-    subs = {"lead-gt": str(round(_est[0]["remaining_now_gt"])),
+    subs = {"lead-gt": "%d\u2013%d" % (round(_est[0]["remaining_now_gt"]), round(_hi["remaining_now_gt"])),
             "g-then": str(round(mean_over(g35, 1951, 1980))),
             "g-now": str(round(mean_over(g35, LAST_FULL - 9, LAST_FULL))),
             "rc-1-n": f"{round(mean_over(g35,1951,1980))} \u2192 {round(mean_over(g35,LAST_FULL-9,LAST_FULL))} days a year",
             "n-big": "+%d " % round(out["delhi_honesty"]["receipts"]["warm_nights_now"] - out["delhi_honesty"]["receipts"]["warm_nights_then"]),
-            "rc-2-n": f"{_nmean(1951,1980)} \u2192 {_nmean(LAST_FULL-9,LAST_FULL)} nights a year",
+            "rc-2-n": "%d \u2192 %d nights a year" % (round(out["delhi_honesty"]["receipts"]["warm_nights_then"]), round(out["delhi_honesty"]["receipts"]["warm_nights_now"])),
             "rc-3-n": f"{round(_P['global_want_action_pct'])}% want action",
             "rc-4-n": f"{_yrs} years of budget left",
             "spent": (f"{round(_est[0]['remaining_now_gt'])}\u2013{round(_hi['remaining_now_gt'])} Gt remain "
@@ -578,6 +578,9 @@ for _name in ["index.html", "sw.js", "reuse.html", "onrecord-heat-mockup.html"]:
     if _fp.exists():
         assert "<<<<<<<" not in _fp.read_text() and ">>>>>>>" not in _fp.read_text(), \
             _name + " contains merge conflict markers - REFUSING to ship"
+        _vis = __import__("re").sub(r"<script[^>]*>.*?</script>", "", _fp.read_text(), flags=__import__("re").S)
+        assert "\\n" not in __import__("re").sub(r"<[^>]*>", "", _vis) or _name != "index.html", \
+            _name + " serves literal backslash-n as text"  # literal backslash-n guard
 try:
     import subprocess as _sp
     _r = _sp.run(["node", "--check", str(ROOT / "sw.js")], capture_output=True)

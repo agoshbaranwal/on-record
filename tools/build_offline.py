@@ -107,13 +107,13 @@ def _bake(doc):
     _yspan = f"{_ylo:.1f}" if f"{_ylo:.1f}" == f"{_yhi:.1f}" else f"{_ylo:.1f}\u2013{_yhi:.1f}"
     _spend = round(_nowdec + _ylo)
     _P = _d["perception_gap"]
-    subs = {"lead-gt": str(_lead),
+    subs = {"lead-gt": "%d\u2013%d" % (round(_est[0]["remaining_now_gt"]), round(_est[-1]["remaining_now_gt"])),
             "g-then": str(_mean(1951, 1980)),
             "g-now":  str(_mean(LAST_FULL - 9, LAST_FULL)),
             # the summary chapter's whole job is four numbers; it must not ship dashes
             "rc-1-n": f"{_mean(1951,1980)} \u2192 {_mean(LAST_FULL-9,LAST_FULL)} days a year",
             "n-big": "+%d " % round(_d["delhi_honesty"]["receipts"]["warm_nights_now"] - _d["delhi_honesty"]["receipts"]["warm_nights_then"]),
-            "rc-2-n": f"{_nmean(1951,1980)} \u2192 {_nmean(LAST_FULL-9,LAST_FULL)} nights a year",
+            "rc-2-n": "%d \u2192 %d nights a year" % (round(_d["delhi_honesty"]["receipts"]["warm_nights_then"]), round(_d["delhi_honesty"]["receipts"]["warm_nights_now"])),
             "rc-3-n": f"{round(_P['global_want_action_pct'])}% want action",
             "rc-4-n": f"{_yspan} years of budget left",
             # the flagship number's named sources, VISIBLE — not only in noscript and the drawer
@@ -161,6 +161,9 @@ for _name in ["index.html", "sw.js", "reuse.html", "onrecord-heat-mockup.html"]:
     if _fp.exists():
         assert "<<<<<<<" not in _fp.read_text() and ">>>>>>>" not in _fp.read_text(), \
             _name + " contains merge conflict markers - REFUSING to ship"
+        _vis = __import__("re").sub(r"<script[^>]*>.*?</script>", "", _fp.read_text(), flags=__import__("re").S)
+        assert "\\n" not in __import__("re").sub(r"<[^>]*>", "", _vis) or _name != "index.html", \
+            _name + " serves literal backslash-n as text"  # literal backslash-n guard
 try:
     import subprocess as _sp
     _r = _sp.run(["node", "--check", str(ROOT / "sw.js")], capture_output=True)
