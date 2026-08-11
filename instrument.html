@@ -1444,7 +1444,7 @@ button.rr-row:hover{padding-left:6px}
     <button id="homechip" type="button" hidden title="The place this site is drawn for — opens the picker">where are you?</button>
   </div>
   <button id="soundbtn" type="button" aria-pressed="false"
-          title="Ambient sound — synthesised from the chamber you're in">
+          title="Ambient sound — synthesised from the chapter you're in">
     <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span id="soundlab">sound off</span>
   </button>
 
@@ -1475,7 +1475,7 @@ button.rr-row:hover{padding-left:6px}
                  lives in the chamber, where a deep-linked or returning reader also meets it. -->
             <h2 tabindex="-1" id="sky-h2">Two and a half years.<br>Then the odds change.</h2>
             <p class="lead" id="sky-lead">Not the end of anything. The end of a coin-flip chance of
-              stopping at 1.5&nbsp;&deg;C &mdash; about <b class="num" id="lead-gt">–</b> billion tonnes
+              stopping at 1.5&nbsp;&deg;C &mdash; the line the world&rsquo;s governments agreed to try to hold &mdash; about <b class="num" id="lead-gt">–</b> billion tonnes
               of CO&#8322; from now. Past it the risk keeps climbing, a tenth of a degree at a time.</p>
             <div id="skycount">
               <p class="years num" id="years">–</p>
@@ -1529,6 +1529,7 @@ button.rr-row:hover{padding-left:6px}
               <p class="foot"><button type="button" id="reset">reset to today</button><button
                 type="button" id="copysky">copy this sky</button></p>
             </div>
+            <p class="beat-cue">that was the world&rsquo;s clock &mdash; now your own ground &darr;</p>
           </div>
         </div>
 
@@ -1552,7 +1553,7 @@ button.rr-row:hover{padding-left:6px}
             <h2 class="page-what"><b class="pw-name">Your hot days</b><span class="sr-only">. </span><span class="pw-say">How many dangerously hot days your own town gets now, compared with your grandparents&rsquo; time.</span></h2>
             <h2 tabindex="-1" id="g-h2">Here is Seville, day by day, since 1940.</h2>
             <p class="place-tag" hidden>worked example &mdash; not your place &middot; set your place below</p>
-                        <p class="lead">Not a global average &mdash; the ground under your feet, measured since 1940.</p>
+                        <p class="lead">Not a global average &mdash; the ground under your feet.</p>
             <!-- the ONE place picker. #gplace is kept inside it so its existing CSS still applies. -->
             <div id="homepick">
               <!-- once a place is set, the whole picker collapses to this one line: the reader
@@ -1583,7 +1584,7 @@ button.rr-row:hover{padding-left:6px}
               <div id="gq-bar" role="group" aria-label="Cities you can choose"></div>
               <p id="gq-barnote" class="receipt">Each city is a single point, not the whole city, and
                 ERA5&rsquo;s grid cell is about 28&nbsp;km across &mdash; so the record is that cell&rsquo;s,
-                not that street&rsquo;s. The coordinates are echoed when you pick, and all are listed in Bedrock.</p>
+                not that street&rsquo;s. The coordinates are echoed when you pick, and all are listed with the sources at the end of the page.</p>
               <div id="gq-ex" role="group" aria-label="Worked examples">
                 <span class="gq-exlab">worked examples</span>
                 <button type="button" class="gq-exb" id="ex-seville" data-slug="seville">Seville &mdash; heat that doubled</button>
@@ -1598,7 +1599,7 @@ button.rr-row:hover{padding-left:6px}
           <!-- BEAT 2 — the then-vs-now count: the chapter's one number -->
           <div class="beat">
           <div class="sheet">
-            <h2 id="g-count-h2"><span id="g-hotw">Scorching</span> days here: <b class="num" id="g-then">–</b> then,
+            <h2 id="g-count-h2"><span id="g-hotw">Hot</span> days here: <b class="num" id="g-then">–</b> then,
               <b class="num" id="g-now">–</b> now.</h2>
             <div id="g-fact"><p class="gb-say">Days at or above 35&nbsp;&deg;C in Seville, the worked example &mdash; the 1951&ndash;80 average against the last ten full years. Set your place and the count becomes yours, against your own threshold.</p></div>
             <p class="fact-line" id="g-freq"></p>
@@ -1628,7 +1629,7 @@ button.rr-row:hover{padding-left:6px}
               <input type="number" id="yr" min="1940" max="2025" placeholder="1985" inputmode="numeric">
             </div>
             <span class="out mono finder" id="yr-out" aria-live="polite"></span>
-            <p class="beat-cue">days are only half the record &mdash; the other half is after dark &darr;</p>
+            <p class="beat-cue">see how your town compares &mdash; any two, honestly &darr;</p>
           </div>
         </div>
         </div>
@@ -1639,8 +1640,7 @@ button.rr-row:hover{padding-left:6px}
         <div class="beat" id="cmp-beat">
           <div class="sheet sheet--wide">
             <h2 class="page-what"><b class="pw-name">Compare</b><span class="sr-only">. </span><span class="pw-say">Two towns
-              side by side &mdash; each measured against its own past. The &times; is
-              what&rsquo;s comparable, not the raw counts.</span></h2>
+              side by side &mdash; each measured against its own past.</span></h2>
             <div id="cmp-grid">
               <div class="cmp-card" id="cmp-a" aria-live="polite"></div>
               <div class="cmp-card">
@@ -1649,7 +1649,8 @@ button.rr-row:hover{padding-left:6px}
                 <div id="cmp-b-body" aria-live="polite"></div>
               </div>
             </div>
-            <p id="cmp-note">&ldquo;Dangerously hot&rdquo; is each town&rsquo;s own 1951&ndash;80
+            <p class="beat-cue">the other half of the record is after dark &darr;</p>
+            <p id="cmp-note">The &times; on each card is the change &mdash; that is the comparable part. &ldquo;Dangerously hot&rdquo; is each town&rsquo;s own 1951&ndash;80
               95th percentile &mdash; the two cards count different thresholds, so comparing raw
               day-counts would be false precision. Compare the change. Averages: 1951&ndash;80 vs
               the last ten full years &middot; ERA5 via Open-Meteo.</p>
@@ -1663,7 +1664,7 @@ button.rr-row:hover{padding-left:6px}
           <!-- BEAT 1 — the danger people miss, and the number -->
           <div class="beat">
           <div class="sheet">
-            <h2 class="page-what"><b class="pw-name">Your hot nights</b><span class="sr-only">. </span><span class="pw-say">Where you live, the nights are warming faster than the days &mdash; and the nights are the dangerous half.</span></h2>
+            <h2 class="page-what"><b class="pw-name">Your hot nights</b><span class="sr-only">. </span><span class="pw-say">Almost everywhere, nights are warming faster than days &mdash; and the nights are the dangerous half.</span></h2>
             <h2 tabindex="-1">Hot nights are the danger most people miss.</h2>
             <p class="place-tag" hidden>worked example &mdash; not your place &middot; set it in Your hot days</p>
             <p class="lead">Your body cools down at night to recover. When the nights stop cooling,
@@ -1716,7 +1717,7 @@ button.rr-row:hover{padding-left:6px}
           <div class="beat">
           <div class="sheet sheet--wide">
             <h2 class="page-what"><b class="pw-name">What people actually want</b><span class="sr-only">. </span><span class="pw-say">Far more people around you want action on climate change than you think.</span></h2>
-            <h2 tabindex="-1">Most people back climate action.<br>They just think most people don&rsquo;t.</h2>
+            <h2 tabindex="-1">Would people give 1% of their income<br>to fight warming?</h2>
             <p class="lead">Researchers asked people in 125 countries whether they would give
               <b>1% of their income</b>, every month, to fight warming. Before we tell you the
               answer &mdash; what would you guess?</p>
@@ -1733,6 +1734,7 @@ button.rr-row:hover{padding-left:6px}
             <!-- 100 people. The finding stops being a sentence and becomes a thing you look at:
                  the crowd lights up past where you guessed it would stop. -->
             <div id="wg-dots" aria-hidden="true"></div>
+            <p id="wg-claim" hidden><b>Most people back climate action. They just think most people don&rsquo;t.</b></p>
             <p id="wg-key" aria-hidden="true"></p>
             <p class="beat-cue">now find your own country &darr;</p>
           </div>
@@ -1764,7 +1766,7 @@ button.rr-row:hover{padding-left:6px}
               <p class="sep89 show" id="pg-give"></p>
             </div>
             <button class="drawbtn" data-drawer="firstlight">Sources &amp; the study</button>
-            <p class="beat-cue">time for the numbers moving the right way &mdash; daylight &darr;</p>
+            <p class="beat-cue">next &mdash; what one person can actually move &darr;</p>
           </div>
         </div>
         </div>
@@ -1786,7 +1788,7 @@ button.rr-row:hover{padding-left:6px}
             <div class="rr-menu">
               <button class="rr-row rr-lever rr-default" data-act="letter" type="button">
                 <span class="rr-head"><span class="rr-chip">Start here</span><span class="rr-label">Put your city on the record.</span><span class="rr-wedge" aria-hidden="true"></span></span>
-                <span class="rr-note">A personalised local letter can sway an undecided vote &mdash; and this page just computed your local data. <span class="rr-src">CMF</span></span></button>
+                <span class="rr-note">A personalised local letter can sway an undecided vote &mdash; and this page just computed your local data. <span class="rr-src">CMF survey of congressional staff</span></span></button>
               <button class="rr-row rr-lever" data-act="vote" type="button">
                 <span class="rr-head"><span class="rr-label">Vote like the climate is on the ballot.</span><span class="rr-wedge" aria-hidden="true"></span></span>
                 <span class="rr-note">A written when-and-where plan lifts turnout by about 4 points. Non-partisan &mdash; we name no parties. <span class="rr-src">plan &rarr;</span></span></button>
@@ -1795,7 +1797,7 @@ button.rr-row:hover{padding-left:6px}
                 <span class="rr-note">Hearing people you know discuss it is how the real consensus becomes visible. <span class="rr-src">the kit is just below</span></span></button>
               <button class="rr-row rr-give" data-act="give" type="button">
                 <span class="rr-head"><span class="rr-label">Give where a dollar buys the most.</span><span class="rr-ev">~$1 / tonne CO₂e · uncertain</span></span>
-                <span class="rr-note">An uncertain bet on systemic change (CATF, Carbon180) &mdash; <b>not</b> an offset that cancels your own emissions. <span class="rr-src">Founders Pledge / Giving Green</span></span></button>
+                <span class="rr-note">A bet on systemic change (CATF, Carbon180) &mdash; <b>not</b> an offset that cancels your own emissions. <span class="rr-src">Founders Pledge / Giving Green</span></span></button>
 
             <p class="beat-cue">and the smaller levers, fully in your own hands &darr;</p>
           </div>
@@ -1803,11 +1805,11 @@ button.rr-row:hover{padding-left:6px}
         <div class="beat">
           <div class="sheet">
             <h2>The personal levers.</h2>
-            <p class="lead">Real, smaller, and entirely yours &mdash; each one measured.</p>
+            <p class="lead">Real, smaller, and entirely yours &mdash; figures are tonnes of CO&#8322; a year.</p>
               <div class="rr-row rr-foot">
                 <span class="rr-head"><span class="rr-label">Live car-free, or car-light.</span><span class="rr-t">2.4 t</span></span>
                 <span class="rr-bar" style="--w:96%" aria-hidden="true"><i></i></span>
-                <span class="rr-note">Technical potential, high-income context, where transit exists. <span class="rr-src">Wynes &amp; Nicholas 2017</span></span></div>
+                <span class="rr-note">The ceiling, for someone in a rich country where transit exists. <span class="rr-src">Wynes &amp; Nicholas 2017</span></span></div>
               <div class="rr-row rr-foot">
                 <span class="rr-head"><span class="rr-label">Skip one transatlantic round-trip.</span><span class="rr-t">1.6 t</span></span>
                 <span class="rr-bar" style="--w:64%" aria-hidden="true"><i></i></span>
@@ -1946,7 +1948,7 @@ button.rr-row:hover{padding-left:6px}
           <h2 class="ib-h">How much hotter is your town than when your grandparents were young?</h2>
           <p class="ib-p">We counted it from the weather record &mdash; every day since 1940. Pick your
             place and the whole page redraws around it: your hot days, your nights, your sky. Every
-            number shows where it came from.<span class="ib-chip">ERA5 &middot; 1940 to today</span></p>
+            number shows where it came from.<span class="ib-chip">the ERA5 weather archive &middot; 1940 &rarr; today</span></p>
           <div id="pk-btns">
             <button type="button" id="pk-geo" class="btn-fill">Use my location</button>
             <button type="button" id="pk-list">Pick a city instead</button>
@@ -3005,7 +3007,7 @@ function buildGround(V){
     for(var q=0;q<es.length;q++)if(es[q].isIntersecting&&!done){done=true;io.disconnect();
      cnt(el("g-then"),Math.round(thenN),0);cnt(el("g-now"),Math.round(nowN),250);}},{threshold:.5});
    io.observe(b);}catch(e){}})();}
- if(el("g-hotw"))el("g-hotw").textContent=CUSTOM?"Unusually hot":"Scorching";
+ if(el("g-hotw"))el("g-hotw").textContent="Hot";
 
  /* record-window chart — RW is the day-by-day archive; the baked instant record has none,
     and the honest instant state says so instead of borrowing anyone else's days */
@@ -3927,7 +3929,7 @@ buildTakeaway();
  el("colophon").innerHTML="On Record rebuilds every night: this page was last built <b>"+D._meta.today+
   (_bm?(" · build "+_bm.content.slice(-8)):"")+
   "</b> from an archive complete to <b>"+D._meta.archive_end+"</b>. Every figure traces to the sources above "+
-  "or is flagged “verify at build”. Nothing hand-typed or model-guessed. English first; Hindi from launch. "+
+  "or is flagged “verify at build”. Nothing hand-typed or model-guessed. English first; Hindi is next. "+
   "Made by Agosh Baranwal · agoshbaranwal@gmail.com";
 })();
 
@@ -4544,11 +4546,10 @@ var __SKY=(function(){
   var act=activeShowers();
   if(act.length){var lead=act.slice().sort(function(x,y){
     return y.zhr*strength(y)-x.zhr*strength(x);})[0];
-   return "The meteors here are real: "+act.map(function(s){
-     return "<b>"+s.name+"</b> ("+s.parent+")";}).join(" · ")+
-    " are active on this date. Strongest now: "+lead.name+", peaking "+fmtPeak(lead.peak)+
-    " at up to ~"+lead.zhr+"/hr under ideal dark skies. Streaks radiate from the true radiants; "+
-    "display time is compressed — details in the receipts.";}
+   return "Real meteors tonight: <b>"+lead.name+"</b>, peaking "+fmtPeak(lead.peak)+
+    " at up to ~"+lead.zhr+"/hr under dark skies"+
+    (act.length>1?(" — with "+act.filter(function(s){return s!==lead;}).map(function(s){return s.name;}).join(" and ")):"")+
+    ". Details in the receipts.";}
   var nx=nextShower();
   return "No major shower is active on this date, so this sky stays still. Next: <b>"+nx.name+
    "</b> ("+nx.parent+"), peaking "+fmtPeak(nx.peak)+" — up to ~"+nx.zhr+"/hr under dark skies.";}
@@ -5059,13 +5060,15 @@ window.__HOME=__HOME;
     if(start<=TRUE_YES){
      light(start,TRUE_YES,"extra",slow?0:26,function(){
       var extra=TRUE_YES-start;
-      el("wg-key").innerHTML=(mine!=null
+      var wc=el("wg-claim");if(wc)wc.hidden=false;
+     el("wg-key").innerHTML=(mine!=null
        ? (extra>0?("<span class=\"kx\">you guessed "+start+"</span> &middot; <b>"+extra+" more</b> than you thought were already with you")
                  :("<span class=\"kx\">you guessed "+start+"</span> &middot; exactly right"))
        : ("<span class=\"kx\">most people guess "+TRUE_GUESS+"</span> &middot; <b>"+extra+" more</b> are already with them"));
      });
     }else{
      light(TRUE_YES,start,"over",slow?0:26,function(){
+      var wc2=el("wg-claim");if(wc2)wc2.hidden=false;
       el("wg-key").innerHTML="<span class=\"kx\">you guessed "+start+"</span> &middot; <b>"+
        (start-TRUE_YES)+" fewer</b> said yes than you hoped &mdash; still <b>"+TRUE_YES+" of every 100</b>.";
      });
