@@ -1,0 +1,25 @@
+<!doctype html><meta charset=utf-8>
+<style>iframe{width:1995px;height:1295px;border:0}</style>
+<iframe id="f" src="index.html?intro=0&live=0"></iframe>
+<script>var f=document.getElementById("f");
+f.onload=function(){setTimeout(function(){var w=f.contentWindow,d=f.contentDocument;
+ d.querySelectorAll(".beat,.pane-screen").forEach(function(b){b.classList.add("seen");});
+ var subs=d.querySelectorAll("#ladder .subrung");
+ var target=null;subs.forEach(function(s){if(/Change the pace/.test(s.textContent))target=s;});
+ if(target)target.click();
+ setTimeout(function(){
+  var on=d.querySelector(".subrung.on");
+  var o=["tick="+(on?on.textContent.trim():"none")];
+  var inp=d.getElementById("wg-in"),go=d.getElementById("wg-go");
+  if(inp&&go){inp.value="30";go.click();}
+  setTimeout(function(){
+   var again=d.getElementById("wg-again");
+   o.push("revealClaim="+((d.getElementById("wg-claim")||{}).hidden===false));
+   o.push("againVisible="+(again&&again.hidden===false));
+   if(again)again.click();
+   setTimeout(function(){
+    o.push("askBack="+((d.getElementById("wg-ask")||{}).hidden===false));
+    o.push("dotsCleared="+(d.querySelectorAll("#wg-dots i.yes,#wg-dots i.extra,#wg-dots i.over").length===0));
+    o.push("claimRehidden="+((d.getElementById("wg-claim")||{}).hidden));
+    document.title="TK::"+o.join(" | ");},600);},4200);},900);},1700);};
+</script>

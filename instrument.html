@@ -2511,7 +2511,9 @@ CH.forEach(function(c,i){
    sb.textContent=lab;
    sb.addEventListener("click",function(){
     var bt=document.querySelectorAll("#p-"+c.id+" .beat")[si];
-    if(bt)bt.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});});
+    if(bt)bt.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
+    /* the tick answers the click immediately — not a scroll-handler tick later */
+    document.querySelectorAll(".subrung").forEach(function(x){x.classList.toggle("on",x===sb);});});
    sd.appendChild(sb);});
   wrap.appendChild(sd);}
  ladder.appendChild(wrap);});
@@ -2567,8 +2569,10 @@ function enterChamber(i){
   if(b.parentNode&&b.parentNode.classList)b.parentNode.classList.toggle("open",j===i);});
  /* mark the nearest sub-page within the open chapter */
  try{var pane=el("p-"+CH[i].id);
-  if(pane){var bts=pane.querySelectorAll(".beat"),bi=0,sy=window.scrollY+innerHeight*0.4;
-   bts.forEach(function(bb,k){if(bb.offsetTop+ (bb.closest(".beats")?bb.closest(".beats").offsetTop:pane.offsetTop) <= sy)bi=k;});
+  if(pane){var bts=pane.querySelectorAll(".beat"),bi=0;
+   /* viewport-relative — the offsetTop chain omitted the pane's own offset and marked
+      the wrong sub-page (caught in the Phase-2 final capture) */
+   bts.forEach(function(bb,k){if(bb.getBoundingClientRect().top<=innerHeight*0.4)bi=k;});
    var subs=ladder.querySelectorAll(".rgroup.open .subrung");
    subs.forEach(function(s,k){s.classList.toggle("on",k===bi);});}}catch(e){}
  if(window.__BAND)__BAND.at(i,CH.length);                            // the budget-band caret follows you through the story
