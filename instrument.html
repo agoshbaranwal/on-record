@@ -1,5 +1,7 @@
 <style>
 /*__FONTS__*/
+.share-lead{margin-top:22px;font-size:14px;color:var(--ink-2)}
+
 #showerbox{max-width:min(38ch,30vw);margin-left:auto;font-size:13px;line-height:1.5;color:var(--bone-3);text-shadow:var(--halo);margin-bottom:6px}
 #showerbox b{color:var(--bone-2);font-weight:500}
 @media(max-width:640px){#showerbox{display:none}}  /* phones: the drawer keeps the detail */
@@ -7,7 +9,10 @@
 .thm-ink #mast,body.thm-ink #mast{background:linear-gradient(to bottom,rgba(244,244,241,.9) 55%,rgba(244,244,241,.55) 78%,transparent)}
 body.introing #mast{background:none!important}
 /* snap and anchors stop BELOW the mast, so no beat's first line ever slides under it */
-html{scroll-padding-top:calc(var(--mast-h,150px) - 46px)}
+/* scroll-margin on the element governs snap stops, anchor jumps AND scrollIntoView —
+   and no arbitrary 46px undershoot */
+.beat,.pane-screen{scroll-margin-top:0}
+html{scroll-padding-top:0}
 
 /* the trust explainer is a disclosure: ~100 words a reader can ask for, not wade through.
    (An earlier toggle here opened an EMPTY panel and was removed — this one is verified.) */
@@ -87,7 +92,7 @@ html{scroll-padding-top:calc(var(--mast-h,150px) - 46px)}
 @media(max-width:940px){
   #ladder{background:linear-gradient(to top,rgba(3,15,17,.92) 65%,rgba(3,15,17,0));
     padding-top:10px;padding-bottom:8px}
-  .pane > .beat{padding-bottom:74px}
+  .beats > .beat,.pane > .beat{padding-bottom:74px}
 }
 
 /* ── TEXT GETS PAPER ──────────────────────────────────────────────────────────
@@ -118,7 +123,10 @@ html{scroll-padding-top:calc(var(--mast-h,150px) - 46px)}
 
 /* every chapter's first beat starts below the MEASURED masthead, at every width —
    the fixed 16vh guess is what let the mast print through headings and clip sheet corners */
-.pane > .beat:first-child{padding-top:calc(var(--mast-h,150px) + 18px)}
+/* EVERY beat clears the measured masthead — not just the first, and via selectors that
+   actually match: beats are GRANDCHILDREN (.pane > .beats > .beat); compare and recap are
+   direct children. The previous rule (.pane > .beat:first-child) matched NOTHING. */
+.beats > .beat,.pane > .beat{padding-top:calc(var(--mast-h,150px) + 24px)}
 
 #recap-list{list-style:none;margin:22px 0 0;padding:0;max-width:60ch;counter-reset:rc}
 #recap-list li{counter-increment:rc;position:relative;padding:0 0 0 34px;margin:0 0 20px}
@@ -481,7 +489,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 .pane.seen>*{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.pane:has(>h2)>*{opacity:1;transform:none;transition:none}}
 /* bedrock is a free-scrolling archive, never snapped */
-#p-bedrock{scroll-snap-align:none;padding:12vh 172px 12vh 38px;max-width:1400px;margin:0 auto;height:auto;display:block;overflow:visible}
+#p-bedrock{scroll-snap-align:none;padding:calc(var(--mast-h,150px) + 24px) 172px 12vh 38px;max-width:1400px;margin:0 auto;height:auto;display:block;overflow:visible}
 #p-bedrock,#p-bedrock *{scroll-snap-align:none!important;scroll-snap-stop:normal!important}
 .pane h2{font-weight:500;font-size:clamp(21px,2.6vw,31px);line-height:1.12;letter-spacing:-.015em;
   max-width:24ch;text-wrap:balance;color:var(--bone);text-shadow:var(--halo-h)}
@@ -1706,7 +1714,7 @@ button.rr-row:hover{padding-left:6px}
                 <span class="rr-note">A written when-and-where plan lifts turnout by about 4 points. Non-partisan &mdash; we name no parties. <span class="rr-src">plan &rarr;</span></span></button>
               <button class="rr-row rr-lever" data-act="talk" type="button">
                 <span class="rr-head"><span class="rr-label">Have the conversation.</span><span class="rr-wedge" aria-hidden="true"></span></span>
-                <span class="rr-note">Hearing people you know discuss it is how the real consensus becomes visible. <span class="rr-src">&uarr; the kit above</span></span></button>
+                <span class="rr-note">Hearing people you know discuss it is how the real consensus becomes visible. <span class="rr-src">the kit is just below</span></span></button>
               <button class="rr-row rr-give" data-act="give" type="button">
                 <span class="rr-head"><span class="rr-label">Give where a dollar buys the most.</span><span class="rr-ev">~$1 / tonne CO₂e · uncertain</span></span>
                 <span class="rr-note">An uncertain bet on systemic change (CATF, Carbon180) &mdash; <b>not</b> an offset that cancels your own emissions. <span class="rr-src">Founders Pledge / Giving Green</span></span></button>
@@ -1727,17 +1735,7 @@ button.rr-row:hover{padding-left:6px}
             </div>
             <div id="rr-panel" class="rr-panel" hidden></div>
             <div id="rr-pledge" class="rr-pledge" hidden></div>
-            <p class="beat-cue">a smaller act that compounds &mdash; tell one person &darr;</p>
-          </div>
-        </div>
-        <div class="beat">
-          <div class="sheet">
-            <h2>Start by telling one person.</h2>
-            <!-- This screen and the next both used to crown themselves "the most useful thing",
-                 one scroll apart, so neither read as the answer. This one is now the FIRST step and
-                 says so; the record room below is where the leverage actually is. -->
-            <p class="lead">You just watched the gap yourself. Telling one person the true number closes it &mdash;
-              the smallest useful thing, and the one you can do now.</p>
+            <p class="share-lead">The kit for it &mdash; the card with your place&rsquo;s numbers, ready to send:</p>
             <div class="sharecard">
               <div class="mini" id="share-mini" aria-hidden="true"></div>
               <button id="share-btn" type="button">Save this record <span aria-hidden="true">&rarr;</span></button>
@@ -1751,6 +1749,9 @@ button.rr-row:hover{padding-left:6px}
             <p class="beat-cue">and the record already shows movement &darr;</p>
           </div>
         </div>
+        <!-- "Start by telling one person" removed: a full screen duplicating the action
+             menu's "Have the conversation" item — same advice, same chapter, two screens
+             apart. The menu item carries the insight now. -->
         <div class="beat">
           <div class="sheet">
                         <h2 tabindex="-1">The record also holds good news,<br>all of it measured.</h2>
@@ -3153,11 +3154,9 @@ var buildNight=function(NV){
    (place+"&rsquo;s daytime highs actually fell over the same years &mdash; we draw that falling line too. "+
     "<b>That is why you can trust the rising one.</b>"):
    ("The days "+dVerb+" &mdash; both lines are drawn, whichever way they run."));
- el("delhi-receipt").innerHTML="days ≥"+thrHs+" °C: <b>"+(+dThen).toFixed(1)+"→"+(+dNow).toFixed(1)+
-  "</b>/yr · nights ≥"+thrNs+" °C: <b>"+(+nThen).toFixed(1)+"→"+(+nNow).toFixed(1)+"</b>/yr · "+
-  (CUSTOM?"thresholds are the place&rsquo;s own 1951–80 95th percentiles · ":"")+
-  "1951–80 avg vs "+(LF-9)+"–"+LF+" avg · ERA5 · 11-year average in bold · we show the record, not the cause"+
-  (CUSTOM?"":" · pick any city in Ground and this chapter follows it");
+ el("delhi-receipt").innerHTML="days ≥"+thrHs+" °C: <b>"+Math.round(dThen)+"→"+Math.round(dNow)+
+  "</b>/yr · nights ≥"+thrNs+" °C: <b>"+Math.round(nThen)+"→"+Math.round(nNow)+"</b>/yr · "+
+  "1951–80 vs "+(LF-9)+"–"+LF+" · ERA5 · the record, not the cause";
  var dTrend=dayFell?"— edging down":(dNow>dThen+1?"— climbing":"— flat");
  var nTrend=nNow>nThen+1?"— climbing":(nNow<nThen-1?"— edging down":"— flat");
  var lr2=ladder.children[2]&&ladder.children[2].querySelector(".fact");
@@ -3761,11 +3760,11 @@ buildTakeaway();
 /* ============ BEDROCK ============ */
 (function(){
  var h=D.how_we_know,b=h.seville_forecast_vs_reanalysis_bias_C;
- el("hww").innerHTML="<b>What the record is.</b> "+h.what_is_era5+
-  " It is a <b>reanalysis</b> — a reconstruction, not a single thermometer — and we say so wherever it appears. "+
-  "For today we compare a live forecast against it; here the forecast runs ~"+Math.abs(b.mean_C).toFixed(1)+
-  " °C "+(b.mean_C<0?"cooler":"warmer")+" (measured over "+b.n_days+" days), so we adjust and label today provisional. "+
-  "Next, shown per place: a cross-check against the nearest long-running weather station.";
+ /* was a ~95-word methodology essay; the reference page carries the full method */
+ el("hww").innerHTML="<b>What the record is.</b> ERA5: the world&rsquo;s weather since 1940, every "+
+  "measurement fed into one physics model &mdash; a <b>reanalysis</b>, not a thermometer on your street. "+
+  "Today&rsquo;s reading is cross-checked against a live forecast (currently ~"+Math.abs(b.mean_C).toFixed(1)+
+  " °C "+(b.mean_C<0?"cooler":"warmer")+") and labelled provisional.";
  el("budget-notes").innerHTML=B.notes.join(" · ");
  table("t-budget",
   ["Estimate","Published GtCO₂","Counted from","Emitted since","Remaining, "+B.now_label,"Years @ "+RNOW,"Odds of holding 1.5 °C"],
@@ -3788,18 +3787,14 @@ buildTakeaway();
     nothing softened; it just has a shape now. */
  el("limits").innerHTML="<b>What this page cannot tell you.</b>"+
   "<dl class='lim'>"+
-  "<dt>The grid is coarse</dt><dd>ERA5 averages over ~30 km, so it smooths valley heat. Day-counts are a "+
-   "reconstruction, not a thermometer on your street.</dd>"+
-  "<dt>One number is an assumption</dt><dd>The 0.88 °C pre-industrial offset is stated, not measured here.</dd>"+
-  "<dt>The budgets are moving</dt><dd>Revised yearly, each published against its own start date. We subtract "+
-   "what has been emitted since, holding the 2025 rate — an assumption, flagged.</dd>"+
-  "<dt>The dial is arithmetic</dt><dd>Not a pathway model. It cannot tell you this city's future summers; "+
-   "that needs a projection layer we have not built.</dd>"+
-  "<dt>We show the record, not the cause</dt><dd>For &ldquo;is this climate change?&rdquo; go to WWA, "+
-   "ClimaMeter or Climate Central. We do not answer it.</dd>"+
-  "<dt>The skies are drawings</dt><dd>Declared renderings of the data, not weather. One exception: the night sky is real, computed from catalogue star positions.</dd>"+
-  "<dt>Where you are</dt><dd>Coordinates rounded to ~1 km, sent only to the weather archive; your city is named on your own device. The full promise is beside the picker, in Ground.</dd>"+
-  "<dt>The picker's cities are points</dt><dd>Not whole cities. Each record is that grid cell's, not that street's.</dd>"+
+  "<dt>The grid is coarse</dt><dd>~30 km averages — not a thermometer on your street.</dd>"+
+  "<dt>One number is an assumption</dt><dd>The 0.88 °C pre-industrial offset is stated, not measured.</dd>"+
+  "<dt>The budgets are moving</dt><dd>Revised yearly; we hold the 2025 burn rate — an assumption, flagged.</dd>"+
+  "<dt>The dial is arithmetic</dt><dd>Not a pathway model — it cannot tell you future summers.</dd>"+
+  "<dt>We show the record, not the cause</dt><dd>&ldquo;Is this climate change?&rdquo; &mdash; WWA or Climate Central answer that; we do not.</dd>"+
+  "<dt>The skies are drawings</dt><dd>Renderings of data, not weather — except the night sky, which is real.</dd>"+
+  "<dt>Where you are</dt><dd>Rounded to ~1 km, named on your device — the full promise is beside the picker.</dd>"+
+  "<dt>The picker's cities are points</dt><dd>Each record is one grid cell's, not a whole city's.</dd>"+
   "</dl>"+
   "<p class='lim-x'>Corrections will be listed here, dated. <span class='lim-q'>?place=</span> and "+
    "<span class='lim-q'>?loc=</span> are verification links, not something the share button makes.</p>";
