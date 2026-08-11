@@ -493,6 +493,7 @@ def _bake(doc):
             "g-then": str(round(mean_over(g35, 1951, 1980))),
             "g-now": str(round(mean_over(g35, LAST_FULL - 9, LAST_FULL))),
             "rc-1-n": f"{round(mean_over(g35,1951,1980))} \u2192 {round(mean_over(g35,LAST_FULL-9,LAST_FULL))} days a year",
+            "n-big": "+%d " % round(out["delhi_honesty"]["receipts"]["warm_nights_now"] - out["delhi_honesty"]["receipts"]["warm_nights_then"]),
             "rc-2-n": f"{_nmean(1951,1980)} \u2192 {_nmean(LAST_FULL-9,LAST_FULL)} nights a year",
             "rc-3-n": f"{round(_P['global_want_action_pct'])}% want action",
             "rc-4-n": f"{_yrs} years of budget left",
@@ -500,7 +501,7 @@ def _bake(doc):
                       f"\u00b7 {_src(_est[0])} and {_src(_hi)} agree \u00b7 spent around {round(_nowdec+_ylo)}")}
     n_done = 0
     for eid, val in subs.items():
-        pat = _re.compile(r'(id="%s"[^>]*>)[^<]*(</)' % _re.escape(eid))
+        pat = _re.compile(r'(id="%s"[^>]*>)[^<]*(<)' % _re.escape(eid))
         doc, k = pat.subn(lambda m: m.group(1) + val + m.group(2), doc, count=1)
         n_done += k
     print(f"  baked {n_done} static numbers")

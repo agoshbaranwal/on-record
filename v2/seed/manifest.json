@@ -1,18 +1,13 @@
 {
-  "ingested_at": "2026-08-07T07:31:41.401Z",
-  "archive_end": "2026-08-01",
+  "ingested_at": "2026-08-11T15:55:34.529Z",
+  "archive_end": "2026-08-05",
   "last_full_year": 2025,
   "counts": {
     "sources": 6,
-    "places": 20,
-    "place_baselines": 20,
-    "place_records": 1720,
+    "places": 24,
+    "place_baselines": 24,
+    "place_records": 2064,
     "indicators": 1
   },
-  "problems": [
-    "unreachable: Moscow — HTTP 429 after 5 tries",
-    "unreachable: Reykjavik — HTTP 429 after 5 tries",
-    "unreachable: Mexico City — HTTP 429 after 5 tries",
-    "unreachable: New York — HTTP 429 after 5 tries"
-  ]
+  "problems": []
 }

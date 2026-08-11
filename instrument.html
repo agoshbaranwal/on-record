@@ -1528,9 +1528,9 @@ button.rr-row:hover{padding-left:6px}
           <div class="sheet">
             <h2 id="g-count-h2"><span id="g-hotw">Scorching</span> days here: <b class="num" id="g-then">–</b> then,
               <b class="num" id="g-now">–</b> now.</h2>
-            <div id="g-fact"></div>
+            <div id="g-fact"><p class="gb-say">Days at or above 35&nbsp;&deg;C in Seville, the worked example &mdash; the 1951&ndash;80 average against the last ten full years. Set your place and the count becomes yours, against your own threshold.</p></div>
             <p class="fact-line" id="g-freq"></p>
-            <p class="receipt" id="g-receipt"></p>
+            <p class="receipt" id="g-receipt">ERA5 reanalysis via Open-Meteo &middot; daily maxima since 1940 &middot; thresholds are the place&rsquo;s own record</p>
             <button class="drawbtn" data-drawer="ground">Sources &amp; the full record</button>
           </div>
         </div>
@@ -1836,11 +1836,11 @@ button.rr-row:hover{padding-left:6px}
   </div>
 
   <!-- ladder -->
-  <nav id="ladder" aria-label="Chambers"></nav>
+  <nav id="ladder" aria-label="Chapters"><a class="rung" href="#p-sky"><span class="pill"><span class="lab"><em class="rnum">01</em> The world's budget</span></span><span class="dot"></span></a><a class="rung" href="#p-ground"><span class="pill"><span class="lab"><em class="rnum">02</em> Your hot days</span></span><span class="dot"></span></a><a class="rung" href="#p-night"><span class="pill"><span class="lab"><em class="rnum">03</em> Your hot nights</span></span><span class="dot"></span></a><a class="rung" href="#p-firstlight"><span class="pill"><span class="lab"><em class="rnum">04</em> What people want</span></span><span class="dot"></span></a><a class="rung" href="#p-morning"><span class="pill"><span class="lab"><em class="rnum">05</em> What you can do</span></span><span class="dot"></span></a><a class="rung" href="#p-recap"><span class="pill"><span class="lab"><em class="rnum">06</em> What to remember</span></span><span class="dot"></span></a><a class="rung" href="#p-bedrock"><span class="pill"><span class="lab"><em class="rnum">07</em> Where the numbers come from</span></span><span class="dot"></span></a></nav>
 
   <!-- drawer -->
   <aside id="drawer" role="dialog" aria-modal="true" aria-label="Receipts and methods" aria-hidden="true" inert>
-    <header><div><p class="k" id="d-k">Receipts</p><h3 id="d-title"></h3></div>
+    <header><div><p class="k" id="d-k">Receipts</p><h3 id="d-title">Receipts</h3></div>
       <button id="dclose" type="button">close ✕</button></header>
     <div id="dbody"></div>
   </aside>
@@ -2390,6 +2390,7 @@ var TEXTDIM={sky:.63,ground:.56,night:.32,firstlight:.42,morning:0,bedrock:.28};
 }catch(e){}})();
 var cur=0;
 var ladder=el("ladder");
+ladder.innerHTML="";   /* static rungs served to crawlers/no-JS; the live build replaces them */
 /* the rail: numbered chapters, each a real anchor into the one scroll */
 CH.forEach(function(c,i){
  var b=document.createElement("a");b.className="rung";b.href="#p-"+c.id;

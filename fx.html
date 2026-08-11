@@ -1,0 +1,11 @@
+<!doctype html><meta charset=utf-8>
+<style>iframe{width:1280px;height:800px;border:0}</style>
+<iframe id="f" src="index.html?intro=0&live=0"></iframe>
+<script>var f=document.getElementById("f");
+f.onload=function(){setTimeout(function(){var d=f.contentDocument,w=f.contentWindow;
+ var sel=d.getElementById("cmp-sel");
+ sel.value="reykjavik";sel.dispatchEvent(new w.Event("change"));
+ setTimeout(function(){
+  var b=(d.getElementById("cmp-b-body")||{}).textContent||"";
+  document.title="X::opts="+sel.options.length+" ~ "+b.replace(/\s+/g," ").slice(0,90);},500);},1800);};
+</script>

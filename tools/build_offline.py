@@ -112,6 +112,7 @@ def _bake(doc):
             "g-now":  str(_mean(LAST_FULL - 9, LAST_FULL)),
             # the summary chapter's whole job is four numbers; it must not ship dashes
             "rc-1-n": f"{_mean(1951,1980)} \u2192 {_mean(LAST_FULL-9,LAST_FULL)} days a year",
+            "n-big": "+%d " % round(_d["delhi_honesty"]["receipts"]["warm_nights_now"] - _d["delhi_honesty"]["receipts"]["warm_nights_then"]),
             "rc-2-n": f"{_nmean(1951,1980)} \u2192 {_nmean(LAST_FULL-9,LAST_FULL)} nights a year",
             "rc-3-n": f"{round(_P['global_want_action_pct'])}% want action",
             "rc-4-n": f"{_yspan} years of budget left",
@@ -120,7 +121,7 @@ def _bake(doc):
                       f"\u00b7 {_src(_est[0])} and {_src(_hi)} agree \u00b7 spent around {_spend}")}
     n_done = 0
     for eid, val in subs.items():
-        pat = _re.compile(r'(id="%s"[^>]*>)[^<]*(</)' % _re.escape(eid))
+        pat = _re.compile(r'(id="%s"[^>]*>)[^<]*(<)' % _re.escape(eid))
         doc, k = pat.subn(lambda m: m.group(1) + val + m.group(2), doc, count=1)
         n_done += k
     print("  baked %d headline numbers into the static document" % n_done)
