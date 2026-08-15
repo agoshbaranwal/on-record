@@ -33,6 +33,12 @@ css = "".join(
     "src:url(data:font/woff2;base64,%s) format('woff2')}\n" % (w, fonts[k])
     for k, w in [("SpaceGrotesk-normal-400", 400), ("SpaceGrotesk-normal-500", 500)])
 _d = json.loads((ROOT / "data" / "site-data.json").read_text())
+# The instant table is maintained outside both builds (tools/ring_bake.py, the v2 ingest).
+# site-data.json only carries a COPY of it — re-attach the file so an offline build never
+# ships a stale one. (It shipped the pre-ring copy exactly once; hence this line.)
+_inst = ROOT / "data" / "instant-places.json"
+if _inst.exists():
+    _d["instant"] = json.loads(_inst.read_text())
 _today = datetime.date.fromisoformat(_d["_meta"]["today"])
 _arch = datetime.date.fromisoformat(_d["_meta"]["archive_end"])
 try:

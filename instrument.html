@@ -1,5 +1,43 @@
 <style>
 /*__FONTS__*/
+/* ── THE SEASON RING ─────────────────────────────────────────────────────────
+   The year as one circle so all years share a frame that never grows, and a
+   hot season that escapes the months it used to sit in. Red is heat and blue
+   is not-heat, because that is what people already read; length carries the
+   same information a second time, so colour is never the only cue. */
+#seasonring{margin:6px 0 22px}
+.sr-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+.sr-title{font-size:15px;color:var(--bone)}
+.sr-toggle{margin-left:auto;display:flex;gap:6px}
+.sr-toggle button{font-family:var(--mono);font-size:12px;padding:6px 12px;border-radius:999px;
+  border:1px solid rgba(242,231,204,.28);background:none;color:var(--bone-2);cursor:pointer;
+  transition:background .2s ease,color .2s ease,border-color .2s ease}
+.sr-toggle button.on{background:#FF6B52;border-color:#FF6B52;color:#2A0B05}
+.sr-toggle button#sr-then.on{background:#5E8DA6;border-color:#5E8DA6;color:#06171E}
+.sr-toggle button:not(.on):hover{border-color:rgba(242,231,204,.55);color:var(--bone)}
+.sr-body{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+.sr-figure{position:relative;flex:0 1 326px;width:min(326px,100%);container-type:inline-size}
+#sr-svg{display:block;width:100%;height:auto}
+.sr-centre{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;pointer-events:none}
+.sr-centre>*{max-width:40cqw}
+.sr-centre b{font-size:min(42px,14cqw);font-weight:500;color:#FF6B52;line-height:1;font-variant-numeric:tabular-nums}
+.sr-unit{font-family:var(--mono);font-size:min(10px,3.2cqw);letter-spacing:.06em;
+  line-height:1.45;color:var(--bone-2);margin-top:6px}
+.sr-was{font-family:var(--mono);font-size:min(11px,3.5cqw);color:#7FA9BF;margin-top:8px}
+.sr-side{flex:1 1 178px;min-width:172px}
+.sr-season{margin:0;font-size:15px;color:var(--bone-2);line-height:1.5}
+.sr-season b{color:var(--bone);font-weight:400}
+.sr-sub{font-family:var(--mono);font-size:12px;color:var(--bone-3);margin:8px 0 0;line-height:1.7}
+.sr-key{list-style:none;margin:18px 0 0;padding:16px 0 0;border-top:1px solid rgba(242,231,204,.14);
+  font-family:var(--mono);font-size:12px;color:var(--bone-2);line-height:1.85}
+.sr-key li{display:flex;gap:9px;align-items:flex-start}
+.sr-key i{flex:0 0 auto;display:block;width:11px;height:11px;border-radius:2px;margin-top:5px}
+.sr-key .k-hot{background:#FF6B52}
+.sr-key .k-cool{background:#5E8DA6}
+@media(max-width:640px){.sr-body{gap:16px}
+  .sr-figure{flex:1 1 100%;width:min(320px,100%);margin:0 auto}.sr-side{flex:1 1 100%}}
+
 #dbody h3,#drawer h3,.sheet h3{font-size:17px}
 
 .beat{content-visibility:auto;contain-intrinsic-size:auto 900px}
@@ -766,9 +804,10 @@ svg{display:block;width:100%;height:auto}
 #n-diverge .nd{display:flex;align-items:center;gap:10px}
 #n-diverge .nd .ar{font-size:26px;line-height:1;font-weight:500}
 #n-diverge .nd .val{font-family:var(--mono);font-size:32px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
-#n-diverge .nd .lab{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--bone-2);max-width:11ch;line-height:1.3;text-shadow:var(--halo)}
-#n-diverge .nd-day .ar,#n-diverge .nd-day .val{color:#8FC0EA}
-#n-diverge .nd-night .ar,#n-diverge .nd-night .val{color:#EE9E80}
+#n-diverge .nd .lab{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--bone-2);max-width:15ch;line-height:1.3;text-shadow:var(--halo)}
+#n-diverge .nd-up .ar,#n-diverge .nd-up .val{color:#FF6B52}
+#n-diverge .nd-down .ar,#n-diverge .nd-down .val{color:#7FB2D4}
+#n-diverge .nd-flat .ar,#n-diverge .nd-flat .val{color:var(--bone-2)}
 /* the risk gradient: calm on the left, severe on the right, the reader's choice marked on it */
 #warmscale{margin:14px 0 2px;max-width:460px}
 #warmscale .ws-bar{position:relative;height:9px;border-radius:6px;
@@ -1659,6 +1698,36 @@ button.rr-row:hover{padding-left:6px}
             <p class="lead" id="g-verdict"></p>
             <p class="bignum" id="g-today">– <small>forecast today <span class="chip">provisional</span></small></p>
             <div class="chartwrap"><div class="plate">
+              <div id="seasonring" hidden>
+                <div class="sr-head">
+                  <span class="sr-title" id="sr-title">When the hot days fall</span>
+                  <span class="sr-toggle" role="group" aria-label="Which years to show">
+                    <button type="button" id="sr-then">1951&ndash;80</button>
+                    <button type="button" id="sr-now" class="on">last 30 years</button>
+                  </span>
+                </div>
+                <div class="sr-body">
+                  <div class="sr-figure">
+                    <svg id="sr-svg" viewBox="0 0 400 400" role="img" aria-labelledby="sr-alt"></svg>
+                    <div class="sr-centre" aria-hidden="true">
+                      <b id="sr-len">&ndash;</b>
+                      <span class="sr-unit">days of<br>hot season</span>
+                      <span class="sr-was" id="sr-was"></span>
+                    </div>
+                  </div>
+                  <div class="sr-side">
+                    <p class="sr-season"><b id="sr-span">&ndash;</b></p>
+                    <p class="sr-sub" id="sr-sub"></p>
+                    <ul class="sr-key">
+                      <li><i class="k-hot"></i><span id="sr-kb">now</span></li>
+                      <li><i class="k-cool"></i><span id="sr-ka">1951&ndash;80</span></li>
+                    </ul>
+                  </div>
+                </div>
+                <p class="receipt" id="sr-alt">The circle is one year, January at the top. Each spoke is one
+                  calendar day, drawn as often as it was hot, smoothed over a week. Two 30-year periods,
+                  the same threshold, the same archive.</p>
+              </div>
               <div id="recwin"></div>
               <div class="legend">
                 <span><i style="background:var(--data-cool)"></i>1951–80 avg</span>
@@ -3086,6 +3155,213 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
 
 /* ============ GROUND ============ */
 var groundDrawerExtra="";
+/* ══ THE SEASON RING ═════════════════════════════════════════════════════════
+   One circle is one year. Each of 365 spokes is a calendar day, drawn as long as
+   that day was often hot. The blue outline is the same city fifty years earlier,
+   so the reader sees the red spill past it without reading a word.
+   A ring, not a Jan-to-Dec strip: a strip cuts the hot season of every southern
+   and tropical city in half at New Year and destroys the thing being shown. */
+var __RING=(function(){
+ var NS="http://www.w3.org/2000/svg";
+ var CX=200,CY=200,R_IN=84,R_MAX=150,R_ARC_B=160,R_ARC_A=169;
+ var MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+ var MS=[0,31,59,90,120,151,181,212,243,273,304,334];
+ var HOT="#FF6B52",COOL="#5E8DA6";
+ var svg,ticks=[],ghost,ghostFill,arcA,arcB,capA,capB,built=false,raf=0,guard=0,cur=1,peak=180;
+ var A=null,B=null,sA=null,sB=null,mx=1,N=30;
+
+ function ang(d){return (d/365)*2*Math.PI-Math.PI/2;}
+ function pt(d,r){var a=ang(d);return [CX+Math.cos(a)*r,CY+Math.sin(a)*r];}
+ function el(t,at){var e=document.createElementNS(NS,t);for(var k in at)e.setAttribute(k,at[k]);return e;}
+ function mon(d){var m=0;for(var i=0;i<12;i++)if(d>=MS[i])m=i;return m;}
+ function dayLabel(d){d=((d%365)+365)%365;var m=mon(d);return (d-MS[m]+1)+" "+MON[m];}
+ /* one week each side: the reader is being shown a season, not a Tuesday */
+ function smooth(v){var n=365,o=[],i,k,s;
+  for(i=0;i<n;i++){s=0;for(k=-7;k<=7;k++)s+=v[((i+k)%n+n)%n];o.push(s/15);}return o;}
+ /* the shortest arc of the year that holds 9 in 10 of the hot days — found ON THE
+    CIRCLE, so a season straddling New Year is measured correctly, not split. */
+ function season(v){
+  var tot=0,i;for(i=0;i<365;i++)tot+=v[i];
+  if(tot<30)return null;                     /* too few hot days to call it a season */
+  var need=tot*0.9,best=null,j=0,run=0;
+  for(i=0;i<365;i++){
+   if(i>0)run-=v[i-1];
+   while(run<need&&(j-i)<365){run+=v[j%365];j++;}
+   if(run<need)break;
+   if(!best||(j-i)<best[0])best=[j-i,i%365,(j-1)%365];
+  }
+  return best;
+ }
+ function capPath(r,d0,d1){
+  var a=pt(d0,r-6),b=pt(d0,r+6),c=pt(d1+1,r-6),e2=pt(d1+1,r+6);
+  return "M"+a[0].toFixed(1)+" "+a[1].toFixed(1)+"L"+b[0].toFixed(1)+" "+b[1].toFixed(1)+
+         "M"+c[0].toFixed(1)+" "+c[1].toFixed(1)+"L"+e2[0].toFixed(1)+" "+e2[1].toFixed(1);
+ }
+ function arcPath(r,d0,d1){
+  var len=((d1-d0)%365+365)%365, p0=pt(d0,r), p1=pt(d1+1,r);
+  return "M"+p0[0].toFixed(1)+" "+p0[1].toFixed(1)+"A"+r+" "+r+" 0 "+(len>182?1:0)+" 1 "+
+         p1[0].toFixed(1)+" "+p1[1].toFixed(1);
+ }
+ function build(){
+  svg=document.getElementById("sr-svg"); if(!svg)return false;
+  svg.innerHTML="";
+  for(var m=0;m<12;m++){
+   var m1=pt(MS[m],R_ARC_A+6),m2=pt(MS[m],R_ARC_A+12);
+   svg.appendChild(el("line",{x1:m1[0].toFixed(1),y1:m1[1].toFixed(1),x2:m2[0].toFixed(1),y2:m2[1].toFixed(1),
+     stroke:"rgba(242,231,204,.30)","stroke-width":"1"}));
+   var lp=pt(MS[m]+15,R_ARC_A+24);
+   var t=el("text",{x:lp[0].toFixed(1),y:lp[1].toFixed(1),fill:"rgba(242,231,204,.55)","font-size":"11.5",
+     "text-anchor":"middle","dominant-baseline":"middle","letter-spacing":".06em"});
+   t.textContent=MON[m]; svg.appendChild(t);
+  }
+  ghostFill=el("path",{fill:"rgba(94,141,166,.42)",stroke:"none","fill-rule":"evenodd"});
+  svg.appendChild(ghostFill);
+  arcA=el("path",{fill:"none",stroke:COOL,"stroke-width":"3.4","stroke-linecap":"round","stroke-opacity":".85"});
+  arcB=el("path",{fill:"none",stroke:HOT,"stroke-width":"5.5","stroke-linecap":"round"});
+  capA=el("path",{fill:"none",stroke:COOL,"stroke-width":"1.6","stroke-opacity":".75"});
+  capB=el("path",{fill:"none",stroke:HOT,"stroke-width":"2","stroke-opacity":".9"});
+  svg.appendChild(arcA);svg.appendChild(arcB);svg.appendChild(capA);svg.appendChild(capB);
+  ticks=[];
+  for(var d=0;d<365;d++){var l=el("line",{stroke:HOT,"stroke-width":"2.1","stroke-linecap":"butt"});
+   svg.appendChild(l);ticks.push(l);}
+  ghost=el("path",{fill:"none",stroke:COOL,"stroke-width":"1.7","stroke-linejoin":"round"});
+  svg.appendChild(ghost);   /* last child = on top of the day spokes */
+  built=true;return true;
+ }
+ var INNER="M"+(CX-R_IN)+" "+CY+"A"+R_IN+" "+R_IN+" 0 1 0 "+(CX+R_IN)+" "+CY+
+             "A"+R_IN+" "+R_IN+" 0 1 0 "+(CX-R_IN)+" "+CY+"Z";
+ function len(v){return R_IN+(R_MAX-R_IN)*Math.min(1,v/mx);}
+ /* [outline, area] for one era — one subpath per stretch of the year it is above zero,
+    each area closed back along the inner circle so the middle stays empty. */
+ function shape(v){
+  var eps=mx*0.02,on=[],i,any=false,none=true;
+  for(i=0;i<365;i++){on.push(v[i]>eps);if(on[i])any=true;else none=false;}
+  if(!any)return ["",""];
+  if(none){                         /* hot somewhere every day of the year */
+   var f="";for(i=0;i<365;i++){var q=pt(i,len(v[i]));f+=(i?"L":"M")+q[0].toFixed(1)+" "+q[1].toFixed(1);}
+   return [f+"Z",f+"Z"+INNER];}
+  var s0=0;while(on[s0])s0++;        /* start on a quiet day so runs never wrap */
+  var line="",area="",k,run=[];
+  for(i=0;i<=365;i++){
+   var d0=(s0+i)%365,live=i<365&&on[d0];
+   if(live){run.push(d0);continue;}
+   if(run.length){
+    var a="",b="";
+    for(k=0;k<run.length;k++){var q2=pt(run[k],len(v[run[k]]));
+     a+=(k?"L":"M")+q2[0].toFixed(1)+" "+q2[1].toFixed(1);}
+    for(k=run.length-1;k>=0;k--){var q3=pt(run[k],R_IN);
+     b+="L"+q3[0].toFixed(1)+" "+q3[1].toFixed(1);}
+    line+=a;area+=a+b+"Z";run=[];}
+  }
+  return [line,area];
+ }
+ function paint(t){
+  var d,a,b,e,f,lp;
+  for(d=0;d<365;d++){
+   /* the season blooms outward from the peak of summer instead of wiping across the
+      frame: what grows is the season's reach, so that is what moves. */
+   lp=Math.min(1,Math.max(0,(t*1.45)-0.45*(Math.min(Math.abs(d-peak),365-Math.abs(d-peak))/182)));
+   f=A[d]+(B[d]-A[d])*lp;
+   a=pt(d,R_IN);b=pt(d,len(f));e=ticks[d];
+   e.setAttribute("x1",a[0].toFixed(1));e.setAttribute("y1",a[1].toFixed(1));
+   e.setAttribute("x2",b[0].toFixed(1));e.setAttribute("y2",b[1].toFixed(1));
+   e.setAttribute("stroke-opacity",(0.42+0.58*Math.min(1,f/mx)).toFixed(2));
+  }
+  /* the other era, drawn only across the days it actually reaches: a line held at zero
+     right around the year read as a decorative circle, not as data. */
+  var ref=t<0.5?B:A,gp=shape(ref);
+  ghost.setAttribute("d",gp[0]);
+  ghostFill.setAttribute("d",gp[1]);
+  ghostFill.setAttribute("fill",t<0.5?"rgba(255,107,82,.26)":"rgba(94,141,166,.40)");
+  ghost.setAttribute("stroke",t<0.5?HOT:COOL);
+  ghost.setAttribute("stroke-opacity",t<0.5?".55":".95");
+  var cut=t<0.5?sA:sB, other=t<0.5?sB:sA;
+  capA.setAttribute("d",capPath(R_ARC_A,other[1],other[2]));
+  capA.setAttribute("stroke",t<0.5?HOT:COOL);
+  capB.setAttribute("d",capPath(R_ARC_B,cut[1],cut[2]));
+  capB.setAttribute("stroke",t<0.5?COOL:HOT);
+  arcB.setAttribute("d",arcPath(R_ARC_B,cut[1],cut[2]));
+  arcB.setAttribute("stroke",t<0.5?COOL:HOT);
+  arcA.setAttribute("d",arcPath(R_ARC_A,other[1],other[2]));
+  arcA.setAttribute("stroke",t<0.5?HOT:COOL);
+  arcA.setAttribute("stroke-opacity",".7");
+  var L=document.getElementById("sr-len");
+  if(L)L.textContent=Math.round(cut[0]+(0)); 
+  var W=document.getElementById("sr-was");
+  if(W)W.textContent=(t<0.5?"now ":"was ")+(t<0.5?sB[0]:sA[0]);
+  var S=document.getElementById("sr-span");
+  if(S)S.innerHTML="9 in 10 hot days now fall between <b>"+dayLabel(sB[1])+"</b> and <b>"+dayLabel(sB[2])+"</b>.";
+  var U=document.getElementById("sr-sub");
+  if(U){var dd=sB[0]-sA[0];
+   U.textContent=dd>0?("that stretch is "+dd+" days longer than in "+eraA):
+                 dd<0?("that stretch is "+(-dd)+" days shorter than in "+eraA):
+                      ("the same stretch as in "+eraA);}
+ }
+ var eraA="1951–80";
+ function go(to){
+  if(raf)cancelAnimationFrame(raf);
+  if(guard)clearTimeout(guard);
+  if(reduce){cur=to;paint(to);return;}
+  var from=cur,t0=null,fin=false;
+  /* a frame loop is not guaranteed to tick — a background tab, a throttled webview, a
+     headless render. The end state is the record; it arrives with or without frames. */
+  guard=setTimeout(function(){if(!fin){cur=to;paint(to);}},1400);
+  (function step(ts){if(t0==null)t0=ts;var k=Math.min(1,(ts-t0)/1150);
+   var q=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+   cur=from+(to-from)*q;paint(cur);
+   if(k<1)raf=requestAnimationFrame(step);else{fin=true;clearTimeout(guard);}
+  })(performance.now());
+ }
+ function show(R,title){
+  var host=document.getElementById("seasonring");
+  if(!host)return;
+  var hide=function(){host.hidden=true;};
+  if(!R||!R.a||!R.b){hide();return;}
+  A=smooth(R.a);B=smooth(R.b);N=R.years||30;eraA=R.eraA||"1951–80";
+  sA=season(A);sB=season(B);
+  if(!sA||!sB){hide();return;}          /* a place with almost no hot days has no season to draw */
+  mx=0;for(var i=0;i<365;i++){if(A[i]>mx)mx=A[i];if(B[i]>mx)mx=B[i];}
+  if(mx<=0){hide();return;}
+  peak=0;var pv=-1;for(i=0;i<365;i++)if(B[i]>pv){pv=B[i];peak=i;}
+  if(!built&&!build()){hide();return;}
+  host.hidden=false;
+  var T=document.getElementById("sr-title");if(T&&title)T.textContent=title;
+  var tn=document.getElementById("sr-then"),nw=document.getElementById("sr-now");
+  if(tn)tn.textContent=eraA;
+  if(nw)nw.textContent=R.eraB||"last 30 years";
+  var ka=document.getElementById("sr-ka"),kb=document.getElementById("sr-kb");
+  if(ka)ka.textContent=eraA;
+  if(kb)kb.textContent=R.eraB||"last 30 years";
+  function mark(w){if(tn)tn.classList.toggle("on",w===0);if(nw)nw.classList.toggle("on",w===1);}
+  if(tn&&!tn.__w){tn.__w=1;tn.addEventListener("click",function(){mark(0);go(0);});}
+  if(nw&&!nw.__w){nw.__w=1;nw.addEventListener("click",function(){mark(1);go(1);});}
+  mark(1);
+  if(reduce){cur=1;paint(1);return;}
+  cur=0;paint(0);
+  if(host.__io)host.__io.disconnect();
+  if(host.__fb)clearTimeout(host.__fb);
+  var fired=false,run=function(){if(fired)return;fired=true;
+   if(host.__io)host.__io.disconnect();if(host.__fb)clearTimeout(host.__fb);go(1);};
+  try{
+   host.__io=new IntersectionObserver(function(es){
+    for(var k=0;k<es.length;k++)if(es[k].isIntersecting){setTimeout(run,420);return;}
+   },{threshold:.3});
+   host.__io.observe(host);
+  }catch(e){}
+  /* the animation is a bonus; the CURRENT record is the message. Nobody is left
+     looking at 1951 because an observer never fired. */
+  host.__fb=setTimeout(run,7000);
+ }
+ /* the baked table stores each era as 365 characters, one per day */
+ function decode(s,alpha){
+  if(!s)return null;var A2=alpha||"0123456789ABCDEFGHIJKLMNOPQRSTU",o=[],i;
+  for(i=0;i<s.length;i++){var v=A2.indexOf(s.charAt(i));if(v<0)return null;o.push(v);}
+  return o.length===365?o:null;
+ }
+ return {show:show,hide:function(){var h=document.getElementById("seasonring");if(h)h.hidden=true;},
+         decode:decode};
+})();
+window.__RING=__RING;   /* the inline script has its own scope; the ring is reached by name */
 function buildGround(V){
  var CUSTOM=!!(V&&V.custom);
  var RWc=CUSTOM?V.RW:RW,Sc=CUSTOM?V.S:S,Gc=CUSTOM?V.G:G;
@@ -3111,6 +3387,16 @@ function buildGround(V){
      cnt(el("g-then"),Math.round(thenN),0);cnt(el("g-now"),Math.round(nowN),250);}},{threshold:.5});
    io.observe(b);}catch(e){}})();}
  if(el("g-hotw"))el("g-hotw").textContent="Hot";
+ /* the ring follows whatever record is on screen: a live fetch, the instant table, or the
+    worked example — one renderer, three sources, never a picture of somewhere else. */
+ try{ if(window.__RING){
+   var _rg=(V&&V.ring)||null;
+   if(!_rg&&!V&&D&&D.seville_ring){var _sr0=D.seville_ring;
+    var _a=__RING.decode(_sr0.a,_sr0.alpha),_b=__RING.decode(_sr0.b,_sr0.alpha);
+    if(_a&&_b)_rg={a:_a,b:_b,eraA:_sr0.eraA,eraB:_sr0.eraB,years:_sr0.years};}
+   if(_rg)__RING.show(_rg,"When the hot days fall in "+PLACE);
+   else __RING.hide();
+ } }catch(e){}
 
  /* record-window chart — RW is the day-by-day archive; the baked instant record has none,
     and the honest instant state says so instead of borrowing anyone else's days */
@@ -3344,8 +3630,8 @@ var buildNight=function(NV){
  var dDelta=Math.round(dNow-dThen),nDelta=Math.round(nNow-nThen);
  if(el("n-diverge")){
   el("n-diverge").innerHTML=
-   '<div class="nd nd-day"><span class="ar">'+(dDelta<0?'\u25bc':dDelta>0?'\u25b2':'\u25ac')+'</span><span class="val" data-to="'+Math.abs(dDelta)+'" data-sign="'+(dDelta>0?'+':dDelta<0?'\u2212':'')+'">'+(dDelta>0?'+':dDelta<0?'\u2212':'')+'0</span><span class="lab">hot days a year</span></div>'+
-   '<div class="nd nd-night"><span class="ar">'+(nDelta>0?'\u25b2':nDelta<0?'\u25bc':'\u25ac')+'</span><span class="val" data-to="'+Math.abs(nDelta)+'" data-sign="'+(nDelta>0?'+':nDelta<0?'\u2212':'')+'">'+(nDelta>0?'+':nDelta<0?'\u2212':'')+'0</span><span class="lab">hot nights a year</span></div>';
+   '<div class="nd nd-day '+(dDelta>0?'nd-up':dDelta<0?'nd-down':'nd-flat')+'"><span class="ar">'+(dDelta<0?'\u25bc':dDelta>0?'\u25b2':'\u25ac')+'</span><span class="val" data-to="'+Math.abs(dDelta)+'" data-sign="'+(dDelta>0?'+':dDelta<0?'\u2212':'')+'">'+(dDelta>0?'+':dDelta<0?'\u2212':'')+Math.abs(dDelta)+'</span><span class="lab">hot days a year</span></div>'+
+   '<div class="nd nd-night '+(nDelta>0?'nd-up':nDelta<0?'nd-down':'nd-flat')+'"><span class="ar">'+(nDelta>0?'\u25b2':nDelta<0?'\u25bc':'\u25ac')+'</span><span class="val" data-to="'+Math.abs(nDelta)+'" data-sign="'+(nDelta>0?'+':nDelta<0?'\u2212':'')+'">'+(nDelta>0?'+':nDelta<0?'\u2212':'')+Math.abs(nDelta)+'</span><span class="lab">hot nights a year</span></div>';
   /* the counts run up as the two rows separate — the movement IS the finding. Driven from its own
      IntersectionObserver rather than the shared .seen reveal, so it cannot be left un-fired by it. */
   (function(){
@@ -3356,10 +3642,11 @@ var buildNight=function(NV){
     for(var i=0;i<vals.length;i++)(function(v){
      var to=+v.getAttribute("data-to")||0,sg=v.getAttribute("data-sign")||"";
      if(slow){v.textContent=sg+to;return;}
-     var t0=null;
+     var t0=null,fin=false;
+     var g=setTimeout(function(){if(!fin)v.textContent=sg+to;},1400);
      function step(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/1100);
       v.textContent=sg+Math.round(to*(1-Math.pow(1-k,3)));
-      if(k<1)requestAnimationFrame(step);}
+      if(k<1)requestAnimationFrame(step);else{fin=true;clearTimeout(g);}}
      requestAnimationFrame(step);})(vals[i]);}
    box.__run=run;                                  /* exposed so a test can fire it deterministically */
    try{
@@ -4242,6 +4529,12 @@ var __PLACE=(function(){
  function compute(aj,fc,name){
   var d=aj.daily,N=d.time.length,date=d.time,tx=d.temperature_2m_max,tn=d.temperature_2m_min;
   var md={},annual={},oldTx=[],oldTn=[],i,y;
+  /* one slot per calendar day, Jan 1 = 0 */
+  var DOY={},ringA=[],ringB=[],_ml=[31,28,31,30,31,30,31,31,30,31,30,31],_s=0;
+  for(var _m=0;_m<12;_m++){for(var _d=1;_d<=_ml[_m];_d++){
+   DOY[("0"+(_m+1)).slice(-2)+"-"+("0"+_d).slice(-2)]=_s++;}}
+  DOY["02-29"]=DOY["02-28"];
+  for(var _q=0;_q<365;_q++){ringA.push(0);ringB.push(0);}
   for(i=0;i<N;i++){if(tx[i]==null)continue;y=+date[i].slice(0,4);
    var k=date[i].slice(5);(md[k]=md[k]||[]).push([y,tx[i]]);
    (annual[y]=annual[y]||[]).push(tx[i]);
@@ -4251,7 +4544,12 @@ var __PLACE=(function(){
   var thrHot=Math.round(qtile(oldTx,95)*10)/10,thrNight=Math.round(qtile(oldTn,95)*10)/10;
   var cH={},cN={};
   for(i=0;i<N;i++){y=+date[i].slice(0,4);
-   if(tx[i]!=null&&tx[i]>=thrHot)cH[y]=(cH[y]||0)+1;
+   if(tx[i]!=null&&tx[i]>=thrHot){cH[y]=(cH[y]||0)+1;
+   /* SEASON RING: how often each calendar day was hot, in two EQUAL 30-year eras.
+      Feb 29 folds into Feb 28 so every year maps to exactly 365 slots. */
+   var _mmdd=date[i].slice(5),_sl=DOY[_mmdd];
+   if(_sl!=null){ if(y>=1951&&y<=1980)ringA[_sl]++; else if(y>=LF-29&&y<=LF)ringB[_sl]++; }
+  }
    if(tn[i]!=null&&tn[i]>=thrNight)cN[y]=(cN[y]||0)+1;}
   function series(c){var out=[];for(var y2=1940;y2<=LF;y2++)out.push({year:y2,n:c[y2]||0});return out;}
   /* the window: 25 days back to 25 days ahead of today */
@@ -4297,6 +4595,7 @@ var __PLACE=(function(){
         record_envelope:env,new_normal_label:(LF-29)+"–"+LF},
     S:{year0:1940,anom:anom},
     G:{days_ge35_per_year:series(cH),warm_nights_ge25_per_year:series(cN)},
+   ring:{a:ringA,b:ringB,eraA:"1951\u201380",eraB:(LF-29)+"\u2013"+LF,years:30},
     thr:{hot:thrHot,night:thrNight,
      hotLabel:"hotter than 95% of days here in 1951\u201380 (above "+thrHot.toFixed(1)+" °C)",
      nightLabel:"below "+thrNight.toFixed(1)+" °C \u2014 warmer than 95% of nights here in 1951\u201380"}},
@@ -4336,7 +4635,13 @@ var __PLACE=(function(){
   /* custom:true + place were MISSING here — buildGround gated on V.custom, fell back to
      the Seville globals, and the "instant answer" drew Seville's record under the picked
      city's name. The one feature built to honour the localization promise broke it. */
-  return {V:{custom:true,place:name,RW:null,
+  var _rg=null;
+  try{ var _al=(T._ring&&T._ring.alpha)||null;
+   var _ra=window.__RING&&__RING.decode(best.ra,_al),_rb=window.__RING&&__RING.decode(best.rb,_al);
+   if(_ra&&_rb)_rg={a:_ra,b:_rb,eraA:(T._ring&&T._ring.eraA)||"1951\u201380",
+                    eraB:(T._ring&&T._ring.eraB)||"last 30 years",years:(T._ring&&T._ring.years)||30};
+  }catch(e){}
+  return {V:{custom:true,place:name,RW:null,ring:_rg,
              G:{days_ge35_per_year:days,warm_nights_ge25_per_year:nights},
              S:{year0:best.y0,anom:anom},
              thr:{hot:best.th,night:best.tn},
@@ -5333,6 +5638,8 @@ window.__HOME=__HOME;
    if(ask)ask.hidden=false;if(cl)cl.hidden=true;ag.hidden=true;
    if(key)key.textContent="";
    document.querySelectorAll("#wg-dots i").forEach(function(d){d.className="";});});})();
+
+
 
 try{__HOME.boot();}catch(e){}
 
