@@ -60,19 +60,19 @@ CARD = (f"How much hotter is your town? We counted every day since 1940. The wor
         f"{_was} days at or above 35&#176;C a year then, {_now} now. Find yours &mdash; every number sourced.")
 ALT = f"On Record card: in Seville, days at or above 35C rose from {_was} a year to {_now}."
 head_meta = (
-    "<title>On Record — how much hotter is your town than when your grandparents were young?</title>"
+    "<title>On Record \u2014 how much hotter is your city?</title>"
     '<meta name="description" content="' + DESC + '">'
     '<link rel="canonical" href="' + OG + '">'
     '<meta property="og:type" content="website">'
     '<meta property="og:site_name" content="On Record">'
-    '<meta property="og:title" content="On Record — your town&#39;s heat, measured since 1940">'
+    '<meta property="og:title" content="On Record — how much hotter is your city?">'
     '<meta property="og:description" content="' + CARD + '">'
     '<meta property="og:url" content="' + OG + '">'
     '<meta property="og:image" content="' + OG + 'og/seville.png">'
     '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
     '<meta property="og:image:alt" content="' + ALT + '">'
     '<meta name="twitter:card" content="summary_large_image">'
-    '<meta name="twitter:title" content="On Record — your town&#39;s heat, measured since 1940">'
+    '<meta name="twitter:title" content="On Record — how much hotter is your city?">'
     '<meta name="twitter:description" content="' + CARD + '">'
     '<meta name="twitter:image" content="' + OG + 'og/seville.png">'
     '<link rel="manifest" href="manifest.webmanifest">'
