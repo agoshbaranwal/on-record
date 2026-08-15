@@ -15,8 +15,8 @@
 .sr-toggle button.on{background:#FF6B52;border-color:#FF6B52;color:#2A0B05}
 .sr-toggle button#sr-then.on{background:#5E8DA6;border-color:#5E8DA6;color:#06171E}
 .sr-toggle button:not(.on):hover{border-color:rgba(242,231,204,.55);color:var(--bone)}
-.sr-body{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
-.sr-figure{position:relative;flex:0 1 326px;width:min(326px,100%);container-type:inline-size}
+.sr-body{display:flex;gap:26px;align-items:center;flex-wrap:wrap;justify-content:center}
+.sr-figure{position:relative;flex:0 1 326px;width:min(326px,100%);container-type:inline-size;margin:0 auto}
 #sr-svg{display:block;width:100%;height:auto}
 .sr-centre{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
   justify-content:center;text-align:center;pointer-events:none}
@@ -24,15 +24,19 @@
 .sr-centre b{font-size:min(42px,14cqw);font-weight:500;color:#FF6B52;line-height:1;font-variant-numeric:tabular-nums}
 .sr-unit{font-family:var(--mono);font-size:min(10px,3.2cqw);letter-spacing:.06em;
   line-height:1.45;color:var(--bone-2);margin-top:6px}
-.sr-was{font-family:var(--mono);font-size:min(11px,3.5cqw);color:#7FA9BF;margin-top:8px}
-.sr-side{flex:1 1 178px;min-width:172px}
+.sr-was{font-family:var(--mono);font-size:min(11px,3.5cqw);color:var(--cool-ink);margin-top:8px}
+.sr-side{flex:1 1 178px;min-width:172px;max-width:420px}
+.sr-sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .sr-season{margin:0;font-size:15px;color:var(--bone-2);line-height:1.5}
 .sr-season b{color:var(--bone);font-weight:400}
 .sr-sub{font-family:var(--mono);font-size:12px;color:var(--bone-3);margin:8px 0 0;line-height:1.7}
+#sr-alt{margin-top:14px}
 .sr-key{list-style:none;margin:18px 0 0;padding:16px 0 0;border-top:1px solid rgba(242,231,204,.14);
   font-family:var(--mono);font-size:12px;color:var(--bone-2);line-height:1.85}
 .sr-key li{display:flex;gap:9px;align-items:flex-start}
-.sr-key i{flex:0 0 auto;display:block;width:11px;height:11px;border-radius:2px;margin-top:5px}
+.sr-key i{flex:0 0 auto;display:block;width:12px;height:11px;border-radius:2px;margin-top:5px}
+.sr-key .k-cool{height:3px;border-radius:2px;margin-top:9px}
 .sr-key .k-hot{background:#FF6B52}
 .sr-key .k-cool{background:#5E8DA6}
 @media(max-width:640px){.sr-body{gap:16px}
@@ -395,7 +399,8 @@ body.introing #intro-skip{display:none!important}
      The census found six near-blacks doing one job and thirteen border radii — the visible
      archaeology of months of patches. New work uses these; old sites are being migrated. */
   --glass:3,15,17; --r-ctl:3px; --r-card:8px; --r-pill:999px;
-  --data-cool:#8FC0EA; --data-warm:#EE9E80;
+  --data-cool:#5E8DA6; --data-warm:#FF6B52;   /* the site-wide pair: cool era, hot era */
+  --cool-ink:#7FB2D4;                         /* the same blue, lightened to carry text */
   --halo:0 0 1px rgba(var(--glass),.92),0 1px 2px rgba(var(--glass),.85),0 0 8px rgba(var(--glass),.55);
   --halo2:0 0 1px rgba(var(--glass),.98),0 0 2px rgba(var(--glass),.92),0 1px 2px rgba(var(--glass),.88),0 0 6px rgba(var(--glass),.62);
   --halo-h:0 1px 2px rgba(var(--glass),.55),0 0 12px rgba(var(--glass),.5),0 0 34px rgba(15,8,6,.4);
@@ -806,7 +811,7 @@ svg{display:block;width:100%;height:auto}
 #n-diverge .nd .val{font-family:var(--mono);font-size:32px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
 #n-diverge .nd .lab{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--bone-2);max-width:15ch;line-height:1.3;text-shadow:var(--halo)}
 #n-diverge .nd-up .ar,#n-diverge .nd-up .val{color:#FF6B52}
-#n-diverge .nd-down .ar,#n-diverge .nd-down .val{color:#7FB2D4}
+#n-diverge .nd-down .ar,#n-diverge .nd-down .val{color:var(--cool-ink)}
 #n-diverge .nd-flat .ar,#n-diverge .nd-flat .val{color:var(--bone-2)}
 /* the risk gradient: calm on the left, severe on the right, the reader's choice marked on it */
 #warmscale{margin:14px 0 2px;max-width:460px}
@@ -1317,6 +1322,7 @@ button.rr-row:hover{padding-left:6px}
 .sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;margin:-1px}
 #intro{position:fixed;inset:0;z-index:20;transition:opacity .7s ease}
 #intro.gone{opacity:0;pointer-events:none}
+html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 #intro-scrim{position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(130% 78% at 32% 80%,rgba(3,10,12,.66) 0%,rgba(3,10,12,.44) 32%,rgba(3,10,12,0) 70%)}
 /* the type column: lower-center, left-aligned (30-40-word paragraphs must never be centered) */
@@ -1678,8 +1684,8 @@ button.rr-row:hover{padding-left:6px}
           <!-- BEAT 2 — the then-vs-now count: the chapter's one number -->
           <div class="beat">
           <div class="sheet">
-            <h2 id="g-count-h2"><span id="g-hotw">Hot</span> days here: <b class="num" id="g-then">–</b> then,
-              <b class="num" id="g-now">–</b> now.</h2>
+            <h2 id="g-count-h2"><span id="g-hotw">Hot</span> days here: <b class="num" id="g-then">–</b> a year in
+              1951&ndash;80, <b class="num" id="g-now">–</b> in the last 10 years.</h2>
             <div id="g-fact"><p class="gb-say">Days at or above 35&nbsp;&deg;C in Seville. Set your city to see yours.</p></div>
             <p class="take-mini" id="g-take" hidden>Save:
               <button type="button" data-ga="card">Image</button> &middot;
@@ -1702,16 +1708,16 @@ button.rr-row:hover{padding-left:6px}
                 <div class="sr-head">
                   <span class="sr-title" id="sr-title">When the hot days fall</span>
                   <span class="sr-toggle" role="group" aria-label="Which years to show">
-                    <button type="button" id="sr-then">1951&ndash;80</button>
-                    <button type="button" id="sr-now" class="on">last 30 years</button>
+                    <button type="button" id="sr-then" aria-pressed="false">1951&ndash;80</button>
+                    <button type="button" id="sr-now" class="on" aria-pressed="true">last 30 years</button>
                   </span>
                 </div>
                 <div class="sr-body">
                   <div class="sr-figure">
-                    <svg id="sr-svg" viewBox="0 0 400 400" role="img" aria-labelledby="sr-alt"></svg>
+                    <svg id="sr-svg" viewBox="0 0 400 400" role="img" aria-labelledby="sr-sr" focusable="false"></svg>
                     <div class="sr-centre" aria-hidden="true">
                       <b id="sr-len">&ndash;</b>
-                      <span class="sr-unit">days of<br>hot season</span>
+                      <span class="sr-unit" id="sr-unit">days of<br>hot season</span>
                       <span class="sr-was" id="sr-was"></span>
                     </div>
                   </div>
@@ -1719,19 +1725,20 @@ button.rr-row:hover{padding-left:6px}
                     <p class="sr-season"><b id="sr-span">&ndash;</b></p>
                     <p class="sr-sub" id="sr-sub"></p>
                     <ul class="sr-key">
-                      <li><i class="k-hot"></i><span id="sr-kb">now</span></li>
+                      <li><i class="k-hot"></i>hot days, <span id="sr-kb">now</span></li>
                       <li><i class="k-cool"></i><span id="sr-ka">1951&ndash;80</span></li>
                     </ul>
                   </div>
                 </div>
+                <p class="sr-sr" id="sr-sr"></p>
                 <p class="receipt" id="sr-alt">The circle is one year, January at the top. Each spoke is one
-                  calendar day, drawn as often as it was hot, smoothed over a week. Two 30-year periods,
-                  the same threshold, the same archive.</p>
+                  calendar day, drawn as often as it was hot, averaged with the week either side of it.
+                  Two 30-year periods, the same threshold, the same archive.</p>
               </div>
               <div id="recwin"></div>
-              <div class="legend">
+              <div class="legend" id="rw-legend">
                 <span><i style="background:var(--data-cool)"></i>1951–80 avg</span>
-                <span><i style="background:#EE9E80"></i>last-30-yr avg</span>
+                <span><i style="background:var(--data-warm)"></i>last-30-yr avg</span>
                 <span><i class="dash" style="color:var(--bone-4)"></i>hottest ever</span>
                 <span><i style="background:#F2E7CC"></i>this year</span>
                 <span><i class="dot" style="background:#F0BC62"></i>today</span>
@@ -1924,7 +1931,6 @@ button.rr-row:hover{padding-left:6px}
                 <span class="rr-head"><span class="rr-label">Eat plant-based.</span><span class="rr-t">0.8 t</span></span>
                 <span class="rr-bar" style="--w:32%" aria-hidden="true"><i></i></span>
                 <span class="rr-note">Average for switching to plant-based food. <span class="rr-src">Wynes &amp; Nicholas 2017</span></span></div>
-            </div>
             <div id="rr-panel" class="rr-panel" hidden></div>
             <div id="rr-pledge" class="rr-pledge" hidden></div>
             <p class="share-lead">Save a card with your city&rsquo;s numbers:</p>
@@ -1940,6 +1946,7 @@ button.rr-row:hover{padding-left:6px}
             <button class="drawbtn" data-drawer="morning" style="color:var(--ink-3);border-color:var(--ink-hair)">Sources</button>
             <p class="beat-cue">Next: What&rsquo;s improving</p>
           </div>
+        </div>
         <!-- "Start by telling one person" removed: a full screen duplicating the action
              menu's "Have the conversation" item — same advice, same chapter, two screens
              apart. The menu item carries the insight now. -->
@@ -2726,6 +2733,18 @@ document.querySelectorAll("[data-go]").forEach(function(b){
 /* ============ intro cold-open — four plain beats, reader-paced (no auto-advance, no auto-dissolve) ============
    The 5-second version is one tap on the always-visible exit; the four-beat lesson is depth you opt into. */
 var startIntro,endIntro;
+/* endIntro is ASSIGNED at the tail of the intro IIFE, which returns early when there are no
+   beats to play (embed, kiosk, ?place, a saved home). Every call site before that point was
+   throwing "endIntro is not a function" and taking the rest of its block with it — that is
+   why ?embed rendered a blank page. Call this instead: it tears the intro down by hand when
+   the real one does not exist yet. */
+function endIntroSafe(){
+ if(typeof endIntro==="function"){try{return endIntro();}catch(e){}}
+ try{var i=document.getElementById("intro"),s=document.getElementById("stage");
+  if(i)i.classList.add("gone");
+  if(s)s.classList.remove("introing");
+  document.body.classList.remove("introing");}catch(e2){}
+}
 (function(){
  var intro=el("intro"),stackEl=el("intro-stack"),dotsWrap=el("intro-dots"),
      hint=el("intro-hint"),go=el("intro-go"),skip=el("intro-skip"),
@@ -3167,8 +3186,8 @@ var __RING=(function(){
  var MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
  var MS=[0,31,59,90,120,151,181,212,243,273,304,334];
  var HOT="#FF6B52",COOL="#5E8DA6";
- var svg,ticks=[],ghost,ghostFill,arcA,arcB,capA,capB,built=false,raf=0,guard=0,cur=1,peak=180;
- var A=null,B=null,sA=null,sB=null,mx=1,N=30;
+ var svg,ticks=[],ghost,ghostB,ghostFill,arcA,arcB,capA,capB,built=false,raf=0,guard=0,cur=1,peak=180;
+ var A=null,B=null,sA=null,sB=null,mx=1,N=30,gapped=false;
 
  function ang(d){return (d/365)*2*Math.PI-Math.PI/2;}
  function pt(d,r){var a=ang(d);return [CX+Math.cos(a)*r,CY+Math.sin(a)*r];}
@@ -3180,6 +3199,14 @@ var __RING=(function(){
   for(i=0;i<n;i++){s=0;for(k=-7;k<=7;k++)s+=v[((i+k)%n+n)%n];o.push(s/15);}return o;}
  /* the shortest arc of the year that holds 9 in 10 of the hot days — found ON THE
     CIRCLE, so a season straddling New Year is measured correctly, not split. */
+ /* true when the 90% stretch has a long quiet spell inside it — two hot spells with a
+    monsoon or a rainy season between them. Calling that "the hot season" would be false. */
+ function hasGap(v,s){
+  if(!s)return false;var run=0,eps=mx*0.05,i,d;
+  for(i=0;i<s[0];i++){d=(s[1]+i)%365;
+   if(v[d]<=eps){run++;if(run>=21)return true;}else run=0;}
+  return false;
+ }
  function season(v){
   var tot=0,i;for(i=0;i<365;i++)tot+=v[i];
   if(tot<30)return null;                     /* too few hot days to call it a season */
@@ -3214,18 +3241,21 @@ var __RING=(function(){
      "text-anchor":"middle","dominant-baseline":"middle","letter-spacing":".06em"});
    t.textContent=MON[m]; svg.appendChild(t);
   }
-  ghostFill=el("path",{fill:"rgba(94,141,166,.42)",stroke:"none","fill-rule":"evenodd"});
+  ghostFill=el("path",{fill:"rgba(94,141,166,.30)",stroke:"none"});
   svg.appendChild(ghostFill);
-  arcA=el("path",{fill:"none",stroke:COOL,"stroke-width":"3.4","stroke-linecap":"round","stroke-opacity":".85"});
-  arcB=el("path",{fill:"none",stroke:HOT,"stroke-width":"5.5","stroke-linecap":"round"});
+  arcA=el("path",{fill:"none",stroke:COOL,"stroke-width":"3.4","stroke-linecap":"round","stroke-opacity":".8"});
+  arcB=el("path",{fill:"none",stroke:HOT,"stroke-width":"5","stroke-linecap":"round"});
   capA=el("path",{fill:"none",stroke:COOL,"stroke-width":"1.6","stroke-opacity":".75"});
   capB=el("path",{fill:"none",stroke:HOT,"stroke-width":"2","stroke-opacity":".9"});
   svg.appendChild(arcA);svg.appendChild(arcB);svg.appendChild(capA);svg.appendChild(capB);
   ticks=[];
   for(var d=0;d<365;d++){var l=el("line",{stroke:HOT,"stroke-width":"2.1","stroke-linecap":"butt"});
    svg.appendChild(l);ticks.push(l);}
-  ghost=el("path",{fill:"none",stroke:COOL,"stroke-width":"1.7","stroke-linejoin":"round"});
-  svg.appendChild(ghost);   /* last child = on top of the day spokes */
+  ghost=el("path",{fill:"none",stroke:COOL,"stroke-width":"1.7","stroke-linejoin":"round",
+    "stroke-opacity":".95"});
+  ghostB=el("path",{fill:"none",stroke:HOT,"stroke-width":"1.6","stroke-linejoin":"round",
+    "stroke-opacity":"0"});
+  svg.appendChild(ghost);svg.appendChild(ghostB);   /* on top of the day spokes */
   built=true;return true;
  }
  var INNER="M"+(CX-R_IN)+" "+CY+"A"+R_IN+" "+R_IN+" 0 1 0 "+(CX+R_IN)+" "+CY+
@@ -3267,37 +3297,45 @@ var __RING=(function(){
    e.setAttribute("x2",b[0].toFixed(1));e.setAttribute("y2",b[1].toFixed(1));
    e.setAttribute("stroke-opacity",(0.42+0.58*Math.min(1,f/mx)).toFixed(2));
   }
-  /* the other era, drawn only across the days it actually reaches: a line held at zero
-     right around the year read as a decorative circle, not as data. */
-  var ref=t<0.5?B:A,gp=shape(ref);
-  ghost.setAttribute("d",gp[0]);
-  ghostFill.setAttribute("d",gp[1]);
-  ghostFill.setAttribute("fill",t<0.5?"rgba(255,107,82,.26)":"rgba(94,141,166,.40)");
-  ghost.setAttribute("stroke",t<0.5?HOT:COOL);
-  ghost.setAttribute("stroke-opacity",t<0.5?".55":".95");
-  var cut=t<0.5?sA:sB, other=t<0.5?sB:sA;
-  capA.setAttribute("d",capPath(R_ARC_A,other[1],other[2]));
-  capA.setAttribute("stroke",t<0.5?HOT:COOL);
-  capB.setAttribute("d",capPath(R_ARC_B,cut[1],cut[2]));
-  capB.setAttribute("stroke",t<0.5?COOL:HOT);
-  arcB.setAttribute("d",arcPath(R_ARC_B,cut[1],cut[2]));
-  arcB.setAttribute("stroke",t<0.5?COOL:HOT);
-  arcA.setAttribute("d",arcPath(R_ARC_A,other[1],other[2]));
-  arcA.setAttribute("stroke",t<0.5?HOT:COOL);
-  arcA.setAttribute("stroke-opacity",".7");
+  /* every word beside the ring describes the era that is drawn. Leaving the sentence on
+     "now" while the spokes showed 1951-80 made the toggle look broken and read as a lie. */
+  var showB=t>=0.5,sh=showB?sB:sA,oth=showB?sA:sB,shEra=showB?eraB:eraA,othEra=showB?eraA:eraB;
   var L=document.getElementById("sr-len");
-  if(L)L.textContent=Math.round(cut[0]+(0)); 
+  if(L)L.textContent=Math.round(sA[0]+(sB[0]-sA[0])*t);
   var W=document.getElementById("sr-was");
-  if(W)W.textContent=(t<0.5?"now ":"was ")+(t<0.5?sB[0]:sA[0]);
+  if(W)W.textContent=(showB?"was ":"then ")+oth[0];
   var S=document.getElementById("sr-span");
-  if(S)S.innerHTML="9 in 10 hot days now fall between <b>"+dayLabel(sB[1])+"</b> and <b>"+dayLabel(sB[2])+"</b>.";
+  if(S)S.innerHTML="9 in 10 hot days"+(showB?"":" in "+eraA)+" fall between <b>"+
+    dayLabel(sh[1])+"</b> and <b>"+dayLabel(sh[2])+"</b>.";
+  ghost.setAttribute("stroke-opacity",showB?".95":".5");
+  ghostB.setAttribute("stroke-opacity",showB?"0":".8");
+  var K=document.getElementById("sr-kb");if(K)K.textContent=shEra;
+  var K2=document.getElementById("sr-ka");if(K2)K2.textContent=othEra;
+  var GAP=document.getElementById("sr-unit");
+  if(GAP)GAP.innerHTML=gapped?"days,<br>first to last":"days of<br>hot season";
   var U=document.getElementById("sr-sub");
-  if(U){var dd=sB[0]-sA[0];
-   U.textContent=dd>0?("that stretch is "+dd+" days longer than in "+eraA):
-                 dd<0?("that stretch is "+(-dd)+" days shorter than in "+eraA):
-                      ("the same stretch as in "+eraA);}
+  if(U){var dd=sh[0]-oth[0];
+   /* a signed day count that small is noise — one archive cell over and it changes sign */
+   U.textContent=Math.abs(dd)<=4?("about the same stretch as in "+othEra):
+                 dd>0?("that stretch is "+dd+" days longer than in "+othEra):
+                      ("that stretch is "+(-dd)+" days shorter than in "+othEra);}
+  var H=document.getElementById("sr-sr");
+  if(H)H.textContent=title0+": the stretch holding 9 in 10 hot days runs "+dayLabel(sB[1])+
+    " to "+dayLabel(sB[2])+", "+sB[0]+" days. In "+eraA+" it was "+sA[0]+" days.";
  }
- var eraA="1951–80";
+ /* drawn once per record: the two eras as fixed reference, so the morph between them
+    always has both ends visible and nothing changes meaning half way through. */
+ function frame(){
+  var pa=shape(A),pb=shape(B);
+  ghostFill.setAttribute("d",pa[1]);
+  ghost.setAttribute("d",pa[0]);
+  ghostB.setAttribute("d",pb[0]);
+  arcA.setAttribute("d",arcPath(R_ARC_A,sA[1],sA[2]));
+  capA.setAttribute("d",capPath(R_ARC_A,sA[1],sA[2]));
+  arcB.setAttribute("d",arcPath(R_ARC_B,sB[1],sB[2]));
+  capB.setAttribute("d",capPath(R_ARC_B,sB[1],sB[2]));
+ }
+ var eraA="1951–80",eraB="the last 30 years",title0="";
  function go(to){
   if(raf)cancelAnimationFrame(raf);
   if(guard)clearTimeout(guard);
@@ -3318,11 +3356,13 @@ var __RING=(function(){
   var hide=function(){host.hidden=true;};
   if(!R||!R.a||!R.b){hide();return;}
   A=smooth(R.a);B=smooth(R.b);N=R.years||30;eraA=R.eraA||"1951–80";
+  eraB=R.eraB||"the last 30 years";title0=title||"";
   sA=season(A);sB=season(B);
   if(!sA||!sB){hide();return;}          /* a place with almost no hot days has no season to draw */
   mx=0;for(var i=0;i<365;i++){if(A[i]>mx)mx=A[i];if(B[i]>mx)mx=B[i];}
   if(mx<=0){hide();return;}
   peak=0;var pv=-1;for(i=0;i<365;i++)if(B[i]>pv){pv=B[i];peak=i;}
+  gapped=hasGap(B,sB)||hasGap(A,sA);
   if(!built&&!build()){hide();return;}
   host.hidden=false;
   var T=document.getElementById("sr-title");if(T&&title)T.textContent=title;
@@ -3332,25 +3372,38 @@ var __RING=(function(){
   var ka=document.getElementById("sr-ka"),kb=document.getElementById("sr-kb");
   if(ka)ka.textContent=eraA;
   if(kb)kb.textContent=R.eraB||"last 30 years";
-  function mark(w){if(tn)tn.classList.toggle("on",w===0);if(nw)nw.classList.toggle("on",w===1);}
-  if(tn&&!tn.__w){tn.__w=1;tn.addEventListener("click",function(){mark(0);go(0);});}
-  if(nw&&!nw.__w){nw.__w=1;nw.addEventListener("click",function(){mark(1);go(1);});}
+  function mark(w){
+   if(tn){tn.classList.toggle("on",w===0);tn.setAttribute("aria-pressed",w===0?"true":"false");}
+   if(nw){nw.classList.toggle("on",w===1);nw.setAttribute("aria-pressed",w===1?"true":"false");}}
+  if(tn&&!tn.__w){tn.__w=1;tn.addEventListener("click",function(){
+   if(host.__take)host.__take();mark(0);go(0);});}
+  if(nw&&!nw.__w){nw.__w=1;nw.addEventListener("click",function(){
+   if(host.__take)host.__take();mark(1);go(1);});}
   mark(1);
+  frame();
   if(reduce){cur=1;paint(1);return;}
   cur=0;paint(0);
   if(host.__io)host.__io.disconnect();
   if(host.__fb)clearTimeout(host.__fb);
   var fired=false,run=function(){if(fired)return;fired=true;
-   if(host.__io)host.__io.disconnect();if(host.__fb)clearTimeout(host.__fb);go(1);};
+   if(host.__io){try{host.__io.disconnect();}catch(e){}}
+   if(host.__fb)clearTimeout(host.__fb);go(1);};
+  host.__take=function(){fired=true;               /* the reader chose; stop deciding for them */
+   if(host.__io){try{host.__io.disconnect();}catch(e){}}
+   if(host.__fb)clearTimeout(host.__fb);};
+  var armed=false;
   try{
    host.__io=new IntersectionObserver(function(es){
-    for(var k=0;k<es.length;k++)if(es[k].isIntersecting){setTimeout(run,420);return;}
+    for(var k=0;k<es.length;k++)if(es[k].isIntersecting){
+     setTimeout(run,420);
+     /* the safety net is armed only once the ring is ON SCREEN. Armed at load it always
+        beat the observer, and the whole reveal was over 4,000px above the reader. */
+     if(!armed){armed=true;host.__fb=setTimeout(run,4000);}
+     return;}
    },{threshold:.3});
    host.__io.observe(host);
-  }catch(e){}
-  /* the animation is a bonus; the CURRENT record is the message. Nobody is left
-     looking at 1951 because an observer never fired. */
-  host.__fb=setTimeout(run,7000);
+  }catch(e){run();}                                 /* no observer here: draw the record now */
+  if(!window.IntersectionObserver)run();
  }
  /* the baked table stores each era as 365 characters, one per day */
  function decode(s,alpha){
@@ -3368,6 +3421,8 @@ function buildGround(V){
  var PLACE=CUSTOM?V.place:"Seville";
  var THR=CUSTOM?V.thr:{hot:35,night:25,hotLabel:"at or above 35 °C",nightLabel:"below 25 °C"};
  el("recwin").innerHTML="";
+ /* a baked record has no day-by-day archive; its legend was naming five lines of an empty box */
+ if(el("rw-legend"))el("rw-legend").hidden=!RWc;
  var thenN=mean(Gc.days_ge35_per_year,1951,1980),nowN=mean(Gc.days_ge35_per_year,LF-9,LF);
  var wnThen=mean(Gc.warm_nights_ge25_per_year,1951,1980),wnNow=mean(Gc.warm_nights_ge25_per_year,LF-9,LF);
  if(el("g-h2"))el("g-h2").textContent=PLACE+" since 1940";
@@ -3375,14 +3430,18 @@ function buildGround(V){
   el("g-then").textContent=thenN.toFixed(0);el("g-now").textContent=nowN.toFixed(0);
   /* the then-count lands first, the now-count 250ms later — the site's one sentence, in motion */
   (function(){
-   var b=el("g-count-h2");if(!b||!window.IntersectionObserver)return;
+   var b=el("g-count-h2");if(!b)return;
+   if(b.__io){try{b.__io.disconnect();}catch(e){}b.__io=null;}
+   if(b.__raf){for(var _r=0;_r<b.__raf.length;_r++)cancelAnimationFrame(b.__raf[_r]);}
+   b.__raf=[];
+   if(!window.IntersectionObserver)return;
    if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches)return;
    var done=false;
    function cnt(elx,to,delay){setTimeout(function(){var t0=null;
     (function st(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/900);
      elx.textContent=String(Math.round(to*(1-Math.pow(1-k,3))));
-     if(k<1)requestAnimationFrame(st);})(performance.now());},delay);}
-   try{var io=new IntersectionObserver(function(es){
+     if(k<1)b.__raf.push(requestAnimationFrame(st));})(performance.now());},delay);}
+   try{var io=b.__io=new IntersectionObserver(function(es){
     for(var q=0;q<es.length;q++)if(es[q].isIntersecting&&!done){done=true;io.disconnect();
      cnt(el("g-then"),Math.round(thenN),0);cnt(el("g-now"),Math.round(nowN),250);}},{threshold:.5});
    io.observe(b);}catch(e){}})();}
@@ -3531,15 +3590,16 @@ function buildGround(V){
      (EMBED?'':' <button type="button" class="gb-tosky" aria-label="Go to the Sky — the world&rsquo;s carbon budget">See the sky &uarr;</button>')+'</p>':'');
   var _gs=el("g-fact").querySelector(".gb-tosky");
   if(_gs)_gs.addEventListener("click",function(){scrollToChamber(0);var _st=el("sr-status");if(_st)_st.textContent="Jumped to the Sky — the world’s carbon budget.";});
-  el("g-freq").textContent=(t.h40a||t.h40b)?
+  el("g-freq").textContent=(!RWc)?"":(t.h40a||t.h40b)?
    ("A 40 °C day within two weeks of this date came "+t.h40a+" summers in 30 (1951–80). "+
     "In the last thirty years: "+t.h40b+" in 30."):"";
-  el("g-receipt").innerHTML=(t.pct!=null?("Hotter than "+t.pct+"% of days around this date since 1940 · "):"")+
+  el("g-receipt").innerHTML=((t.pct!=null&&RWc)?("Hotter than "+t.pct+"% of days around this date since 1940 · "):"")+
    "ERA5 via Open-Meteo · "+(CUSTOM?
     "today is a forecast, not yet measured":
     "forecast adjusted "+(t.bias<0?"+":"−")+Math.abs(t.bias).toFixed(1)+
     " °C for the measured reanalysis offset · newest observation "+F.newest_obs)+
    " · compared against 1951–80 and "+(LF-9)+"–"+LF;
+  if(RWc&&t.dateISO){
   var off=(function(){var d=new Date(t.dateISO+"T00:00:00Z");
    var a=CUSTOM?new Date(V.anchorISO+"T00:00:00Z"):new Date(Date.UTC(+t.dateISO.slice(0,4),5,8));
    return Math.round((d.getTime()-a.getTime())/864e5);})();
@@ -3555,13 +3615,14 @@ function buildGround(V){
     todayBridge.setAttribute("stroke-opacity",.85);}
   }else{todayDot.setAttribute("opacity",0);todayLbl.setAttribute("opacity",0);
    todayBridge.setAttribute("stroke-opacity",0);}
+  }
   /* Phase 8 — one classify(t) drives the pulse strip, this Ground verdict line, and the tab-title dot */
-  var CZ=classify(t,PLACE);window.__TODAY=CZ;
-  el("g-verdict").innerHTML=CZ.longLine||"";
+  var CZ=RWc?classify(t,PLACE):null;window.__TODAY=CZ;
+  el("g-verdict").innerHTML=(CZ&&CZ.longLine)||"";
   (function(){var p=el("pulse");if(!p)return;
-   if(CZ.shortLine){p.textContent=CZ.shortLine;p.hidden=false;p.classList.toggle("dot",CZ.dot);}
+   if(CZ&&CZ.shortLine){p.textContent=CZ.shortLine;p.hidden=false;p.classList.toggle("dot",CZ.dot);}
    else p.hidden=true;})();
-  try{document.title=CZ.notable?"● On Record":BASE_TITLE;}catch(e){}
+  try{document.title=(CZ&&CZ.notable)?"● On Record":BASE_TITLE;}catch(e){}
  };
  TS.comparable=TS.tmax!=null?Math.round((TS.tmax-TS.bias)*10)/10:null;
  applyToday(TS);
@@ -4624,6 +4685,7 @@ var __PLACE=(function(){
   var T=(D&&D.instant)||null; if(!T)return null;
   var best=null,bd=1e9;
   for(var k in T){ if(!Object.prototype.hasOwnProperty.call(T,k))continue;
+   if(k.charAt(0)==="_")continue;   /* metadata, not a city */
    var c=T[k],dx=Math.abs(c.la-lat),dy=Math.abs(c.lo-lon);
    var dd=dx*dx+dy*dy; if(dd<bd){bd=dd;best=c;} }
   if(!best||bd>0.36)return null;      /* ~0.6 degrees — the same city, not a neighbour */
@@ -4641,10 +4703,12 @@ var __PLACE=(function(){
    if(_ra&&_rb)_rg={a:_ra,b:_rb,eraA:(T._ring&&T._ring.eraA)||"1951\u201380",
                     eraB:(T._ring&&T._ring.eraB)||"last 30 years",years:(T._ring&&T._ring.years)||30};
   }catch(e){}
+  var _hl="hotter than 95% of days here in 1951\u201380 (above "+best.th.toFixed(1)+"\u00A0\u00B0C)";
+  var _nl="below "+best.tn.toFixed(1)+"\u00A0\u00B0C \u2014 warmer than 95% of nights here in 1951\u201380";
   return {V:{custom:true,place:name,RW:null,ring:_rg,
              G:{days_ge35_per_year:days,warm_nights_ge25_per_year:nights},
              S:{year0:best.y0,anom:anom},
-             thr:{hot:best.th,night:best.tn},
+             thr:{hot:best.th,night:best.tn,hotLabel:_hl,nightLabel:_nl},
              baked:true,bakedName:best.n},
           t:{pct:null,tmax:null}};
  }
@@ -5581,7 +5645,8 @@ window.__HOME=__HOME;
   var aName,aRows,aThr,aEx=false;
   if(hm&&!hm.ex&&V&&V.G){aName=hm.name;aRows=V.G.days_ge35_per_year;aThr=V.thr.hot;}
   else{aName="Seville";aRows=G.days_ge35_per_year.filter(function(r){return r.year<=LF;});aThr=35;aEx=true;}
-  var slugs=Object.keys(D.instant).sort(function(x,y){return D.instant[x].n<D.instant[y].n?-1:1;});
+  var slugs=Object.keys(D.instant).filter(function(k){return k.charAt(0)!=="_";})
+              .sort(function(x,y){return D.instant[x].n<D.instant[y].n?-1:1;});
   var keep=sel.value;
   sel.innerHTML=slugs.map(function(sl){
    return '<option value="'+sl+'">'+D.instant[sl].n+'</option>';}).join("");
@@ -5798,19 +5863,19 @@ window.addEventListener("keydown",function(e){
 /* deep link: ?chamber= or #p-<id> jumps to a chapter and skips the intro */
 var startCh=(Q.get("chamber")||HASH0).trim();
 var si=CH.findIndex(function(c){return c.id===startCh;});
-if(si>0){endIntro();
+if(si>0){endIntroSafe();
  requestAnimationFrame(function(){
   var a=chamberAnchor(si);if(a)a.scrollIntoView({block:"start"});   // arrive instantly
   if(__ATMO.ok)__ATMO.setState(CH[si].id,{instant:true});
   enterChamber(si);});}
-if(Q.get("drawer")){openDrawer(Q.get("drawer"));endIntro();}
+if(Q.get("drawer")){openDrawer(Q.get("drawer"));endIntroSafe();}
 
 /* ═══════════ REUSE MODES (Phase 9) ═══════════
    ?embed=<chamber> — chrome-less single chamber for an <iframe>, with an un-strippable
    credit badge. ?kiosk=1 — a calm auto-cycling projector loop over the existing engine.
    Both reuse the deep-link arrival path and the sky's own cross-fades; nothing new is drawn. */
 if(EMBED){
- endIntro();
+ endIntroSafe();
  var ei=CH.findIndex(function(c){return c.id===EMBED;});if(ei<0)ei=0;
  var epane=el("p-"+CH[ei].id);if(epane)epane.classList.add("embed-show");
  var beatN=parseInt(Q.get("beat"),10);
@@ -5836,7 +5901,7 @@ if(EMBED){
  })();
 }
 if(KIOSK){
- endIntro();
+ endIntroSafe();
  var K_ORDER=(function(){
   var ids=(Q.get("order")||"").split(",").map(function(s){return s.trim();})
     .filter(function(id){return id&&CH.some(function(c){return c.id===id;});});

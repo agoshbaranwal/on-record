@@ -83,7 +83,7 @@ head_meta = (
     '<meta name="twitter:image" content="' + OG + 'og/seville.png">'
     '<link rel="manifest" href="manifest.webmanifest">'
     '<meta name="theme-color" content="#05171A">'
-    '<link rel="apple-touch-icon" href="og/icon-192.png">'
+    '<link rel="icon" href="og/icon-192.png"><link rel="apple-touch-icon" href="og/icon-192.png">'
 )
 doc = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
        '<meta name="viewport" content="width=device-width, initial-scale=1">'

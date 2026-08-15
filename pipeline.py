@@ -413,9 +413,37 @@ print(f"  impact.json: {len(impact['metrics'])} metrics, {len(impact['omitted'])
 # The instant-place table (20 cities baked from the v2 ingest) is maintained OUTSIDE this
 # nightly build — attach it, never regenerate it here. Without this line the nightly would
 # silently drop D.instant and the zero-latency picker + the compare feature die overnight.
+# The season ring for the worked example. It lives in `out` like every other figure, because
+# it was hand-added to site-data.json once and tonight's build would have silently deleted it —
+# the ring would have vanished from the default view with every check still passing.
+_ALPHA = "0123456789ABCDEFGHIJKLMNOPQRSTU"
+_ML = [31,28,31,30,31,30,31,31,30,31,30,31]
+_DOY, _s = {}, 0
+for _m in range(12):
+    for _dd in range(1, _ML[_m] + 1):
+        _DOY["%02d-%02d" % (_m + 1, _dd)] = _s; _s += 1
+_DOY["02-29"] = _DOY["02-28"]
+_rA, _rB = [0] * 365, [0] * 365
+for _dt, _tx, _tn in sev:
+    if _tx is None or _tx < 35: continue
+    _sl = _DOY.get("%02d-%02d" % (_dt.month, _dt.day))
+    if _sl is None: continue
+    if 1951 <= _dt.year <= 1980: _rA[_sl] += 1
+    elif LAST_FULL - 29 <= _dt.year <= LAST_FULL: _rB[_sl] += 1
+assert max(_rA) <= 30 and max(_rB) <= 30, "a 30-year era cannot hold more than 30 hits on one day"
+out["seville_ring"] = {"a": "".join(_ALPHA[v] for v in _rA), "b": "".join(_ALPHA[v] for v in _rB),
+                       "eraA": "1951\u201380", "eraB": f"{LAST_FULL-29}\u2013{LAST_FULL}",
+                       "years": 30, "alpha": _ALPHA, "thr": 35}
+print(f"  seville_ring: {sum(_rA)} \u2192 {sum(_rB)} hot days per 30-year era")
+
 _inst = DATA / "instant-places.json"
 if _inst.exists():
     out["instant"] = json.loads(_inst.read_text())
+# data keys the page cannot render without — _KEEP guards ELEMENTS, and an element whose
+# data has gone missing still passes that check while drawing nothing.
+for _k in ("seville_ring", "instant", "seville_generational", "seville_stripes"):
+    assert _k in out and out[_k], f"site-data.json would ship without {_k}"
+assert "_ring" in out["instant"], "the instant table lost its ring metadata"
 (DATA / "site-data.json").write_text(json.dumps(out, separators=(",", ":")))
 print(f"  site-data.json written ({(DATA/'site-data.json').stat().st_size:,} B)")
 
@@ -467,7 +495,7 @@ head_meta = (
     # PWA: installable, offline-capable (network-first SW), zero tracking
     '<link rel="manifest" href="manifest.webmanifest">'
     '<meta name="theme-color" content="#05171A">'
-    '<link rel="apple-touch-icon" href="og/icon-192.png">'
+    '<link rel="icon" href="og/icon-192.png"><link rel="apple-touch-icon" href="og/icon-192.png">'
 )
 doc = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
        '<meta name="viewport" content="width=device-width, initial-scale=1">'
