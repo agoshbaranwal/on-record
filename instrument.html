@@ -1492,11 +1492,11 @@ button.rr-row:hover{padding-left:6px}
       </div>
   </div>
   <div id="rail-dock">
-    <button id="homechip" type="button" hidden title="The place this site is drawn for — opens the picker">where are you?</button>
+    <button id="homechip" type="button" hidden title="The place this site is drawn for — opens the picker">Set your city</button>
   </div>
   <button id="soundbtn" type="button" aria-pressed="false"
           title="Ambient sound — synthesised from the chapter you're in">
-    <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span id="soundlab">sound off</span>
+    <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span id="soundlab">Sound off</span>
   </button>
 
   <div id="chrome">
@@ -1504,7 +1504,7 @@ button.rr-row:hover{padding-left:6px}
     <header id="mast">
       <div>
         <p class="word">On Record</p>
-        <h1 class="plain" id="mast-tag">What the climate record actually says about the place you live.</h1>
+        <h1 class="plain" id="mast-tag">Hot days and nights in your city</h1>
         <!-- the place chip docks to the rail: the sky gutter is chrome's own column -->
       </div>
       <!-- #vitals removed: three permanent readouts that restated facts the chapters
@@ -1514,20 +1514,19 @@ button.rr-row:hover{padding-left:6px}
     <div id="panes">
 
       <!-- SKY -->
-      <section class="pane on" id="p-sky" aria-label="The sky — the remaining carbon budget">
+      <section class="pane on" id="p-sky" aria-label="Carbon budget">
         <div class="beats">
           <!-- BEAT 1 — the plain thesis, and the number that carries the page -->
           <div class="beat">
           <div class="sheet">
-            <h2 class="page-what"><b class="pw-name">The world's carbon budget</b><span class="sr-only">. </span><span class="pw-say">How much carbon the world can still burn before 1.5&nbsp;°C is out of reach &mdash; and how fast we are using it up.</span></h2>
+            <h2 class="page-what"><b class="pw-name">Carbon budget</b><span class="sr-only">. </span><span class="pw-say">How much CO&#8322; the world can still emit before 1.5&nbsp;&deg;C.</span></h2>
             <!-- This used to repeat the cold-open word for word, teaching the reader that scrolling
                  returns nothing new — while the one sentence that stops "2.4-2.5" being read as
                  "the world ends in 2029" was stranded in the SKIPPABLE intro. The correction now
                  lives in the chamber, where a deep-linked or returning reader also meets it. -->
-            <h2 tabindex="-1" id="sky-h2">Two and a half years.<br>Then the odds change.</h2>
-            <p class="lead" id="sky-lead">Not the end of anything. The end of a coin-flip chance of
-              stopping at 1.5&nbsp;&deg;C &mdash; the line the world&rsquo;s governments agreed to try to hold &mdash; about <b class="num" id="lead-gt">–</b> billion tonnes
-              of CO&#8322; from now. Past it the risk keeps climbing, a tenth of a degree at a time.</p>
+            <h2 tabindex="-1" id="sky-h2">Years left</h2>
+            <p class="lead" id="sky-lead">The CO&#8322; we can still emit for a 50% chance of staying under 1.5&nbsp;&deg;C: about <b class="num" id="lead-gt">–</b> billion tonnes
+              of CO&#8322; .</p>
             <div id="skycount">
               <p class="years num" id="years">–</p>
               <div class="capplate">
@@ -1536,17 +1535,16 @@ button.rr-row:hover{padding-left:6px}
               </div>
             </div>
             <p id="ledger-sr" class="sr-only"></p>
-            <button class="drawbtn" data-drawer="sky">Sources &amp; the budget arithmetic</button>
-            <p class="beat-cue">scroll &mdash; you can change this sky &darr;</p>
+            <button class="drawbtn" data-drawer="sky">Sources</button>
+            <p class="beat-cue">Next: Change the rate</p>
           </div>
         </div>
 
           <!-- BEAT 2 — the dial: the one control that rewrites the future -->
           <div class="beat">
           <div class="sheet">
-            <h2 id="dial-h2">Change how fast the world burns.<br>Watch the century answer.</h2>
-            <p class="lead">Up is the century ahead: the horizon is today, the top of the sky is 2100,
-              and the colour at each height is how hot that year gets. Drag the dial.</p>
+            <h2 id="dial-h2">Change the rate</h2>
+            <p class="lead">Drag to change the rate. The sky shows the years ahead.</p>
             <div id="dial">
               <div class="dh"><h3>The world&rsquo;s rate of burn</h3>
                 <p class="dv"><b id="rate" class="num">42</b> GtCO₂/yr <em id="delta">today&rsquo;s rate</em></p></div>
@@ -1558,9 +1556,9 @@ button.rr-row:hover{padding-left:6px}
               </div>
               <div class="dimEnds" aria-hidden="true"><span>8 &middot; deep cuts</span><span>63 &middot; +50% faster</span></div>
               <div class="presets" role="group" aria-label="Three futures">
-                <button type="button" data-rate="8">a world that cuts hard</button>
-                <button type="button" data-rate="42" id="preset-today">today&rsquo;s world</button>
-                <button type="button" data-rate="63">a world that speeds up</button>
+                <button type="button" data-rate="8">Deep cuts</button>
+                <button type="button" data-rate="42" id="preset-today">Today</button>
+                <button type="button" data-rate="63">Faster</button>
               </div>
               <p class="verdict" id="verdict" aria-live="off"></p>
               <!-- The dial answered with a bare decimal. "1.5 C is a gradient of rising risk, not a
@@ -1577,10 +1575,10 @@ button.rr-row:hover{padding-left:6px}
                 <p class="ws-note" id="ws-note"></p>
               </div>
               <p class="burnedtick num" id="burned" aria-live="off"></p>
-              <p class="foot"><button type="button" id="reset">reset to today</button><button
-                type="button" id="copysky">copy this sky</button></p>
+              <p class="foot"><button type="button" id="reset">Reset</button><button
+                type="button" id="copysky">Copy link</button></p>
             </div>
-            <p class="beat-cue">that was the world&rsquo;s clock &mdash; now your own ground &darr;</p>
+            <p class="beat-cue">Next: Hot days</p>
           </div>
         </div>
 
@@ -1596,29 +1594,26 @@ button.rr-row:hover{padding-left:6px}
       </section>
 
       <!-- GROUND -->
-      <section class="pane" id="p-ground" aria-label="Ground — your city on its own record">
+      <section class="pane" id="p-ground" aria-label="Hot days">
         <div class="beats">
           <!-- BEAT 1 — whose ground this is, and that you can change it -->
           <div class="beat">
           <div class="sheet">
-            <h2 class="page-what"><b class="pw-name">Your hot days</b><span class="sr-only">. </span><span class="pw-say">How many dangerously hot days your own town gets now, compared with your grandparents&rsquo; time.</span></h2>
-            <h2 tabindex="-1" id="g-h2">Here is Seville, day by day, since 1940.</h2>
-            <p class="place-tag" hidden>worked example &mdash; not your place &middot; set your place below</p>
-                        <p class="lead">Not a global average &mdash; the ground under your feet.</p>
+            <h2 class="page-what"><b class="pw-name">Hot days</b><span class="sr-only">. </span><span class="pw-say">Hot days per year in your city, now vs 1951&ndash;80.</span></h2>
+            <h2 tabindex="-1" id="g-h2">Seville since 1940</h2>
+            <p class="place-tag" hidden>Example: Seville</p>
             <!-- the ONE place picker. #gplace is kept inside it so its existing CSS still applies. -->
             <div id="homepick">
               <!-- once a place is set, the whole picker collapses to this one line: the reader
-                   answered "where are you?" in the cold-open and must not be asked again. -->
+                   answered "Set your city" in the cold-open and must not be asked again. -->
               <p id="homenow" hidden>Drawn for <b id="homenow-name"></b>
-                <button type="button" id="homenow-change" aria-expanded="false" aria-controls="homepick-body">not your place? change</button>
-                <button type="button" id="homelink" hidden>copy a link to this place</button></p>
+                <button type="button" id="homenow-change" aria-expanded="false" aria-controls="homepick-body">Change city</button>
+                <button type="button" id="homelink" hidden>Copy link</button></p>
               <div id="homepick-body">
               <div id="homeask">
-                <h3 id="homeask-h">Where are you?</h3>
-                <p id="homeask-p">This chapter is drawn for one place. Make it yours &mdash; every
-                  chapter follows.</p>
+                <h3 id="homeask-h">Your city</h3>
                 <button type="button" id="gq-mine" class="btn-fill">Use my location</button>
-                <button type="button" id="hp-why" aria-expanded="false" aria-controls="homeask-privacy">What happens to my location?</button>
+                <button type="button" id="hp-why" aria-expanded="false" aria-controls="homeask-privacy">How your location is used</button>
                 <p id="homeask-privacy" class="receipt" data-collapsed>Your coordinates are rounded to two decimals
                   (about a kilometre) and sent only to Open-Meteo, the weather archive. To name your
                   city we download a list of the world&rsquo;s cities and find the nearest one <b>on your
@@ -1628,7 +1623,7 @@ button.rr-row:hover{padding-left:6px}
               </div>
               <div id="gplace">
                 <input id="gq" type="search" placeholder="Search a city" aria-label="Search a place to draw its record">
-                <button type="button" id="gq-go">Draw its record</button>
+                <button type="button" id="gq-go">Show</button>
                 <span id="gq-status" aria-live="polite"></span>
               </div>
               <div id="gq-recent" role="group" aria-label="Places you looked at recently" hidden></div>
@@ -1638,12 +1633,12 @@ button.rr-row:hover{padding-left:6px}
                 not that street&rsquo;s. The coordinates are echoed when you pick, and all are listed with the sources at the end of the page.</p>
               <div id="gq-ex" role="group" aria-label="Worked examples">
                 <span class="gq-exlab">worked examples</span>
-                <button type="button" class="gq-exb" id="ex-seville" data-slug="seville">Seville &mdash; heat that doubled</button>
-                <button type="button" class="gq-exb" id="ex-delhi" data-slug="delhi">Delhi &mdash; days edged down, nights climbing</button>
+                <button type="button" class="gq-exb" id="ex-seville" data-slug="seville">Seville</button>
+                <button type="button" class="gq-exb" id="ex-delhi" data-slug="delhi">Delhi</button>
               </div>
               </div>
             </div>
-            <p class="beat-cue">scroll &mdash; what its record shows &darr;</p>
+            <p class="beat-cue">Next: Then vs now</p>
           </div>
         </div>
 
@@ -1653,20 +1648,20 @@ button.rr-row:hover{padding-left:6px}
             <h2 id="g-count-h2"><span id="g-hotw">Hot</span> days here: <b class="num" id="g-then">–</b> then,
               <b class="num" id="g-now">–</b> now.</h2>
             <div id="g-fact"><p class="gb-say">Days at or above 35&nbsp;&deg;C in Seville, the worked example &mdash; the 1951&ndash;80 average against the last ten full years. Set your place and the count becomes yours, against your own threshold.</p></div>
-            <p class="take-mini" id="g-take" hidden>save this record:
-              <button type="button" data-ga="card">card &darr;</button> &middot;
-              <button type="button" data-ga="csv">csv &darr;</button> &middot;
-              <button type="button" data-ga="cite">copy the sentence</button></p>
+            <p class="take-mini" id="g-take" hidden>Save:
+              <button type="button" data-ga="card">Image</button> &middot;
+              <button type="button" data-ga="csv">CSV</button> &middot;
+              <button type="button" data-ga="cite">Copy text</button></p>
             <p class="fact-line" id="g-freq"></p>
             <p class="receipt" id="g-receipt">ERA5 reanalysis via Open-Meteo &middot; daily maxima since 1940 &middot; thresholds are the place&rsquo;s own record</p>
-            <button class="drawbtn" data-drawer="ground">Sources &amp; the full record</button>
+            <button class="drawbtn" data-drawer="ground">Sources</button>
           </div>
         </div>
 
           <!-- BEAT 3 — today against 86 versions of today, and the finder -->
           <div class="beat">
           <div class="sheet">
-            <h2>Today, against every version of today since 1940.</h2>
+            <h2>Today vs this date since 1940</h2>
             <p class="lead" id="g-verdict"></p>
             <p class="bignum" id="g-today">– <small>forecast today <span class="chip">provisional</span></small></p>
             <div class="chartwrap"><div class="plate">
@@ -1684,7 +1679,7 @@ button.rr-row:hover{padding-left:6px}
               <input type="number" id="yr" min="1940" max="2025" placeholder="1985" inputmode="numeric">
             </div>
             <span class="out mono finder" id="yr-out" aria-live="polite"></span>
-            <p class="beat-cue">see how your town compares &mdash; any two, honestly &darr;</p>
+            <p class="beat-cue">Next: Compare</p>
           </div>
         </div>
         </div>
@@ -1694,8 +1689,7 @@ button.rr-row:hover{padding-left:6px}
              number; the copy says so out loud. -->
         <div class="beat" id="cmp-beat">
           <div class="sheet sheet--wide">
-            <h2 class="page-what"><b class="pw-name">Compare</b><span class="sr-only">. </span><span class="pw-say">Two towns
-              side by side &mdash; each measured against its own past.</span></h2>
+            <h2 class="page-what"><b class="pw-name">Compare</b><span class="sr-only">. </span><span class="pw-say">Two cities side by side.</span></h2>
             <div id="cmp-grid">
               <div class="cmp-card" id="cmp-a" aria-live="polite"></div>
               <div class="cmp-card">
@@ -1704,7 +1698,7 @@ button.rr-row:hover{padding-left:6px}
                 <div id="cmp-b-body" aria-live="polite"></div>
               </div>
             </div>
-            <p class="beat-cue">the other half of the record is after dark &darr;</p>
+            <p class="beat-cue">Next: Hot nights</p>
             <p id="cmp-note">The &times; on each card is the change &mdash; that is the comparable part. The list holds the 24 pre-computed towns; the picker above can draw any town on Earth. &ldquo;Dangerously hot&rdquo; is each town&rsquo;s own 1951&ndash;80
               95th percentile &mdash; the two cards count different thresholds, so comparing raw
               day-counts would be false precision. Compare the change. Averages: 1951&ndash;80 vs
@@ -1714,25 +1708,24 @@ button.rr-row:hover{padding-left:6px}
       </section>
 
       <!-- NIGHT -->
-      <section class="pane" id="p-night" aria-label="Night — the danger after dark">
+      <section class="pane" id="p-night" aria-label="Hot nights">
         <div class="beats">
           <!-- BEAT 1 — the danger people miss, and the number -->
           <div class="beat">
           <div class="sheet">
-            <h2 class="page-what"><b class="pw-name">Your hot nights</b><span class="sr-only">. </span><span class="pw-say">Almost everywhere, nights are warming faster than days &mdash; and the nights are the dangerous half.</span></h2>
-            <h2 tabindex="-1">Hot nights are the danger most people miss.</h2>
-            <p class="place-tag" hidden>worked example &mdash; not your place &middot; set it in Your hot days</p>
-            <p class="lead">Your body cools down at night to recover. When the nights stop cooling,
-              a heatwave stops giving anyone a break &mdash; which is what heat-health research warns about most.</p>
+            <h2 class="page-what"><b class="pw-name">Hot nights</b><span class="sr-only">. </span><span class="pw-say">Nights are warming faster than days.</span></h2>
+            <h2 tabindex="-1">Nights warm faster than days</h2>
+            <p class="place-tag" hidden>Example: Delhi</p>
+            <p class="lead">Your body needs cool nights to recover. Heat-health research links hot nights to more deaths.</p>
             <p class="bignum" id="n-big">– <small>more hot nights a year in Delhi, the worked example<br>than the 1951&ndash;80 average</small></p>
-            <p class="beat-cue">why you can trust that number &darr;</p>
+            <p class="beat-cue">Next: Days vs nights</p>
           </div>
         </div>
           <!-- BEAT 2 — the honesty test: the line that fell -->
           <div class="beat">
           <div class="sheet">
             <h2 id="n-h2">Delhi&rsquo;s hot days edged down. Its hot nights rose.</h2>
-            <p class="place-tag" hidden>worked example &mdash; not your place &middot; set it in Your hot days</p>
+            <p class="place-tag" hidden>Example: Delhi</p>
                         <div id="n-diverge" aria-hidden="true"></div>
             <p class="lead" id="n-honest"></p>
             <div class="chartwrap"><div class="plate">
@@ -1752,27 +1745,27 @@ button.rr-row:hover{padding-left:6px}
                  must not depend on the reader's own city happening to diverge. -->
             <section id="n-example" aria-labelledby="n-ex-h">
               <h3 id="n-ex-h"><button type="button" id="n-ex-open" aria-expanded="false"
-                aria-controls="n-ex-body">Why you can trust a record that falls</button></h3>
+                aria-controls="n-ex-body">Why Delhi&rsquo;s days fell</button></h3>
               <div id="n-ex-body" hidden>
                 <p id="n-ex-lead"></p>
                 <p class="receipt" id="n-rec-ex"></p>
               </div>
             </section>
-            <button class="drawbtn" data-drawer="night">Sources &amp; why days and nights differ</button>
-            <p class="beat-cue">one more count before the good news &mdash; the people on your side &darr;</p>
+            <button class="drawbtn" data-drawer="night">Sources</button>
+            <p class="beat-cue">Next: What people think</p>
           </div>
         </div>
         </div>
       </section>
 
       <!-- FIRST LIGHT -->
-      <section class="pane" id="p-firstlight" aria-label="First light — the majority that thinks it is a minority">
+      <section class="pane" id="p-firstlight" aria-label="What people think">
         <div class="beats">
           <!-- BEAT 1 — the plain finding -->
           <div class="beat">
           <div class="sheet sheet--wide">
-            <h2 class="page-what"><b class="pw-name">What people actually want</b><span class="sr-only">. </span><span class="pw-say">Far more people around you want action on climate change than you think.</span></h2>
-            <h2 tabindex="-1">Would people give 1% of their income<br>to fight warming?</h2>
+            <h2 class="page-what"><b class="pw-name">What people think</b><span class="sr-only">. </span><span class="pw-say">Most people want climate action. Most think others don&rsquo;t.</span></h2>
+            <h2 tabindex="-1">How many people would give 1% of their income?</h2>
             <p class="lead">Researchers asked people in 125 countries whether they would give
               <b>1% of their income</b>, every month, to fight warming. Before we tell you the
               answer &mdash; what would you guess?</p>
@@ -1783,7 +1776,7 @@ button.rr-row:hover{padding-left:6px}
               <label for="wg-in">Out of 100 people worldwide, how many said yes?</label>
               <span class="wg-row"><input id="wg-in" type="number" min="0" max="100" inputmode="numeric"
                 placeholder="0&ndash;100" aria-describedby="wg-out">
-              <button type="button" id="wg-go">show me</button></span>
+              <button type="button" id="wg-go">Show answer</button></span>
             </div>
             <p id="wg-out" aria-live="polite"></p>
             <!-- 100 people. The finding stops being a sentence and becomes a thing you look at:
@@ -1791,17 +1784,17 @@ button.rr-row:hover{padding-left:6px}
             <div id="wg-dots" aria-hidden="true"></div>
             <p id="wg-claim" hidden><b>Most people back climate action. They just think most people don&rsquo;t.</b></p>
             <p id="wg-key" aria-hidden="true"></p>
-            <button type="button" id="wg-again" class="linklike" hidden>guess again</button>
-            <p class="beat-cue">now find your own country &darr;</p>
+            <button type="button" id="wg-again" class="linklike" hidden>Guess again</button>
+            <p class="beat-cue">Next: By country</p>
           </div>
         </div>
           <!-- BEAT 2 — your country, the lamps, and where money helps -->
           <div class="beat">
           <div class="sheet sheet--wide">
-            <h2>Not one country. All of them.</h2>
+            <h2>Every country surveyed</h2>
             <!-- the explanation of what "guess vs true" means now happens in the crowd above,
                  by watching it. This screen only has to say: it is every country, not just yours. -->
-            <p class="lead">Every surveyed country, same gap. Find yours.</p>
+            <p class="lead">Find your country.</p>
             <div id="pgwrap">
               <div id="pg-pick">
                 <select id="pg-sel" aria-label="Choose a country"></select>
@@ -1821,48 +1814,46 @@ button.rr-row:hover{padding-left:6px}
               </div>
               <p class="sep89 show" id="pg-give"></p>
             </div>
-            <button class="drawbtn" data-drawer="firstlight">Sources &amp; the study</button>
-            <p class="beat-cue">next &mdash; what one person can actually move &darr;</p>
+            <button class="drawbtn" data-drawer="firstlight">Sources</button>
+            <p class="beat-cue">Next: What you can do</p>
           </div>
         </div>
         </div>
       </section>
 
       <!-- MORNING -->
-      <section class="pane" id="p-morning" aria-label="Morning — what is already moving">
+      <section class="pane" id="p-morning" aria-label="What you can do">
         <div class="beats">
           <!-- BEAT 1 — the measured good news -->
           <div class="beat" id="record-room">
           <div class="sheet">
-            <h2 class="page-what"><b class="pw-name">What you can do</b><span class="sr-only">. </span><span class="pw-say">The few things one person can do that actually
-              matter &mdash; and what has genuinely improved, measured.</span></h2>
-            <h2>Put it on the record.</h2>
-            <p class="lead" style="max-width:52ch">Sorted by how far it reaches &mdash; the green stroke on each is that reach. The big ones are collective; the personal
-              ones are real but smaller. Both are here on purpose.</p>
+            <h2 class="page-what"><b class="pw-name">What you can do</b><span class="sr-only">. </span><span class="pw-say">What actually reduces emissions.</span></h2>
+            <h2>Take action</h2>
+            <p class="lead" style="max-width:52ch">Sorted by impact.</p>
             <!-- the methodology defense moved to the caveats drawer: 45 words of "why we phrase it
                  this way" before the reader could act -->
             <div class="rr-menu">
               <button class="rr-row rr-lever rr-default" data-act="letter" type="button">
                 <span class="rr-head"><span class="rr-chip">Start here</span><span class="rr-label">Put your city on the record.</span><span class="rr-wedge" aria-hidden="true"></span></span>
-                <span class="rr-note">A personalised local letter can sway an undecided vote &mdash; and this page just computed your local data. <span class="rr-src">CMF survey of congressional staff</span></span></button>
+                <span class="rr-note">A personal letter with local data can change a vote. <span class="rr-src">CMF survey of congressional staff</span></span></button>
               <button class="rr-row rr-lever" data-act="vote" type="button">
                 <span class="rr-head"><span class="rr-label">Vote like the climate is on the ballot.</span><span class="rr-wedge" aria-hidden="true"></span></span>
-                <span class="rr-note">A written when-and-where plan lifts turnout by about 4 points. Non-partisan &mdash; we name no parties. <span class="rr-src">plan &rarr;</span></span></button>
+                <span class="rr-note">A written plan lifts turnout by about 4 points. <span class="rr-src">plan &rarr;</span></span></button>
               <button class="rr-row rr-lever" data-act="talk" type="button">
                 <span class="rr-head"><span class="rr-label">Have the conversation.</span><span class="rr-wedge" aria-hidden="true"></span></span>
-                <span class="rr-note">Hearing people you know discuss it is how the real consensus becomes visible. <span class="rr-src">the kit is just below</span></span></button>
+                <span class="rr-note">People change their minds when someone they know brings it up. <span class="rr-src">see below</span></span></button>
               <button class="rr-row rr-give" data-act="give" type="button">
                 <span class="rr-head"><span class="rr-label">Give where a dollar buys the most.</span><span class="rr-ev">~$1 / tonne CO₂e · uncertain</span></span>
-                <span class="rr-note">A bet on systemic change (CATF, Carbon180) &mdash; <b>not</b> an offset that cancels your own emissions. <span class="rr-src">Founders Pledge / Giving Green</span></span></button>
+                <span class="rr-note">Funds policy and technology work, not offsets. <span class="rr-src">Founders Pledge / Giving Green</span></span></button>
 
-            <p class="beat-cue">and the smaller levers, fully in your own hands &darr;</p>
+            <p class="beat-cue">Next: Personal changes</p>
           </div>
         </div>
         </div>
         <div class="beat">
           <div class="sheet">
-            <h2>The personal levers.</h2>
-            <p class="lead">Real, smaller, and entirely yours &mdash; figures are tonnes of CO&#8322; a year.</p>
+            <h2>Personal changes</h2>
+            <p class="lead">Tonnes of CO&#8322; per year.</p>
               <div class="rr-row rr-foot">
                 <span class="rr-head"><span class="rr-label">Live car-free, or car-light.</span><span class="rr-t">2.4 t</span></span>
                 <span class="rr-bar" style="--w:96%" aria-hidden="true"><i></i></span>
@@ -1875,30 +1866,29 @@ button.rr-row:hover{padding-left:6px}
                 <span class="rr-head"><span class="rr-label">Eat plant-based.</span><span class="rr-t">0.8 t</span></span>
                 <span class="rr-bar" style="--w:32%" aria-hidden="true"><i></i></span>
                 <span class="rr-note">Diet-shift average; varies by your baseline. <span class="rr-src">Wynes &amp; Nicholas 2017</span></span></div>
-              <p class="rr-note">The widely-cited &ldquo;one fewer child&rdquo; figure is left off on purpose &mdash; it books a lifetime of descendants&rsquo; emissions to one parent. Details in the caveats.</p>
             </div>
             <div id="rr-panel" class="rr-panel" hidden></div>
             <div id="rr-pledge" class="rr-pledge" hidden></div>
             <p class="share-lead">The kit for it &mdash; the card with your place&rsquo;s numbers, ready to send:</p>
             <div class="sharecard">
               <div class="mini" id="share-mini" aria-hidden="true"></div>
-              <button id="share-btn" type="button">Save this record <span aria-hidden="true">&rarr;</span></button>
-              <button id="share-cite" type="button" class="share-minor">copy the sentence</button>
+              <button id="share-btn" type="button">Save image</button>
+              <button id="share-cite" type="button" class="share-minor">Copy text</button>
               <div class="sharefallback" id="share-fallback">
                 <label class="receipt" for="share-text">The caption &mdash; select and copy it to post with the image:</label>
                 <textarea id="share-text" readonly></textarea>
               </div>
             </div>
-            <button class="drawbtn" data-drawer="morning" style="color:var(--ink-3);border-color:var(--ink-hair)">Sources &amp; the honest caveats</button>
-            <p class="beat-cue">and the record already shows movement &darr;</p>
+            <button class="drawbtn" data-drawer="morning" style="color:var(--ink-3);border-color:var(--ink-hair)">Sources</button>
+            <p class="beat-cue">Next: What&rsquo;s improving</p>
           </div>
         <!-- "Start by telling one person" removed: a full screen duplicating the action
              menu's "Have the conversation" item — same advice, same chapter, two screens
              apart. The menu item carries the insight now. -->
         <div class="beat">
           <div class="sheet">
-                        <h2 tabindex="-1">The record also holds good news,<br>all of it measured.</h2>
-            <p class="lead">Not a promise &mdash; a list of what has already moved. Each sourced, each still short of safe.</p>
+                        <h2 tabindex="-1">What&rsquo;s improving</h2>
+            <p class="lead">Measured changes, each with a source.</p>
             <div class="ledger">
               <!-- 1. a SHARE of a named whole: the world's electricity -->
               <div class="li"><div class="big">33.8% &gt; 33.0%</div>
@@ -1919,7 +1909,7 @@ button.rr-row:hover{padding-left:6px}
                   <div class="dot" style="left:65%;--d:.55s"></div><span class="mk" style="left:65%">now</span></div>
                 <div class="axlab"><span>0&deg;C</span><span class="mid">expected warming &middot; Climate Action Tracker</span><span>4&deg;C</span></div></div>
             </div>
-            <p class="beat-cue">next &mdash; what to remember, then every source &darr;</p>
+            <p class="beat-cue">Next: Summary</p>
           </div>
         </div>
         </div>
@@ -1932,13 +1922,13 @@ button.rr-row:hover{padding-left:6px}
            was housekeeping. This screen is the answer to "what are the takeaways", which is
            the second half of the complaint that has been raised four times. Every number in
            it is written by the same code that draws the chapters, so it cannot drift. -->
-      <section class="pane" id="p-recap" aria-label="What to remember">
+      <section class="pane" id="p-recap" aria-label="Summary">
         <div class="beat">
           <div class="sheet">
-          <h2 class="page-what"><b class="pw-name">What to remember</b><span class="sr-only">. </span><span class="pw-say" id="recap-say">Four things this page measured, each from a named source.</span></h2>
+          <h2 class="page-what"><b class="pw-name">Summary</b><span class="sr-only">. </span><span class="pw-say" id="recap-say">Four numbers from this page.</span></h2>
           <ol id="recap-list">
             <li><b id="rc-1-n">&mdash;</b><span id="rc-1-s">Your town&rsquo;s hot days, then and now.</span></li>
-            <li><b id="rc-2-n">&mdash;</b><span id="rc-2-s">Hot nights a year in Delhi, the worked example &mdash; set your place and this becomes yours.</span></li>
+            <li><b id="rc-2-n">&mdash;</b><span id="rc-2-s">Hot nights a year in Delhi, the worked example &mdash; Set your city and this becomes yours.</span></li>
             <li><b id="rc-3-n">&mdash;</b><span id="rc-3-s">How many people around you want action.</span></li>
             <li><b id="rc-4-n">&mdash;</b><span id="rc-4-s">How long the world&rsquo;s carbon budget lasts at today&rsquo;s pace.</span></li>
           </ol>
@@ -1947,29 +1937,27 @@ button.rr-row:hover{padding-left:6px}
         </div>
         </div>
       </section>
-      <section class="pane" id="p-bedrock" aria-label="Bedrock — how we know">
+      <section class="pane" id="p-bedrock" aria-label="Sources">
         <div class="beats">
         <div class="beat">
           <div class="sheet">
-            <h2 class="page-what"><b class="pw-name">Where the numbers come from</b><span class="sr-only">. </span><span class="pw-say">Every source behind every number on this site, and the things it cannot tell you.</span></h2>
-            <h2 tabindex="-1">The ground this page stands on.</h2>
-            <p class="lead" style="max-width:60ch;margin-bottom:8px">Everything above rests on what is here.
-              Every dataset, every paper, every line of arithmetic is named so you can check it yourself.
-              A claim you cannot check is an opinion. Everything here can be checked.</p>
+            <h2 class="page-what"><b class="pw-name">Sources</b><span class="sr-only">. </span><span class="pw-say">Every data source, and what this page can&rsquo;t tell you.</span></h2>
+            <h2 tabindex="-1">Data sources</h2>
+            <p class="lead" style="max-width:60ch;margin-bottom:8px">Every number on this page, and where it came from.</p>
             <div class="hww" id="hww"></div>
-            <p class="beat-cue">what this page cannot tell you &darr;</p>
+            <p class="beat-cue">Next: Limits</p>
           </div>
         </div>
         <div class="beat">
           <div class="sheet sheet--wide">
             <div class="limits" id="limits"></div>
-            <p class="beat-cue">take the numbers with you &darr;</p>
+            <p class="beat-cue">Next: Download</p>
           </div>
         </div>
         <div class="beat">
           <div class="sheet">
             <p class="hww" style="margin-top:0;max-width:64ch">
-              <a class="reuse-link" href="reuse.html">Every source, the full method and the data &rarr;</a>
+              <a class="reuse-link" href="reuse.html">All sources and data</a>
               &mdash; the ~30 datasets and papers behind these numbers, the budget arithmetic in full,
               citations you can paste, and a printable worksheet. It lives on its own page because a
               reference is for looking things up, not for reading through.
@@ -1985,7 +1973,7 @@ button.rr-row:hover{padding-left:6px}
   </div>
 
   <!-- ladder -->
-  <nav id="ladder" aria-label="Chapters"><a class="rung" href="#p-sky"><span class="pill"><span class="lab"><em class="rnum">01</em> The world's budget</span></span><span class="dot"></span></a><a class="rung" href="#p-ground"><span class="pill"><span class="lab"><em class="rnum">02</em> Your hot days</span></span><span class="dot"></span></a><a class="rung" href="#p-night"><span class="pill"><span class="lab"><em class="rnum">03</em> Your hot nights</span></span><span class="dot"></span></a><a class="rung" href="#p-firstlight"><span class="pill"><span class="lab"><em class="rnum">04</em> What people want</span></span><span class="dot"></span></a><a class="rung" href="#p-morning"><span class="pill"><span class="lab"><em class="rnum">05</em> What you can do</span></span><span class="dot"></span></a><a class="rung" href="#p-recap"><span class="pill"><span class="lab"><em class="rnum">06</em> What to remember</span></span><span class="dot"></span></a><a class="rung" href="#p-bedrock"><span class="pill"><span class="lab"><em class="rnum">07</em> Where the numbers come from</span></span><span class="dot"></span></a></nav>
+  <nav id="ladder" aria-label="Chapters"><a class="rung" href="#p-sky"><span class="pill"><span class="lab"><em class="rnum">01</em> Carbon budget</span></span><span class="dot"></span></a><a class="rung" href="#p-ground"><span class="pill"><span class="lab"><em class="rnum">02</em> Hot days</span></span><span class="dot"></span></a><a class="rung" href="#p-night"><span class="pill"><span class="lab"><em class="rnum">03</em> Hot nights</span></span><span class="dot"></span></a><a class="rung" href="#p-firstlight"><span class="pill"><span class="lab"><em class="rnum">04</em> What people think</span></span><span class="dot"></span></a><a class="rung" href="#p-morning"><span class="pill"><span class="lab"><em class="rnum">05</em> What you can do</span></span><span class="dot"></span></a><a class="rung" href="#p-recap"><span class="pill"><span class="lab"><em class="rnum">06</em> Summary</span></span><span class="dot"></span></a><a class="rung" href="#p-bedrock"><span class="pill"><span class="lab"><em class="rnum">07</em> Sources</span></span><span class="dot"></span></a></nav>
 
   <!-- drawer -->
   <aside id="drawer" role="dialog" aria-modal="true" aria-label="Receipts and methods" aria-hidden="true" inert>
@@ -2012,16 +2000,16 @@ button.rr-row:hover{padding-left:6px}
              statement for the places whose record fell, and the charter does not bend for a
              better hook — but a question is honest, personal, and still pulls. -->
         <section class="ib ib-ask" data-beat="0" id="pk-ask">
-          <h2 class="ib-h">How much hotter is your town than when your grandparents were young?</h2>
+          <h2 class="ib-h">How much hotter is your city than 50 years ago?</h2>
           <p class="ib-p">We counted it from the weather record &mdash; every day since 1940. Pick your
             place and the whole page redraws around it: your hot days, your nights, your sky. Every
             number shows where it came from.<span class="ib-chip">the ERA5 weather archive &middot; 1940 &rarr; today</span></p>
           <div id="pk-btns">
             <button type="button" id="pk-geo" class="btn-fill">Use my location</button>
             <button type="button" id="pk-list">Pick a city instead</button>
-            <button type="button" id="pk-skip">Skip &mdash; show me an example</button>
+            <button type="button" id="pk-skip">See an example</button>
           </div>
-          <button type="button" id="pk-why" aria-expanded="false" aria-controls="pk-note">What happens to my location?</button>
+          <button type="button" id="pk-why" aria-expanded="false" aria-controls="pk-note">How your location is used</button>
           <p id="pk-note">Your coordinates are rounded to about a kilometre and sent only to the weather
             archive. Your city is named on your own device, from a list we download &mdash; your position
             is never sent anywhere to be identified, never stored off this device, and never added to
@@ -2034,7 +2022,7 @@ button.rr-row:hover{padding-left:6px}
       <div id="intro-foot">
         <div id="intro-dots" role="group" aria-label="Progress"></div>
         <p id="intro-hint" aria-hidden="true">Continue <span aria-hidden="true">&darr;</span></p>
-        <button class="go" id="intro-go" type="button" hidden>Show me <span aria-hidden="true">&rarr;</span></button>
+        <button class="go" id="intro-go" type="button" hidden>Continue</button>
       </div>
     </div>
   </div>
@@ -2518,13 +2506,13 @@ var CH=[
     on the site, and not one of them told a stranger what was inside. A reader cannot decide to
     read "Bedrock". They can decide to read "Where the numbers come from". Metaphor is a fine
     name for a chapter you have already read; it is a terrible name for one you have not. */
- {id:"sky",lab:"The world's budget",fact:yearsStr(RNOW)+" years left",ink:false},
- {id:"ground",lab:"Your hot days",fact:"Seville · "+(TS.tmax!=null?TS.tmax.toFixed(1)+"° today":"on its own record"),ink:false},
- {id:"night",lab:"Your hot nights",fact:"Delhi · +"+Math.round(dr.warm_nights_now-dr.warm_nights_then)+" hot nights",ink:false},
- {id:"firstlight",lab:"What people want",fact:P.global_want_action_pct+"% want action",ink:false},
+ {id:"sky",lab:"Carbon budget",fact:yearsStr(RNOW)+" years left",ink:false},
+ {id:"ground",lab:"Hot days",fact:"Seville · "+(TS.tmax!=null?TS.tmax.toFixed(1)+"° today":"on its own record"),ink:false},
+ {id:"night",lab:"Hot nights",fact:"Delhi · +"+Math.round(dr.warm_nights_now-dr.warm_nights_then)+" hot nights",ink:false},
+ {id:"firstlight",lab:"What people think",fact:P.global_want_action_pct+"% want action",ink:false},
  {id:"morning",lab:"What you can do",fact:"what's already turning",ink:true},
- {id:"recap",lab:"What to remember",fact:"the four numbers",ink:false},
- {id:"bedrock",lab:"Where the numbers come from",fact:"every source, shown",ink:false}
+ {id:"recap",lab:"Summary",fact:"the four numbers",ink:false},
+ {id:"bedrock",lab:"Sources",fact:"every source, shown",ink:false}
 ];
 /* how hard the sky darkens behind the text column, per chapter — lighter sky needs more.
    Morning is ink-on-pale (dark text) so it gets none; night/bedrock are already dark. */
@@ -2543,12 +2531,12 @@ ladder.innerHTML="";   /* static rungs served to crawlers/no-JS; the live build 
 /* the rail: numbered chapters, each a real anchor into the one scroll */
 CH.forEach(function(c,i){
  var SUBS={
-  sky:["The number","Change the pace"],
-  ground:["Your record","Then vs now","Today","Compare two towns"],
-  night:["The dangerous half","Days vs nights"],
-  firstlight:["Take the guess","The whole world"],
-  morning:["Put it on the record","The personal levers","The good news"],
-  bedrock:["The ground","What it cannot tell you","Take it with you"]
+  sky:["Years left","Change the rate"],
+  ground:["Chart","Then vs now","Today","Compare"],
+  night:["Hot nights","Days vs nights"],
+  firstlight:["Your guess","By country"],
+  morning:["Take action","Personal changes","What's improving"],
+  bedrock:["Data sources","Limits","Download"]
  };
  var wrap=document.createElement("div");wrap.className="rgroup";
  var b=document.createElement("a");b.className="rung";b.href="#p-"+c.id;
@@ -2752,7 +2740,7 @@ var startIntro,endIntro;
   if(w&&nt)w.addEventListener("click",function(e){e.stopPropagation();
    var on=nt.classList.toggle("open");
    w.setAttribute("aria-expanded",on?"true":"false");
-   w.textContent=on?"Hide":"What happens to my location?";});});
+   w.textContent=on?"Hide":"How your location is used";});});
  (function(){var b=el("n-ex-open"),bd=el("n-ex-body");
   if(b&&bd)b.addEventListener("click",function(){var on=bd.hidden;
    bd.hidden=!on;b.setAttribute("aria-expanded",on?"true":"false");});})();
@@ -2857,7 +2845,7 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
    resolveAsk("Drawing <b>"+b.textContent+"</b> — it will be ready when you reach the Ground chapter.");});
   if(lst)lst.addEventListener("click",function(e){e.stopPropagation();openBar();});
   if(skp)skp.addEventListener("click",function(e){e.stopPropagation();
-   resolveAsk("No problem — we'll show Seville as a worked example. You can set your place any time.");});
+   resolveAsk("No problem — we'll show Seville as a worked example. You can Set your city any time.");});
   if(geo)geo.addEventListener("click",function(e){
    e.stopPropagation();
    geo.setAttribute("aria-busy","true");geo.textContent="Waiting for your browser…";
@@ -3103,7 +3091,7 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
     already says 2.4-2.5. */
  /* ghost-horizon caption retired with the ambient layer: its sentence bled, clipped,
     into the open sky (the screenshot that triggered this rebuild). */
- /* copy this sky — hand anyone your exact rate and chamber */
+ /* Copy link — hand anyone your exact rate and chamber */
  el("copysky").addEventListener("click",function(){
   var u=location.origin+location.pathname+"?rate="+target.toFixed(1)+"#"+CH[cur].id;
   var b=el("copysky"),o=b.textContent;
@@ -3125,7 +3113,7 @@ function buildGround(V){
  el("recwin").innerHTML="";
  var thenN=mean(Gc.days_ge35_per_year,1951,1980),nowN=mean(Gc.days_ge35_per_year,LF-9,LF);
  var wnThen=mean(Gc.warm_nights_ge25_per_year,1951,1980),wnNow=mean(Gc.warm_nights_ge25_per_year,LF-9,LF);
- if(el("g-h2"))el("g-h2").textContent="Here is "+PLACE+", day by day, since 1940.";
+ if(el("g-h2"))el("g-h2").textContent=PLACE+" since 1940";
  if(el("g-then")){
   el("g-then").textContent=thenN.toFixed(0);el("g-now").textContent=nowN.toFixed(0);
   /* the then-count lands first, the now-count 250ms later — the site's one sentence, in motion */
@@ -3265,7 +3253,7 @@ function buildGround(V){
    '</div>'+
    '<p class="gb-say">A'+(CUSTOM?'n':'')+' '+HOTW+' day here is one '+THR.hotLabel+'. A lifetime ago — 1951 to 1980 — '+PLACE+' saw about <b>'+gThen+'</b> a year. Now, about <b>'+gNow+'</b>.'+
     (wThen<1?(' Nights that never fall '+THR.nightLabel+' were almost unknown then — now about <b>'+wNow+'</b> a year.'):(' Nights that never fall '+THR.nightLabel+' went from about <b>'+wThen+'</b> to about <b>'+wNow+'</b> a year.'))+'</p>'+
-   '<p class="gb-caveat">This is the record. It does not, by itself, say why.</p>'+
+   '<p class="gb-caveat"></p>'+
    /* LEAN ON THE GLOBAL PICTURE: where the local count did NOT rise, the local record can't carry the
       alarm — so pull in the planet's own sourced figure (never a local causal claim). General: fires for
       any flat/cooled place (default Seville rose, so it never shows there). */
@@ -3574,7 +3562,7 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
    if(res==="shared")flash("Shared ✓");
    else if(res==="saved"){flash("Saved — caption copied ✓");showCap();}
    else if(res==="cancel")btn.innerHTML=orig;
-   else{flash("Couldn't save — copy the sentence below");showCap();}
+   else{flash("Couldn't save — Copy text below");showCap();}
   },function(){flash("Couldn't save");});});
  if(cbtn)cbtn.addEventListener("click",function(){
   var t=__ART.cite("seville");
@@ -3703,7 +3691,7 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
    '<label class="rr-field"><span>When — a day</span><input id="rr-date" type="date" value="'+isoDate(fs)+'"></label>'+
    '<label class="rr-field"><span>and a time</span><input id="rr-time" type="time" value="18:00"></label>'+
    '<label class="rr-field"><span>Where or how (optional)</span><input id="rr-where" type="text" placeholder="e.g. at my desk after work"></label>'+
-   '<div class="rr-btns"><button type="button" class="rr-primary" id="rr-cal">Add to my calendar</button></div>'+
+   '<div class="rr-btns"><button type="button" class="rr-primary" id="rr-cal">Add to calendar</button></div>'+
    '<p class="rr-note">This goes into your calendar, not ours — the reminder follows you after you close this tab.</p>';
   el("rr-cal").addEventListener("click",function(){
    var ics=planIcs(kind,gv("rr-date")||isoDate(fs),gv("rr-time")||"18:00",gv("rr-where"));
@@ -3730,7 +3718,7 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
   var when=p.madeAt?new Date(p.madeAt):null,dstr=when?when.toLocaleDateString():"";
   var msg="You were here"+(dstr?" on "+dstr:"")+(p.note?", and said: &ldquo;"+p.note.replace(/</g,"&lt;")+"&rdquo;":".");
   if(p.plannedFor){var pd=new Date(p.plannedFor);if(!isNaN(pd)&&pd<new Date())msg+=" You’d set a day that has passed — want to pick a new one?";}
-  pledgeEl.innerHTML='<span class="rr-recall">'+msg+'</span> <button type="button" class="rr-clear" id="rr-clear">clear this</button>';
+  pledgeEl.innerHTML='<span class="rr-recall">'+msg+'</span> <button type="button" class="rr-clear" id="rr-clear">Clear</button>';
   el("rr-clear").addEventListener("click",function(){try{localStorage.removeItem(PKEY);}catch(e){}pledgeEl.hidden=true;});
  }
  room.querySelector(".rr-menu").addEventListener("click",function(e){var b=e.target.closest("button.rr-row");if(!b)return;
@@ -4000,10 +3988,10 @@ function buildTakeaway(){var box=el("takeaway");if(!box||!window.__ART)return;
  __ART.keys.forEach(function(k){var m=meta(k),row=document.createElement("div");row.className="take-row";
   function btn(a,lab,al){return '<button type="button" data-a="'+a+'" data-k="'+k+'" aria-label="'+al+' — '+m[0]+'">'+lab+'</button>';}
   row.innerHTML='<div class="take-h"><b>'+m[0]+'</b><span>'+m[1]+'</span></div><div class="take-btns">'+
-   btn("card",'card <span aria-hidden="true">&darr;</span>',"Download card image")+
-   btn("story",'story <span aria-hidden="true">&darr;</span>',"Download story-format card")+
-   btn("cite","cite","Copy one-line citation")+
-   btn("csv",'csv <span aria-hidden="true">&darr;</span>',"Download data as CSV")+'</div>';
+   btn("card",'Image',"Download card image")+
+   btn("story",'Story image',"Download story-format card")+
+   btn("cite","Copy text","Copy one-line citation")+
+   btn("csv",'CSV',"Download data as CSV")+'</div>';
   box.appendChild(row);});
  function copyCite(k){var t=__ART.cite(k);if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).catch(function(){});}
  box.onclick=(function(e){var b=e.target.closest("button[data-a]");if(!b)return;
@@ -4075,8 +4063,8 @@ buildTakeaway();
   "</b> from an archive complete to <b>"+D._meta.archive_end+"</b>. Every figure traces to the sources above "+
   "or is flagged “verify at build”. Nothing hand-typed or model-guessed. English first; Hindi is next. "+
   "Made by Agosh Baranwal · agoshbaranwal@gmail.com"+
-  " &middot; <button type=\"button\" id=\"replay-q\" class=\"linklike\">replay the opening question</button>"+
-  " &middot; <button type=\"button\" id=\"back-top\" class=\"linklike\">back to the top &uarr;</button>";
+  " &middot; <button type=\"button\" id=\"replay-q\" class=\"linklike\">Replay intro</button>"+
+  " &middot; <button type=\"button\" id=\"back-top\" class=\"linklike\">Back to top</button>";
 })();
 
 /* Phase 9 — the outcome-side "what we can honestly know" figures (reads D.impact, injected at build → no runtime fetch/beacon) */
@@ -4883,7 +4871,7 @@ var __HOME=(function(){
   var h=HOME;if(!h)return;
   var chip=el("homechip");
   if(chip){chip.hidden=false;
-   chip.textContent=h.ex?"set your place":h.name;   /* the example is named by the .place-tag under each heading */
+   chip.textContent=h.ex?"Set your city":h.name;   /* the example is named by the .place-tag under each heading */
    chip.classList.toggle("unset",!!h.ex);}
   /* the chapter ladder's Ground rung named Seville forever, whatever the reader chose */
   try{var lad=el("ladder");
@@ -5136,7 +5124,7 @@ window.__HOME=__HOME;
  (function(){var hl=el("homelink");if(!hl)return;
   hl.addEventListener("click",function(){
    var u=location.origin+location.pathname+(hl.getAttribute("data-link")||"");
-   function ok(){hl.textContent="link copied ✓";setTimeout(function(){hl.textContent="copy a link to this place";},1800);}
+   function ok(){hl.textContent="link copied ✓";setTimeout(function(){hl.textContent="Copy link";},1800);}
    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(u).then(ok,function(){prompt("Copy this link:",u);});
    else prompt("Copy this link:",u);});})();
  var chg=el("homenow-change"),bodyEl=el("homepick-body");
@@ -5144,7 +5132,7 @@ window.__HOME=__HOME;
   var open=bodyEl.hidden;bodyEl.hidden=!open;
   if(open)bodyEl.setAttribute("data-open","1");else bodyEl.removeAttribute("data-open");
   chg.setAttribute("aria-expanded",String(open));
-  chg.textContent=open?"keep this place":"not your place? change";
+  chg.textContent=open?"keep this place":"Change city";
   if(open){var t=el("gq-bar")&&el("gq-bar").querySelector(".cb-chip");if(t)try{t.focus();}catch(e){}}});
  /* the sky's caption points at the one picker rather than owning a second place control */
  var swc=el("skywhere-change");
@@ -5249,11 +5237,11 @@ window.__HOME=__HOME;
    }else{
     set("rc-1-n",Math.round(mean(G.days_ge35_per_year,1951,1980))+" \u2192 "+
       Math.round(mean(G.days_ge35_per_year,LF-9,LF))+" days a year");
-    set("rc-1-s","Days at or above 35 \u00B0C in Seville, the worked example \u2014 set your place and this becomes yours.");
+    set("rc-1-s","Days at or above 35 \u00B0C in Seville, the worked example \u2014 Set your city and this becomes yours.");
     /* the night line quotes what the Night chapter actually shows (Delhi, the worked
        example) — it used to quote Seville's nights while the chapter showed Delhi's */
     set("rc-2-n",Math.round(dr.warm_nights_then)+" \u2192 "+Math.round(dr.warm_nights_now)+" nights a year");
-    set("rc-2-s","Hot nights a year in Delhi, the worked example \u2014 set your place and this becomes yours.");
+    set("rc-2-s","Hot nights a year in Delhi, the worked example \u2014 Set your city and this becomes yours.");
     var rs=el("recap-say");if(rs)rs.textContent="Four things this page measured, each from a named source.";
    }
    set("rc-3-n",P.global_want_action_pct+"% want action");
@@ -5291,7 +5279,7 @@ window.__HOME=__HOME;
   var s=cmpStats(rows),mx=Math.max(s.w,s.n,1);
   host.innerHTML=
    '<p class="cmp-name">'+name+'</p>'+
-   (exampleBadge?'<p class="cmp-badge">the worked example \u2014 set your place above</p>':'')+
+   (exampleBadge?'<p class="cmp-badge">the worked example \u2014 Set your city above</p>':'')+
    '<p class="cmp-x num">'+cmpHead(s)+'</p>'+
    '<p class="cmp-counts">days above '+(+thr).toFixed(1)+' \u00B0C: '+s.wR+' \u2192 '+s.nR+' a year</p>'+
    '<div class="cmp-bars" aria-hidden="true">'+
@@ -5474,7 +5462,7 @@ var __SND=(function(){
   if(on&&ctx&&ctx.state==="suspended")ctx.resume();
   vol(on?.85:0);
   var b=el("soundbtn");b.setAttribute("aria-pressed",on?"true":"false");
-  el("soundlab").textContent=on?"sound on":"sound off";
+  el("soundlab").textContent=on?"sound on":"Sound off";
   el("sr-status").textContent=on?"Ambient sound on":"Ambient sound muted";
   try{!EMBED&&localStorage.setItem("onrecord_snd",on?"1":"0");}catch(e){}
   return on;}
