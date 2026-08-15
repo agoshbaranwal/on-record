@@ -47,6 +47,9 @@ try:
 except Exception as e:
     print("impact: SKIPPED", e)
 
+# the file on disk is what the site publishes as its data; keep it identical to what the
+# page was built from, or the two drift and only one of them is checkable.
+(ROOT / "data" / "site-data.json").write_text(json.dumps(_d, separators=(",", ":")))
 data = json.dumps(_d, separators=(",", ":"))
 old = (ROOT / "index.html").read_text()
 ns = re.search(r'This page draws its instrument.*?Andre et al\. 2024\)\.', old, re.S).group(0)
