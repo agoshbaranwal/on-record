@@ -37,7 +37,7 @@
 .sr-body{display:flex;gap:26px;align-items:center;flex-wrap:wrap;justify-content:center}
 .sr-figure{position:relative;flex:0 1 326px;width:min(326px,100%);container-type:inline-size;margin:0 auto}
 #sr-svg{display:block;width:100%;height:auto}
-.sr-centre{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+.sr-centre{position:absolute;inset:0 0 8.26% 0;display:flex;flex-direction:column;align-items:center;
   justify-content:center;text-align:center;pointer-events:none}
 .sr-centre>*{max-width:40cqw}
 .sr-centre b{font-size:min(42px,14cqw);font-weight:500;color:#FF6B52;line-height:1;font-variant-numeric:tabular-nums}
@@ -56,6 +56,9 @@
 .sr-key li{display:flex;gap:9px;align-items:flex-start}
 .sr-key i{flex:0 0 auto;display:block;width:12px;height:11px;border-radius:2px;margin-top:5px}
 .sr-key .k-cool{height:3px;border-radius:2px;margin-top:9px}
+.sr-scale{font-family:var(--mono);font-size:11.5px;line-height:1.7;color:var(--bone-3);
+  margin:10px 0 0}
+.sr-scale b{color:var(--bone-2)}
 .sr-key .k-hot{background:#FF6B52}
 .sr-key .k-cool{background:#5E8DA6}
 @media(max-width:640px){.sr-body{gap:16px}
@@ -186,9 +189,13 @@ html #gq-bar .cb-chips,html #pk-bar .cb-chips{display:flex;flex-wrap:wrap;gap:8p
 html #gq-bar .cb-chip,html #pk-bar .cb-chip{min-height:36px;width:auto;padding:7px 14px;border-radius:999px;font-size:13px}
 @media(pointer:coarse){html #gq-bar .cb-chip,html #pk-bar .cb-chip{min-height:44px}}
 /* item 15 · Bedrock's definition rows align at the top, two-line labels included */
-dl.lim{display:grid;grid-template-columns:minmax(130px,max-content) 1fr;column-gap:18px;row-gap:16px}
-dl.lim dt{grid-column:1;align-self:start;text-align:right}
-dl.lim dd{grid-column:2;align-self:start;margin:0}
+dl.lim{display:block}
+dl.lim dt{text-align:left}
+dl.lim dd{margin:2px 0 14px}
+@media(min-width:760px){
+  dl.lim{display:grid;grid-template-columns:minmax(130px,max-content) 1fr;column-gap:18px;row-gap:16px}
+  dl.lim dt{grid-column:1;align-self:start;text-align:right}
+  dl.lim dd{grid-column:2;align-self:start;margin:0}}
 /* item 16 · the opening sits centered over a LIVE, dimmed sky — the product's face */
 html #intro .box{left:50%;right:auto;transform:translateX(-50%);width:min(700px,92vw);max-width:none;padding:0 0 12vh}
 @media(max-width:640px){html #intro .box{width:100%;padding:0 20px 15vh;left:0;transform:none}}
@@ -220,7 +227,7 @@ html #intro .box{left:50%;right:auto;transform:translateX(-50%);width:min(700px,
 #rail-dock{position:fixed;right:38px;top:64px;z-index:7;display:flex;justify-content:flex-end}
 #rail-dock #homechip{margin:0}
 @media(max-width:940px){
-  #rail-dock{position:absolute;top:14px;right:14px}   /* scrolls away with the page top */
+  #rail-dock{position:absolute;top:46px;right:14px}   /* scrolls away with the page top; clears the position bar */
 }
 
 .share-lead{margin-top:22px;font-size:15px;color:var(--ink-2)}
@@ -237,10 +244,17 @@ html{scroll-padding-top:0}
 
 /* the trust explainer is a disclosure: ~100 words a reader can ask for, not wade through.
    (An earlier toggle here opened an EMPTY panel and was removed — this one is verified.) */
-#n-ex-open{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;
-  border-bottom:1px solid rgba(242,231,204,.3);text-align:left}
-#n-ex-open:hover{border-bottom-color:rgba(242,231,204,.6)}
 #n-ex-body{margin-top:8px}
+/* a second, named example, fenced off so it can never read as the reader's own city */
+.exbox{margin:26px 0 4px;padding:18px 20px 16px;border-radius:12px;
+  border:1px dashed rgba(242,231,204,.30);background:rgba(242,231,204,.045);max-width:64ch}
+.thm-ink .exbox{border-color:rgba(62,18,8,.30);background:rgba(62,18,8,.04)}
+.exbox-tag{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--amber);margin:0 0 6px}
+.thm-ink .exbox-tag{color:var(--act)}
+.exbox-h{font-size:19px;font-weight:500;color:var(--bone);margin:0 0 8px}
+.thm-ink .exbox-h{color:var(--ink)}
+.exbox p{font-size:15px;line-height:1.6}
 
 /* ── COMPARE ─────────────────────────────────────────────────────────────────── */
 #cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
@@ -520,6 +534,34 @@ a{color:inherit}
 
 /* ================= global chrome ================= */
 #chrome{position:relative;z-index:2}
+/* ── WHERE YOU ARE ────────────────────────────────────────────────────────────
+   Three cold readers all answered "knew position: no". The rail answers it only
+   if you look at the rail. This bar is in the way, on purpose, on every screen. */
+#nowbar{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;
+  justify-content:space-between;gap:16px;height:38px;padding:0 16px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+  color:rgba(242,231,204,.9);background:rgba(6,14,17,.80);
+  -webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);
+  border-bottom:1px solid rgba(242,231,204,.16);pointer-events:none}
+body.thm-ink #nowbar{color:rgba(62,18,8,.92);background:rgba(246,243,236,.86);
+  border-bottom-color:rgba(62,18,8,.16)}
+body.introing #nowbar,body.embed #nowbar{display:none}
+#nowbar .nb-l,#nowbar .nb-r{display:flex;align-items:center;gap:10px;min-width:0}
+#nowbar .nb-word{font-weight:500;letter-spacing:.30em;text-transform:uppercase;opacity:.72;
+  flex:none}
+#nowbar .nb-city{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#nowbar .nb-city::before{content:"·";margin-right:9px;opacity:.5}
+#nowbar .nb-step{white-space:nowrap;color:var(--amber);font-weight:500}
+body.thm-ink #nowbar .nb-step{color:var(--act)}
+#nowbar::after{content:"";position:absolute;left:0;bottom:-1px;height:2px;width:var(--prog,0%);
+  background:var(--amber);transition:width .45s cubic-bezier(.3,.7,.2,1)}
+body.thm-ink #nowbar::after{background:var(--act)}
+#nowbar .nb-l{flex:1 1 auto;overflow:hidden}
+#nowbar .nb-r{flex:0 0 auto}
+@media(max-width:640px){#nowbar{height:34px;padding:0 12px;font-size:11px;letter-spacing:.04em}
+  #nowbar .nb-word{display:none}
+  #nowbar .nb-city::before{display:none}
+  #nowbar .nb-step{max-width:52vw;overflow:hidden;text-overflow:ellipsis}}
 /* the masthead is a fixed header over the scrolling story */
 /* the persistent budget band — the 1.5 °C clock rides the top of every chapter; a caret follows you through the story */
 
@@ -844,12 +886,26 @@ svg{display:block;width:100%;height:auto}
 #warmscale .ws-lab{position:relative;height:15px;margin-top:5px}
 #warmscale .ws-lab span{position:absolute;transform:translateX(-50%);font-family:var(--mono);
   font-size:12px;letter-spacing:.04em;color:var(--bone-3);text-shadow:var(--halo)}
+#warmscale .ws-lab .ws-e0{left:0;transform:none}
+#warmscale .ws-lab .ws-e1{left:auto;right:0;transform:none}
+#warmscale .ws-unit{margin:4px 0 0;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;
+  color:var(--bone-3);text-shadow:var(--halo)}
 #warmscale .ws-note{margin-top:7px;font-family:var(--mono);font-size:12px;letter-spacing:.03em;
   color:var(--bone-2);text-shadow:var(--halo);min-height:1.5em}
 @media(prefers-reduced-motion:reduce){#warmscale .ws-mark{transition:none}}
 .verdict{margin-top:14px;font-size:17px;line-height:1.5;color:var(--bone);max-width:52ch;
   text-wrap:pretty;text-shadow:var(--halo)}
 .verdict b{color:var(--amber);font-weight:500}
+/* The ink theme turns on when the NEXT chapter is 40% up the screen, so for one band of the
+   scroll the carbon-budget card is already pale while its own labels are still bone-on-cream.
+   Everything else in the card had an ink counterpart; the dial cluster did not. */
+.thm-ink .verdict{color:var(--ink)}
+.thm-ink .verdict b{color:var(--act)}
+.thm-ink #dial .dh h3,.thm-ink #dial .dv,.thm-ink #dial .dv b,.thm-ink .dimEnds,
+.thm-ink #dial .foot button,.thm-ink .burnedtick,.thm-ink .ylab,.thm-ink .spent,
+.thm-ink #warmscale .ws-lab span,.thm-ink #warmscale .ws-unit,
+.thm-ink .presets button{color:var(--ink-2);text-shadow:none}
+.thm-ink #dial .dv b{color:var(--ink)}
 #dial .foot button{color:var(--bone-2);border-bottom:1px solid var(--bone-4);letter-spacing:.05em;
   margin-right:8px;min-height:30px}
 
@@ -898,6 +954,7 @@ svg{display:block;width:100%;height:auto}
 .legend i{display:inline-block;width:13px;height:3px;border-radius:2px;margin-right:5px;vertical-align:2px}
 .legend i.dot{width:8px;height:8px;border-radius:50%}
 .legend i.dash{background:repeating-linear-gradient(90deg,currentColor 0 3px,transparent 3px 6px);height:2px}
+.legend .lg-note{color:var(--bone-3)}
 .finder{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--bone-2);text-shadow:var(--halo)}
 .finder input{font-family:var(--mono);font-size:13px;width:76px;padding:7px 4px;min-height:38px;
   border:0;border-bottom:1px solid rgba(242,231,204,.35);border-radius:0;
@@ -921,6 +978,7 @@ svg{display:block;width:100%;height:auto}
 #wg-dots i.extra{background:var(--amber);transform:scale(1);opacity:1;
   box-shadow:0 0 12px rgba(240,188,98,.85)}
 #wg-dots i.mark{outline:2px solid rgba(242,231,204,.75);outline-offset:2px}
+#wg-dots i.pre{background:rgba(240,188,98,.62)}
 #wg-dots i.over{background:rgba(242,231,204,.55);transform:scale(.9);opacity:.9}
 @media(prefers-reduced-motion:reduce){#wg-dots i{transition:none}}
 #wg-key{font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--bone-3);
@@ -1180,7 +1238,11 @@ svg{display:block;width:100%;height:auto}
 button.rr-row{cursor:pointer;transition:padding-left .18s,background .2s;min-height:auto}
 button.rr-row:hover .rr-label,button.rr-row:focus-visible .rr-label{color:var(--act)}
 button.rr-row:hover{padding-left:6px}
-.rr-wedge{flex:1 1 70px;min-width:60px;max-width:150px;height:14px;background:var(--act);clip-path:polygon(0 40%,100% 0,100% 100%,0 60%);opacity:.5}
+/* the wedges are gone: a shape with no unit, no axis and no number behind it */
+.rr-axis{display:flex;justify-content:space-between;gap:10px;max-width:320px;margin-top:9px;
+  padding-top:6px;border-top:1px solid var(--ink-hair);
+  font-family:var(--mono);font-size:12px;letter-spacing:.02em;color:var(--ink-2)}
+.rr-lever .rr-ev{font-family:var(--mono);font-size:12px;color:var(--act);white-space:nowrap;margin-left:auto}
 .rr-row.rr-default{border:1px solid rgba(21,80,72,.5);border-radius:3px;padding:13px 14px;background:rgba(21,80,72,.05)}
 .rr-chip{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#F2E7CC;background:var(--act);padding:3px 7px;border-radius:2px}
 .rr-give .rr-ev{font-family:var(--mono);font-size:12px;color:var(--act);white-space:nowrap}
@@ -1365,6 +1427,7 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 @keyframes ibp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 #intro-foot{position:relative;margin-top:26px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;min-height:46px}
 #intro-dots{display:flex;gap:9px}
+#intro-dots[hidden]{display:none}   /* an ID rule beat the hidden attribute: one beat left one orphan dot */
 .idot{width:8px;height:8px;border-radius:50%;background:none;border:1px solid var(--bone-4);padding:0;min-height:8px;
   transition:background .3s,border-color .3s,transform .3s}
 .idot.done{background:var(--bone-3);border-color:var(--bone-3)}
@@ -1461,6 +1524,11 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
     font-size:13px;color:var(--bone-2);text-shadow:none;display:block}
   .rung[aria-current="true"] .pill,.rung.on .pill{color:var(--bone);
     border-color:rgba(242,231,204,.5);background:rgba(3,15,17,.8)}
+  /* the pills kept their dark plate on the two pale chapters: dark-red text on near-black */
+  body.thm-ink .rung .pill{background:rgba(246,243,236,.7);color:var(--ink-2);
+    border-color:rgba(62,18,8,.22)}
+  body.thm-ink .rung[aria-current="true"] .pill,body.thm-ink .rung.on .pill{
+    background:#EFEBE2;color:var(--ink);border-color:rgba(62,18,8,.5)}
   .rung .fact{display:none}       /* the name is the payload on a phone; the fact needs room */
   .rung .dot{display:none}
   .duo{grid-template-columns:1fr;grid-template-rows:auto auto;flex:none;height:auto;gap:14px}
@@ -1470,7 +1538,9 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
   #skycap .zsub{font-size:12px;max-width:60vw}
   #showerbox{margin:12px 0 20px;max-width:100%}
   #gplace input{width:140px}
-  #soundbtn{right:14px;bottom:auto;top:12px;padding:8px 10px}   /* vitals hide here — corner is free */
+  #soundbtn{right:12px;top:auto;bottom:62px;padding:7px 11px;font-size:11px;border-radius:999px;
+    background:rgba(3,15,17,.78);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+  body.thm-ink #soundbtn{background:rgba(246,243,236,.85)}
   /* #hzn-hi/#hzn-lo deliberately bleed 38px past each edge, so a small `right` on the label
      puts the budget numbers OFF-SCREEN on a phone (measured: right edge at 420px on a 390px
      viewport — the figure was simply cut in half). Clear the bleed, then inset. */
@@ -1513,8 +1583,8 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
   .gq-exb{font-size:13px;padding:8px 10px}
   #n-example{margin-top:18px;padding-top:12px}
   /* the ask beat must never push its own resolve buttons off a short screen */
-  .ib-ask{max-height:72vh}
-  #pk-bar{max-height:34vh}
+  .ib-ask{max-height:76vh}
+  #pk-bar{max-height:46vh}
   #pk-btns{gap:8px}
   #pk-geo,#pk-list,#pk-skip{width:100%;text-align:center}
 }
@@ -1547,9 +1617,9 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 #mast{display:none!important}
 
 /* a report is denser than a slideshow: a screen may hold more than one finding */
-.beat,.pane-screen{padding:clamp(48px,7vh,84px) 210px clamp(40px,6vh,72px) 44px;
+.beat,.pane-screen{padding:clamp(48px,7vh,84px) 210px clamp(26px,3.5vh,44px) 44px;
   justify-content:flex-start;min-height:auto}
-.beats > .beat,.pane > .beat{padding-top:clamp(48px,7vh,84px)}
+.beats > .beat,.pane > .beat{padding-top:clamp(58px,5.5vh,72px)}
 #p-recap .beat{padding-top:clamp(56px,9vh,110px)}
 .beat > .sheet{max-width:1000px}
 
@@ -1611,8 +1681,9 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 #recap-foot{margin-top:14px;font-size:13px;color:var(--bone-3)}
 
 /* ── contents ─────────────────────────────────────────────────────────────── */
-.rep-toc{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;
+.rep-toc{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);
   gap:0 26px}
+@media(max-width:900px){.rep-toc{grid-template-columns:1fr 1fr}}
 .rep-toc li{margin:0;border-top:1px solid var(--rule)}
 .rep-toc button{display:block;width:100%;text-align:left;background:none;border:0;
   padding:11px 0;cursor:pointer;font:inherit;color:inherit}
@@ -1622,7 +1693,13 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 
 /* ── two-column report bodies ─────────────────────────────────────────────── */
 .rep-two{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:start;margin-top:8px}
+#p-sky .rep-two{grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);align-items:start}
 .rep-two--src{gap:40px}
+/* the donation links used to be the tail of the short right-hand column, so half the
+   sheet beside them was empty. They are the sheet's own footer now. */
+.fl-foot{margin-top:26px;padding-top:20px;border-top:1px solid var(--rule)}
+.fl-foot #pg-ask{margin-top:0}
+.fl-foot #pg-give{max-width:78ch}
 .rep-two .sr-only{position:absolute}
 
 /* a strip of small stats, the way a report puts two facts on one line */
@@ -1654,7 +1731,7 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 #rep-head #homepick{margin:20px 0 6px}
 #rep-head #homenow{margin:0}
 .rep-doc #skycount{margin:0}
-.rep-doc .years{font-size:clamp(56px,7vw,92px)}
+.rep-doc .years{font-size:clamp(42px,5.2vw,70px);white-space:nowrap}
 .rep-doc #dial{margin-top:0}
 .rep-doc .chartwrap{margin-top:0}
 .rep-doc #g-fact{margin-top:0}
@@ -1671,6 +1748,11 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 .rep-head-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,320px);
   gap:36px;align-items:start;margin-top:26px}
 .rep-head-side{border-left:1px solid var(--rule);padding-left:26px}
+.rep-head-grid:has(#homepick-body[hidden]){grid-template-columns:1fr;gap:0}
+.rep-head-grid:has(#homepick-body[hidden]) .rep-head-side{order:-1;border-left:0;padding-left:0;
+  margin:0 0 18px;padding-bottom:14px;border-bottom:1px solid var(--rule)}
+#rep-head #homenow:not([hidden]){display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px}
+#rep-head #homenow-change{margin-left:0}
 .rep-head-side #homepick{margin:0}
 .rep-head-side #homeask-h{margin-top:0}
 .rep-head-side #gq-bar{max-height:236px;overflow-y:auto;padding-right:6px}
@@ -1679,12 +1761,22 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 
 /* an empty labelled column is worse than no column */
 .rep-stat:has(.take-mini[hidden]){display:none}
-.rep-dots:has(#wg-dots:empty) .rep-fig{display:none}
+.rep-dots .rep-fig{margin-top:22px}
 
 /* the sky's own fixtures (the horizon rules, the star caption) live in the margins; at this
    column width they pass behind the card, so the card stops being see-through */
 .rep-doc{background:rgba(6,18,20,.965)}
-.thm-ink .rep-doc{background:rgba(246,245,242,.975)}
+.thm-ink #p-morning .rep-doc,.thm-ink #p-bedrock .rep-doc{background:rgba(246,245,242,.975)}
+@media(max-width:640px){.rep-doc{background:#061214}
+  .thm-ink #p-morning .rep-doc,.thm-ink #p-bedrock .rep-doc{background:#F6F5F2}}
+/* The chapter theme only flips once a section is 40% up the screen, so at every boundary one
+   card sat on screen with the other chapter's ink. "What you can do" is written in ink and
+   always has been, so its card is always pale; Sources is always dark, except while the ink
+   theme is still on. Every frame of the scroll is now legible. */
+#p-morning .sheet{background:rgba(246,245,242,.975)}
+.thm-ink #p-bedrock .sheet{background:rgba(246,245,242,.975)}
+@media(max-width:640px){#p-morning .sheet{background:#F6F5F2}
+  .thm-ink #p-bedrock .sheet{background:#F6F5F2}}
 /* night is the one chapter with a caption in the bottom-right gutter: leave it the room,
    and hold the caption inside that gutter so no line is ever half-covered */
 #p-night .rep-doc{max-width:700px}
@@ -1699,7 +1791,11 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 @media(max-width:940px){
   .beat,.pane-screen{padding:clamp(40px,6vh,64px) 22px 96px 22px}
   .beat > .sheet{max-width:100%}
-  .rep-two,.rep-strip,.rep-toc,#recap-list.rep-find,.rep-head-grid{grid-template-columns:1fr}
+  .rep-two,.rep-strip,.rep-toc,#recap-list.rep-find,.rep-head-grid{grid-template-columns:minmax(0,1fr)}
+  .rep-two>*,.rep-strip>*{min-width:0}
+  /* an id selector beat the class rule here, so section 4 stayed in two columns at 390px:
+     the dial sat in a 150px gutter and "GtCO2/yr" was sliced off. */
+  #p-sky .rep-two{grid-template-columns:minmax(0,1fr);align-items:start}
   .rep-head-side{border-left:0;padding-left:0;border-top:1px solid var(--rule);padding-top:20px}
   #p-night .rep-doc{max-width:100%}
   .rep-two{gap:26px}
@@ -1719,8 +1815,65 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 }
 /* the city chip and the sound button share one corner on a phone (they do on the built site
    too, where the chip lands half off-screen) — stack them */
-@media(max-width:940px){#rail-dock{top:62px}}
+@media(max-width:940px){#rail-dock{top:92px}}
 
+/* ── PHONE CHROME: one opaque bottom bar, not two pills floating over the words ────
+   Measured at 390x844: the SOUND OFF pill and the chapter rail sat half-transparent
+   over running body text, so sentences were sliced in half mid-word. They are one bar
+   now, the page reserves room for it, and nothing reads through it. */
+@media(max-width:940px){
+  /* opaque, not 96%: at 4% the words still ghosted through and read as a rendering fault.
+     The 34px ramp above it lets a paragraph dissolve into the bar instead of being sliced. */
+  #chrome::after{content:"";position:fixed;left:0;right:0;bottom:0;height:92px;z-index:20;
+    background:linear-gradient(to top,#05171A 0,#05171A 58px,rgba(5,23,26,0) 100%);
+    pointer-events:none}
+  body.thm-ink #chrome::after{
+    background:linear-gradient(to top,#F6F5F2 0,#F6F5F2 58px,rgba(246,245,242,0) 100%)}
+  body.introing #chrome::after,body.embed #chrome::after{display:none}
+  #ladder{z-index:21;bottom:8px;left:0;right:126px;width:auto;padding:0 6px 2px 10px;
+    -webkit-mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 26px),transparent 100%);
+    mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 26px),transparent 100%)}
+  #soundbtn{z-index:22;right:10px;bottom:12px;top:auto}
+  .beat,.pane-screen{padding-bottom:120px}
+  /* the star caption is a desktop-gutter fixture; at this width it has no gutter to sit in
+     and its words broke into fragments down the right edge of the card */
+  #skycap{display:none}
+  .rr-src{white-space:normal}
+  html .presets{display:flex;width:100%}
+  html .presets button{flex:1 1 0;text-align:center;padding:10px 4px;min-width:0}
+  /* "42 GtCO2/yr today's rate" was one nowrap line 5px wider than the card */
+  #dial .dh{display:block}
+  #dial .dv{white-space:normal}
+  #dial .dv em{margin-left:0;min-width:0;display:block}
+}
+
+
+/* ══ ROUND 3 · THE PHONE ══════════════════════════════════════════════════════
+   Measured at 390x844. Three things a stranger meets in the first five seconds. */
+@media(max-width:940px){
+  /* 1. the floating city chip printed ON TOP of the report's own headline, so
+     "city than 50 years ago?" and "Set your city" overprinted each other. The
+     picker lives in the report head, one screen away — the chip is the duplicate. */
+  #rail-dock{display:none}
+  /* 2. the sound control's label was the widest thing in the bottom bar and it
+     covered the chapter rail. The icon is the button here; the words move to
+     the accessible name. */
+  #soundbtn #soundlab{position:absolute!important;width:1px;height:1px;overflow:hidden;
+    clip-path:inset(50%);white-space:nowrap}
+  #soundbtn{right:10px;bottom:10px;width:44px;height:44px;padding:0;gap:0;
+    justify-content:center;border-radius:50%}
+  /* 3. the rail was sliced mid-word at both ends — "NTENTS", "2 HOT". It fades at
+     both ends now, which reads as "there is more", and it keeps clear of the icon. */
+  #ladder{right:64px;padding:0 16px 2px 16px;
+    -webkit-mask-image:linear-gradient(to right,transparent 0,#000 34px,#000 calc(100% - 34px),transparent 100%);
+    mask-image:linear-gradient(to right,transparent 0,#000 34px,#000 calc(100% - 34px),transparent 100%)}
+  /* the list ended mid-chip with nothing to say more was below it */
+  #pk-bar{-webkit-mask-image:linear-gradient(to bottom,#000 0,#000 calc(100% - 30px),transparent 100%);
+    mask-image:linear-gradient(to bottom,#000 0,#000 calc(100% - 30px),transparent 100%)}
+  #pk-bar.at-end{-webkit-mask-image:none;mask-image:none}
+}
+/* the definition line sits with the figure it defines */
+.rep-doc .gb-say b{color:var(--bone);font-weight:500}
 </style>
 
 <div id="stage" class="introing">
@@ -1753,8 +1906,13 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
   </div>
   <button id="soundbtn" type="button" aria-pressed="false"
           title="Ambient sound">
-    <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span id="soundlab">Sound off</span>
+    <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span id="soundlab">Play sound</span>
   </button>
+
+  <div id="nowbar" aria-hidden="true">
+    <span class="nb-l"><b class="nb-word">On Record</b><span class="nb-city" id="nb-city">Seville</span></span>
+    <span class="nb-r"><span class="nb-step" id="nb-step">Contents</span></span>
+  </div>
 
   <div id="chrome">
     <!-- #budget-band removed: it restated the dial number a fourth time, permanently. -->
@@ -1780,14 +1938,13 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
       <div class="rep-head-grid">
       <div>
       <h2 class="rep-h2">Findings</h2>
-      <p class="rep-say" id="recap-say">Four things this page measured.</p>
+      <p class="rep-say" id="recap-say">Four numbers from this report.</p>
       <ol id="recap-list" class="rep-find">
         <li><span class="rf-k">Hot days</span><b id="rc-1-n">34 &rarr; 66 days a year</b><span id="rc-1-s">Your town&rsquo;s hot days, then and now.</span></li>
-        <li><span class="rf-k">Hot nights</span><b id="rc-2-n">109 &rarr; 125 nights a year</b><span id="rc-2-s">Hot nights a year in Delhi, the example.</span></li>
+        <li><span class="rf-k">Hot nights</span><b id="rc-2-n">under 1 &rarr; 7 nights a year</b><span id="rc-2-s">Nights at or above 25 &deg;C in Seville, the example.</span></li>
         <li><span class="rf-k">What people think</span><b id="rc-3-n">89% want action</b><span id="rc-3-s">How many people around you want action.</span></li>
-        <li><span class="rf-k">Carbon budget</span><b id="rc-4-n">2.4&ndash;2.5 years of budget left</b><span id="rc-4-s">How long the world&rsquo;s carbon budget lasts at today&rsquo;s pace.</span></li>
+        <li><span class="rf-k">Carbon budget</span><b id="rc-4-n">2.4&ndash;2.5 years of budget left</b><span id="rc-4-s">How long the world&rsquo;s carbon budget lasts at today&rsquo;s rate of emissions.</span></li>
       </ol>
-      <p id="recap-foot">Every number has a source.</p>
       </div>
       <aside class="rep-head-side"><div id="homepick">
               <!-- once a place is set, the whole picker collapses to this one line: the reader
@@ -1804,8 +1961,8 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
                 <p id="homeask-blocked" class="receipt" hidden></p>
               </div>
               <div id="gplace">
-                <input id="gq" type="search" placeholder="Search a city" aria-label="Search for a city">
-                <button type="button" id="gq-go">Show</button>
+                <input id="gq" type="search" placeholder="Search any city" aria-label="Search for a city">
+                <button type="button" id="gq-go">Search</button>
                 <span id="gq-status" aria-live="polite"></span>
               </div>
               <div id="gq-recent" role="group" aria-label="Places you looked at recently" hidden></div>
@@ -1823,10 +1980,10 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
       <p class="rep-h3">Sections</p>
       <ol class="toc rep-toc" id="toc">
         <li><button type="button" data-ch="1"><b>1 Hot days</b><span>Hot days a year in your city, 1951&ndash;80 against now.</span></button></li>
-        <li><button type="button" data-ch="2"><b>2 Hot nights</b><span>Nights are warming faster than days.</span></button></li>
+        <li><button type="button" data-ch="2"><b>2 Hot nights</b><span>Nights a year your city never cools down, 1951&ndash;80 against now.</span></button></li>
         <li><button type="button" data-ch="3"><b>3 What people think</b><span>What people want, and what they think everyone else wants.</span></button></li>
         <li><button type="button" data-ch="4"><b>4 The carbon budget</b><span>How much CO&#8322; the world can still emit before 1.5&nbsp;&deg;C.</span></button></li>
-        <li><button type="button" data-ch="5"><b>5 What you can do</b><span>Actions, sorted by how much they cut.</span></button></li>
+        <li><button type="button" data-ch="5"><b>5 What you can do</b><span>Push for policy, then the personal changes that cut the most.</span></button></li>
         <li><button type="button" data-ch="6"><b>6 Sources and limits</b><span>Every source, and what this page cannot tell you.</span></button></li>
       </ol>
     </div>
@@ -1841,10 +1998,10 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
       <div class="sheet sheet--wide rep-doc">
         <p class="rep-sec"><span class="rep-num">1</span> Hot days</p>
         <h2 class="rep-h2" tabindex="-1">Hot days a year in <span id="g-h2">Seville</span><span class="place-tag rep-tag" hidden>example city</span></h2>
-        <p class="rep-key" id="g-count-h2"><span id="g-hotw">Hot</span> days here: <b class="num" id="g-then">34</b> a year in
-          1951&ndash;80, <b class="num" id="g-now">66</b> in the last 10 years.</p>
+        <p class="rep-key" id="g-count-h2">Seville has <b class="num" id="g-delta">32</b> more hot days a year
+          than in 1951&ndash;80 &mdash; up from <b class="num" id="g-then">34</b> to <b class="num" id="g-now">66</b>.</p>
         <p class="rep-fig">Figure 1 &middot; Hot days a year, then and now</p>
-        <div id="g-fact"><p class="gb-say">Days at or above 35&nbsp;&deg;C in Seville. Set your city to see yours.</p></div>
+        <div id="g-fact"><p class="gb-say">Days at or above 35&nbsp;&deg;C in Seville.</p></div>
         <p class="fact-line" id="g-freq"></p>
 
         <div class="rep-strip">
@@ -1863,15 +2020,8 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
         </div>
 
         <p class="receipt" id="g-receipt">ERA5 via Open-Meteo &middot; daily highs since 1940</p>
-        <button class="drawbtn" data-drawer="ground">Sources</button>
-      </div>
-    </div>
 
-    <div class="beat">
-      <div class="sheet sheet--wide rep-doc">
-        <p class="rep-sec"><span class="rep-num">1.1</span> The shape of the year</p>
-        <h2 class="rep-h2" tabindex="-1">When the hot days fall</h2>
-        <p class="rep-fig">Figure 2 &middot; Where in the year hot days happen</p>
+        <p class="rep-fig">Figure 2 &middot; Where in the year the hot days fall</p>
         <div class="chartwrap"><div class="plate"><div id="seasonring" hidden>
                 <div class="sr-head">
                   <span class="sr-title" id="sr-title">When hot days happen</span>
@@ -1899,9 +2049,6 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
                   </div>
                 </div>
                 <p class="sr-sr" id="sr-sr"></p>
-                <p class="receipt" id="sr-alt">The circle is one year, January at the top. Each spoke is one
-                  calendar day, drawn as often as it was hot, averaged with the week either side of it.
-                  Both periods use the same threshold and archive.</p>
               </div></div></div>
         <div class="rep-more"><button type="button" class="rep-more-t" aria-expanded="false" aria-controls="rep-daily">Show the daily chart</button><div class="rep-more-b" id="rep-daily"><p class="rep-fig">Daily highs around today&rsquo;s date, this year against every year since 1940</p><div class="chartwrap"><div class="plate"><div id="recwin"></div><div class="legend" id="rw-legend">
                 <span><i style="background:var(--data-cool)"></i>1951–80 avg</span>
@@ -1910,17 +2057,7 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
                 <span><i style="background:#F2E7CC"></i>this year</span>
                 <span><i class="dot" style="background:#F0BC62"></i>today</span>
               </div></div></div><div class="finder"><label for="yr">Type a year (1940&ndash;now):</label><input type="number" id="yr" min="1940" max="2025" placeholder="1985" inputmode="numeric"></div><span class="out mono finder" id="yr-out" aria-live="polite"></span></div></div>
-
-        <h3 class="rep-h3">Another city, same method</h3>
-        <div id="cmp-grid">
-              <div class="cmp-card" id="cmp-a" aria-live="polite"></div>
-              <div class="cmp-card">
-                <label for="cmp-sel" class="cmp-sellab">against</label>
-                <select id="cmp-sel" aria-label="City to compare against"></select>
-                <div id="cmp-b-body" aria-live="polite"></div>
-              </div>
-            </div>
-        <p id="cmp-note">Each city uses its own temperature threshold, so compare the change (&times;), not the raw counts. Averages: 1951&ndash;80 vs the last ten years. ERA5 via Open-Meteo.</p>
+        <button class="drawbtn" data-drawer="ground">Sources</button>
       </div>
     </div>
 
@@ -1936,17 +2073,20 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
         <h2 class="rep-h2" id="n-h2">Delhi&rsquo;s hot days edged down. Its hot nights rose.</h2>
         <p class="place-tag rep-tag" hidden>example city</p>
         <p class="bignum" id="n-big" hidden>+16 <small>more hot nights a year</small></p>
+        <p class="rep-fig">Change since 1951&ndash;80, per year</p>
         <div id="n-diverge" aria-hidden="true"></div>
-        <p class="lead">Your body needs cool nights to recover. Heat-health research links hot nights to more deaths.</p>
+        <p class="rep-key" id="n-key"></p>
         <p class="lead" id="n-honest"></p>
-        <p class="rep-fig">Figure 3 &middot; Hot days and hot nights a year since 1940</p>
+        <p class="rep-fig" id="n-fig">Figure 3 &middot; Hot nights a year since 1940</p>
+        <p class="legend" id="delhi-legend"><span><i style="background:#EE9E80"></i>hot nights a year</span><span class="lg-note">thin line = one year &middot; bold = 11-year average</span></p>
         <div class="chartwrap"><div class="plate"><div id="delhi"></div></div></div>
         <p class="receipt" id="delhi-receipt"></p>
-        <section id="n-example" aria-labelledby="n-ex-h">
-              <h3 id="n-ex-h"><button type="button" id="n-ex-open" aria-expanded="false"
-                aria-controls="n-ex-body">Why Delhi&rsquo;s days fell</button></h3>
-              <div id="n-ex-body" hidden>
+        <section id="n-example" class="exbox" aria-labelledby="n-ex-h">
+              <p class="exbox-tag">Another city</p>
+              <h3 id="n-ex-h" class="exbox-h">Delhi, India</h3>
+              <div id="n-ex-body">
                 <p id="n-ex-lead"></p>
+                <p class="receipt" id="n-ex-note"></p>
                 <p class="receipt" id="n-rec-ex"></p>
               </div>
             </section>
@@ -1981,7 +2121,7 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
         </div>
 
         <div id="pgwrap">
-          <h3 class="rep-h3 rep-h3--top">Your country</h3>
+          <h3 class="rep-h3 rep-h3--top">Country</h3>
           <div id="pg-pick">
                 <select id="pg-sel" aria-label="Choose a country"></select>
                 <span id="pg-guessed"></span>
@@ -1989,6 +2129,9 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
           <p class="kick show" id="pg-kick"></p>
           <p class="sep89 show" id="pg-sep"></p>
           <div class="rep-more"><button type="button" class="rep-more-t" aria-expanded="false" aria-controls="rep-countries">Show all 125 countries</button><div class="rep-more-b" id="rep-countries"><p class="rep-fig">Every country surveyed, lowest to highest</p><div id="pgfield" role="img"></div><div class="pgaxis" aria-hidden="true"><span>0</span><span id="pg-axislab">would give 1% of their income</span><span>100</span></div></div></div>
+        </div>
+        </div>
+        <div class="fl-foot">
           <div id="pg-ask">
                 <button id="ask-btn" type="button">Ask one person &rarr;</button>
                 <span id="ask-hint">Share the real number</span>
@@ -1998,7 +2141,6 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
                 </div>
               </div>
           <p class="sep89 show" id="pg-give"></p>
-        </div>
         </div>
         <button class="drawbtn" data-drawer="firstlight">Sources</button>
       </div>
@@ -2053,9 +2195,9 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
                   <span class="ws-tick" style="left:33.3%"></span>
                   <span class="ws-tick" style="left:66.7%"></span>
                 </div>
-                <div class="ws-lab"><span style="left:16.7%">1.5&deg;</span><span style="left:33.3%">2&deg;</span>
-                  <span style="left:66.7%">3&deg;</span></div>
-                <p class="ws-note" id="ws-note"></p>
+                <div class="ws-lab"><span class="ws-e0">1&deg;</span><span style="left:16.7%">1.5&deg;</span><span style="left:33.3%">2&deg;</span>
+                  <span style="left:66.7%">3&deg;</span><span class="ws-e1">4&deg;</span></div>
+                <p class="ws-unit">&deg;C above the 1800s, by 2100</p>
               </div>
               <p class="burnedtick num" id="burned" aria-live="off"></p>
               <p class="foot"><button type="button" id="reset">Reset</button><button
@@ -2075,22 +2217,24 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
     <div class="beat" id="record-room">
       <div class="sheet sheet--wide rep-doc">
         <p class="rep-sec"><span class="rep-num">5</span> What you can do</p>
-        <h2 class="rep-h2" tabindex="-1">Actions, sorted by impact</h2>
+        <h2 class="rep-h2" tabindex="-1">What you can do</h2>
+        <h3 class="rep-h3 rep-h3--top">Push for policy</h3>
         <div class="rr-menu">
 <button class="rr-row rr-lever rr-default" data-act="letter" type="button">
-  <span class="rr-head"><span class="rr-chip">Start here</span><span class="rr-label">Write to your representative.</span><span class="rr-wedge" aria-hidden="true"></span></span>
-  <span class="rr-note">A personal letter with local data can change a vote. <span class="rr-src">CMF survey of congressional staff</span></span></button>
+  <span class="rr-head"><span class="rr-chip">Start here</span><span class="rr-label">Write to your representative.</span></span>
+  <span class="rr-note">Letters from individual constituents rank above mass campaigns in what changes an undecided vote. <span class="rr-src">Congressional Management Foundation 2015</span></span></button>
 <button class="rr-row rr-lever" data-act="vote" type="button">
-  <span class="rr-head"><span class="rr-label">Vote</span><span class="rr-wedge" aria-hidden="true"></span></span>
-  <span class="rr-note">A written plan lifts turnout by about 4 points. <span class="rr-src">plan &rarr;</span></span></button>
+  <span class="rr-head"><span class="rr-label">Vote</span><span class="rr-ev">+4 points turnout</span></span>
+  <span class="rr-note">Writing down when and where you will vote lifts turnout by about 4 points. <span class="rr-src">Nickerson &amp; Rogers 2010</span></span></button>
 <button class="rr-row rr-lever" data-act="talk" type="button">
-  <span class="rr-head"><span class="rr-label">Talk to someone about it.</span><span class="rr-wedge" aria-hidden="true"></span></span>
-  <span class="rr-note">People change their minds when someone they know brings it up. <span class="rr-src">see below</span></span></button>
+  <span class="rr-head"><span class="rr-label">Talk to someone about it.</span><span class="rr-ev">not measured</span></span>
+  <span class="rr-note">People change their minds when someone they know brings it up. We have no size for this one. <span class="rr-src">see the sources</span></span></button>
 <button class="rr-row rr-give" data-act="give" type="button">
-  <span class="rr-head"><span class="rr-label">Donate</span><span class="rr-ev">~$1 / tonne CO&#8322;e &middot; uncertain</span></span>
+  <span class="rr-head"><span class="rr-label">Donate</span><span class="rr-ev">~$1 per tonne CO&#8322;e &middot; uncertain</span></span>
   <span class="rr-note">Funds policy and technology work, not offsets. <span class="rr-src">Founders Pledge / Giving Green</span></span></button>
 </div>
-        <h3 class="rep-h3">Personal changes &middot; tonnes of CO&#8322; a year</h3>
+        <h3 class="rep-h3">Personal changes</h3>
+        <p class="rr-omit">Tonnes of CO&#8322; saved a year, one person. All three bars share the 0&ndash;2.5&nbsp;t scale below.</p>
         <div class="rr-row rr-foot">
   <span class="rr-head"><span class="rr-label">Live car-free, or car-light.</span><span class="rr-t">2.4 t</span></span>
   <span class="rr-bar" style="--w:96%" aria-hidden="true"><i></i></span>
@@ -2103,25 +2247,20 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
   <span class="rr-head"><span class="rr-label">Eat plant-based.</span><span class="rr-t">0.8 t</span></span>
   <span class="rr-bar" style="--w:32%" aria-hidden="true"><i></i></span>
   <span class="rr-note">Average for switching to plant-based food. <span class="rr-src">Wynes &amp; Nicholas 2017</span></span></div>
+        <div class="rr-axis" aria-hidden="true"><span>0 t</span><span>2.5 t</span></div>
         <div id="rr-panel" class="rr-panel" hidden></div>
         <div id="rr-pledge" class="rr-pledge" hidden></div>
-        <button class="drawbtn" data-drawer="morning" style="color:var(--ink-3);border-color:var(--ink-hair)">Sources</button>
-      </div>
-    </div>
 
-    <div class="beat">
-      <div class="sheet sheet--wide rep-doc">
-        <p class="rep-sec"><span class="rep-num">5.1</span> What&rsquo;s improving</p>
-        <h2 class="rep-h2" tabindex="-1">Measured changes, each with a source</h2>
+        <h3 class="rep-h3">What is already improving</h3>
         <div class="ledger">
               <!-- 1. a SHARE of a named whole: the world's electricity -->
-              <div class="li"><div class="big">33.8% &gt; 33.0%</div>
-                <div class="txt">Renewables passed coal worldwide in 2025 &mdash; first time since 1919.</div>
+              <div class="li"><div class="big">33.8%</div>
+                <div class="txt">Renewables made 33.8% of the world&rsquo;s electricity in 2025, passing coal at 33.0% &mdash; first time since 1919.</div>
                 <div class="scale" style="--w:33.8%" role="img" aria-label="Renewables reached 33.8% of world electricity, passing coal at 33.0%.">
                   <div class="fill"></div>
-                  <span class="mk" style="left:33.0%">coal 33%</span>
+                  <span class="mk" style="left:33.8%">renewables 33.8%</span>
                   <div class="tick" style="left:33.0%"></div></div>
-                <div class="axlab"><span>0</span><span class="mid">share of the world&rsquo;s electricity &middot; Ember 2025</span><span>100%</span></div></div>
+                <div class="axlab"><span>0</span><span class="mid">share of world electricity &middot; coal was 33.0% &middot; Ember 2025</span><span>100%</span></div></div>
               <!-- 2. a SHARE of a named whole: new cars sold -->
               <!-- 3. a real SCALE, not a share: expected warming in °C -->
               <div class="li"><div class="big">3.6 &rarr; 2.6 °C</div>
@@ -2136,6 +2275,7 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
         <h3 class="rep-h3">Save a card with your city&rsquo;s numbers</h3>
         <div class="sharecard">
               <div class="mini" id="share-mini" aria-hidden="true"></div>
+              <p class="receipt" id="share-minicap"></p>
               <button id="share-btn" type="button">Save image</button>
               <button id="share-cite" type="button" class="share-minor">Copy text</button>
               <div class="sharefallback" id="share-fallback">
@@ -2143,6 +2283,7 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
                 <textarea id="share-text" readonly></textarea>
               </div>
             </div>
+        <button class="drawbtn" data-drawer="morning" style="color:var(--ink-3);border-color:var(--ink-hair)">Sources</button>
       </div>
     </div>
   </div>
@@ -2158,17 +2299,17 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
           <div>
             <h2 class="rep-h2" tabindex="-1">Sources</h2>
             <div class="hww" id="hww"></div>
+            <p class="hww rep-dl"><a class="reuse-link" href="../reuse.html">All sources and data</a>
+              &mdash; all datasets, papers, citations and a printable worksheet.</p>
+            <div class="rep-more"><button type="button" class="rep-more-t" aria-expanded="false" aria-controls="rep-dl">Download the numbers</button><div class="rep-more-b" id="rep-dl"><div class="bfb" id="takeaway"></div></div></div>
           </div>
           <div>
             <h2 class="rep-h2">Limits</h2>
             <div class="limits" id="limits"></div>
           </div>
         </div>
-        <p class="hww rep-dl"><a class="reuse-link" href="../reuse.html">All sources and data</a>
-          &mdash; all datasets, papers, citations and a printable worksheet.</p>
-        <div class="bfb" id="takeaway"></div>
         <p class="colophon" id="colophon"></p>
-        <div hidden aria-hidden="true"><div id="t-budget"></div><div id="srcs"></div><div id="impact-know"></div><div id="impact-refuse"></div><div id="budget-notes"></div><div id="rep-attic"><span id="cmp-beat"></span><span id="frontpage"></span></div></div>
+        <div hidden aria-hidden="true"><div id="t-budget"></div><div id="srcs"></div><div id="impact-know"></div><div id="impact-refuse"></div><div id="budget-notes"></div><div id="rep-attic"><span id="cmp-beat"></span><span id="frontpage"></span></div><div id="cmp-grid"><div class="cmp-card" id="cmp-a"></div><div class="cmp-card"><select id="cmp-sel" aria-label="City to compare against"></select><div id="cmp-b-body"></div></div></div><p id="cmp-note"></p></div>
       </div>
     </div>
   </div>
@@ -2178,7 +2319,7 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
   </div>
 
   <!-- ladder -->
-  <nav id="ladder" aria-label="Chapters"><a class="rung" href="#p-sky"><span class="pill"><span class="lab"><em class="rnum">01</em> Carbon budget</span></span><span class="dot"></span></a><a class="rung" href="#p-ground"><span class="pill"><span class="lab"><em class="rnum">02</em> Hot days</span></span><span class="dot"></span></a><a class="rung" href="#p-night"><span class="pill"><span class="lab"><em class="rnum">03</em> Hot nights</span></span><span class="dot"></span></a><a class="rung" href="#p-firstlight"><span class="pill"><span class="lab"><em class="rnum">04</em> Public opinion</span></span><span class="dot"></span></a><a class="rung" href="#p-morning"><span class="pill"><span class="lab"><em class="rnum">05</em> What you can do</span></span><span class="dot"></span></a><a class="rung" href="#p-recap"><span class="pill"><span class="lab"><em class="rnum">06</em> Summary</span></span><span class="dot"></span></a><a class="rung" href="#p-bedrock"><span class="pill"><span class="lab"><em class="rnum">07</em> Sources</span></span><span class="dot"></span></a></nav>
+  <nav id="ladder" aria-label="Chapters"><a class="rung" href="#p-recap"><span class="pill"><span class="lab"><em class="rnum">&middot;</em> Contents</span></span><span class="dot"></span></a><a class="rung" href="#p-ground"><span class="pill"><span class="lab"><em class="rnum">1</em> Hot days</span></span><span class="dot"></span></a><a class="rung" href="#p-night"><span class="pill"><span class="lab"><em class="rnum">2</em> Hot nights</span></span><span class="dot"></span></a><a class="rung" href="#p-firstlight"><span class="pill"><span class="lab"><em class="rnum">3</em> What people think</span></span><span class="dot"></span></a><a class="rung" href="#p-sky"><span class="pill"><span class="lab"><em class="rnum">4</em> Carbon budget</span></span><span class="dot"></span></a><a class="rung" href="#p-morning"><span class="pill"><span class="lab"><em class="rnum">5</em> What you can do</span></span><span class="dot"></span></a><a class="rung" href="#p-bedrock"><span class="pill"><span class="lab"><em class="rnum">6</em> Sources and limits</span></span><span class="dot"></span></a></nav>
 
   <!-- drawer -->
   <aside id="drawer" role="dialog" aria-modal="true" aria-label="Sources and methods" aria-hidden="true" inert>
@@ -2245,6 +2386,21 @@ try{if(EMBED)document.body.classList.add("embed");if(KIOSK)document.body.classLi
 /* capture the ORIGINAL hash now — enterChamber(0) stamps "#p-sky" over it before the intro/boot read it */
 var HASH0=location.hash.replace("#p-","").replace("#","").trim();
 function el(id){return document.getElementById(id);}
+/* land a chapter card just under the position bar — scrollIntoView({block:"start"}) stopped
+   wherever the beat's padding happened to be, so the payoff headline sat a third of a screen down */
+function landOn(pane,smooth){
+ if(!pane)return;
+ /* content-visibility:auto means the beats above this one re-measure as they render, so a
+    single measurement taken mid-flight lands a third of a screen off. Measure late, twice. */
+ function go(inst){
+  var card=pane.querySelector(".rep-doc")||pane;
+  var y=Math.max(0,card.getBoundingClientRect().top+(window.scrollY||window.pageYOffset||0)-56);
+  try{window.scrollTo({top:y,behavior:inst?"instant":(smooth?"smooth":"instant")});}
+  catch(e){window.scrollTo(0,y);}
+ }
+ requestAnimationFrame(function(){requestAnimationFrame(function(){go(false);
+  setTimeout(function(){go(true);},420);});});
+}
 function flashRing(node){if(!node)return;node.classList.remove("flash-ring");void node.offsetWidth;  // reflow so it re-fires
  node.classList.add("flash-ring");setTimeout(function(){node.classList.remove("flash-ring");},1100);}
 var NS="http://www.w3.org/2000/svg";
@@ -2355,6 +2511,9 @@ function classify(t,place){
  var m=(cmp!=null&&rec!=null)?Math.round((cmp-rec)*10)/10:null;   // one decimal, so the ±0.1 tie band is exact (no float dust)
  var recS=(rec!=null?rec.toFixed(1)+" °C":null);
  function P(){return ord(pct)+" percentile";}
+ /* plain: the mono line under this one already said it this way, and that is the line
+    readers understood. One sentence, in the readable type. */
+ function HOT(){return "hotter than "+pct+"% of "+dl+"s since 1940";}
  var cls,tier,shortL,longL;
  if(m!=null&&Math.abs(m)<=TIE){cls="record_tie";tier="A";   /* within a tenth either way reads as level, never a "break" on a provisional forecast */
   shortL="level with the "+dl+" record";
@@ -2367,19 +2526,19 @@ function classify(t,place){
   longL="Within about a degree of the warmest "+dl+" on record ("+recS+", "+recy+"), across "+n+" years of this date.";}
  else if(pct!=null&&pct>=P99){cls="top1";tier="B";
   shortL="among the hottest 1% of "+dl+"s on record";
-  longL="Today sits in the top 1% of "+dl+"s in "+n+" years of record — about the "+P()+".";}
+  longL="Today is "+HOT()+" — the top 1% of "+n+" years of this date.";}
  else if(pct!=null&&pct>=P95){cls="extreme";tier="B";
   shortL="among the hottest "+dl+"s on record";
-  longL="Today is around the "+P()+" of "+n+" years for this date — among the hottest "+dl+"s on record.";}
+  longL="Today is "+HOT()+" — among the hottest on record for this date.";}
  else if(pct!=null&&pct>=WARM){cls="warm";tier="C";
   shortL="a warm day for the date";
-  longL="A warm one for "+dl+" — about the "+P()+" of "+n+" years"+(recS?" — but short of the record ("+recS+", "+recy+").":".");}
+  longL="A warm one: "+HOT()+(recS?", but short of the record ("+recS+", "+recy+").":".");}
  else if(pct!=null&&pct<=COOL){cls="cool";tier="C";
   shortL="a cool day for the date";
-  longL="A cool "+dl+" by the record — about the "+P()+" of "+n+" years."+(recS?" The record holds at "+recS+" ("+recy+").":"");}
+  longL="A cool one: "+HOT()+"."+(recS?" The record holds at "+recS+" ("+recy+").":"");}
  else if(pct!=null){cls="ordinary";tier="C";
   shortL="an ordinary day by the record";
-  longL="An ordinary day by the record — about the "+P()+" of "+n+" years for this date. Nothing here broke.";}
+  longL="An ordinary day: "+HOT()+".";}
  else {cls="unknown";tier="C";shortL=null;longL=null;}
  /* THE DOT is computed straight from its published, falsifiable definition — today reached at least
     the 95th percentile for this date, OR tied/passed a same-date record — NEVER from the class label,
@@ -2707,13 +2866,13 @@ var CH=[
     on the site, and not one of them told a stranger what was inside. A reader cannot decide to
     read "Bedrock". They can decide to read "Where the numbers come from". Metaphor is a fine
     name for a chapter you have already read; it is a terrible name for one you have not. */
- {id:"recap",lab:"Findings",fact:"the four numbers",ink:false},
- {id:"ground",lab:"Hot days",fact:"Seville · "+(TS.tmax!=null?TS.tmax.toFixed(1)+"° today":"on its own record"),ink:false},
- {id:"night",lab:"Hot nights",fact:"Delhi · +"+Math.round(dr.warm_nights_now-dr.warm_nights_then)+" hot nights",ink:false},
- {id:"firstlight",lab:"What people think",fact:P.global_want_action_pct+"% want action",ink:false},
- {id:"sky",lab:"Carbon budget",fact:yearsStr(RNOW)+" years left",ink:false},
- {id:"morning",lab:"What you can do",fact:"actions, sorted by impact",ink:true},
- {id:"bedrock",lab:"Sources and limits",fact:"data and limits",ink:false}
+ {id:"recap",lab:"Contents",num:"",fact:"the four findings",ink:false},
+ {id:"ground",lab:"Hot days",num:"1",fact:"Seville · "+(TS.tmax!=null?TS.tmax.toFixed(1)+"° today":"on its own record"),ink:false},
+ {id:"night",lab:"Hot nights",num:"2",fact:"Seville · on its own record",ink:false},
+ {id:"firstlight",lab:"What people think",num:"3",fact:P.global_want_action_pct+"% want action",ink:false},
+ {id:"sky",lab:"Carbon budget",num:"4",fact:yearsStr(RNOW)+" years left",ink:false},
+ {id:"morning",lab:"What you can do",num:"5",fact:"policy first, then personal",ink:true},
+ {id:"bedrock",lab:"Sources and limits",num:"6",fact:"every figure, and the limits",ink:false}
 ];
 /* how hard the sky darkens behind the text column, per chapter — lighter sky needs more.
    Morning is ink-on-pale (dark text) so it gets none; night/bedrock are already dark. */
@@ -2732,17 +2891,18 @@ ladder.innerHTML="";   /* static rungs served to crawlers/no-JS; the live build 
 /* the rail: numbered chapters, each a real anchor into the one scroll */
 CH.forEach(function(c,i){
  var SUBS={
-  ground:["The count","The year"],
-  morning:["Actions","What's improving"]
+  morning:[]
  };
  var wrap=document.createElement("div");wrap.className="rgroup";
  var b=document.createElement("a");b.className="rung";b.href="#p-"+c.id;
  b.setAttribute("aria-current",i===0?"true":"false");
- b.innerHTML='<span class="pill"><span class="lab"><em class="rnum">'+("0"+(i+1)).slice(-2)+
+ /* the rail prints the SAME number the section header prints. The contents page has none,
+    because it is not a section — it is the way in. */
+ b.innerHTML='<span class="pill"><span class="lab"><em class="rnum">'+(c.num||"\u00B7")+
   '</em> '+c.lab+'</span><span class="fact">'+c.fact+'</span></span><span class="dot"></span>';
  b.addEventListener("click",function(e){e.preventDefault();scrollToChamber(i);});
  wrap.appendChild(b);
- if(SUBS[c.id]){var sd=document.createElement("div");sd.className="subs";
+ if(SUBS[c.id]&&SUBS[c.id].length){var sd=document.createElement("div");sd.className="subs";
   SUBS[c.id].forEach(function(lab,si){
    var sb=document.createElement("button");sb.type="button";sb.className="subrung";
    sb.textContent=lab;
@@ -2803,7 +2963,13 @@ function enterChamber(i){
  if(__ATMO.textDim)__ATMO.textDim(TEXTDIM[c.id]!=null?TEXTDIM[c.id]:.45); // darken the sky behind the words, per chapter
  Array.prototype.forEach.call(ladder.querySelectorAll(".rung"),function(b,j){
   b.setAttribute("aria-current",j===i?"true":"false");
-  if(b.parentNode&&b.parentNode.classList)b.parentNode.classList.toggle("open",j===i);});
+  if(b.parentNode&&b.parentNode.classList)b.parentNode.classList.toggle("open",j===i);
+  /* on a phone the rail is a horizontal strip that never scrolled: at section 4 it still
+     read CONTENTS / 1 HOT DAYS / 2 HOT NIGHTS and was 90px of screen saying nothing. */
+  if(j===i&&ladder.scrollWidth>ladder.clientWidth+4){
+   var want=b.offsetLeft-(ladder.clientWidth-b.offsetWidth)/2;
+   try{ladder.scrollTo({left:Math.max(0,want),behavior:"smooth"});}
+   catch(e){ladder.scrollLeft=Math.max(0,want);}}});
  /* mark the nearest sub-page within the open chapter */
  try{var pane=el("p-"+CH[i].id);
   if(pane){var bts=pane.querySelectorAll(".beat"),bi=0;
@@ -2812,6 +2978,10 @@ function enterChamber(i){
    bts.forEach(function(bb,k){if(bb.getBoundingClientRect().top<=innerHeight*0.4)bi=k;});
    var subs=ladder.querySelectorAll(".rgroup.open .subrung");
    subs.forEach(function(s,k){s.classList.toggle("on",k===bi);});}}catch(e){}
+ try{var _st=el("nb-step");
+  if(_st)_st.textContent=c.num?(c.num+" of 6 \u00B7 "+c.lab):"Contents";
+  document.documentElement.style.setProperty("--prog",
+   (CH.length>1?(i/(CH.length-1))*100:0).toFixed(1)+"%");}catch(e){}
  if(window.__BAND)__BAND.at(i,CH.length);                            // the budget-band caret follows you through the story
  if(location.hash!=="#p-"+c.id)try{history.replaceState(null,"","#p-"+c.id);}catch(e){}
  if(c.id==="ground"&&groundOverture)groundOverture();
@@ -2929,10 +3099,14 @@ function endIntroSafe(){
        meets a button they must click */
     var go=el("intro-go");
     try{if(go&&!go.hidden)go.click();else endIntro();}catch(e){try{endIntro();}catch(e2){}}}}
-  function onWheel(e){if(Math.abs(e.deltaY)>8)bail();}
-  var t0=null;
-  function onTS(e){t0=e.touches&&e.touches[0]?e.touches[0].clientY:null;}
-  function onTM(e){if(t0==null)return;
+  /* THE CITY LIST IS SCROLLABLE. Any drag anywhere used to end the cold-open, so on a
+     phone the list could not be scrolled at all: Europe, the Americas and Oceania were
+     simply unreachable. A drag that starts inside the list belongs to the list. */
+  function inList(e){try{return !!(e&&e.target&&e.target.closest&&e.target.closest("#pk-bar"));}catch(x){return false;}}
+  function onWheel(e){if(inList(e))return;if(Math.abs(e.deltaY)>8)bail();}
+  var t0=null,tIn=false;
+  function onTS(e){t0=e.touches&&e.touches[0]?e.touches[0].clientY:null;tIn=inList(e);}
+  function onTM(e){if(t0==null||tIn)return;
    var y=e.touches&&e.touches[0]?e.touches[0].clientY:t0;
    if(Math.abs(y-t0)>24)bail();}
   function onKey(e){if(e.key==="PageDown"||e.key===" "||e.key==="ArrowDown")bail();}
@@ -2950,9 +3124,7 @@ function endIntroSafe(){
    var on=nt.classList.toggle("open");
    w.setAttribute("aria-expanded",on?"true":"false");
    w.textContent=on?"Hide":"How your location is used";});});
- (function(){var b=el("n-ex-open"),bd=el("n-ex-body");
-  if(b&&bd)b.addEventListener("click",function(){var on=bd.hidden;
-   bd.hidden=!on;b.setAttribute("aria-expanded",on?"true":"false");});})();
+ /* the Delhi block is a labelled second example now, not a disclosure */
  /* the product's face is visible from the first frame: the living sky runs dimmed
     behind the opening. The shader compiles ASYNC — at eval time __ATMO.ok is still false,
     so this retries until the atmosphere is ready (and stops if the intro has ended). */
@@ -2987,6 +3159,9 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
   d.type="button";d.className="idot";d.setAttribute("aria-label","Part "+(j+1)+" of "+N);
   d.addEventListener("click",function(ev){ev.stopPropagation();goTo(j);});dotsWrap.appendChild(d);})(q);
  var dots=Array.prototype.slice.call(dotsWrap.children);
+ /* one beat needs no progress dot — it sat on alone after the hint hid, an orange
+    speck with no meaning */
+ if(N<2)dotsWrap.hidden=true;
  function countUp(b,instant){cancelAnimationFrame(countRAF);
   var spans=Array.prototype.slice.call(b.querySelectorAll(".inum.count"));if(!spans.length)return;
   if(instant||reduce){spans.forEach(function(s){s.textContent=NUM[s.getAttribute("data-key")];});return;}
@@ -3032,6 +3207,9 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
   var d=el("pk-done");
   if(d&&msg){d.hidden=false;d.innerHTML=msg;}
   try{if(window.__HOME)__HOME.markAsked();}catch(e){}
+  /* two "continue" affordances used to end up stacked on each other: the ambient hint and
+     the real button. The hint is the state before an answer; it goes when the button lands. */
+  hint.hidden=true;
   go.hidden=false;setTimeout(function(){try{go.focus();}catch(e){}},reduce?0:260);}
  function openBar(){
   var bar=el("pk-bar");if(!bar)return;
@@ -3039,6 +3217,9 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
    try{if(window.__renderCityBar)__renderCityBar(bar,{scroll:false});}catch(e){}
    bar.setAttribute("data-built","1");}
   bar.hidden=false;
+  /* the fade at the foot of the list says "more below"; it lifts once you reach the end */
+  if(!bar.__sc){bar.__sc=1;bar.addEventListener("scroll",function(){
+   bar.classList.toggle("at-end",bar.scrollTop+bar.clientHeight>=bar.scrollHeight-6);},{passive:true});}
   var lb=el("pk-list");if(lb)lb.hidden=true;}
  function armAsk(){
   if(armed)return;armed=true;
@@ -3051,10 +3232,15 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
   if(bar)bar.addEventListener("click",function(e){
    var b=e.target&&e.target.closest?e.target.closest(".cb-chip"):null;if(!b)return;
    e.stopPropagation();
-   resolveAsk("Drawing <b>"+b.textContent+"</b> — ready when you reach Hot days.");});
+   /* the reader tapped their city; the payoff is the headline in section 1 and nothing
+      should stand between the tap and it. Show the name, then land them on it. */
+   resolveAsk("Your city: <b>"+b.textContent+"</b>");
+   go.textContent="See "+b.textContent+"\u2019s report";
+   introDest="p-ground";
+   setTimeout(function(){if(!intro.classList.contains("gone"))endIntro(false);},reduce?0:620);});
   if(lst)lst.addEventListener("click",function(e){e.stopPropagation();openBar();});
   if(skp)skp.addEventListener("click",function(e){e.stopPropagation();
-   resolveAsk("No problem — we'll show Seville as an example. You can set your city any time.");});
+   resolveAsk("Showing Seville as an example. You can set your city any time.");});
   if(geo)geo.addEventListener("click",function(e){
    e.stopPropagation();
    geo.setAttribute("aria-busy","true");geo.textContent="Waiting for your browser…";
@@ -3064,6 +3250,7 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
    try{__HOME.ask("intro",function(res,hm){
     clearTimeout(t);geo.removeAttribute("aria-busy");
     if(res==="granted"&&hm){geo.hidden=true;
+     introDest="p-ground";go.textContent="See your report";
      resolveAsk("Your place: <b>"+Math.abs(hm.lat).toFixed(2)+"° "+(hm.lat<0?"S":"N")+", "+
       Math.abs(hm.lon).toFixed(2)+"° "+(hm.lon<0?"W":"E")+"</b> — that is all we took, and it stays on this device.");}
     else if(res==="denied"){geo.hidden=true;openBar();
@@ -3106,6 +3293,7 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
   if(whatis)whatis.hidden=true;intro.setAttribute("tabindex","-1");
   if(__ATMO.ok&&!reopen&&!isDeep)__ATMO.setState("sky",{dur:reduce?0:2600});
   show(0);setTimeout(function(){try{intro.focus();}catch(e){}},20);};
+ var introDest=null;
  endIntro=function(reopen){if(intro.classList.contains("gone"))return;
   clearTimeout(settleTimer);cancelAnimationFrame(countRAF);
   intro.classList.add("gone");stage.classList.remove("introing");document.body.classList.remove("introing");bgInert(false);
@@ -3113,8 +3301,14 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
   if(whatis)whatis.hidden=false;
   if(reopen){window.scrollTo(0,retScroll);reopened=false;
    setTimeout(function(){try{whatis.focus();}catch(e){}},60);return;}
-  if(!isDeep){window.scrollTo(0,0);
-   if(__ATMO.ok){__ATMO.exposure(.9,1,900);if(__ATMO.setState)__ATMO.setState(CH[cur||0].id,{dur:1200});}}
+  if(!isDeep&&!introDest){window.scrollTo(0,0);}
+  if(!isDeep&&__ATMO.ok){__ATMO.exposure(.9,1,900);if(__ATMO.setState)__ATMO.setState(CH[cur||0].id,{dur:1200});}
+  if(introDest){var dst=el(introDest);introDest=null;
+   if(dst){setTimeout(function(){
+    landOn(dst,false);
+    var h2=dst.querySelector(".rep-h2");
+    if(h2){try{h2.focus();}catch(e){} try{flashRing(h2);}catch(e){}}},140);
+    return;}}
   setTimeout(function(){var h=document.querySelector("#p-recap h1,#p-recap h2");
    if(h){try{h.setAttribute("tabindex","-1");h.focus();}catch(e){}}},80);};
  if(whatis)whatis.addEventListener("click",function(){startIntro(true);});
@@ -3169,14 +3363,10 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
    /* place that same figure on the gradient: 1 C at the left edge, 4 C at the right */
    var mk=el("ws-mark");
    if(mk){var f=Math.max(0,Math.min(1,(w21-1)/3));mk.style.left=(f*100).toFixed(1)+"%";}
-   var nt=el("ws-note");
-   if(nt)nt.textContent=(w21<1.5?"under 1.5 °C — no country is on this path today"
-     :w21<2?"past 1.5 °C, short of 2 — every tenth of a degree is more risk"
-     :w21<3?"past 2 °C — the range the Paris agreement was written to avoid"
-     :"past 3 °C — far beyond anything on record");}
+  }
   if(el("lead-gt"))el("lead-gt").textContent=Math.round(LO.remaining_now_gt)+"\u2013"+Math.round(HIe.remaining_now_gt);
   if(el("ledger-sr"))el("ledger-sr").textContent="The two published carbon budgets, brought to today: "+  // the horizon rails are aria-hidden; give their numbers a text path
-   Math.round(LO.remaining_now_gt)+" gigatonnes ("+srcShort(LO)+") and "+Math.round(HIe.remaining_now_gt)+" gigatonnes ("+srcShort(HIe)+") — the same answer.";
+   Math.round(LO.remaining_now_gt)+" gigatonnes ("+srcShort(LO)+") and "+Math.round(HIe.remaining_now_gt)+" gigatonnes ("+srcShort(HIe)+") — the two agree.";
   var dim=el("dim");
   dim.setAttribute("aria-valuenow",target.toFixed(1));
   dim.setAttribute("aria-valuetext",Math.round(target)+" gigatonnes per year — "+yearsStr(target)+   // the authoritative dial channel now carries the 2100 verdict too (#verdict is aria-live off)
@@ -3201,10 +3391,10 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
      while the label on its own upper edge already said "same answer". Two independent teams,
      publishing a year apart, land about a month apart on the same quantity. That is the strongest
      evidence on the page that the number is real, and it was being sold as doubt. */
-  el("band-whisper").innerHTML="two teams, the same answer — "+srcShort(LO)+" says "+
+  var _wk=Math.round(Math.abs(HIe.remaining_now_gt-LO.remaining_now_gt)/target*12);
+  el("band-whisper").innerHTML=srcShort(LO)+" says "+
    Math.round(LO.remaining_now_gt)+" Gt, "+srcShort(HIe)+" says "+Math.round(HIe.remaining_now_gt)+
-   " Gt · they differ by about "+(Math.abs(HIe.remaining_now_gt-LO.remaining_now_gt)/target*12).toFixed(0)+
-   " weeks at this rate. The band is that gap, drawn to scale.";
+   " Gt \u00B7 about "+(_wk<1?"a week":(_wk+" week"+(_wk===1?"":"s")))+" apart at this rate.";
   band.setAttribute("aria-label","Two independent carbon budgets agree to within about "+
    Math.abs(Math.round(HIe.remaining_now_gt-LO.remaining_now_gt))+" gigatonnes — activate for detail.");
  }
@@ -3275,8 +3465,7 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
   var from=target,t0=null;
   (function step(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/ms);
    setRate(from+(to-from)*(1-Math.pow(1-k,3)));
-   if(k<1)tweenRAF=requestAnimationFrame(step);})(0);
-  tweenRAF=requestAnimationFrame(step);}
+   if(k<1)tweenRAF=requestAnimationFrame(step);})(performance.now());}
  document.querySelectorAll(".presets button").forEach(function(b){
   b.addEventListener("click",function(){tweenRate(parseFloat(b.getAttribute("data-rate"))||RNOW,700);
    document.querySelectorAll(".presets button").forEach(function(x){x.classList.toggle("on",x===b);});});});
@@ -3293,8 +3482,9 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
    var now=Date.now(),dt=Math.max(0,(now-last)/1000);last=now;
    acc+=dt*(target*1e9/31557600);
    var real=Math.abs(target-RNOW)<0.05;
-   tk.textContent=(real?"burned while you've been here: ":"at this pace the world would burn: ")+
-    Math.round(acc).toLocaleString("en")+" tonnes of CO\u2082"+(real?"":", in the time you've been here");}
+   tk.textContent=(real?"CO\u2082 emitted worldwide since you opened this page: "
+                       :"CO\u2082 at this rate since you opened this page: ")+
+    Math.round(acc).toLocaleString("en")+" tonnes";}
   upd();setInterval(upd,reduce?1000:120);})();
  /* odometer retired: seven decimals of false-precision theatre under a number that
     already says 2.4-2.5. */
@@ -3328,6 +3518,9 @@ var __RING=(function(){
  var HOT="#FF6B52",COOL="#5E8DA6";
  var svg,ticks=[],ghost,ghostB,ghostFill,arcA,arcB,capA,capB,built=false,raf=0,guard=0,cur=1,peak=180;
  var A=null,B=null,sA=null,sB=null,mx=1,N=30,gapped=false;
+ /* the radial axis: three rings and two numbers, parked on the quietest day of the year so
+    they can never sit on top of a spoke. Without them a spoke length meant nothing. */
+ var ringMid,ringMax,axBar,axT0,axT1,axL0,axL1;
 
  function ang(d){return (d/365)*2*Math.PI-Math.PI/2;}
  function pt(d,r){var a=ang(d);return [CX+Math.cos(a)*r,CY+Math.sin(a)*r];}
@@ -3372,6 +3565,7 @@ var __RING=(function(){
  function build(){
   svg=document.getElementById("sr-svg"); if(!svg)return false;
   svg.innerHTML="";
+  svg.setAttribute("viewBox","0 0 400 436");   /* the bottom strip is the radial scale's own room */
   for(var m=0;m<12;m++){
    var m1=pt(MS[m],R_ARC_A+6),m2=pt(MS[m],R_ARC_A+12);
    svg.appendChild(el("line",{x1:m1[0].toFixed(1),y1:m1[1].toFixed(1),x2:m2[0].toFixed(1),y2:m2[1].toFixed(1),
@@ -3381,6 +3575,11 @@ var __RING=(function(){
      "text-anchor":"middle","dominant-baseline":"middle","letter-spacing":".06em"});
    t.textContent=MON[m]; svg.appendChild(t);
   }
+  ringMid=el("circle",{cx:CX,cy:CY,r:(R_IN+R_MAX)/2,fill:"none",stroke:"rgba(242,231,204,.22)",
+    "stroke-width":"1","stroke-dasharray":"2 5"});
+  ringMax=el("circle",{cx:CX,cy:CY,r:R_MAX,fill:"none",stroke:"rgba(242,231,204,.30)",
+    "stroke-width":"1","stroke-dasharray":"2 5"});
+  svg.appendChild(ringMid);svg.appendChild(ringMax);
   ghostFill=el("path",{fill:"rgba(94,141,166,.30)",stroke:"none"});
   svg.appendChild(ghostFill);
   arcA=el("path",{fill:"none",stroke:COOL,"stroke-width":"3.4","stroke-linecap":"round","stroke-opacity":".8"});
@@ -3396,6 +3595,19 @@ var __RING=(function(){
   ghostB=el("path",{fill:"none",stroke:HOT,"stroke-width":"1.6","stroke-linejoin":"round",
     "stroke-opacity":"0"});
   svg.appendChild(ghost);svg.appendChild(ghostB);   /* on top of the day spokes */
+  /* the radial scale, drawn once, in its own strip below the circle: a bar exactly as long as
+     a full-length spoke, with the count it stands for. */
+  var MONOF="ui-monospace,Menlo,monospace",AY=418,AX0=CX-(R_MAX-R_IN)/2,AX1=CX+(R_MAX-R_IN)/2;
+  axBar=el("line",{x1:AX0,y1:AY,x2:AX1,y2:AY,stroke:"rgba(242,231,204,.5)","stroke-width":"1.6"});
+  axT0=el("line",{x1:AX0,y1:AY-5,x2:AX0,y2:AY+5,stroke:"rgba(242,231,204,.5)","stroke-width":"1.4"});
+  axT1=el("line",{x1:AX1,y1:AY-5,x2:AX1,y2:AY+5,stroke:"rgba(242,231,204,.5)","stroke-width":"1.4"});
+  axL0=el("text",{x:AX0-8,y:AY+4,fill:"rgba(242,231,204,.8)","font-size":"12","font-family":MONOF,
+    "text-anchor":"end"});
+  axL0.textContent="0";
+  axL1=el("text",{x:AX1+8,y:AY+4,fill:"rgba(242,231,204,.8)","font-size":"12","font-family":MONOF,
+    "text-anchor":"start"});
+  svg.appendChild(axBar);svg.appendChild(axT0);svg.appendChild(axT1);
+  svg.appendChild(axL0);svg.appendChild(axL1);
   built=true;return true;
  }
  var INNER="M"+(CX-R_IN)+" "+CY+"A"+R_IN+" "+R_IN+" 0 1 0 "+(CX+R_IN)+" "+CY+
@@ -3505,6 +3717,7 @@ var __RING=(function(){
   gapped=hasGap(B,sB)||hasGap(A,sA);
   if(!built&&!build()){hide();return;}
   host.hidden=false;
+  if(axL1)axL1.textContent=Math.round(mx)+" of "+N+" years hot";
   var T=document.getElementById("sr-title");if(T&&title)T.textContent=title;
   var tn=document.getElementById("sr-then"),nw=document.getElementById("sr-now");
   if(tn)tn.textContent=eraA;
@@ -3566,26 +3779,50 @@ function buildGround(V){
  var thenN=mean(Gc.days_ge35_per_year,1951,1980),nowN=mean(Gc.days_ge35_per_year,LF-9,LF);
  var wnThen=mean(Gc.warm_nights_ge25_per_year,1951,1980),wnNow=mean(Gc.warm_nights_ge25_per_year,LF-9,LF);
  if(el("g-h2"))el("g-h2").textContent=PLACE;
+ if(el("g-count-h2")){
+  /* LEAD WITH THE CHANGE. For every city but the two worked examples a "hot day" is that
+     city's own 1951–80 95th percentile, so the left-hand number is ~18 by construction and
+     is not a finding. The change is. */
+  var _gt=Math.round(thenN),_gn=Math.round(nowN),_gd=_gn-_gt;
+  var _dw=Math.abs(_gd)===1?"day":"days";
+  el("g-count-h2").innerHTML=PLACE+" has <b class=\"num\" id=\"g-delta\">"+Math.abs(_gd)+"</b> "+
+   (_gd>=0?"more":"fewer")+" hot "+_dw+" a year than in 1951\u201380 \u2014 "+
+   (_gd>=0?"up":"down")+" from <b class=\"num\" id=\"g-then\">"+_gt+
+   "</b> to <b class=\"num\" id=\"g-now\">"+_gn+"</b>.";
+ }
  if(el("g-then")){
   el("g-then").textContent=thenN.toFixed(0);el("g-now").textContent=nowN.toFixed(0);
   /* the then-count lands first, the now-count 250ms later — the site's one sentence, in motion */
   (function(){
    var b=el("g-count-h2");if(!b)return;
+   /* buildGround runs twice for a picked city — instant table, then the live archive. The
+      counter re-armed on the second run and the reader watched 20 -> 37 fall back to 15 -> 9
+      and climb again. Count once per place; after that the figures are just written. */
+   /* the instant record draws, then the live archive redraws. The first run's frames used
+      to keep writing over the second run's numbers, so the headline said 27 while the bar
+      under it said 37 for about two seconds. A token retires the old frames. */
+   b.__tok=(b.__tok||0)+1;
+   if(b.__cnted===PLACE){el("g-then").textContent=String(Math.round(thenN));
+    el("g-now").textContent=String(Math.round(nowN));
+    if(el("g-delta"))el("g-delta").textContent=String(Math.abs(Math.round(nowN)-Math.round(thenN)));
+    return;}
+   b.__cnted=PLACE;
    if(b.__io){try{b.__io.disconnect();}catch(e){}b.__io=null;}
    if(b.__raf){for(var _r=0;_r<b.__raf.length;_r++)cancelAnimationFrame(b.__raf[_r]);}
    b.__raf=[];
    if(!window.IntersectionObserver)return;
    if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches)return;
    var done=false;
-   function cnt(elx,to,delay){setTimeout(function(){var t0=null;
-    (function st(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/900);
+   function cnt(elx,to,delay){var tok=b.__tok;setTimeout(function(){if(tok!==b.__tok)return;var t0=null;
+    (function st(ts){if(tok!==b.__tok)return;if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/900);
      elx.textContent=String(Math.round(to*(1-Math.pow(1-k,3))));
      if(k<1)b.__raf.push(requestAnimationFrame(st));})(performance.now());},delay);}
    try{var io=b.__io=new IntersectionObserver(function(es){
     for(var q=0;q<es.length;q++)if(es[q].isIntersecting&&!done){done=true;io.disconnect();
-     cnt(el("g-then"),Math.round(thenN),0);cnt(el("g-now"),Math.round(nowN),250);}},{threshold:.5});
+     cnt(el("g-then"),Math.round(thenN),0);cnt(el("g-now"),Math.round(nowN),250);
+     cnt(el("g-delta"),Math.abs(Math.round(nowN)-Math.round(thenN)),120);}},{threshold:.5});
    io.observe(b);}catch(e){}})();}
- if(el("g-hotw"))el("g-hotw").textContent="Hot";
+
  /* the ring follows whatever record is on screen: a live fetch, the instant table, or the
     worked example — one renderer, three sources, never a picture of somewhere else. */
  try{ if(window.__RING){
@@ -3600,7 +3837,7 @@ function buildGround(V){
  /* record-window chart — RW is the day-by-day archive; the baked instant record has none,
     and the honest instant state says so instead of borrowing anyone else's days */
  if(RWc){
- var W=940,Hh=400,mL=38,mR=14,mT=12,mB=24,n=RWc.labels.length;
+ var W=940,Hh=400,mL=38,mR=14,mT=26,mB=24,n=RWc.labels.length;
  function sc(d0,d1,r0,r1){return function(v){return r0+(v-d0)/(d1-d0)*(r1-r0);};}
  var yd=CUSTOM?V.ydom:[18,45];
  var x=sc(0,n-1,mL,W-mR),y=sc(yd[0],yd[1],Hh-mB,mT);
@@ -3610,6 +3847,7 @@ function buildGround(V){
    t.setAttribute("stroke-width","3.2");t.setAttribute("stroke-linejoin","round");}return t;}
  var svg=E("svg",{viewBox:"0 0 "+W+" "+Hh,role:"img",
   "aria-label":PLACE+" daily highs across the window, one line per year since 1940 — old and recent normals drawn, today's forecast marked."});
+ svg.appendChild(txt({x:mL,y:mT-3,"text-anchor":"start","font-size":11,fill:AXc,"font-family":MONO},"daily high, °C"));
  (CUSTOM?V.ticks:[20,25,30,35,40,45]).forEach(function(t){
   svg.appendChild(E("line",{x1:mL,x2:W-mR,y1:y(t),y2:y(t),stroke:"rgba(242,231,204,.1)"}));
   svg.appendChild(txt({x:mL-5,y:y(t)+3,"text-anchor":"end","font-size":11,fill:AXc,"font-family":MONO},t));});
@@ -3700,14 +3938,23 @@ function buildGround(V){
    ("set to pass every "+t.dateLabel+" in the record ("+t.rec.toFixed(1)+"°, "+t.recy+")."):
    (t.pct!=null?(ord(t.pct)+" percentile of "+t.n+" years of this date."):
     ("measured against "+t.n+" years of this date.")));
-  el("g-today").innerHTML=(t.tmax!=null?t.tmax.toFixed(1)+"°":"—")+
-   "<small> forecast, "+t.dateLabel+" <span class=\"chip\">"+
-   (t.mode==="live"?"live · not final until the day ends":"snapshot · built "+t.fetched)+"</span></small>";
+  /* no reading for this place means no reading — never the last place's number */
+  var _tw=el("g-today")&&el("g-today").closest(".rep-stat");
+  if(t.tmax==null){
+   if(_tw)_tw.hidden=true;
+   el("g-today").innerHTML="—";
+   if(el("g-verdict"))el("g-verdict").textContent="";
+  }else{
+   if(_tw)_tw.hidden=false;
+   el("g-today").innerHTML=t.tmax.toFixed(1)+"°"+
+    "<small> forecast, "+t.dateLabel+" <span class=\"chip\">"+
+    (t.mode==="live"?"live · not final until the day ends":"snapshot · built "+t.fetched)+"</span></small>";
+  }
   /* the then→now doubling, DRAWN — two bars scaled to a shared max, then one sharp line + the honest caveat.
      All numbers are live (thenN/nowN/wn* recompute per city via the picker); nothing hardcoded. */
   var gThen=Math.round(thenN),gNow=Math.round(nowN),gMax=Math.max(gThen,gNow,1),gD=gNow-gThen;
   var wThen=Math.round(wnThen),wNow=Math.round(wnNow);
-  var HOTW=CUSTOM?"unusually hot":"scorching";   // "scorching" only where the absolute ≥35 °C earns it; a custom city's own 95th pct can be mild
+  var HOTW="hot";   // the heading, the rail, the contents and the findings card all say "hot days" — the body says it too
   var DAYW=Math.abs(gD)===1?"day":"days";        // "1 fewer … day", not "days", at the ±1 boundary
   el("g-fact").innerHTML=
    '<div id="g-bars" aria-hidden="true">'+
@@ -3717,8 +3964,11 @@ function buildGround(V){
        ('+'+gD+' '+HOTW+' '+DAYW+' a year since 1951–80'):
        (Math.abs(gD)+' fewer '+HOTW+' '+DAYW+' a year than in 1951–80'))+'</div>':'')+
    '</div>'+
-   '<p class="gb-say">A'+(CUSTOM?'n':'')+' '+HOTW+' day here is one '+THR.hotLabel+'. In 1951–80, '+PLACE+' saw about <b>'+gThen+'</b> a year. Now, about <b>'+gNow+'</b>.'+
-    (wThen<1?(' Nights that never fall '+THR.nightLabel+' were almost unknown then — now about <b>'+wNow+'</b> a year.'):(' Nights that never fall '+THR.nightLabel+' went from about <b>'+wThen+'</b> to about <b>'+wNow+'</b> a year.'))+'</p>'+
+   '<p class="gb-say">'+(CUSTOM
+     ? ('A hot day in '+PLACE+' means <b>'+THR.hot.toFixed(1)+' °C</b> or above — the level only the '+
+        'hottest 5% of days reached in 1951–80. That definition puts the 1951–80 count near 18 for '+
+        'any city, so read the change, not the first bar.')
+     : ('A hot day here means <b>35 °C</b> or above — a fixed temperature, so both bars are counts of the same thing.'))+'</p>'+
    '<p class="gb-caveat"></p>'+
    /* LEAN ON THE GLOBAL PICTURE: where the local count did NOT rise, the local record can't carry the
       alarm — so pull in the planet's own sourced figure (never a local causal claim). General: fires for
@@ -3730,13 +3980,10 @@ function buildGround(V){
      (EMBED?'':' <button type="button" class="gb-tosky" aria-label="Go to the Sky — the world&rsquo;s carbon budget">See the sky &uarr;</button>')+'</p>':'');
   var _gs=el("g-fact").querySelector(".gb-tosky");
   if(_gs)_gs.addEventListener("click",function(){scrollToChamber(CH.findIndex(function(c){return c.id==="sky";}));var _st=el("sr-status");if(_st)_st.textContent="Jumped to the Sky — the world’s carbon budget.";});
-  el("g-freq").textContent=(!RWc)?"":(t.h40a||t.h40b)?
-   ("A 40 °C day within two weeks of this date came "+t.h40a+" summers in 30 (1951–80). "+
-    "In the last thirty years: "+t.h40b+" in 30."):"";
-  el("g-receipt").innerHTML=((t.pct!=null&&RWc)?("Hotter than "+t.pct+"% of days around this date since 1940 · "):"")+
-   "ERA5 via Open-Meteo · "+(CUSTOM?
-    "today is a forecast, not yet measured":
-    "forecast adjusted "+(t.bias<0?"+":"−")+Math.abs(t.bias).toFixed(1)+
+  el("g-freq").textContent="";
+  el("g-receipt").innerHTML=
+   "ERA5 via Open-Meteo"+(CUSTOM?"":
+    " · forecast adjusted "+(t.bias<0?"+":"−")+Math.abs(t.bias).toFixed(1)+
     " °C for the measured reanalysis offset · newest observation "+F.newest_obs)+
    " · compared against 1951–80 and "+(LF-9)+"–"+LF;
   if(RWc&&t.dateISO){
@@ -3780,6 +4027,7 @@ function buildGround(V){
 
  /* every strand answers: brush the haystack and that year speaks */
  (function(){var pend=false;
+  if(!svg)return;              /* no daily chart for this record — nothing to hover */
   function nearest(e){
    var r=svg.getBoundingClientRect();if(!r.width)return null;
    var vx=(e.clientX-r.left)/r.width*940,vy=(e.clientY-r.top)/r.height*400;
@@ -3816,19 +4064,23 @@ var buildNight=function(NV){
   nights=NV.nights.filter(function(r){return r.year<=LF;});
   dThen=mean(days,1951,1980);dNow=mean(days,LF-9,LF);
   nThen=mean(nights,1951,1980);nNow=mean(nights,LF-9,LF);
- }else{place="Delhi";thrH=35;thrN=25;
-  days=DH.days_ge35_per_year.filter(function(r){return r.year<=LF;});
-  nights=DH.warm_nights_ge25_per_year.filter(function(r){return r.year<=LF;});
-  dThen=dr.days_ge35_then;dNow=dr.days_ge35_now;
-  nThen=dr.warm_nights_then;nNow=dr.warm_nights_now;}
+ }else{place="Seville";thrH=35;thrN=25;
+  /* the example state draws SEVILLE's own nights. One city runs the whole report:
+     Delhi is a second, named example in its own box below, never the reader's line. */
+  days=G.days_ge35_per_year.filter(function(r){return r.year<=LF;});
+  nights=G.warm_nights_ge25_per_year.filter(function(r){return r.year<=LF;});
+  dThen=mean(days,1951,1980);dNow=mean(days,LF-9,LF);
+  nThen=mean(nights,1951,1980);nNow=mean(nights,LF-9,LF);}
  var dayFell=dNow<dThen-1,thrHs=CUSTOM?thrH.toFixed(1):"35",thrNs=CUSTOM?thrN.toFixed(1):"25";
- var dN=Math.round(nNow-nThen);
+ var dN=Math.round(nNow)-Math.round(nThen);
  el("n-big").innerHTML=(dN>=0?"+":"&minus;")+Math.abs(dN)+
   "<small> "+(dN>=0?"more":"fewer")+" hot nights a year in "+place+(NV&&NV.custom?"":", the example")+"<br>than the 1951&ndash;80 average</small>";
- if(el("n-h2"))el("n-h2").innerHTML=dayFell?
-  (place+"&rsquo;s hot days edged down. Its hot nights rose."):
-  ("In "+place+", the nights climbed.");
- var dDelta=Math.round(dNow-dThen),nDelta=Math.round(nNow-nThen);
+ if(el("n-h2"))el("n-h2").textContent="Hot nights in "+place;
+ if(el("n-fig"))el("n-fig").textContent="Figure 3 \u00B7 Hot nights a year in "+place+", 1940 to now";
+ /* round FIRST, then subtract: subtracting raw means printed "+38" beside a sentence
+    saying 20 -> 57. Every delta on this page is now the difference of the two numbers
+    the reader can actually see. */
+ var dDelta=Math.round(dNow)-Math.round(dThen),nDelta=Math.round(nNow)-Math.round(nThen);
  if(el("n-diverge")){
   el("n-diverge").innerHTML=
    '<div class="nd nd-day '+(dDelta>0?'nd-up':dDelta<0?'nd-down':'nd-flat')+'"><span class="ar">'+(dDelta<0?'\u25bc':dDelta>0?'\u25b2':'\u25ac')+'</span><span class="val" data-to="'+Math.abs(dDelta)+'" data-sign="'+(dDelta>0?'+':dDelta<0?'\u2212':'')+'">'+(dDelta>0?'+':dDelta<0?'\u2212':'')+Math.abs(dDelta)+'</span><span class="lab">hot days a year</span></div>'+
@@ -3860,22 +4112,26 @@ var buildNight=function(NV){
  var dVerb=(dDelta>0?"rose too, from about "+dThen.toFixed(0)+" to "+dNow.toFixed(0)+" a year":
             dDelta<0?"edged down a little too, from about "+dThen.toFixed(0)+" to "+dNow.toFixed(0)+" a year":
             "barely moved, about "+dThen.toFixed(0)+" a year");
+ /* NO physical cause is asserted here for ANY place — the one sourced explanation lives in
+    buildNightExample(), which can only ever be fed Delhi's own series. */
  el("n-honest").innerHTML=
-  "A hot night here is one warmer than 95% of nights in the 1951&ndash;80 record. "+
-  /* NO physical cause is asserted here for ANY place — the one sourced explanation lives in
-     buildNightExample(), which can only ever be fed Delhi's own series. */
-  (dayFell?
-   (place+"&rsquo;s daytime highs fell over the same years. That line is drawn too. "+
-    ""):
-   ("The days "+dVerb+". Both lines are drawn."));
- el("delhi-receipt").innerHTML="days ≥"+thrHs+" °C: <b>"+Math.round(dThen)+"→"+Math.round(dNow)+
-  "</b>/yr · nights ≥"+thrNs+" °C: <b>"+Math.round(nThen)+"→"+Math.round(nNow)+"</b>/yr · "+
-  "1951–80 vs "+(LF-9)+"–"+LF+" · ERA5 · counts only, not causes";
+  (CUSTOM
+   ? ("A hot night in "+place+" means above <b>"+thrNs+"&nbsp;&deg;C</b> &mdash; the level only the warmest "+
+      "5% of nights reached in 1951&ndash;80, so that period counts about 18 a year by definition. ")
+   : ("A hot night here means never falling below <b>"+thrNs+"&nbsp;&deg;C</b>, a fixed temperature. "))+
+  (dayFell ? (place+"&rsquo;s daytime highs fell over the same years.") : "");
+ if(el("n-key"))el("n-key").innerHTML="Hot nights in "+place+": <b class=\"num\">"+
+  (nThen<1?"under 1":Math.round(nThen))+"</b> a year in 1951&ndash;80, <b class=\"num\">"+
+  Math.round(nNow)+"</b> in "+(LF-9)+"&ndash;"+LF+".";
+ /* the receipt describes the chart above it, which is nights. The rounded "0" also
+    contradicted the "under 1" the headline prints from the same number. */
+ el("delhi-receipt").innerHTML="nights ≥"+thrNs+" °C in "+place+": <b>"+
+  (nThen<1?"under 1":Math.round(nThen))+" → "+Math.round(nNow)+"</b> a year · "+
+  "1951–80 vs "+(LF-9)+"–"+LF+" · ERA5 via Open-Meteo";
  var dTrend=dayFell?"— edging down":(dNow>dThen+1?"— climbing":"— flat");
  var nTrend=nNow>nThen+1?"— climbing":(nNow<nThen-1?"— edging down":"— flat");
  var lr2=ladder.querySelectorAll(".rung")[2]&&ladder.querySelectorAll(".rung")[2].querySelector(".fact");
- if(lr2)lr2.textContent=place+" · "+(Math.round(nNow-nThen)>=0?"+":"−")+
-  Math.abs(Math.round(nNow-nThen))+" hot nights";
+ if(lr2)lr2.textContent=place+" · "+(nDelta>=0?"+":"−")+Math.abs(nDelta)+" hot nights";
  var host=el("delhi"),MONO="ui-monospace,Menlo,monospace",lastB="";
  function sc(d0,d1,r0,r1){return function(v){return r0+(v-d0)/(d1-d0)*(r1-r0);};}
  function txt(a,s,halo){var t=E("text",a);t.textContent=s;
@@ -3884,18 +4140,22 @@ var buildNight=function(NV){
  function roll(s,w){var h=Math.floor(w/2);return s.map(function(_,i){
   var t=0,c=0;for(var j=Math.max(0,i-h);j<=Math.min(s.length-1,i+h);j++){t+=s[j].n;c++;}
   return {year:s[i].year,n:t/c};});}
- var ymax=180;
- if(CUSTOM){var mx=0;
-  days.concat(nights).forEach(function(r){if(r.n>mx)mx=r.n;});
-  ymax=Math.max(40,Math.ceil((mx+8)/40)*40);}
+ /* NIGHTS ONLY, on their own scale. Sharing the days axis pinned this chapter's own
+    number to the bottom of the frame and handed the eye the other chapter's line. */
+ var ymax=(function(){var mx=0;
+  nights.forEach(function(r){if(r.n>mx)mx=r.n;});
+  var step=mx<=10?2:(mx<=25?5:(mx<=60?10:20));
+  return Math.max(step*2,Math.ceil((mx*1.15)/step)*step);})();
  function render(){
   var narrow=host.clientWidth<620&&host.clientWidth>0,b=narrow?"n":"w";
   if(b===lastB)return;lastB=b;host.innerHTML="";
-  var W=narrow?520:940,Hh=340,mL=narrow?30:36,mR=12,mT=12,mB=26,fs=narrow?15:11;
+  var W=narrow?520:940,Hh=340,mL=narrow?30:36,mR=12,mT=30,mB=26,fs=narrow?15:11;
   var yrs=days.map(function(r){return r.year;});
   var x=sc(yrs[0],yrs[yrs.length-1],mL,W-mR),y=sc(0,ymax,Hh-mB,mT);
   var svg=E("svg",{viewBox:"0 0 "+W+" "+Hh,role:"img",
-   "aria-label":place+" hot days and hot nights per year since 1940 — 11-year means drawn bold."});
+   "aria-label":place+" hot nights per year since 1940 — the 11-year mean drawn bold."});
+  svg.appendChild(txt({x:mL,y:mT-11,"text-anchor":"start","font-size":fs,
+   fill:"rgba(242,231,204,.80)","font-family":MONO},"hot nights a year"));
   [0,.25,.5,.75,1].forEach(function(f){var t=Math.round(ymax*f);
    svg.appendChild(E("line",{x1:mL,x2:W-mR,y1:y(t),y2:y(t),stroke:"rgba(242,231,204,.12)"}));
    svg.appendChild(txt({x:mL-5,y:y(t)+3,"text-anchor":"end","font-size":fs,fill:"rgba(242,231,204,.80)","font-family":MONO},t));});
@@ -3905,13 +4165,11 @@ var buildNight=function(NV){
    var at={d:p,fill:"none",stroke:c,"stroke-width":w,"stroke-opacity":op||1,"stroke-linejoin":"round"};
    if(cls)at["class"]=cls;
    svg.appendChild(E("path",at));}
-  line(days,"#8FC0EA",.75,.18);line(nights,"#EE9E80",.75,.2);
-  var rd=roll(days,11),rn=roll(nights,11);
-  line(rd,"#8FC0EA",narrow?3:2.6,1,"dr");line(rn,"#EE9E80",narrow?3.6:3,1,"dr");
+  line(nights,"#EE9E80",.75,.28);
+  var rn=roll(nights,11);
+  line(rn,"#EE9E80",narrow?3.6:3,1,"dr");
   if(!narrow){
-   var dv=rd[rd.length-8]||rd[rd.length-1],nv=rn[rn.length-8]||rn[rn.length-1];
-   svg.appendChild(txt({x:x(dv.year),y:y(dv.n)-12,"text-anchor":"middle","font-size":12,
-    fill:"#8FC0EA","font-family":MONO},"hot days "+dTrend,true));
+   var nv=rn[rn.length-8]||rn[rn.length-1];
    svg.appendChild(txt({x:x(nv.year),y:y(nv.n)-14,"text-anchor":"middle","font-size":12,
     fill:"#EE9E80","font-family":MONO},"hot nights "+nTrend,true));}
   host.appendChild(svg);}
@@ -3940,7 +4198,7 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
  try{var reg=(navigator.language||"").split("-")[1];
   if(reg){var nm=new Intl.DisplayNames(["en"],{type:"region"}).of(reg.toUpperCase());
    for(var q=0;q<list.length;q++)if(list[q].place===nm){start=q;
-    el("pg-guessed").textContent="guessed from your browser · change freely";break;}}}catch(e){}
+    el("pg-guessed").textContent="guessed from your browser · change it any time";break;}}}catch(e){}
  sel.value=start;
  /* build the field */
  var N=rows.length,VW=100,VH=Math.max(38,N*0.36),TOP=1.6,DY=(VH-TOP*2)/(N-1);
@@ -3977,23 +4235,18 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
      surveyed are under 50% — so an Egyptian reader was told "31 of every 100 … the majority is
      real" on the same screen as the number that contradicts it. The gap is the finding; whether
      it clears half is a separate fact, and the sentence now follows the data either way. */
-  el("pg-kick").innerHTML="In <b>"+c.place+"</b>: <b>"+A+"</b> of every 100 would give. "+
-   "People "+(c.place==="World"?"":"there ")+"guess <b>"+G+"</b>. "+
-   (A>=50?"That is a majority, and they don&rsquo;t know it."
-         :"Still far more than people there think.");
-  el("pg-sep").innerHTML=(c.govt!=null?
-   "And <b>"+Math.round(c.govt)+"%</b> in "+c.place+" want their government to do more"+
-    ((WORLD&&WORLD.govt&&c.place!=="World")?" (worldwide, "+Math.round(WORLD.govt)+"%)":"")+". ":
-   "Worldwide, <b>"+P.global_want_action_pct+"%</b> want their government to do more. ")+
-   "Stated willingness, not behaviour &mdash; Andre et al. 2024 via Our World in Data.";
+  el("pg-kick").innerHTML="In <b>"+c.place+"</b>: <b>"+A+"</b> of every 100 would give 1% of their income. "+
+   "People "+(c.place==="World"?"":"there ")+"guess <b>"+G+"</b>.";
+  el("pg-sep").innerHTML="Survey answers, not what people actually did &mdash; Andre et al. 2024 " +
+   "via Our World in Data.";
   buildAsk(c);}
  sel.addEventListener("change",render);
  /* the field ignites when its beat scrolls in (.beat.seen in CSS); this is the reduced-motion path */
  if(reduce)field.classList.add("lit");
- if(D.giving)el("pg-give").innerHTML="Rather give than talk? These funds are vetted: <b>"+
+ if(D.giving)el("pg-give").innerHTML="Funds that work on climate policy and technology: <b>"+
   D.giving.orgs.map(function(o){return o.n;}).join("</b> · <b>")+
   "</b> (Giving Green 2025&ndash;26), or the pooled <b>"+
-  D.giving.funds.map(function(f){return f.n;}).join("</b> / <b>")+"</b>. Details in the sources.";
+  D.giving.funds.map(function(f){return f.n;}).join("</b> / <b>")+"</b>. Details in section 6.";
 
  /* ---- Ask one: the finding becomes an act, and propagates ---- */
  var askText="";
@@ -4018,10 +4271,24 @@ if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRe
 
 /* ============ MORNING ============ */
 (function(){
- var svg=E("svg",{viewBox:"0 0 "+S.anom.length+" 10",preserveAspectRatio:"none"});
- svg.setAttribute("width","100%");svg.setAttribute("height","26");
- S.anom.forEach(function(a,i){svg.appendChild(E("rect",{x:i,y:0,width:1.02,height:10,fill:tcol(a)}));});
- el("share-mini").appendChild(svg);
+ /* the strip is one year per stripe — it needs its unit, and it must be the city the
+    heading above it names, not Seville's under somebody else's title. */
+ function drawMini(){
+  var host=el("share-mini"),cap=el("share-minicap");if(!host)return;
+  var hm=window.__HOME&&__HOME.get(),V=window.__HOME&&__HOME.record&&__HOME.record();
+  var Sx=(V&&V.S&&V.S.anom&&V.S.anom.length)?V.S:((hm&&!hm.ex)?null:S);
+  host.innerHTML="";
+  if(!Sx){host.hidden=true;if(cap)cap.textContent="";return;}
+  host.hidden=false;
+  var svg=E("svg",{viewBox:"0 0 "+Sx.anom.length+" 10",preserveAspectRatio:"none"});
+  svg.setAttribute("width","100%");svg.setAttribute("height","26");
+  Sx.anom.forEach(function(a,i){svg.appendChild(E("rect",{x:i,y:0,width:1.02,height:10,fill:tcol(a)}));});
+  host.appendChild(svg);
+  if(cap)cap.textContent="one stripe a year, "+Sx.year0+" to "+(Sx.year0+Sx.anom.length-1)+
+   " \u00B7 blue below and red above "+((hm&&hm.name)||"Seville")+"\u2019s 1951\u201380 average";
+ }
+ drawMini();
+ document.addEventListener("onrecord:drawn",drawMini);
  var btn=el("share-btn"),orig=btn.innerHTML,cbtn=el("share-cite");
  function flash(m,el2){var t=el2||btn,o=(el2?el2.textContent:orig);t.textContent=m;el("sr-status").textContent=m;
   setTimeout(function(){if(el2)el2.textContent=o;else btn.innerHTML=orig;},2400);}
@@ -4267,7 +4534,7 @@ var __ART=(function(){
     if(hm&&!hm.ex&&V&&V.G){
      var LFy=V.G.warm_nights_ge25_per_year[V.G.warm_nights_ge25_per_year.length-1].year;
      return mk(hm.name,V.G.warm_nights_ge25_per_year,V.thr.night,LFy);}
-    return mk("Delhi",DH.warm_nights_ge25_per_year.filter(function(r){return r.year<=LF;}),25,LF);
+    return mk("Seville",G.warm_nights_ge25_per_year.filter(function(r){return r.year<=LF;}),25,LF);
    })(),
    budget:{key:"budget",kind:"ledger",place:"THE WORLD",title:"The carbon budget",
     hero:yrs,heroUnit:"years",label:"of budget left for a ~50% chance of staying under 1.5 °C",
@@ -4492,7 +4759,9 @@ buildTakeaway();
   "measurement fed into one physics model &mdash; a <b>reanalysis</b>, not a thermometer on your street. "+
   "Today&rsquo;s reading is cross-checked against a live forecast (currently ~"+Math.abs(b.mean_C).toFixed(1)+
   " °C "+(b.mean_C<0?"cooler":"warmer")+") and labelled provisional.";
- el("budget-notes").innerHTML=B.notes.join(" · ");
+ el("budget-notes").innerHTML=B.notes.map(function(t){
+  return String(t).replace("is a dial of rising risk, not a cliff:","is not a switch \u2014 risk keeps rising past it:");
+ }).join(" · ");
  table("t-budget",
   ["Estimate","Published GtCO₂","Counted from","Emitted since","Remaining, "+B.now_label,"Years @ "+RNOW,"Odds of holding 1.5 °C"],
   B.estimates.map(function(e){return [e.label,String(e.gt),e.anchor.replace("counted from ",""),
@@ -4513,17 +4782,13 @@ buildTakeaway();
     nothing softened; it just has a shape now. */
  el("limits").innerHTML="<b>What this page cannot tell you.</b>"+
   "<dl class='lim'>"+
-  "<dt>The grid is coarse</dt><dd>~30 km averages, not a local weather station.</dd>"+
-  "<dt>One number is an assumption</dt><dd>The 0.88 °C pre-industrial offset is stated, not measured.</dd>"+
-  "<dt>The budgets are moving</dt><dd>Revised yearly; we hold the 2025 burn rate — an assumption, flagged.</dd>"+
-  "<dt>The dial is simple maths</dt><dd>Not a climate model — it cannot forecast future summers.</dd>"+
-  "<dt>We count, we don't explain why</dt><dd>&ldquo;Is this climate change?&rdquo; &mdash; WWA and Climate Central answer that.</dd>"+
-  "<dt>The skies are drawings</dt><dd>Renderings of data, not weather — except the night sky, which is real.</dd>"+
-  "<dt>Where you are</dt><dd>Rounded to ~1 km, named on your device — the full promise is beside the picker.</dd>"+
-  "<dt>The picker's cities are points</dt><dd>Each record is one grid cell's, not a whole city's.</dd>"+
+  "<dt>Your city is one grid cell</dt><dd>~30 km averages, not a local weather station. Your coordinates are rounded to ~1 km and stay on your device.</dd>"+
+  "<dt>Why it got hotter</dt><dd>This page counts days. For \u201cis this climate change?\u201d, World Weather Attribution and Climate Central answer that.</dd>"+
+  "<dt>The dial is arithmetic</dt><dd>Budget divided by rate. Not a climate model, and it cannot forecast a summer.</dd>"+
+  "<dt>Two numbers are assumptions</dt><dd>The 0.88 \u00B0C pre-industrial offset, and holding the 2025 emissions rate. Both are flagged where they are used.</dd>"+
+  "<dt>The sky graphics</dt><dd>Drawn from the numbers on this page, not from today\u2019s weather. The star field is the real sky.</dd>"+
   "</dl>"+
-  "<p class='lim-x'>Corrections will be listed here, dated. <span class='lim-q'>?place=</span> and "+
-   "<span class='lim-q'>?loc=</span> are verification links, not something the share button makes.</p>";
+  "<p class='lim-x'>Corrections are listed here, dated.</p>";
  /* this said "place data frozen at 3 July 2026" long after the nightly build began refreshing it —
     the last sentence of the site contradicted the build date printed two hundred words above it */
  var _bm=document.querySelector('meta[name="build"]');
@@ -4587,18 +4852,23 @@ var DRAWERS={
    "Scope 1/2/3, SBTi and IFRS S2 all draw on this same finite budget.</p>";}},
  ground:{t:function(){var hm=window.__HOME&&__HOME.get();
    return ((hm&&!hm.ex&&hm.name)||"Seville")+" — the full record";},h:function(){return groundDrawerExtra;}},
- night:{t:"Delhi — why days and nights differ",h:function(){
-  return "<h4>Days down, nights up</h4><p>Studies of the Indo-Gangetic Plain link the daytime damping mainly to "+
+ night:{t:function(){var hm=window.__HOME&&__HOME.get();
+   return "Hot nights — "+((hm&&hm.name)||"Seville");},h:function(){
+  return "<h4>How a hot night is counted</h4><p>A hot night is one whose lowest temperature stays above the "+
+   "threshold named in the chapter. For the two worked examples that threshold is an absolute 25&nbsp;&deg;C; for a "+
+   "city you choose it is that city&rsquo;s own 95th percentile of 1951&ndash;80 nights. Both counts come from ERA5 "+
+   "daily minimum temperatures via Open-Meteo.</p>"+
+   "<h4>Another city: Delhi &mdash; days down, nights up</h4><p>Studies of the Indo-Gangetic Plain link the daytime damping mainly to "+
    "<b>aerosol haze</b> reflecting sunlight before it can heat the ground (Padma Kumari et al. 2007, GRL), with a "+
    "debated contribution from irrigation. Why the nights climb is left to attribution science. "+
    "</p>"+
    "<p class=\"receipt\">counts are our own calculation from ERA5, shown descriptively · direction confirmed in published literature</p>"+
-   "<h4>Every year</h4>"+
+   "<h4>Delhi &mdash; every year</h4>"+
    tableHTML(["Year","Days ≥35 °C","Nights ≥25 °C"],
     DH.days_ge35_per_year.filter(function(r){return r.year<=LF;}).map(function(r,i){
      return [String(r.year),String(r.n),String(DH.warm_nights_ge25_per_year[i].n)];}))+
    "<h4>The sky itself</h4><p>The stars behind this chart are the real sky over "+
-   (window.__SKY?__SKY.place():"Delhi")+", drawn for this moment when it&rsquo;s dark there and for "+
+   ((window.__HOME&&__HOME.get()&&__HOME.get().name)||"Seville")+", drawn for this moment when it&rsquo;s dark there and for "+
    "tonight when it isn&rsquo;t: positions from the <b>Yale Bright Star Catalogue</b> (via d3-celestial, "+
    "BSD-3, O.&nbsp;Frohn), converted to the local horizon in your browser — sidereal time per the IAU 1982 "+
    "expression, Sun/Moon/Venus from Schlyter&rsquo;s low-precision elements (display-grade, arcminute class). "+
@@ -4701,18 +4971,20 @@ function buildNightExample(){
  host.hidden=false;
  var dThen=dr.days_ge35_then,dNow=dr.days_ge35_now,
      nThen=dr.warm_nights_then,nNow=dr.warm_nights_now;
- var dD=Math.round(dNow-dThen),nD=Math.round(nNow-nThen);
+ var dD=Math.round(dNow)-Math.round(dThen),nD=Math.round(nNow)-Math.round(nThen);
  el("n-ex-lead").innerHTML=
-  "In <b>Delhi</b>, the two lines run opposite ways. Days at or above 35&nbsp;&deg;C went "+
+  "In Delhi, hot days went one way and hot nights the other. Days at or above 35&nbsp;&deg;C went "+
   (dD<0?"<b>down</b>":"<b>up</b>")+" by about <b>"+Math.abs(dD)+"</b> a year since 1951&ndash;80, while nights "+
-  "that never fall below 25&nbsp;&deg;C went <b>up</b> by about <b>"+Math.abs(nD)+"</b>. The daytime half has a "+
-  "published explanation &mdash; haze over the Indo-Gangetic Plain blocks sunlight and holds the afternoon "+
-  "highs down (Padma Kumari et al. 2007). <b>The falling line is drawn the same way as the "+
-  "rising one.</b>";
+  "that never fall below 25&nbsp;&deg;C went <b>up</b> by about <b>"+Math.abs(nD)+"</b>. Haze over the "+
+  "Indo-Gangetic Plain blocks sunlight and holds the afternoon highs down (Padma Kumari et al. 2007).";
  el("n-rec-ex").innerHTML="Delhi &middot; days &ge;35&nbsp;&deg;C: <b>"+(+dThen).toFixed(1)+"&rarr;"+(+dNow).toFixed(1)+
   "</b>/yr &middot; nights &ge;25&nbsp;&deg;C: <b>"+(+nThen).toFixed(1)+"&rarr;"+(+nNow).toFixed(1)+
-  "</b>/yr &middot; 1951&ndash;80 average vs the last ten full years &middot; ERA5 via Open-Meteo &middot; "+
-  "counts only, not causes.";
+  "</b>/yr &middot; 1951&ndash;80 average vs the last ten full years &middot; ERA5 via Open-Meteo.";
+ var _xn=el("n-ex-note");
+ if(_xn){var _h=window.__HOME&&__HOME.get(),_ex=!!(_h&&_h.ex),_nm=(_h&&_h.name)||"your city";
+  _xn.textContent=_ex
+   ?"Delhi and Seville are both counted at 35 \u00B0C and 25 \u00B0C, so their counts compare."
+   :("Delhi is counted at 35 \u00B0C and 25 \u00B0C, "+_nm+" at its own level \u2014 the counts do not compare.");}
 }
 
 var __PLACE=(function(){
@@ -4877,16 +5149,17 @@ var __PLACE=(function(){
    /* the whole point of the picker is the record it draws — take the reader to it (beats 2–3).
       NOT on the cold-open path (opts.scroll===false): a first-time reader must never be yanked
       out of the Sky by a fetch they started three beats ago. */
-   if(!opts||opts.scroll!==false){
-    var gbeats=el("p-ground")&&el("p-ground").querySelectorAll(".beat");
-    if(gbeats&&gbeats[1])try{gbeats[1].scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});}catch(e2){}}
+   /* the reader is already at their chapter (commit scrolled there the moment they clicked);
+      a second jump when the archive lands would yank the page under them. */
   }).catch(function(e){
    if(!live())return;
    busy(false);
    var transient=/503|502|429|Failed to fetch|NetworkError/i.test(e.message||"");
-   status(transient?
-   "the weather archive is busy right now — give it a minute, then try again":
-   "couldn't draw that place ("+e.message+") — try another",true);
+   var drew=!!(window.__HOME&&__HOME.record&&__HOME.record());
+   status(drew?
+   ("the figures on this page are "+name+"'s, from the record built into this page. The live archive is busy, so today's reading is missing."):
+   (transient?"the weather archive is busy right now — give it a minute, then try again":
+   "couldn't draw that place ("+e.message+") — try another"),!drew);
    if(window.__HOME&&__HOME.failed)__HOME.failed(gen,transient,e);});}
  function search(){var qv=(el("gq").value||"").trim();if(qv.length<2)return;
   status("searching…");
@@ -4908,11 +5181,28 @@ var __PLACE=(function(){
   if(__ATMO.ok&&__ATMO.groundHeat)__ATMO.groundHeat(.55);idleHint();}
  /* the engine is exposed so ONE site-wide home place can drive ground+night, instead of
     this picker being the only way in (the buttons above are now just one caller of it). */
- function drawBaked(out,name){
+ function drawBaked(out,name,lat,lon){
   act=true;buildGround(out.V);
+  if(typeof applyToday==="function")applyToday(out.t||{tmax:null,pct:null});
   if(typeof buildNight==="function")buildNight({custom:true,place:name,
    days:out.V.G.days_ge35_per_year,nights:out.V.G.warm_nights_ge25_per_year,
    thrHot:out.V.thr.hot,thrNight:out.V.thr.night});
+  /* the built-in record holds every year but not today. One small forecast call — a
+     fraction of the archive request — keeps today's reading on screen instead of
+     deleting it the moment the reader makes the page theirs. */
+  if(lat==null||lon==null||!window.fetch)return;
+  var g0=(window.__HOME&&__HOME.gen)?__HOME.gen():null;
+  fetch("https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+
+   "&daily=temperature_2m_max&forecast_days=1&timezone=auto")
+  .then(function(r){return r.ok?r.json():null;})
+  .then(function(j){
+   if(!j||!j.daily||!j.daily.temperature_2m_max)return;
+   var v=j.daily.temperature_2m_max[0];if(v==null)return;
+   if(g0!=null&&window.__HOME&&__HOME.gen()!==g0)return;   /* they picked somewhere else */
+   var iso=(j.daily.time&&j.daily.time[0])||new Date().toISOString().slice(0,10);
+   if(typeof applyToday==="function")applyToday({mode:"live",tmax:v,comparable:v,
+    dateISO:iso,dateLabel:dLabel(iso),fetched:iso,rec:null,recy:null,n:0,pct:null,bias:0});
+  }).catch(function(){});
  }
  return {active:function(){return act;},pick:pick,search:search,reset:reset,status:status,
          baked:bakedRecord,draw:drawBaked};
@@ -5174,7 +5464,7 @@ var __SKY=(function(){
    return "Real meteors tonight: <b>"+lead.name+"</b>, peaking "+fmtPeak(lead.peak)+
     " at up to ~"+lead.zhr+"/hr under dark skies"+
     (act.length>1?(" — with "+act.filter(function(s){return s!==lead;}).map(function(s){return s.name;}).join(" and ")):"")+
-    ". Details in the receipts.";}
+    ". Details in section 6.";}
   var nx=nextShower();
   return "No major shower is active on this date, so this sky stays still. Next: <b>"+nx.name+
    "</b> ("+nx.parent+"), peaking "+fmtPeak(nx.peak)+" — up to ~"+nx.zhr+"/hr under dark skies.";}
@@ -5348,14 +5638,15 @@ var __HOME=(function(){
  /* FIRST LIGHT follows the home when we honestly know its country, and SAYS which rule won */
  function pgSync(h){
   var sel=el("pg-sel"),lab=el("pg-guessed");if(!sel)return;
-  if(!h.iso3){if(lab&&h.src==="device")lab.textContent="your country is guessed from your browser · change freely";return;}
+  if(!h.iso3){if(lab&&h.src==="device")lab.textContent="your country is guessed from your browser · change it any time";return;}
   var rows=(P.all&&P.all.length)?P.all:P.countries,nm=null;
   for(var i=0;i<rows.length;i++)if(rows[i].code===h.iso3){nm=rows[i].place;break;}
   if(!nm){if(lab)lab.textContent="that country is not in the 125 surveyed · showing the world";return;}
   for(var q=0;q<sel.options.length;q++)if(sel.options[q].textContent===nm){
    sel.value=sel.options[q].value;
    if(sel.onchange)sel.onchange();else{try{sel.dispatchEvent(new Event("change"));}catch(e){}}
-   if(lab)lab.textContent="from the place you chose · change freely";return;}}
+   if(lab)lab.textContent=h.ex?"example \u00b7 pick your city above to see yours"
+                             :"from your city \u00b7 change it any time";return;}}
  /* every label that names the place, in one function, so none can drift */
  function labelsRefresh(){
   var h=HOME;if(!h)return;
@@ -5379,6 +5670,8 @@ var __HOME=(function(){
   /* the heading is set here, synchronously, so it can never disagree with the label below it */
   var gh=el("g-h2");
   if(gh)gh.textContent=h.name;
+  var nbc=el("nb-city");
+  if(nbc)nbc.textContent=h.ex?(h.name+" — example"):h.name;
   var tags=document.querySelectorAll(".place-tag");
   for(var i=0;i<tags.length;i++)tags[i].hidden=!h.ex;
   /* collapse or expand the picker to match what we already know */
@@ -5404,7 +5697,7 @@ var __HOME=(function(){
   if(h.src==="device"&&!h.nearName){
    var seq=++SETSEQ;   /* a slow device commit must never overwrite a quicker deliberate pick */
    withCityName(h,function(h2){if(seq===SETSEQ){commit(h2,opts);
-    try{var pd=el("pk-done");if(pd&&!pd.hidden&&h2.name)pd.textContent="You\u2019re set: "+h2.name+". Drawing its record\u2026";}catch(e){}}});return;}
+    try{var pd=el("pk-done");if(pd&&!pd.hidden&&h2.name)pd.textContent="Your city: "+h2.name;}catch(e){}}});return;}
   SETSEQ++;commit(h,opts);}
  var SETSEQ=0;
  function commit(h,opts){
@@ -5422,15 +5715,22 @@ var __HOME=(function(){
   else if(__PLACE&&__PLACE.pick){
    var inst=(__PLACE.baked&&__PLACE.baked(h.lat,h.lon,h.name))||null;
    if(inst){ /* an answer NOW, from the same engine on a slightly older archive */
-    try{__PLACE.draw(inst,h.name);}catch(e){}
+    try{__PLACE.draw(inst,h.name,h.lat,h.lon);}catch(e){if(window.console&&console.error)console.error("draw",e);}
     LASTV=inst.V;REV++;placeState("ok");
     try{document.dispatchEvent(new Event("onrecord:drawn"));}catch(e){}
     try{if(typeof fillRecap==="function")fillRecap();}catch(e){}
     try{if(typeof buildCompare==="function")buildCompare();}catch(e){}
-    try{if(typeof buildTakeaway==="function")buildTakeaway();}catch(e){}}
+    try{if(typeof buildTakeaway==="function")buildTakeaway();}catch(e){}
+    if(opts.scroll!==false)goToAnswer();}
    else placeState("pending",h.name);
    __PLACE.pick(h.lat,h.lon,h.name,GEN,{scroll:opts.scroll!==false});}
   if(opts.persist!==false&&h.src!=="link")put(KEY,JSON.stringify(h));}
+ /* choosing a city takes you to the chapter about your city — the answer, not the picker */
+ function goToAnswer(){
+  try{var g=el("p-ground");if(!g)return;
+   setTimeout(function(){
+    landOn(g,!reduce);
+    var h2=g.querySelector(".rep-h2");if(h2)flashRing(h2);},60);}catch(e){}}
  /* the ONLY caller of getCurrentPosition in the file, and only ever from a real click */
  function ask(origin,onDone){
   markAsked();
@@ -5454,7 +5754,9 @@ var __HOME=(function(){
   cb("prompt");}
  function boot(){
   if(EMBED||KIOSK){HOME=urlPlace()||normalize(EXAMPLES.seville);
-   if(HOME.src==="link"&&!HOME.ex)set(HOME,{persist:false,scroll:false});else{labelsRefresh();pgSync(HOME);}
+   if(HOME.src==="link"&&!HOME.ex)set(HOME,{persist:false,scroll:false});
+   else{try{if(window.__SKY&&__SKY.setPlace)__SKY.setPlace({name:HOME.name,lat:HOME.lat,lon:HOME.lon,tz:HOME.tz,tzl:""},false);}catch(e){}
+        labelsRefresh();pgSync(HOME);}
    return;}
   var u=urlPlace();
   if(u){set(u,{persist:false,scroll:false});return;}         /* a shared link never overwrites your home */
@@ -5463,7 +5765,9 @@ var __HOME=(function(){
    if(old&&isFinite(old.lat)&&isFinite(old.lon)){s={src:"device",lat:old.lat,lon:old.lon,tz:devTZ()};drop(KOLD);}}
   if(s&&s.ex){s=null;drop(KEY);}   /* a persisted EXAMPLE is legacy poison — the ask must return */
   if(s&&isFinite(s.lat)&&isFinite(s.lon)){set(s,{scroll:false});return;}
-  HOME=normalize(EXAMPLES.seville);labelsRefresh();pgSync(HOME);}
+  HOME=normalize(EXAMPLES.seville);
+  try{if(window.__SKY&&__SKY.setPlace)__SKY.setPlace({name:HOME.name,lat:HOME.lat,lon:HOME.lon,tz:HOME.tz,tzl:""},false);}catch(e){}
+  labelsRefresh();pgSync(HOME);}
  /* the record __PLACE just computed for this home, so the Morning letter and the share card
     can quote the reader's OWN numbers instead of the example's */
  var LASTV=null;
@@ -5474,7 +5778,11 @@ var __HOME=(function(){
   try{if(typeof fillRecap==="function")fillRecap();}catch(e){}
   try{if(typeof buildCompare==="function")buildCompare();}catch(e){}
   try{if(typeof buildTakeaway==="function")buildTakeaway();}catch(e){}}
- function failed(g,transient){if(g!==GEN)return;LASTV=null;REV++;
+ function failed(g,transient){if(g!==GEN)return;
+  /* if the instant record already drew this city, the page is NOT showing the example and
+     must not say so. The live archive only ever refines what is already on screen. */
+  if(LASTV&&LASTV.baked){placeState("ok");return;}
+  LASTV=null;REV++;
   placeState(transient?"retry":"failed",HOME&&HOME.name);}
  /* The page states which place its NUMBERS belong to whenever that is not the place named above
     them. A mixed state is survivable if it explains itself; it is only dishonest when silent. */
@@ -5487,7 +5795,7 @@ var __HOME=(function(){
   bar.hidden=false;
   bar.className=state==="pending"?"ps-wait":"ps-warn";
   bar.textContent=
-   state==="pending"?("Drawing "+(name||"your city")+"\u2019s record\u2026 the figures below are still Seville, the example."):
+   state==="pending"?("Loading "+(name||"your city")+"\u2026 the figures below are still Seville, the example."):
    state==="retry" ?("Couldn\u2019t reach the weather archive for "+(name||"your city")+" just now \u2014 the figures below are Seville, the example. Try again in a moment."):
                     ("We don\u2019t have a long enough record for "+(name||"that place")+" \u2014 the figures below are Seville, the example.");}
  return {get:function(){return HOME;},gen:function(){return GEN;},set:set,boot:boot,ask:ask,
@@ -5651,6 +5959,34 @@ window.__HOME=__HOME;
   .catch(function(){if(st){st.textContent="search failed — try again";st.classList.add("err");}});}
  if(go){go.addEventListener("click",doSearch);}
  if(qi){qi.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();doSearch();}});}
+ /* TYPING NOW CHANGES SOMETHING. The field filters the list under it on every keystroke,
+    and says out loud what Enter will do — before this, "berl" produced no dropdown, no
+    filtering and no empty state, so the box read as broken. */
+ (function(){var bar=el("gq-bar");if(!qi||!bar)return;
+  var tmr=0;
+  function filter(){
+   var q=(qi.value||"").trim().toLowerCase();
+   var regs=bar.querySelectorAll(".cb-reg"),hits=0,i,j;
+   for(i=0;i<regs.length;i++){
+    var grp=regs[i].nextElementSibling,any=false;
+    if(grp){var cs=grp.querySelectorAll(".cb-chip");
+     for(j=0;j<cs.length;j++){
+      var lab=(cs[j].textContent+" "+(cs[j].getAttribute("aria-label")||"")).toLowerCase();
+      var hit=!q||lab.indexOf(q)>=0;
+      cs[j].hidden=!hit; if(hit){any=true;hits++;}}
+     grp.hidden=!any;}
+    regs[i].hidden=!any;}
+   clearTimeout(tmr);
+   tmr=setTimeout(function(){
+    var st=el("gq-status");if(!st)return;
+    st.classList.remove("err");
+    if(!q){st.textContent="";return;}
+    st.textContent=hits
+     ? (hits+" in the list below \u2014 or press Enter to search every city.")
+     : ("Nothing in the list matches \u201C"+qi.value.trim()+"\u201D. Press Enter to search every city.");
+   },350);}
+  qi.addEventListener("input",filter);
+  qi.addEventListener("search",filter);})();
 })();
 /* the guess, taken before the answer is given — the reader's own error IS the finding */
 (function(){var go=el("wg-go"),inp=el("wg-in"),out=el("wg-out");if(!go||!inp||!out)return;
@@ -5690,17 +6026,28 @@ window.__HOME=__HOME;
       var extra=TRUE_YES-start;
       var wc=el("wg-claim");if(wc)wc.hidden=false;
      el("wg-key").innerHTML=(mine!=null
-       ? (extra>0?("<span class=\"kx\">you guessed "+start+"</span> &middot; <b>"+extra+" more</b> than you thought were already with you")
+       ? (extra>0?("<span class=\"kx\">you guessed "+start+"</span> &middot; the real number is <b>"+TRUE_YES+" of 100</b>")
                  :("<span class=\"kx\">you guessed "+start+"</span> &middot; exactly right"))
-       : ("<span class=\"kx\">most people guess "+TRUE_GUESS+"</span> &middot; <b>"+extra+" more</b> are already with them"));
+       : ("<span class=\"kx\">most people guess "+TRUE_GUESS+"</span> &middot; the real number is <b>"+TRUE_YES+" of 100</b>"));
      });
     }else{
      light(TRUE_YES,start,"over",slow?0:26,function(){
       var wc2=el("wg-claim");if(wc2)wc2.hidden=false;
-      el("wg-key").innerHTML="<span class=\"kx\">you guessed "+start+"</span> &middot; <b>"+
-       (start-TRUE_YES)+" fewer</b> said yes than you hoped &mdash; still <b>"+TRUE_YES+" of every 100</b>.";
+      el("wg-key").innerHTML="<span class=\"kx\">you guessed "+start+"</span> &middot; the real number is <b>"+
+       TRUE_YES+" of 100</b>";
      });
     }},slow?0:420);});}
+ /* 100 blank icons under the word FIGURE carried no information at all until the button
+    was pressed. It now opens on the GUESS, labelled, so the figure reads before any click
+    and the reveal is a change to something, not a change from nothing. */
+ (function(){var box=el("wg-dots");if(!box||box.children.length)return;
+  var f=document.createDocumentFragment();
+  for(var i=0;i<100;i++){var s=document.createElement("i");
+   if(i<TRUE_GUESS)s.className="pre";f.appendChild(s);}
+  box.appendChild(f);
+  var k=el("wg-key");
+  if(k)k.innerHTML="<span class=\"kx\">each mark is 1 person in 100 &middot; amber = would give 1% of their income</span><br>"+
+   "drawn here: what people guess &mdash; <b>"+TRUE_GUESS+" of 100</b>";})();
  go.addEventListener("click",reveal);
  inp.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();reveal();}});})();
 
@@ -5717,28 +6064,33 @@ window.__HOME=__HOME;
     var w=Math.round(mean(ds,1951,1980)),n=Math.round(mean(ds,LFy-9,LFy));
     var nw=Math.round(mean(V.G.warm_nights_ge25_per_year,1951,1980)),
         nn=Math.round(mean(V.G.warm_nights_ge25_per_year,LFy-9,LFy));
-    set("rc-1-n",w+" \u2192 "+n+" days a year");
-    set("rc-1-s","Days above "+V.thr.hot.toFixed(1)+" \u00B0C in "+nm+
-      " \u2014 hotter than 95% of its own 1951\u201380 days. The first number is that baseline; the second is "+(LFy-9)+"\u2013"+LFy+".");
-    set("rc-2-n",nw+" \u2192 "+nn+" nights a year");
-    var rs2=el("recap-say");if(rs2)rs2.textContent="Four things this page measured \u2014 yours first.";
-    set("rc-2-s","Nights above "+V.thr.night.toFixed(1)+" \u00B0C in "+nm+
-      ", when the body cannot cool down. Nights warm faster than days almost everywhere.");
+    set("rc-1-n",(n>=w?"+":"\u2212")+Math.abs(n-w)+" hot days a year");
+    set("rc-1-s",nm+": "+w+" a year in 1951\u201380, "+n+" in "+(LFy-9)+"\u2013"+LFy+
+      ". Hot means above "+V.thr.hot.toFixed(1)+" \u00B0C \u2014 the hottest 5% of its 1951\u201380 days, "+
+      "which fixes the first number near 18 for any city.");
+    set("rc-2-n",(nn>=nw?"+":"\u2212")+Math.abs(nn-nw)+" hot nights a year");
+    var rs2=el("recap-say");if(rs2)rs2.textContent="Four numbers from this report. The first two are "+nm+"\u2019s.";
+    set("rc-2-s",nm+": "+nw+" a year in 1951\u201380, "+nn+" now. A hot night means above "+
+      V.thr.night.toFixed(1)+" \u00B0C \u2014 the warmest 5% of its 1951\u201380 nights.");
    }else{
-    set("rc-1-n",Math.round(mean(G.days_ge35_per_year,1951,1980))+" \u2192 "+
-      Math.round(mean(G.days_ge35_per_year,LF-9,LF))+" days a year");
-    set("rc-1-s","Days at or above 35 \u00B0C in Seville, the example \u2014 Set your city and this becomes yours.");
-    /* the night line quotes what the Night chapter actually shows (Delhi, the worked
-       example) — it used to quote Seville's nights while the chapter showed Delhi's */
-    set("rc-2-n",Math.round(dr.warm_nights_then)+" \u2192 "+Math.round(dr.warm_nights_now)+" nights a year");
-    set("rc-2-s","Hot nights a year in Delhi, the example \u2014 Set your city and this becomes yours.");
-    var rs=el("recap-say");if(rs)rs.textContent="Four things this page measured, each from a named source.";
+    var _sw=Math.round(mean(G.days_ge35_per_year,1951,1980)),_sn=Math.round(mean(G.days_ge35_per_year,LF-9,LF));
+    set("rc-1-n",(_sn>=_sw?"+":"\u2212")+Math.abs(_sn-_sw)+" hot days a year");
+    set("rc-1-s","Seville: "+_sw+" a year in 1951\u201380, "+_sn+" in the last ten. Hot means 35 \u00B0C or above.");
+    /* the night line quotes what the Night chapter actually shows — the SAME city as
+       every other line on this page. Delhi is a labelled second example, never this. */
+    var sn=G.warm_nights_ge25_per_year.filter(function(r){return r.year<=LF;});
+    var sn0=mean(sn,1951,1980);
+    var _snn=Math.round(mean(sn,LF-9,LF));
+    set("rc-2-n","+"+(_snn-Math.round(sn0))+" hot nights a year");
+    set("rc-2-s","Seville: "+(sn0<1?"under 1":Math.round(sn0))+" a year in 1951\u201380, "+_snn+
+      " in the last ten. A hot night is one that never falls below 25 \u00B0C.");
+    var rs=el("recap-say");if(rs)rs.textContent="Four numbers from this report.";
    }
-   set("rc-3-n",P.global_want_action_pct+"% want action");
-   set("rc-3-s","Of every 100 people worldwide, "+Math.round(P.world.actual)+" would give 1% of their income and "+Math.round(P.global_want_action_pct)+"% want stronger government action (Andre et al. 2024, 125 countries) \u2014 most underestimate both.");
+   set("rc-3-n",Math.round(P.world.actual)+" of 100 would give 1%");
+   set("rc-3-s","Worldwide, "+Math.round(P.world.actual)+" of every 100 people would give 1% of their income to fight climate change. Most people guess about "+Math.round(P.world.guess)+" (Andre et al. 2024, 125 countries).");
    var yl=yearsStr(RNOW);
    set("rc-4-n",yl+" years of budget left");
-   set("rc-4-s","At today\u2019s "+Math.round(B.rate_now_gt)+" billion tonnes a year, that is what remains for a coin-flip chance of holding 1.5 \u00B0C. Not a cliff \u2014 the risk climbs a tenth of a degree at a time.");
+   set("rc-4-s","At today\u2019s "+Math.round(B.rate_now_gt)+" billion tonnes a year, that is what is left for a 50% chance of staying under 1.5 \u00B0C. GCB 2025 and IGCC 2025 put it in the same place.");
   }catch(e){}
  }
  try{fillRecap();}catch(e){}
@@ -5769,7 +6121,7 @@ window.__HOME=__HOME;
   var s=cmpStats(rows),mx=Math.max(s.w,s.n,1);
   host.innerHTML=
    '<p class="cmp-name">'+name+'</p>'+
-   (exampleBadge?'<p class="cmp-badge">the example \u2014 Set your city above</p>':'')+
+   (exampleBadge?'<p class="cmp-badge">example</p>':'')+
    '<p class="cmp-x num">'+cmpHead(s)+'</p>'+
    '<p class="cmp-counts">days above '+(+thr).toFixed(1)+' \u00B0C: '+s.wR+' \u2192 '+s.nR+' a year</p>'+
    '<div class="cmp-bars" aria-hidden="true">'+
@@ -5965,7 +6317,8 @@ var __SND=(function(){
   if(on&&ctx&&ctx.state==="suspended")ctx.resume();
   vol(on?.85:0);
   var b=el("soundbtn");b.setAttribute("aria-pressed",on?"true":"false");
-  el("soundlab").textContent=on?"sound on":"Sound off";
+  el("soundlab").textContent=on?"Mute":"Play sound";
+  b.setAttribute("aria-label",on?"Mute ambient sound":"Play ambient sound");
   el("sr-status").textContent=on?"Ambient sound on":"Ambient sound muted";
   try{!EMBED&&localStorage.setItem("onrecord_snd",on?"1":"0");}catch(e){}
   return on;}
@@ -5987,6 +6340,19 @@ var __SND=(function(){
   wanted:function(){try{return localStorage.getItem("onrecord_snd")!=="0";}catch(e){return true;}}};
 })();
 window.__SND=__SND;
+/* THE RAIL, ON A PHONE, is a horizontal scroller. Nothing kept the chapter you are
+   actually in inside the visible window, so the current chip was routinely the one
+   cut off at an edge. */
+(function(){var lad=el("ladder");if(!lad||!window.MutationObserver)return;
+ function centre(){
+  if(!window.matchMedia||!matchMedia("(max-width:940px)").matches)return;
+  var cur=lad.querySelector('.rung[aria-current="true"]')||lad.querySelector(".rung.on");
+  if(!cur)return;
+  var l=cur.offsetLeft+cur.offsetWidth/2-lad.clientWidth/2;
+  try{lad.scrollTo({left:Math.max(0,l),behavior:"smooth"});}catch(e){lad.scrollLeft=Math.max(0,l);}}
+ new MutationObserver(centre).observe(lad,{subtree:true,attributes:true,
+  attributeFilter:["aria-current","class"]});
+ setTimeout(centre,900);})();
 el("soundbtn").addEventListener("click",function(){__SND.toggle();});
 /* sound may only begin on a gesture — the first one the visitor makes */
 (function(){var armed=false;
@@ -6100,7 +6466,7 @@ var CANT_NOTIFY="Nothing leaves your browser unless you share a card.";
  document.body.appendChild(chip);
  function set(off){OFFLINE=off;
   if(off){chip.textContent="Offline — showing the record as of "+built+". Live values resume when you reconnect.";
-   chip.classList.add("show");var bk=el("burned");if(bk)bk.textContent="burned while you've been here — paused (offline)";}
+   chip.classList.add("show");var bk=el("burned");if(bk)bk.textContent="CO\u2082 counter paused \u2014 you are offline";}
   else chip.classList.remove("show");}
  window.addEventListener("online",function(){set(false);});
  window.addEventListener("offline",function(){set(true);});
