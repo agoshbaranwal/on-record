@@ -1546,7 +1546,7 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
   display:block}
 #answer{max-width:1180px}
 .ans-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,420px);
-  grid-template-rows:auto auto;gap:18px 30px;align-items:start}
+  grid-template-rows:auto auto;gap:14px 30px;align-items:start}
 .ans-left{min-width:0;grid-column:1;grid-row:1}
 .ans-right{min-width:0;grid-column:2;grid-row:1/span 2}
 .ans-foot{min-width:0;grid-column:1;grid-row:2}
@@ -1568,6 +1568,7 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 #answer .sr-key{display:none}      /* the two toggle pills above are the key, in colour */
 #answer .sr-sub{margin-top:4px}
 #answer #sr-alt{margin-top:12px}
+#answer .ans-left>*:last-child{margin-bottom:0}
 #answer .drawbtn{margin-top:0}
 #answer #homepick{margin-top:16px;padding-top:14px;border-top:1px solid var(--bone-hair)}
 .thm-ink #answer #homepick{border-top-color:var(--ink-hair)}
@@ -2698,7 +2699,7 @@ var __ATMO=(function(){
  function toStatic(){dead=true;el("stage").classList.remove("gl");if(raf)cancelAnimationFrame(raf);raf=0;}  // give up the shader for good → the static CSS sky
  document.addEventListener("visibilitychange",wake);
  window.addEventListener("resize",function(){sizeDirty=true;wake();});
- if(window.ResizeObserver)try{new ResizeObserver(function(){sizeDirty=true;wake();}).observe(cv);}catch(e){}
+ if(window.ResizeObserver)try{new ResizeObserver(function(){requestAnimationFrame(function(){sizeDirty=true;wake();});}).observe(cv);}catch(e){}
  function setState(name,opt){opt=opt||{};var p=PRE[name];if(!p)return;
   var t=mixT<1?ease(mixT):1;
   A=jsLerp(A,Bs,t);Bs=p();
@@ -2990,6 +2991,11 @@ function enterChamber(i){
  }
  window.__P1={sync:sync,open:setOpen};
  sync();setTimeout(sync,800);setTimeout(sync,2600);
+
+ /* a link to a chapter opens that chapter — the boot's deep-link jump scrolls to a row,
+    and a row that is still shut is not an arrival */
+ try{var dl=(Q.get("chamber")||(typeof HASH0==="string"?HASH0:"")).trim();
+  if(dl)ROWS.forEach(function(r){if(r.id===dl)setOpen(dl,false);});}catch(e){}
 
  /* reuse modes ask for one chapter and nothing else: give them the whole chapter */
  try{if(Q.get("embed")||Q.get("kiosk"))ROWS.forEach(function(r){r.body.hidden=false;
@@ -4100,7 +4106,7 @@ var buildNight=function(NV){
 };
 var nightRenderRef=null;   // declared before the first build so the assignment above survives
 buildNight(null);
-if(window.ResizeObserver)new ResizeObserver(function(){if(nightRenderRef)nightRenderRef();})
+if(window.ResizeObserver)new ResizeObserver(function(){requestAnimationFrame(function(){if(nightRenderRef)nightRenderRef();});})
  .observe(el("delhi"));
 
 /* ============ FIRST LIGHT — 125 of 125: the false minority, made planetary ============

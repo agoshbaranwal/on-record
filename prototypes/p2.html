@@ -1594,7 +1594,7 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 #s1 #g-bars .gb-row{margin:12px 0}
 #s1 #g-bars .gb-num{font-size:21px}
 #s1 #g-bars .gb-lab{font-size:13px}
-#s1 #g-bars .gb-delta{font-size:16px;margin-top:12px}
+#s1 #g-bars .gb-delta{font-size:15px;margin-top:12px;margin-left:78px}
 #s4 #burned{display:none}
 #s4 #skycount{margin-top:14px}
 #s2 #n-h2{font-size:clamp(18px,2vw,23px);line-height:1.25;font-weight:400;margin:16px 0 14px;color:var(--bone-2)}
@@ -1635,6 +1635,7 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 @media(max-width:640px){
   .sc-count{gap:8px;margin-bottom:14px}
   .sc-pips{margin-left:0;width:100%}
+  #s1 #g-bars .gb-delta{margin-left:0}
   .sc-pips i{width:14px;flex:1 1 auto;max-width:34px}
   .carry b{font-size:19px}
   #srcbox .lim{display:block}
@@ -3382,8 +3383,7 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
   var from=target,t0=null;
   (function step(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/ms);
    setRate(from+(to-from)*(1-Math.pow(1-k,3)));
-   if(k<1)tweenRAF=requestAnimationFrame(step);})(0);
-  tweenRAF=requestAnimationFrame(step);}
+   if(k<1)tweenRAF=requestAnimationFrame(step);})(0);}
  document.querySelectorAll(".presets button").forEach(function(b){
   b.addEventListener("click",function(){tweenRate(parseFloat(b.getAttribute("data-rate"))||RNOW,700);
    document.querySelectorAll(".presets button").forEach(function(x){x.classList.toggle("on",x===b);});});});
@@ -6335,13 +6335,25 @@ if(Q.get("debug")){setTimeout(function(){
   var m=txt("rc-3-s").match(/(\d+)\s+would give 1% of their income/);
   return m?(m[1]+" of every 100 would give 1% of their income"):txt("rc-3-n");
  }
+ /* Each take-away is read off the graphic ON THAT SCREEN, not off the recap: when a live
+    archive fetch fails the page falls back to the example city, and a take-away quoting the
+    recap would then disagree with the chart printed directly above it. */
+ function days(){
+  var n=document.querySelectorAll("#g-bars .gb-num");
+  return n.length>=2?(n[0].textContent.trim()+" → "+n[1].textContent.trim()+" days a year")
+                    :txt("rc-1-n");
+ }
+ function nights(){
+  var m=txt("delhi-receipt").match(/nights[^:]*:\s*(\d+)[^\d]{1,3}(\d+)\/yr/);
+  return m?(m[1]+" → "+m[2]+" nights a year"):txt("rc-2-n");
+ }
  function mirror(){
-  set("carry-1",txt("rc-1-n"));
-  set("carry-2",txt("rc-2-n"));
+  set("carry-1",days());
+  set("carry-2",nights());
   set("carry-3",crowd());
   set("carry-4",txt("rc-4-n"));
-  set("carry-all",[txt("rc-1-n"),txt("rc-2-n"),txt("rc-3-n"),txt("rc-4-n")]
-      .filter(Boolean).join("  \u00b7  "));
+  set("carry-all",[days(),nights(),txt("rc-3-n"),txt("rc-4-n")]
+      .filter(Boolean).join("  ·  "));
   /* the threshold sentence, taken from the line the bars already carry */
   var p=document.querySelector("#g-fact .gb-say");
   if(p){var t=p.textContent.trim(),i=t.indexOf(". ");
@@ -6350,8 +6362,8 @@ if(Q.get("debug")){setTimeout(function(){
  mirror();
  try{
   var mo=new MutationObserver(function(){mirror();});
-  var rl=$("recap-list");if(rl)mo.observe(rl,{childList:true,subtree:true,characterData:true});
-  var gf=$("g-fact");if(gf)mo.observe(gf,{childList:true,subtree:true,characterData:true});
+  ["recap-list","g-fact","delhi-receipt"].forEach(function(id){
+   var n=$(id);if(n)mo.observe(n,{childList:true,subtree:true,characterData:true});});
  }catch(e){}
  setTimeout(mirror,1200);setTimeout(mirror,4000);
  /* 3 — screen 3 always ends up showing the crowd: if the reader does not guess,
