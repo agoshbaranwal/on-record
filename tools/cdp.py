@@ -18,10 +18,29 @@ a port on loopback, killed on exit.
       c.shot("out.png")
       print(c.eval("document.getElementById('sr-len').textContent"))
 """
-import json, os, shutil, socket, subprocess, tempfile, time, urllib.request, base64
+import atexit, json, os, signal, shutil, socket, subprocess, tempfile, time, urllib.request, base64
 import websocket   # websocket-client
 
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+
+# Every browser this module opens, so a crash, a Ctrl-C or a plain `return` can never leave one
+# resident. A leaked headless Chrome is ~11 processes and well over a gigabyte, and it does not
+# exit on its own: the machine just gets hot.
+_LIVE = set()
+
+@atexit.register
+def _reap_all():
+    for c in list(_LIVE):
+        try: c.close()
+        except Exception: pass
+
+def _on_signal(sig, frm):
+    _reap_all()
+    raise SystemExit(128 + sig)
+
+for _s in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
+    try: signal.signal(_s, _on_signal)
+    except Exception: pass          # not the main thread — atexit still covers us
 
 def _free_port():
     s = socket.socket(); s.bind(("127.0.0.1", 0)); p = s.getsockname()[1]; s.close(); return p
@@ -35,10 +54,18 @@ class Chrome:
                 f"--user-data-dir={self.profile}", f"--window-size={width},{height}",
                 "--hide-scrollbars", "--no-first-run", "--disable-gpu",
                 "--disable-features=Translate,MediaRouter", "--mute-audio",
-                "--remote-allow-origins=*"]   # DevTools rejects the loopback origin without it
+                "--remote-allow-origins=*",   # DevTools rejects the loopback origin without it
+                # keep the process tree small: one browser used to mean ~11 processes and 1.5 GB
+                "--renderer-process-limit=1", "--no-zygote", "--disable-breakpad",
+                "--disable-dev-shm-usage", "--disable-extensions",
+                "--disable-background-networking", "--disable-sync",
+                "--disable-component-update", "--disable-domain-reliability"]
         if reduced_motion: args.append("--force-prefers-reduced-motion")
         args += list(extra)
-        self.proc = subprocess.Popen(args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        # its own process group, so close() can take the renderers down with the leader
+        self.proc = subprocess.Popen(args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                                     start_new_session=True)
+        _LIVE.add(self)
         ws_url, deadline = None, time.time() + 25
         while time.time() < deadline:
             try:
@@ -97,11 +124,19 @@ class Chrome:
         self.w, self.h = w, h
 
     def close(self):
+        """Idempotent, and it kills the GROUP — terminating the leader alone strands renderers."""
+        if getattr(self, "_closed", False): return
+        self._closed = True
+        _LIVE.discard(self)
         try: self.ws.close()
         except Exception: pass
-        try: self.proc.terminate(); self.proc.wait(timeout=5)
-        except Exception:
-            try: self.proc.kill()
+        for sig in (signal.SIGTERM, signal.SIGKILL):
+            try: os.killpg(os.getpgid(self.proc.pid), sig)
+            except Exception:
+                try: self.proc.send_signal(sig)
+                except Exception: pass
+            try:
+                self.proc.wait(timeout=4); break
             except Exception: pass
         shutil.rmtree(self.profile, ignore_errors=True)
 
