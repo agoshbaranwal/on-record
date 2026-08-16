@@ -2,6 +2,31 @@
 
 Status written 2026-08-16, against build `1064cae6`.
 
+## Correction, 2026-08-16 — what "too much going on" meant
+
+I read it as the atmosphere. It is not. **The sky, the sound and the rail are what the test
+readers liked — the site's redeeming qualities.** They stay, untouched, in everything below.
+"Too much going on" is about CONTENT: too many ideas competing, none landing.
+
+That sharpens one count. Set the sky aside as atmosphere and a reader is still asked to learn
+**seven chart grammars** in five minutes — the season ring, the spaghetti record window, the
+country lollipop, the 100-person grid, the then/now bars, the impact wedges, the warming
+stripes. No caption survives being the seventh new thing a stranger has ever seen.
+
+## The route: three prototypes, tested cold
+
+Chosen 2026-08-16. Not one architecture picked on my taste — three built with the real data,
+inside the real sky, handed to strangers. The one that survives gets built properly.
+
+| | Thesis | What a reader gets |
+|---|---|---|
+| **P1 answer-first** | Your city's answer IS the page | One screen that answers it; everything else opens on demand |
+| **P2 five screens** | A story, but finite | 16 screens cut to 5, one idea each, position impossible to misread |
+| **P3 report** | Use a form people have read | Masthead, findings, sections, sources — numbers first, prose second |
+
+All three keep the sky, the sound and the rail. Only the content architecture differs, so the
+test compares the thing actually in question.
+
 ## The one diagnosis
 
 Three readers said different things that are the same thing. The site is built as **an
