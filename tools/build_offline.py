@@ -74,14 +74,14 @@ head_meta = (
     '<link rel="canonical" href="' + OG + '">'
     '<meta property="og:type" content="website">'
     '<meta property="og:site_name" content="On Record">'
-    '<meta property="og:title" content="On Record — how much hotter is your city?">'
+    '<meta property="og:title" content="On Record — how many hot days does your city get?">'
     '<meta property="og:description" content="' + CARD + '">'
     '<meta property="og:url" content="' + OG + '">'
     '<meta property="og:image" content="' + OG + 'og/seville.png">'
     '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
     '<meta property="og:image:alt" content="' + ALT + '">'
     '<meta name="twitter:card" content="summary_large_image">'
-    '<meta name="twitter:title" content="On Record — how much hotter is your city?">'
+    '<meta name="twitter:title" content="On Record — how many hot days does your city get?">'
     '<meta name="twitter:description" content="' + CARD + '">'
     '<meta name="twitter:image" content="' + OG + 'og/seville.png">'
     '<link rel="manifest" href="manifest.webmanifest">'
@@ -138,10 +138,12 @@ def _bake(doc):
 doc = _bake(doc)
 (ROOT / "index.html").write_text(doc)   # written AFTER the bake, not before
 
-_KEEP = ["years", "burned", "spent", "copysky", "share-btn", "t-budget", "takeaway", "g-verdict", "impact-know", "ledger-sr", "homepick", "gq-bar", "gq-ex", "homechip", "n-example", "pk-ask", "rc-1-n", "cmp-grid", "recap-list"]
+# "burned" retired with the live "burned while you've been here" counter: its scope was
+# never checkable and P1 cut it. _KEEP catches ACCIDENTS, so a deliberate cut edits it.
+_KEEP = ["years", "spent", "copysky", "share-btn", "t-budget", "takeaway", "g-verdict", "impact-know", "ledger-sr", "homepick", "gq-bar", "gq-ex", "homechip", "n-example", "pk-ask", "rc-1-n", "cmp-grid", "recap-list"]
 _missing = [k for k in _KEEP if ('id="%s"' % k) not in doc]
 assert not _missing, "PROTECTED elements dropped: %s" % _missing
-assert doc.count("haze over the Indo-Gangetic") == 1
+assert doc.count("Padma Kumari et al. 2007, GRL)") == 1   # the citation, not one phrasing of the sentence around it
 assert doc.count("navigator.geolocation.getCurrentPosition") == 1
 assert 'setItem("onrecord_skyloc"' not in doc
 _codes = {r.get("code") for r in (_d["perception_gap"].get("all") or _d["perception_gap"]["countries"])}

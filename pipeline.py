@@ -482,14 +482,14 @@ head_meta = (
     '<link rel="canonical" href="' + OG + '">'
     '<meta property="og:type" content="website">'
     '<meta property="og:site_name" content="On Record">'
-    '<meta property="og:title" content="On Record — how much hotter is your city?">'
+    '<meta property="og:title" content="On Record — how many hot days does your city get?">'
     '<meta property="og:description" content="' + CARD + '">'
     '<meta property="og:url" content="' + OG + '">'
     '<meta property="og:image" content="' + OG + 'og/seville.png">'
     '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
     '<meta property="og:image:alt" content="' + ALT + '">'
     '<meta name="twitter:card" content="summary_large_image">'
-    '<meta name="twitter:title" content="On Record — how much hotter is your city?">'
+    '<meta name="twitter:title" content="On Record — how many hot days does your city get?">'
     '<meta name="twitter:description" content="' + CARD + '">'
     '<meta name="twitter:image" content="' + OG + 'og/seville.png">'
     # PWA: installable, offline-capable (network-first SW), zero tracking
@@ -559,7 +559,9 @@ try:
 except Exception as _e:
     print("cities-lookup: SKIPPED (keeping the existing file) —", _e)
 
-_KEEP = ["years", "burned", "spent", "copysky", "share-btn", "t-budget", "takeaway", "g-verdict", "impact-know", "ledger-sr", "homepick", "gq-bar", "gq-ex", "homechip", "n-example", "pk-ask", "rc-1-n", "cmp-grid", "recap-list"]
+# "burned" retired with the live "burned while you've been here" counter: its scope was
+# never checkable and P1 cut it. _KEEP catches ACCIDENTS, so a deliberate cut edits it.
+_KEEP = ["years", "spent", "copysky", "share-btn", "t-budget", "takeaway", "g-verdict", "impact-know", "ledger-sr", "homepick", "gq-bar", "gq-ex", "homechip", "n-example", "pk-ask", "rc-1-n", "cmp-grid", "recap-list"]
 _missing = [k for k in _KEEP if ('id="%s"' % k) not in doc]
 assert not _missing, "PROTECTED elements dropped from index.html: %s" % _missing
 
@@ -567,8 +569,7 @@ assert not _missing, "PROTECTED elements dropped from index.html: %s" % _missing
 # The sourced aerosol explanation may exist exactly ONCE, inside buildNightExample(), whose only
 # data source is Delhi's baked series. More than one copy means some code path can attach Delhi's
 # physical cause to a reader's own city.
-assert doc.count("haze over the Indo-Gangetic") == 1, \
-    "the sourced aerosol sentence must appear exactly once (inside buildNightExample)"
+assert doc.count("Padma Kumari et al. 2007, GRL)") == 1   # the citation, not one phrasing of the sentence around it
 # Exactly one place may raise a location prompt, and it must be __HOME.ask.
 assert doc.count("navigator.geolocation.getCurrentPosition") == 1, \
     "getCurrentPosition must have exactly one caller (__HOME.ask)"
