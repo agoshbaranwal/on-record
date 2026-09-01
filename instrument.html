@@ -44,6 +44,11 @@
    printing it again is one of the four ways this page said the same thing before the reader
    reached a single number. Same for the place tag: the headline names the city. */
 .q .page-what,.q .place-tag{display:none}
+/* `.pane h2{max-width:24ch}` is for a chapter HEADLINE, where a short measure is the point.
+   A question row is also a .pane and its header is now an h2 (so the heading outline is right),
+   which capped every row at 24 characters — 427px of row under an 1180px card, and a screen
+   two-thirds empty to its right. The row is a band, not a paragraph. */
+.q>.q-h{max-width:none}
 #seasonring{margin:6px 0 22px}
 .sr-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
 .sr-title{font-size:15px;color:var(--bone);font-weight:500;margin:0}
@@ -351,6 +356,7 @@ html{scroll-padding-top:0}
 .beat:not(.seen) .sheet>*{opacity:0;transform:translateY(10px)}
 .sheet>*{transition:opacity .45s ease,transform .45s cubic-bezier(.16,.84,.28,1);
   transition-delay:calc(var(--i,0)*70ms + 140ms)}
+.q .beat .sheet>*,.q .beat.seen .sheet>*{transition-delay:0s!important;transition-duration:.12s!important}
 .beat.seen .sheet>*{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){
   .sheet>*,.beat:not(.seen) .sheet>*{opacity:1;transform:none;transition:none}}
@@ -489,7 +495,7 @@ body.introing #intro-skip{display:none!important}
 }
 *{box-sizing:border-box;margin:0;padding:0}
 /* the viewport scrolls the tall body naturally; the sky is a fixed backdrop behind it */
-html{scroll-behavior:smooth}   /* snap retired: it pinned beat edges to screen edges,
+html{scroll-behavior:auto}   /* snap retired: it pinned beat edges to screen edges,
    slicing headings at rest — flagged twice. A normal document never rests mid-glyph. */
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;scroll-snap-type:none}}
 body{background:var(--deep);color:var(--bone);font-family:var(--sg);font-size:17px;
@@ -1803,7 +1809,7 @@ body.embed .q.open>.q-h,body.kiosk .q.open>.q-h{position:static}
 .q.open>.q-h .q-val{opacity:.55}
 
 /* ── an opened row: the chapter, in place ─────────────────────────────────── */
-.q-body{padding:4px 0 10px}
+.q-body{transition:none;padding:4px 0 10px}
 .q-body .beat,.q-body .pane-screen{min-height:0;max-width:none;margin:0;display:block;
   content-visibility:visible;contain-intrinsic-size:auto;scroll-snap-align:none}
 .q-body .beat,.q-body .beats>.beat,.q-body .pane>.beat,
@@ -2954,7 +2960,7 @@ CH.forEach(function(c,i){
    sb.textContent=lab;
    sb.addEventListener("click",function(){
     var bt=document.querySelectorAll("#p-"+c.id+" .beat")[si];
-    if(bt)bt.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
+    if(bt)bt.scrollIntoView({behavior:"auto",block:"start"});
     /* the tick answers the click immediately — not a scroll-handler tick later */
     document.querySelectorAll(".subrung").forEach(function(x){x.classList.toggle("on",x===sb);});});
    sd.appendChild(sb);});
@@ -2973,7 +2979,7 @@ function drawIn(p){if(reduce||!p)return;
 function chamberAnchor(i){var pane=el("p-"+CH[i].id);if(!pane)return null;
  return pane.querySelector(".beat")||pane;}
 function scrollToChamber(i){var a=chamberAnchor(i);
- if(a)a.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});}
+ if(a)a.scrollIntoView({behavior:"auto",block:"start"});}
 /* the side-effects of arriving in a chapter — the sky answers where you have scrolled */
 var chamberSettled=-1;
 var fdReset=null;   // the fire-day beat exposes its reset here so leaving Sky can re-arm it
@@ -3083,7 +3089,7 @@ function enterChamber(i){
  if(bPick.parentNode)bPick.parentNode.removeChild(bPick);
 
  /* ── 2 · the questions ───────────────────────────────────────────────────── */
- var lead=document.createElement("p");lead.id="qlead";lead.textContent="More questions";
+ var lead=document.createElement("p");lead.id="qlead";lead.textContent="";
  panes.appendChild(lead);
 
  var ROWS=[
@@ -3159,7 +3165,7 @@ function enterChamber(i){
    /* clear the fixed sound button, which sits in the top corner on a phone */
    var pad=(window.innerWidth<=640)?64:10;
    var y=window.pageYOffset+sec.getBoundingClientRect().top-pad;
-   try{window.scrollTo({top:y,behavior:reduce?"auto":"smooth"});}catch(e){window.scrollTo(0,y);}
+   try{window.scrollTo({top:y,behavior:"auto"});}catch(e){window.scrollTo(0,y);}
   }
  }
  ROWS.forEach(function(r){
@@ -4649,7 +4655,7 @@ if(window.ResizeObserver)new ResizeObserver(function(){requestAnimationFrame(fun
    offerPledge("letter");});
   el("rr-plan-l").addEventListener("click",function(){openPlan("letter");});
   focusPanel("Letter form opened. The numbers are filled in; you add who it's to and who you are.");
-  panel.scrollIntoView({behavior:reduce?"auto":"smooth",block:"nearest"});
+  panel.scrollIntoView({behavior:"auto",block:"nearest"});
  }
  /* ---- plan card + .ics (implementation intention; fresh-start default) ---- */
  function freshStart(){var d=new Date(),nm=new Date(d.getFullYear(),d.getMonth(),d.getDate());
@@ -4692,7 +4698,7 @@ if(window.ResizeObserver)new ResizeObserver(function(){requestAnimationFrame(fun
    a.href=u;a.download="on-record-plan.ics";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},1500);
    el("sr-status").textContent="A calendar reminder was downloaded.";offerPledge(kind,gv("rr-date"));});
   focusPanel("Plan form opened.");
-  panel.scrollIntoView({behavior:reduce?"auto":"smooth",block:"nearest"});
+  panel.scrollIntoView({behavior:"auto",block:"nearest"});
  }
  /* ---- private pledge: localStorage, quiet replay, never a public badge (Kristofferson 2014) ---- */
  function loadP(){try{return JSON.parse(localStorage.getItem(PKEY)||"null");}catch(e){return null;}}
@@ -4719,10 +4725,10 @@ if(window.ResizeObserver)new ResizeObserver(function(){requestAnimationFrame(fun
   if(a==="letter")openLetter();
   else if(a==="vote")openPlan("vote");
   else if(a==="talk"){var conv=el("share-btn");if(conv){var beat=conv.closest(".beat");
-   if(beat){beat.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});flashRing(beat);}
+   if(beat){beat.scrollIntoView({behavior:"auto",block:"start"});flashRing(beat);}
    var st=el("sr-status");if(st)st.textContent="Jumped to the card about talking to people.";}}
   else if(a==="give"){var i=CH.findIndex(function(c){return c.id==="firstlight";});if(i>=0)scrollToChamber(i);
-   setTimeout(function(){var g=el("pg-give");if(g){g.scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"});flashRing(g);}
+   setTimeout(function(){var g=el("pg-give");if(g){g.scrollIntoView({behavior:"auto",block:"center"});flashRing(g);}
     var st=el("sr-status");if(st)st.textContent="Here is where to give — vetted funds, about a tonne of CO₂ per dollar.";},reduce?0:700);}});
  recall();
 })();
@@ -5409,7 +5415,7 @@ var __PLACE=(function(){
       out of the Sky by a fetch they started three beats ago. */
    if(!opts||opts.scroll!==false){
     var gbeats=el("p-ground")&&el("p-ground").querySelectorAll(".beat");
-    if(gbeats&&gbeats[0])try{gbeats[0].scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});}catch(e2){}}
+    if(gbeats&&gbeats[0])try{gbeats[0].scrollIntoView({behavior:"auto",block:"start"});}catch(e2){}}
   }).catch(function(e){
    if(!live())return;
    busy(false);
@@ -5965,7 +5971,7 @@ var __HOME=(function(){
    if(_an){
     var _mh=parseInt((getComputedStyle(document.documentElement).getPropertyValue("--mast-h")||"140"),10)||140;
     var _y=Math.max(0,window.pageYOffset+_an.getBoundingClientRect().top-_mh-10);
-    try{window.scrollTo({top:_y,behavior:"smooth"});}catch(e2){window.scrollTo(0,_y);}
+    try{window.scrollTo({top:_y,behavior:"auto"});}catch(e2){window.scrollTo(0,_y);}
     if(typeof flashRing==="function")flashRing(_an);}
   }catch(e){}
   if(h.ex==="seville"){if(__PLACE&&__PLACE.reset)__PLACE.reset();placeState("ok");}
@@ -6191,7 +6197,7 @@ window.__HOME=__HOME;
   var hp0=el("homepick");
   if(hp0){var _b=el("homepick-body"),_c=el("homenow-change");
    if(_b&&_b.hidden&&_c)_c.click();                       /* opening the picker is the point of the button */
-   try{hp0.scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"});}catch(e){}}
+   try{hp0.scrollIntoView({behavior:"auto",block:"center"});}catch(e){}}
   else scrollToChamber(0);
   setTimeout(function(){var hp=el("homepick");if(hp){flashRing(hp);
    var t=el("gq-mine")&&!el("gq-mine").hidden?el("gq-mine"):(el("gq-bar")&&el("gq-bar").querySelector(".cb-chip"));
@@ -6391,14 +6397,14 @@ window.__HOME=__HOME;
    if(!nxt&&pane){var np=pane.nextElementSibling;
     while(np&&!np.classList.contains("pane"))np=np.nextElementSibling;
     if(np)nxt=np.querySelector(".beat")||np;}
-   if(nxt)nxt.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});}
+   if(nxt)nxt.scrollIntoView({behavior:"auto",block:"start"});}
   c.addEventListener("click",go);
   c.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}});
  });})();
 
  (function(){var r=el("replay-q"),t=el("back-top");
   if(r)r.addEventListener("click",function(){try{startIntro(true);}catch(e){}});
-  if(t)t.addEventListener("click",function(){window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});});})();
+  if(t)t.addEventListener("click",function(){window.scrollTo({top:0,behavior:"auto"});});})();
 
  (function(){var t=el("g-take");if(!t)return;
   t.addEventListener("click",function(e){var b=e.target.closest("button[data-ga]");if(!b)return;
