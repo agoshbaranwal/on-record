@@ -55,7 +55,7 @@
 .sr-centre{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
   justify-content:center;text-align:center;pointer-events:none}
 .sr-centre>*{max-width:40cqw}
-.sr-centre b{font-size:min(42px,14cqw);font-weight:500;color:#FF6B52;line-height:1;font-variant-numeric:tabular-nums}
+.sr-centre b{font-size:min(30px,10.5cqw);font-weight:500;color:#FF6B52;line-height:1;font-variant-numeric:tabular-nums}
 .sr-era{font-family:var(--mono);font-size:min(11px,3.5cqw);color:#FF6B52;margin-top:5px;letter-spacing:.04em}
 .sr-unit{font-family:var(--mono);font-size:min(10px,3.2cqw);letter-spacing:.06em;
   line-height:1.45;color:var(--bone-2);margin-top:6px}
@@ -3943,7 +3943,7 @@ var __RING=(function(){
      "now" while the spokes showed 1951-80 made the toggle look broken and read as a lie. */
   var showB=t>=0.5,sh=showB?sB:sA,oth=showB?sA:sB,shEra=showB?eraB:eraA,othEra=showB?eraA:eraB;
   var L=document.getElementById("sr-len");
-  if(L)L.textContent=Math.round(sA[0]+(sB[0]-sA[0])*t);
+  if(L)L.textContent=sB[0];
   var E=document.getElementById("sr-era");
   if(E)E.textContent=shEra;
   var W=document.getElementById("sr-was");
@@ -4225,7 +4225,7 @@ function buildGround(V){
    '<div id="g-bars" aria-hidden="true">'+
     '<div class="gb-row"><span class="gb-lab">1951–80</span><span class="gb-track"><i class="gb-fill gb-then" style="--w:'+(gThen/gMax*100).toFixed(1)+'%"></i></span><span class="gb-num">'+gThen+'</span></div>'+
     '<div class="gb-row"><span class="gb-lab">'+(LF-9)+'–'+LF+'</span><span class="gb-track"><i class="gb-fill gb-now" style="--w:'+(gNow/gMax*100).toFixed(1)+'%"></i></span><span class="gb-num on">'+gNow+'</span></div>'+
-    '<div class="gb-ax"><span>0</span><span>'+HOTW+' days a year</span><span>'+gMax+'</span></div>'+
+    '<div class="gb-ax"><span></span><span>'+HOTW+' days a year</span><span></span></div>'+
     (Math.abs(gD)>=1?'<div class="gb-delta'+(gD<0?' gb-ease':'')+'">'+(gD>0?
        ('+'+gD+' '+HOTW+' '+DAYW+' a year since 1951–80'):
        (Math.abs(gD)+' fewer '+HOTW+' '+DAYW+' a year than in 1951–80'))+'</div>':'')+
