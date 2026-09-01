@@ -1627,12 +1627,13 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
      screen it floated on; on a phone it is the icon, with the label left for screen readers */
   /* it used to float in the reading column at top:54px and cover four words of whatever line
      was passing under it. It belongs with the other fixed control, above the chapter strip. */
-  #soundbtn{right:14px;top:auto;bottom:96px;width:44px;height:44px;min-height:44px;padding:0;
+  #soundbtn{right:14px;top:auto;bottom:96px;width:auto;min-width:44px;height:36px;min-height:36px;
+    padding:0 12px;gap:7px;
     justify-content:center;border:1px solid rgba(242,231,204,.22);
     border-radius:999px;background:rgba(var(--glass),.62);
     -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-  #soundbtn #soundlab{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
-    clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  #soundbtn #soundlab{position:static;width:auto;height:auto;margin:0;clip:auto;overflow:visible;
+    font-size:11px;letter-spacing:.08em;white-space:nowrap}
   .thm-ink #soundbtn{background:rgba(250,246,236,.7);border-color:rgba(62,18,8,.2)}
   /* #hzn-hi/#hzn-lo deliberately bleed 38px past each edge, so a small `right` on the label
      puts the budget numbers OFF-SCREEN on a phone (measured: right edge at 420px on a 390px
@@ -3983,7 +3984,7 @@ var __RING=(function(){
   arcB.setAttribute("d",arcPath(R_ARC_B,sB[1],sB[2]));
   capB.setAttribute("d",capPath(R_ARC_B,sB[1],sB[2]));
  }
- var eraA="1951–80",eraB="the last 30 years",title0="";
+ var eraA="1951–80",eraB="last 30 years",eraYears="",title0="";
  function go(to){
   if(raf)cancelAnimationFrame(raf);
   if(guard)clearTimeout(guard);
@@ -4004,7 +4005,9 @@ var __RING=(function(){
   var hide=function(){host.hidden=true;};
   if(!R||!R.a||!R.b){hide();return;}
   A=smooth(R.a);B=smooth(R.b);N=R.years||30;eraA=R.eraA||"1951–80";
-  eraB=R.eraB||"the last 30 years";title0=title||"";
+  eraYears=R.eraB||"";eraB="last 30 years";title0=title||"";
+  var _rc=document.getElementById("sr-alt");
+  if(_rc)_rc.innerHTML="ERA5 &middot; "+eraA+" vs "+eraYears+" &middot; smoothed &plusmn;7 days &middot; 29 Feb counted with 28 Feb";
   sA=season(A);sB=season(B);
   if(!sA||!sB){hide();return;}          /* a place with almost no hot days has no season to draw */
   mx=0;for(var i=0;i<365;i++){if(A[i]>mx)mx=A[i];if(B[i]>mx)mx=B[i];}
@@ -4019,10 +4022,10 @@ var __RING=(function(){
   if(tn)tn.textContent=eraA;
   /* the bars above this card say "the last 10 years". Printing "1996-2025" beside them made
      a reader work out that these are different windows; naming the window says it outright. */
-  if(nw)nw.textContent="last 30 years";
+  if(nw)nw.textContent=eraB;
   var ka=document.getElementById("sr-ka"),kb=document.getElementById("sr-kb");
   if(ka)ka.textContent=eraA;
-  if(kb)kb.textContent="last 30 years";
+  if(kb)kb.textContent=eraB;
   function mark(w){
    if(tn){tn.classList.toggle("on",w===0);tn.setAttribute("aria-pressed",w===0?"true":"false");}
    if(nw){nw.classList.toggle("on",w===1);nw.setAttribute("aria-pressed",w===1?"true":"false");}}
