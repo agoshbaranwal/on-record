@@ -5,22 +5,6 @@
    hot season that escapes the months it used to sit in. Red is heat and blue
    is not-heat, because that is what people already read; length carries the
    same information a second time, so colour is never the only cue. */
-/* the front page: a contents list, not a poster */
-#frontpage .toc{list-style:none;margin:22px 0 18px;padding:0;counter-reset:toc}
-#frontpage .toc li{counter-increment:toc;border-top:1px solid rgba(242,231,204,.12)}
-#frontpage .toc li:last-child{border-bottom:1px solid rgba(242,231,204,.12)}
-#frontpage .toc button{display:grid;grid-template-columns:2.1rem 1fr;align-items:baseline;gap:0 14px;
-  width:100%;text-align:left;background:none;border:0;padding:13px 4px;cursor:pointer;color:inherit;
-  font:inherit;transition:background .18s ease}
-#frontpage .toc button::before{content:"0" counter(toc);font-family:var(--mono);font-size:12px;
-  font-style:italic;color:var(--amber);opacity:.8}
-#frontpage .toc button b{font-size:16px;font-weight:500;color:var(--bone)}
-#frontpage .toc button span{grid-column:2;display:block;font-size:14px;color:var(--bone-3);margin-top:2px;
-  line-height:1.45}
-#frontpage .toc button:hover,#frontpage .toc button:focus-visible{background:rgba(242,231,204,.05)}
-#frontpage .toc button:hover b{color:var(--amber)}
-@media(max-width:640px){#frontpage .toc button{grid-template-columns:1.8rem 1fr;gap:0 10px;padding:12px 2px}
-  #frontpage .toc button b{font-size:15px}#frontpage .toc button span{font-size:13px}}
 .limits-h{font-size:17px;margin:26px 0 10px}
 /* ── PRINT ──────────────────────────────────────────────────────────────────
    It printed 19 pages, 13 of them blank: a fixed full-viewport sky behind every
@@ -1904,31 +1888,6 @@ body.ch-bedrock #mast{opacity:1!important}
       <!-- SKY -->
       <section class="pane on" id="p-sky" aria-label="Carbon budget">
         <div class="beats">
-          <!-- BEAT 0 — THE FRONT PAGE. Test readers said the same three things: they could not
-               tell what the site was, could not tell what was coming, and could not tell where
-               they were. The site used to open on a global accounting number while the masthead
-               promised their city. A contents page is the least clever and most useful answer:
-               what this is, what is in it, in what order, and how long it takes. -->
-          <div class="beat">
-          <div class="sheet" id="frontpage">
-            <p class="k">On Record</p>
-            <h2 tabindex="-1" id="front-h2">How many hot days does your city get now, compared with 1951&ndash;80?</h2>
-            <p class="lead">We counted every day since 1940 from the ERA5 weather archive. Pick your
-              city and every chapter below redraws around it.</p>
-            <ol class="toc" id="toc">
-              <li><button type="button" data-ch="0"><b>Carbon budget</b><span>How much CO&#8322; the world can still emit before 1.5&nbsp;&deg;C.</span></button></li>
-              <li><button type="button" data-ch="1"><b>Hot days</b><span>Your city&rsquo;s hot days a year, 1951&ndash;80 against now.</span></button></li>
-              <li><button type="button" data-ch="2"><b>Hot nights</b><span>Hot nights a year, now vs 1951&ndash;80.</span></button></li>
-              <li><button type="button" data-ch="3"><b>Public opinion</b><span>What people want, and what they think everyone else wants.</span></button></li>
-              <li><button type="button" data-ch="4"><b>What you can do</b><span>Actions, sorted by how much they cut.</span></button></li>
-              <li><button type="button" data-ch="5"><b>Summary</b><span>The four numbers this page measured.</span></button></li>
-              <li><button type="button" data-ch="6"><b>Sources</b><span>Every source, and what this page cannot tell you.</span></button></li>
-            </ol>
-            <p class="receipt" id="front-receipt">7 chapters &middot; about 5 minutes &middot; every number links to a named public source</p>
-            <p class="beat-cue">Next: Carbon budget</p>
-          </div>
-        </div>
-
           <!-- BEAT 1 — the plain thesis, and the number that carries the page -->
           <div class="beat">
           <div class="sheet">
@@ -3154,7 +3113,7 @@ function enterChamber(i){
     beside the question it answers, and its sourcing sentence opens that section. */
  var rcp=el("p-recap");if(rcp&&rcp.parentNode)rcp.parentNode.removeChild(rcp);
  /* the contents page is gone: the answer is the front page */
- var fp=el("frontpage");if(fp){var fb=fp.parentNode;if(fb&&fb.parentNode)fb.parentNode.removeChild(fb);}
+
  /* one place tag per card: the night sheet carried the same "Example: Delhi" twice */
  document.querySelectorAll(".sheet").forEach(function(sh){
   var t=sh.querySelectorAll(".place-tag");

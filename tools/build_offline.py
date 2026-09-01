@@ -65,7 +65,7 @@ def _meanov(y0, y1):
 _was = round(_meanov(1951, 1980)); _now = round(_meanov(LAST_FULL - 9, LAST_FULL))
 OG = "https://agoshbaranwal.github.io/on-record/"
 DESC = ("We counted it from the weather record &mdash; every day since 1940. Pick your place and the page redraws around it: your hot days, your nights, your sky. Every number shows where it came from.")
-CARD = (f"Seville: {_was} hot days a year in 1951\u201380, {_now} now. "
+CARD = (f"Seville: {_was} days a year above 35 \u00B0C in 1951\u201380, {_now} now. "
         f"Check your own city.")
 ALT = f"On Record card: in Seville, days at or above 35C rose from {_was} a year to {_now}."
 head_meta = (
