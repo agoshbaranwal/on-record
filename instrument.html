@@ -39,6 +39,11 @@
 #budcap b{color:var(--bone);font-weight:400}
 @media(prefers-reduced-motion:reduce){#budgrid i{transition:none;opacity:1;transform:none}}
 @media(max-width:640px){#budgrid i{width:13px;height:19px}#budgrid{gap:3px}}
+/* Inside a question row the chapter already has a name — the row header IS the name. The old
+   full-screen layout needed an eyebrow to say which chapter you were in; a row does not, and
+   printing it again is one of the four ways this page said the same thing before the reader
+   reached a single number. Same for the place tag: the headline names the city. */
+.q .page-what,.q .place-tag{display:none}
 #seasonring{margin:6px 0 22px}
 .sr-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
 .sr-title{font-size:15px;color:var(--bone);font-weight:500;margin:0}
@@ -465,8 +470,9 @@ body.introing #intro-skip{display:none!important}
   --ink:#3E1208; --ink-2:rgba(62,18,8,.82); --ink-3:rgba(62,18,8,.74); --ink-hair:rgba(62,18,8,.2);
   --amber:#F0BC62; --ember:#D96C3A; --ember-hi:#E8886B; --slate:#9aa39e;
   --sage:#82B8A6; --teal-hi:#7ED6C4; --act:#155048; --deep:#05171A;
-  --sg:"SpaceGroteskX",system-ui,-apple-system,sans-serif;
-  --mono:ui-monospace,"SF Mono",Menlo,"Cascadia Mono",monospace;
+  --sg:Helvetica,"Helvetica Neue",Arial,sans-serif;
+  --mono:Helvetica,"Helvetica Neue",Arial,sans-serif;   /* one family; see --sg */
+  font-variant-numeric:tabular-nums;   /* the monospace face kept number columns aligned; this does it instead */
   /* the halo does the work the box used to: a crisp dark rim hugs each glyph so
      light text reads on ANY sky — light sage or dark ember — with no box seam.
      Invisible over dark backgrounds, so it is safe to apply to all light chrome. */
@@ -1912,8 +1918,7 @@ body.ch-bedrock #mast{opacity:1!important}
                  "the world ends in 2029" was stranded in the SKIPPABLE intro. The correction now
                  lives in the chamber, where a deep-linked or returning reader also meets it. -->
             <h2 tabindex="-1" id="sky-h2">Years left</h2>
-            <p class="lead" id="sky-lead">The CO&#8322; we can still emit for a 50% chance of staying under 1.5&nbsp;&deg;C: about <b class="num" id="lead-gt">–</b> billion tonnes
-              of CO&#8322; .</p>
+            
             <div id="skycount">
               <p class="years num" id="years">–</p>
               <div class="capplate">
@@ -1993,7 +1998,6 @@ body.ch-bedrock #mast{opacity:1!important}
           <div class="sheet">
             <h2 class="page-what"><b class="pw-name">Hot days</b><span class="sr-only">. </span><span class="pw-say">Hot days per year in your city, now vs 1951&ndash;80.</span></h2>
             
-            <p class="place-tag" hidden>Example: Seville</p>
             <!-- the ONE place picker. #gplace is kept inside it so its existing CSS still applies. -->
             <div id="homepick">
               <!-- once a place is set, the whole picker collapses to this one line: the reader
@@ -2069,14 +2073,11 @@ body.ch-bedrock #mast{opacity:1!important}
                     </div>
                   </div>
                   <div class="sr-side">
-                    <p class="sr-how" id="sr-how">Each spoke is one day of the year. It is drawn longer the more often that day was hot.</p>
                     <p class="sr-season"><b id="sr-span">&ndash;</b></p>
                     <p class="sr-sub" id="sr-sub"></p>
                     <ul class="sr-key">
                       <li><i class="k-hot"></i>hot days, <span id="sr-kb">now</span></li>
                       <li><i class="k-cool"></i><span id="sr-ka">1951&ndash;80</span></li>
-                      <li><i class="k-arc"></i>outer arcs: the 9-in-10 stretch</li>
-                      <li><i class="k-ray"></i>dashed rings: years in 30 that were hot</li>
                     </ul>
                   </div>
                 </div>
@@ -2440,7 +2441,7 @@ body.ch-bedrock #mast{opacity:1!important}
   </div>
 </div>
 
-<noscript><p style="max-width:60ch;margin:20px auto;font-family:monospace;font-size:12px;color:#F2E7CC;padding:0 20px">/*__NOSCRIPT__*/</p></noscript>
+<noscript><p style="max-width:60ch;margin:20px auto;font-family:var(--mono);font-size:12px;color:#F2E7CC;padding:0 20px">/*__NOSCRIPT__*/</p></noscript>
 
 <script>
 window.D = /*__DATA__*/ null;
@@ -3812,7 +3813,7 @@ var __RING=(function(){
  var MS=[0,31,59,90,120,151,181,212,243,273,304,334];
  var HOT="#FF6B52",COOL="#5E8DA6";
  var svg,ticks=[],ghost,ghostB,ghostFill,arcA,arcB,capA,capB,scaleG,built=false,raf=0,guard=0,cur=1,peak=180;
- var RMONO="ui-monospace,Menlo,monospace";
+ var RMONO='Helvetica,"Helvetica Neue",Arial,sans-serif';
  var A=null,B=null,sA=null,sB=null,mx=1,N=30,gapped=false;
 
  function ang(d){return (d/365)*2*Math.PI-Math.PI/2;}
@@ -4119,7 +4120,7 @@ function buildGround(V){
  function sc(d0,d1,r0,r1){return function(v){return r0+(v-d0)/(d1-d0)*(r1-r0);};}
  var yd=CUSTOM?V.ydom:[18,45];
  var x=sc(0,n-1,mL,W-mR),y=sc(yd[0],yd[1],Hh-mB,mT);
- var MONO="ui-monospace,Menlo,monospace",AXc="rgba(242,231,204,.80)";
+ var MONO='Helvetica,"Helvetica Neue",Arial,sans-serif',AXc="rgba(242,231,204,.80)";
  function txt(a,s,halo){var t=E("text",a);t.textContent=s;
   if(halo){t.setAttribute("paint-order","stroke");t.setAttribute("stroke","#12333A");
    t.setAttribute("stroke-width","3.2");t.setAttribute("stroke-linejoin","round");}return t;}
@@ -4230,12 +4231,7 @@ function buildGround(V){
     '<div class="gb-row"><span class="gb-lab">1951–80</span><span class="gb-track"><i class="gb-fill gb-then" style="--w:'+(gThen/gMax*100).toFixed(1)+'%"></i></span><span class="gb-num">'+gThen+'</span></div>'+
     '<div class="gb-row"><span class="gb-lab">'+(LF-9)+'–'+LF+'</span><span class="gb-track"><i class="gb-fill gb-now" style="--w:'+(gNow/gMax*100).toFixed(1)+'%"></i></span><span class="gb-num on">'+gNow+'</span></div>'+
     '<div class="gb-ax"><span></span><span>'+HOTW+' days a year</span><span></span></div>'+
-    (Math.abs(gD)>=1?'<div class="gb-delta'+(gD<0?' gb-ease':'')+'">'+(gD>0?
-       ('+'+gD+' '+HOTW+' '+DAYW+' a year since 1951–80'):
-       (Math.abs(gD)+' fewer '+HOTW+' '+DAYW+' a year than in 1951–80'))+'</div>':'')+
    '</div>'+
-   '<p class="gb-say">A'+(CUSTOM?'n':'')+' '+HOTW+' day in '+PLACE+' is one '+THR.hotLabel+'.'+
-    (wThen<1?(' Nights that never fall '+THR.nightLabel+' were almost unknown then — now about <b>'+wNow+'</b> a year.'):(' Nights that never fall '+THR.nightLabel+' went from about <b>'+wThen+'</b> to about <b>'+wNow+'</b> a year.'))+'</p>'+
    '<p class="gb-caveat"></p>'+
    /* LEAN ON THE GLOBAL PICTURE: where the local count did NOT rise, the local record can't carry the
       alarm — so pull in the planet's own sourced figure (never a local causal claim). General: fires for
@@ -4366,22 +4362,19 @@ var buildNight=function(NV){
   /* one scale for all four bars, so days and nights are comparable and each bar carries its
      own count. Zero and the top of the scale are printed under them. */
   var _dT=Math.round(dThen),_dN=Math.round(dNow),_nT=Math.round(nThen),_nN=Math.round(nNow);
-  var _mx=Math.max(1,_dT,_dN,_nT,_nN);
+  /* this chapter's subject is nights; the day bars repeated the first screen exactly */
+  var _mx=Math.max(1,_nT,_nN);
   var _bar=function(lab,v,cls){return '<div class="nd-row"><span class="nd-lab">'+lab+'</span>'+
    '<span class="nd-track"><i class="nd-fill '+cls+'" style="--w:'+(100*v/_mx).toFixed(1)+'%"></i></span>'+
    '<span class="nd-num'+(cls==='nd-then'?'':' on')+'">'+v+'</span></div>';};
   el("n-diverge").innerHTML=
-   '<div class="nd-grp"><p class="nd-h">Hot days a year</p>'+
-    _bar("1951\u201380",_dT,"nd-then")+_bar((LF-9)+"\u2013"+LF,_dN,"nd-now-d")+'</div>'+
-   '<div class="nd-grp"><p class="nd-h">Hot nights a year</p>'+
+   '<div class="nd-grp">'+
     _bar("1951\u201380",_nT,"nd-then")+_bar((LF-9)+"\u2013"+LF,_nN,"nd-now-n")+'</div>'+
-   '<p class="nd-ax"><span>0</span><span>days or nights a year</span><span>'+_mx+'</span></p>';
+   '<p class="nd-ax"><span></span><span>hot nights a year</span><span></span></p>';
   /* the bars fill on the shared .seen reveal; an opened row is marked seen at once */
   try{var _bt=el("n-diverge").closest(".beat");if(_bt)_bt.classList.add("seen");}catch(e){}
  }
- var dVerb=(dDelta>0?"rose too, from about "+dThen.toFixed(0)+" to "+dNow.toFixed(0)+" a year":
-            dDelta<0?"edged down a little too, from about "+dThen.toFixed(0)+" to "+dNow.toFixed(0)+" a year":
-            "barely moved, about "+dThen.toFixed(0)+" a year");
+ var dVerb=(dDelta>0?"rose too":dDelta<0?"edged down over the same years":"barely moved");
  el("n-honest").innerHTML=
   (CUSTOM?("A hot night in "+place+" is one warmer than 95% of its own 1951&ndash;80 nights, above "+
            thrNs+"&nbsp;&deg;C. "):
@@ -4399,7 +4392,7 @@ var buildNight=function(NV){
  var lr2=ladder.querySelectorAll(".rung")[2]&&ladder.querySelectorAll(".rung")[2].querySelector(".fact");
  if(lr2)lr2.textContent=place+" · "+(Math.round(nNow-nThen)>=0?"+":"−")+
   Math.abs(Math.round(nNow-nThen))+" hot nights";
- var host=el("delhi"),MONO="ui-monospace,Menlo,monospace",lastB="";
+ var host=el("delhi"),MONO='Helvetica,"Helvetica Neue",Arial,sans-serif',lastB="";
  function sc(d0,d1,r0,r1){return function(v){return r0+(v-d0)/(d1-d0)*(r1-r0);};}
  function txt(a,s,halo){var t=E("text",a);t.textContent=s;
   if(halo){t.setAttribute("paint-order","stroke");t.setAttribute("stroke","#0A1216");
@@ -4743,7 +4736,7 @@ if(window.ResizeObserver)new ResizeObserver(function(){requestAnimationFrame(fun
    draws the on-demand share PNG and can bake the build-time OG image, so they cannot disagree.
    Every card carries its own NAMED source, permalink and dated stamp — a crop can't lose provenance. */
 var __ART=(function(){
- var SG="SpaceGroteskX",MONO='ui-monospace,Menlo,"DejaVu Sans Mono",monospace';
+ var SG="Helvetica",MONO='Helvetica,"Helvetica Neue",Arial,sans-serif';
  var BONE="#F2E7CC",INK="#08201F",INK2="rgba(8,32,31,.66)",INK3="rgba(8,32,31,.60)",HAIR="rgba(8,32,31,.20)",AMBER="#C98A2E",HOT="rgb(178,24,43)",TEAL="#155048";
  var BASE="agoshbaranwal.github.io/on-record/";
  var STAMP="recorded "+((typeof B!=="undefined"&&B.now_label)||"");

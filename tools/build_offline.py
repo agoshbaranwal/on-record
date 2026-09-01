@@ -27,11 +27,9 @@ with _tf.NamedTemporaryFile("w", suffix=".js", delete=False) as _f:
 _r = _sp.run(["node", "--check", _jp], capture_output=True, text=True)
 import os as _os; _os.unlink(_jp)
 assert _r.returncode == 0, "instrument.html inline script does not parse:\n" + _r.stderr[:500]
-fonts = json.loads((ROOT / "fonts" / "fonts-b64.json").read_text())
-css = "".join(
-    "@font-face{font-family:'SpaceGroteskX';font-style:normal;font-weight:%d;font-display:swap;"
-    "src:url(data:font/woff2;base64,%s) format('woff2')}\n" % (w, fonts[k])
-    for k, w in [("SpaceGrotesk-normal-400", 400), ("SpaceGrotesk-normal-500", 500)])
+# One typeface for the whole site, and it is Helvetica — already on every machine, so there is
+# no webfont to embed. This used to inline 68 KB of base64 Space Grotesk into every build.
+css = ""
 _d = json.loads((ROOT / "data" / "site-data.json").read_text())
 # The instant table is maintained outside both builds (tools/ring_bake.py, the v2 ingest).
 # site-data.json only carries a COPY of it — re-attach the file so an offline build never
@@ -182,7 +180,6 @@ try:
 except FileNotFoundError:
     pass  # no node on this runner; the marker check above still holds
 
-reuse_css = css + ("@font-face{font-family:'InstrumentSerifX';font-style:normal;font-weight:400;font-display:swap;"
-                   "src:url(data:font/woff2;base64,%s) format('woff2')}\n" % fonts["InstrumentSerif-normal-400"])
+reuse_css = css   # one family, no embedded faces
 _rn = buildlib.build_reuse_html(ROOT, reuse_css, buildlib.reuse_data(_d, _d["_meta"]["today"]))
 print("offline build: index.html", len(doc), "B | sw BUILD:", _swstamp)

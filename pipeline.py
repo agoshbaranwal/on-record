@@ -450,10 +450,7 @@ print(f"  site-data.json written ({(DATA/'site-data.json').stat().st_size:,} B)"
 # ---------------- build index.html ----------------
 tpl = (ROOT / "instrument.html").read_text()
 fonts = json.loads((ROOT / "fonts" / "fonts-b64.json").read_text())
-css = ""
-for key, style, weight in [("SpaceGrotesk-normal-400", "normal", 400), ("SpaceGrotesk-normal-500", "normal", 500)]:
-    css += ("@font-face{font-family:'SpaceGroteskX';font-style:%s;font-weight:%d;font-display:swap;"
-            "src:url(data:font/woff2;base64,%s) format('woff2')}\n" % (style, weight, fonts[key]))
+css = ""   # Helvetica everywhere: no webfont to embed
 lo, hi = out["budget"]["estimates"][0], out["budget"]["estimates"][1]
 dr = out["delhi_honesty"]["receipts"]
 ns = (f"This page draws its instrument with JavaScript. The core numbers, without it: the remaining carbon "
@@ -620,7 +617,6 @@ except FileNotFoundError:
 print(f"[pipeline] built index.html ({len(doc):,} B) — sw BUILD {_swstamp} — done")
 
 # ---------------- build reuse.html (teachers + press) ----------------
-reuse_css = css + ("@font-face{font-family:'InstrumentSerifX';font-style:normal;font-weight:400;font-display:swap;"
-                   "src:url(data:font/woff2;base64,%s) format('woff2')}\n" % fonts["InstrumentSerif-normal-400"])
+reuse_css = css   # one family, no embedded faces
 _rn = buildlib.build_reuse_html(ROOT, reuse_css, buildlib.reuse_data(out, out["_meta"]["today"]))
 print(f"[pipeline] built reuse.html ({_rn:,} B) — done")
