@@ -28,6 +28,17 @@
   #sr-svg,svg{max-width:100%!important;height:auto!important}
   a[href]:after{content:""}
 }
+/* the budget, drawn as the months it buys */
+#budgrid{display:flex;flex-wrap:wrap;gap:4px;margin:16px 0 9px;max-width:430px}
+#budgrid i{display:block;width:15px;height:22px;border-radius:2px;background:#FF6B52;
+  opacity:0;transform:translateY(4px);transition:opacity .34s ease,transform .34s ease}
+#budgrid.on i{opacity:1;transform:none}
+#budgrid i.maybe{background:none;border:1.5px solid rgba(255,107,82,.6)}
+#budgrid i.gone{background:rgba(242,231,204,.16)}
+#budcap{font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--bone-3);margin:0;max-width:56ch}
+#budcap b{color:var(--bone);font-weight:400}
+@media(prefers-reduced-motion:reduce){#budgrid i{transition:none;opacity:1;transform:none}}
+@media(max-width:640px){#budgrid i{width:13px;height:19px}#budgrid{gap:3px}}
 #seasonring{margin:6px 0 22px}
 .sr-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
 .sr-title{font-size:15px;color:var(--bone);font-weight:500;margin:0}
@@ -737,11 +748,11 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
   scroll-snap-align:start;scroll-snap-stop:normal;
   display:flex;flex-direction:column;justify-content:center;
   max-width:1400px;margin:0 auto;padding:16vh 172px 12vh 38px}
-.pane:has(>h2)>*{opacity:0;transform:translateY(16px);
+.pane:not(.q):has(>h2)>*{opacity:0;transform:translateY(16px);
   transition:opacity .5s ease,transform .5s cubic-bezier(.16,.84,.28,1);
   transition-delay:calc(var(--i,0)*60ms)}
 .pane.seen>*{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){.pane:has(>h2)>*{opacity:1;transform:none;transition:none}}
+@media(prefers-reduced-motion:reduce){.pane:not(.q):has(>h2)>*{opacity:1;transform:none;transition:none}}
 /* bedrock is a free-scrolling archive, never snapped */
 #p-bedrock{scroll-snap-align:none}  /* beats carry the frame now */
 #p-bedrock,#p-bedrock *{scroll-snap-align:none!important;scroll-snap-stop:normal!important}
@@ -1473,7 +1484,7 @@ button.rr-row:hover{padding-left:6px}
 /* ============ intro cold-open — four plain beats, reader-paced (no auto-advance) ============ */
 .sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;margin:-1px}
 #intro{position:fixed;inset:0;z-index:20;transition:opacity .7s ease}
-#intro.gone{opacity:0;pointer-events:none}
+#intro.gone{opacity:0;pointer-events:none;visibility:hidden}
 html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 #intro-scrim{position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(130% 78% at 32% 80%,rgba(3,10,12,.66) 0%,rgba(3,10,12,.44) 32%,rgba(3,10,12,0) 70%)}
@@ -1739,7 +1750,7 @@ body.embed #qlead{display:none}
 #panes>.pane.q{display:block;min-height:0;overflow:visible;
   max-width:1400px;margin:0 auto;padding:0 172px 0 38px;scroll-margin-top:10px}
 #panes>.pane.q:last-of-type{padding-bottom:12vh}
-.q-h{position:relative;margin:0;display:flex;align-items:baseline;gap:0 14px;
+.q-h{position:relative;margin:0;font-weight:500;display:flex;align-items:baseline;gap:0 14px;
   padding:17px 14px 17px 12px;border-top:1px solid var(--bone-hair);
   font-weight:400;cursor:pointer;transition:background .18s ease;
   /* a plate, so a row never has to be read through the sky behind it */
@@ -1905,6 +1916,11 @@ body.ch-bedrock #mast{opacity:1!important}
                 <p class="ylab">years until the 1.5&nbsp;&deg;C budget is spent <span id="atrate"></span></p>
                 <p class="spent num" id="spent"></p>
               </div>
+              <!-- "102 billion tonnes" is a number nobody can picture. Months are. Each block
+                   is one month of the world's emissions at today's rate, and the two published
+                   budgets disagree by the blocks drawn hollow. -->
+              <div id="budgrid" aria-hidden="true"></div>
+              <p id="budcap"></p>
             </div>
             <p id="ledger-sr" class="sr-only"></p>
             <button class="drawbtn" data-drawer="sky">Sources</button>
@@ -3087,7 +3103,7 @@ function enterChamber(i){
   body.hidden=true;
   while(sec.firstChild)body.appendChild(sec.firstChild);
   if(r.take)body.appendChild(r.take);
-  var h=document.createElement("h3");h.className="q-h";
+  var h=document.createElement("h2");h.className="q-h";   /* a chapter is level 2 */
   /* the number is the SAME number the rail prints for this chapter — three readers said they
      could not tell where they were, and a rail number that matches nothing on the page is why */
   var _ci=chIndex(r.id),_nm=("0"+(_ci+1)).slice(-2);
@@ -3275,7 +3291,7 @@ function endIntroSafe(){
      vanished into the catch, the intro never initialised and never ended, and the
      whole site sat at opacity:0 forever — for exactly the readers who had already
      been here. The teardown below depends on nothing declared later. */
-  try{intro.classList.add("gone");}catch(e){}
+  try{intro.classList.add("gone");intro.setAttribute("aria-hidden","true");intro.setAttribute("inert","");}catch(e){}
   try{stage.classList.remove("introing");}catch(e){}
   try{document.body.classList.remove("introing");}catch(e){}
   try{if(typeof bgInert==="function")bgInert(false);}catch(e){}
@@ -3559,7 +3575,7 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
   show(0);setTimeout(function(){try{intro.focus();}catch(e){}},20);};
  endIntro=function(reopen){if(intro.classList.contains("gone"))return;
   clearTimeout(settleTimer);cancelAnimationFrame(countRAF);
-  intro.classList.add("gone");stage.classList.remove("introing");document.body.classList.remove("introing");bgInert(false);
+  intro.classList.add("gone");intro.setAttribute("aria-hidden","true");intro.setAttribute("inert","");stage.classList.remove("introing");document.body.classList.remove("introing");bgInert(false);
   if(!reopen&&!EMBED){try{localStorage.setItem("onrecord_intro_seen","1");}catch(e){}}   // an embedded frame writes nothing
   if(whatis)whatis.hidden=false;
   if(reopen){window.scrollTo(0,retScroll);reopened=false;
@@ -3571,7 +3587,7 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
  if(whatis)whatis.addEventListener("click",function(){startIntro(true);});
  /* first-ever visit auto-plays; deep links, ?intro=0, and returning visitors bypass (recoverable via "What is this?") */
  var seen=false;try{seen=localStorage.getItem("onrecord_intro_seen")==="1";}catch(e){}
- if(Q.get("intro")==="0"||isDeep||seen){intro.classList.add("gone");stage.classList.remove("introing");document.body.classList.remove("introing");
+ if(Q.get("intro")==="0"||isDeep||seen){intro.classList.add("gone");intro.setAttribute("aria-hidden","true");intro.setAttribute("inert","");stage.classList.remove("introing");document.body.classList.remove("introing");
   if(whatis)whatis.hidden=false;}
  else startIntro(false);
 })();
@@ -3606,6 +3622,25 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
     "%,#F2E6C6 "+(pLo+1.7).toFixed(1)+"%,#8FB89C "+(pLo+6).toFixed(1)+"%,#2A6F6C "+(pLo+14).toFixed(1)+
     "%,#0C3035 "+(pLo+24).toFixed(1)+"%,#05191D 100%)";})();
   el("years").textContent=yearsStr(target);
+  /* the same two numbers as the headline, in a unit a person can hold: months, and how
+     often the world emits a billion tonnes. Both are arithmetic on the sourced rate. */
+  (function(){
+   var g=el("budgrid"),cap=el("budcap");if(!g)return;
+   var mLo=Math.max(0,Math.round(yLo*12)),mHi=Math.max(mLo,Math.round(yHi*12));
+   if(mHi>72){g.innerHTML="";if(cap)cap.innerHTML="At this rate the budget lasts more than six years \u2014 too long to draw a block at a time.";return;}
+   if(g.__n!==mLo+"/"+mHi){
+    g.__n=mLo+"/"+mHi;g.innerHTML="";
+    for(var i=0;i<mHi;i++){var b=document.createElement("i");
+     if(i>=mLo)b.className="maybe";g.appendChild(b);}
+    if(!reduce){g.classList.remove("on");
+     setTimeout(function(){g.classList.add("on");},20);}else g.classList.add("on");
+   }
+   var perMonth=target/12, days=1/(target/365);
+   if(cap)cap.innerHTML="Each block is one month at "+(target<10?target.toFixed(1):Math.round(target))+
+    " billion tonnes a year \u2014 about <b>"+perMonth.toFixed(1)+" billion tonnes</b> a block."+
+    (mHi>mLo?" The hollow blocks are where the two budgets disagree.":"")+
+    " The world emits a billion tonnes every <b>"+(days<1?(days*24).toFixed(0)+" hours":days.toFixed(0)+" days")+"</b>.";
+  })();
   var rs=target<10?target.toFixed(1):String(Math.round(target));
   el("rate").textContent=rs;el("atrate").textContent="· at "+rs+" GtCO₂ a year";
   var yA=Math.round(NOW+yLo),yB=Math.round(NOW+yHi);
