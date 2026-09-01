@@ -1,171 +1,98 @@
-# On Record — the plan after the first test readers
+# On Record — shipping P1
 
-Status written 2026-08-16, against build `1064cae6`.
+Decision, 2026-09-01: **P1 (answer-first) is the architecture.** Your city's number and the
+season ring are the first screen; the other six chapters are questions you tap open.
 
-## Correction, 2026-08-16 — what "too much going on" meant
-
-I read it as the atmosphere. It is not. **The sky, the sound and the rail are what the test
-readers liked — the site's redeeming qualities.** They stay, untouched, in everything below.
-"Too much going on" is about CONTENT: too many ideas competing, none landing.
-
-That sharpens one count. Set the sky aside as atmosphere and a reader is still asked to learn
-**seven chart grammars** in five minutes — the season ring, the spaghetti record window, the
-country lollipop, the 100-person grid, the then/now bars, the impact wedges, the warming
-stripes. No caption survives being the seventh new thing a stranger has ever seen.
-
-## The route: three prototypes, tested cold
-
-Chosen 2026-08-16. Not one architecture picked on my taste — three built with the real data,
-inside the real sky, handed to strangers. The one that survives gets built properly.
-
-| | Thesis | What a reader gets |
-|---|---|---|
-| **P1 answer-first** | Your city's answer IS the page | One screen that answers it; everything else opens on demand |
-| **P2 five screens** | A story, but finite | 16 screens cut to 5, one idea each, position impossible to misread |
-| **P3 report** | Use a form people have read | Masthead, findings, sections, sources — numbers first, prose second |
-
-All three keep the sky, the sound and the rail. Only the content architecture differs, so the
-test compares the thing actually in question.
-
-## The one diagnosis
-
-Three readers said different things that are the same thing. The site is built as **an
-instrument with chapters**. They came for **an answer to one question**. Every complaint below
-falls out of that single mismatch:
-
-| What they said | What it actually is |
-|---|---|
-| "Couldn't figure out what was going on" | The masthead promises *your city*; chapter 01 is the world's carbon budget |
-| "Pages don't connect / can't tell when a topic ends" | Chapters have labels but no openers and no endings |
-| "Couldn't understand what I was looking at" | Screens carry graphics that never state the question they answer |
-| "Too many pages, some weak" | 16 screens; the inventory found 5 that are filler |
-| "Home page weakest" | Fixed in part — a front page now exists — but the order still contradicts it |
-| "Pretentious, poetic" | 91 lines replaced; the voice will return unless a check forbids it |
-
-**The bar, from here on:** a screen earns its place only if a stranger can say *what question it
-answers* and *what they take away*. If it cannot, it merges or it dies. No exceptions for screens
-that took a long time to build.
+Live site: build `20260901075146`. P1 lives only at `prototypes/p1.html`.
 
 ---
 
-## Step 1 — Reorder the site so it answers its own question
+## The one thing to understand first
 
-**The change.** Your city first. Order becomes:
+The site is **generated**. `instrument.html` is the template; a build script turns it into
+`index.html`, and a job re-runs that every night. P1 was built by editing `index.html` — the
+generated file, not the template.
 
-1. **Hot days** — your city, then vs now
-2. **Hot nights** — the part people miss
-3. **Public opinion** — almost everyone wants this
-4. **Carbon budget** — why it keeps rising  *(was chapter 01)*
-5. **What you can do**
-6. **Summary**
-7. **Sources**
-
-**Why first.** It is the only change that makes the promise and the page agree. Every other fix
-is smaller if this one lands first, and wasted effort if it lands last.
-
-**Concretely:** move the `.pane` elements; update the `CH` array, the no-JS rail copy, the
-front-page contents list, `scrollToChamber` indices, the kiosk loop order, and `?embed=<name>`.
-Keep the old chapter names as **aliases** so shared links never 404.
-
-**Risk:** medium. The rail, the intro hand-off and the share cards all read chapter indices.
-Mitigate with an executable invariant: a build assertion that the rail order, the contents list
-and the `CH` array are the same seven ids in the same order.
-
-## Step 2 — One question per screen
-
-**The change.** Every screen's heading becomes the question it answers, and the screen answers
-it in one sentence plus one graphic. Not a theme, not a statement — a question a person would ask.
-
-- "Today vs this date since 1940" → three graphics and 180 words under a heading naming only the
-  first. Split: *"Is today unusual here?"* (today vs 86 years) and *"When do hot days happen?"*
-  (the ring). The unlabelled year chart gets a title or goes.
-- Every graphic gets a one-line "what you're looking at" above it, in the same place every time.
-
-**Test that decides it:** show one screen to someone cold. If they cannot state the question,
-the screen is wrong — not the caption.
-
-## Step 3 — Merge down to about ten screens
-
-From the inventory, already argued:
-
-- rate slider → into the carbon-budget screen (it is that screen's own readout)
-- city picker → into the hot-days bars (a screen of settings promising data it does not show)
-- Personal changes → into Take action (same subject, same list, same source line)
-- What's improving → into Summary (two facts on a 77%-empty card; the Summary already holds four)
-- download footer → into Sources (a footer given a whole screen, so the site just stops)
-
-**16 → 11.** Then re-run the bar from Step 2 on all 11 and expect to lose one more.
-
-## Step 4 — Give every chapter an opening and an ending
-
-**The change.** A reader must always know which chapter they are in, what it will answer, and
-that it has ended.
-
-- **Opener:** chapter number + name + the question it answers, at full width, on the sky — not
-  inside a card. It should be impossible to miss the boundary.
-- **Closer:** the one number to carry out of that chapter, and the next chapter's question.
-- The rail keeps position; the openers and closers carry the *sense* of position.
-
-This is the direct answer to "the pages don't connect" and "where did I start and where did I end".
-
-## Step 5 — The front page carries the answer, not just the contents
-
-**The change.** A reader who scrolls no further should still leave with the finding. Put the four
-measured numbers on the front page as a preview strip — your hot days then/now, your hot nights,
-what people want, years of budget left — each linking to its chapter.
-
-Also: **give the site an ending.** It currently stops on a download list. It should end on what
-you now know, one action, and the sources.
-
-## Step 6 — Build the graphics that were only ever mockups
-
-In priority order, each judged by Step 2's bar before any of it is drawn:
-
-1. **Carbon budget** — chapter is still a big number and a slider. Needs the one image that makes
-   "102 billion tonnes" mean something: the budget as a bar being spent at 42.2 Gt/yr, with the
-   ordinary-thing benchmarks that started this whole idea.
-2. **The "is today unusual" screen** — today against 86 versions of the same date, drawn once and
-   plainly.
-3. **The ridge / volcano chart** — only if it answers a question the ring does not.
-
-**Rule I broke and will not break again:** a mockup is not a deliverable. Nothing is reported as
-done until it is in `instrument.html`, built, pushed, and served by the plain URL.
-
-## Step 7 — Lock the voice so the poetry cannot come back
-
-**The change.** A banned-pattern check in `pipeline.py` and `tools/build_offline.py` that **fails
-the build**: aphorism shapes ("X is not Y, it is Z"), internal codenames (sky/ground/people/
-cohort/instrument/chamber/beat as reader-facing nouns), self-praise ("honest", "every number
-shown" about itself), and the house slogan outside its one home.
-
-Three copy passes have been undone by drift. A check is the only thing that has ever held.
-
-## Step 8 — Re-test with strangers, on a protocol
-
-**The change.** A repeatable stranger run, before every ship that touches structure:
-
-1. Fresh profile, no query string, phone width. Let the intro play.
-2. Scroll the way a person does; screenshot every scroll.
-3. Answer three questions from the screenshots alone: *What is this? What is it telling me? Where
-   am I?*
-4. Read the heading outline alone. If it does not read like a table of contents, stop.
-
-Then real people again — the same three readers, plus one who has never seen it.
+So P1 as it stands would be erased by tonight's build. Nothing else on this plan can ship until
+that is fixed. That is Phase 0, and it is a gate, not a step.
 
 ---
 
-## Order and why
+## Phase 0 — Put P1 into the template  ·  the gate
 
-Step 1 → 4 → 3 → 2 → 5 → 6 → 7 → 8.
+Re-apply P1's changes to `instrument.html` so the build produces them:
+- the answer screen (headline + then/now bars + season ring in one card)
+- the six disclosure rows, built at runtime, each labelled "Chapter N of 7"
+- the summary numbers moved into the row previews
+- the contents page and the separate Summary chapter removed
+- the rail driven by which row is open
 
-Structure before content: reordering and chapter boundaries change what each screen has to do, so
-doing the merges or the graphics first means doing them twice. Step 7 goes in before the last copy
-pass so the pass is enforced rather than remembered.
+**Done when:** running the build produces a file that matches `prototypes/p1.html` in structure,
+the sky/sound/rail still work, there are no JS errors, and a nightly run leaves it intact.
 
-## What this plan deliberately does not do
+## Phase 1 — Three defects that are wrong on the live site today
 
-- **No new features.** Every step removes, reorders or clarifies. The site's problem is not that
-  it lacks capability.
-- **No visual redesign.** The type, the palette and the cards are not what the readers complained
-  about. Changing them would hide whether the structural fixes worked.
-- **No new chapters.** Seven is already two too many by the readers' account.
+These are P1's top three blockers AND live-site problems. They are the only items here that are
+about honesty rather than polish.
+
+1. **"Hot days" means two different things in the largest type on the page.** Seville and Delhi
+   use an absolute 35 °C. London uses 22.6 °C, Reykjavik 14.8 °C — each city's own 95th
+   percentile. The headline says "hot days" for all of them. Fix: the headline says what it
+   measured, per city.
+2. **The compare chart draws two cities on one shared axis** while its own caption says each
+   city has a different threshold, so the comparison the picture makes is one the caption
+   retracts. Fix: draw the multiple (2.5x, 6.7x) — the number that IS comparable — not the raw
+   counts on a shared scale.
+3. **The world outranks your city.** "2.4–2.5" is about four times larger than any number about
+   the reader, and the only thing you can play with — the emissions slider — belongs to the
+   world. Asked what they took away, the reader said the budget number, not their own city.
+   Fix: your city gets the biggest number and the interaction.
+
+## Phase 2 — The rest of P1's blocker list
+
+4. **One "now" per card.** Chapter 1 shows "2016–2025" in the bars, "the last 10 years" in the
+   headline, and "1996–2025" in the ring — three labels, two periods, one card.
+5. **Chart labels collide.** At 1280px "hot days — climbing" and "hot nights — climbing" print on
+   the same pixels; on a phone both vanish and leave two unlabelled coloured lines.
+6. **The rail lies.** Scrolled deep into the questions it still reads "01/07 YOUR CITY", the
+   landing screen has no rail at all, and nothing says how long the page is.
+7. **The phone's sound button is an unlabelled circle**, and the phone has no permanent
+   "Set your city" control at all.
+8. **The phone chapter strip cuts off mid-word** ("03 OTHER CIT") with nothing showing it scrolls.
+9. **Copy that explains the product**: "set your city and this becomes yours", "The band is that
+   gap, drawn to scale", "OR SCROLL FOR AN EXAMPLE".
+10. **The count-up animation shows numbers that were never true** — 0.3s after choosing London it
+    read "15 → 14" before settling on "19 → 47", showing the trend going the wrong way.
+11. **A teaser quotes the wrong number**: the header promises "89% want government action" while
+    the chapter asks about giving 1% of income.
+
+## Phase 3 — Left over from the earlier audit, still true
+
+- Printing gives 19 pages, 13 of them blank.
+- The kiosk loop can never reach the season ring.
+- `?embed` shows the site's chrome, which `reuse.html` promises it will not.
+- The ring's month ticks are below the 3:1 contrast floor for graphics.
+- The ring block has no heading, so heading-navigation skips it.
+- 29 February folds onto 28 February, so that one spoke draws from 38 chances in a "30-year"
+  era. Tiny, but it should be said out loud or fixed.
+
+## Phase 4 — Prove it, then ship
+
+1. Three **fresh** readers, one version each, on their own phones. The original testers have
+   spent their comprehension — they cannot be surprised twice.
+2. Ask six questions, then message them ten minutes later and ask what they remember.
+   Unprompted recall is the real score.
+3. Ship to the plain URL, confirm the plain URL serves it, then delete `/prototypes/`.
+
+---
+
+## Order, and why
+
+Phase 0 first, because nothing survives the night without it. Then Phase 1, because those three
+are wrong on the live site right now and they suppressed every prototype score. Then 2, then 4.
+Phase 3 can ride along or wait — none of it is on a path a reader takes by accident.
+
+## What is not in this plan
+
+The carbon-budget graphic and the ridge chart. P1 puts the budget behind a tap, so a new graphic
+for it is lower value than it was when it opened the site. Revisit after Phase 4.
