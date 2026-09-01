@@ -22,9 +22,31 @@
 @media(max-width:640px){#frontpage .toc button{grid-template-columns:1.8rem 1fr;gap:0 10px;padding:12px 2px}
   #frontpage .toc button b{font-size:15px}#frontpage .toc button span{font-size:13px}}
 .limits-h{font-size:17px;margin:26px 0 10px}
+/* ── PRINT ──────────────────────────────────────────────────────────────────
+   It printed 19 pages, 13 of them blank: a fixed full-viewport sky behind every
+   sheet, chapters collapsed to headers with nothing under them, and 100vh beats
+   each claiming a page of their own. Paper gets the reading, opened, and none of
+   the furniture. */
+@media print{
+  html,body{background:#fff!important;color:#111!important;height:auto!important;overflow:visible!important}
+  #stage,#atmo,#atmo-gl,#sky,.atmo,#ladder,#rail-dock,#soundbtn,#homechip,
+  .drawbtn,.beat-cue,#intro,#intro-scrim,.skip,#pulse{display:none!important}
+  #panes,.pane,.beats,.beat{display:block!important;height:auto!important;min-height:0!important;
+    opacity:1!important;transform:none!important;position:static!important;
+    contain:none!important;content-visibility:visible!important}
+  .beat{break-inside:avoid;page-break-inside:avoid;margin:0 0 14mm}
+  .sheet{background:#fff!important;border:1px solid #ccc!important;box-shadow:none!important;
+    max-width:100%!important;color:#111!important;backdrop-filter:none!important}
+  .sheet *,h1,h2,h3,p,li,b,span{color:#111!important;text-shadow:none!important}
+  /* every question opened: a printed page cannot be tapped */
+  .q .q-body,.q-body[hidden]{display:block!important;height:auto!important}
+  [hidden]{display:revert}
+  #sr-svg,svg{max-width:100%!important;height:auto!important}
+  a[href]:after{content:""}
+}
 #seasonring{margin:6px 0 22px}
 .sr-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
-.sr-title{font-size:15px;color:var(--bone)}
+.sr-title{font-size:15px;color:var(--bone);font-weight:500;margin:0}
 .sr-toggle{margin-left:auto;display:flex;gap:6px}
 .sr-toggle button{font-family:var(--mono);font-size:12px;padding:6px 12px;border-radius:999px;
   border:1px solid rgba(242,231,204,.28);background:none;color:var(--bone-2);cursor:pointer;
@@ -645,7 +667,11 @@ body.embed{overflow-x:hidden;overflow-y:auto}
 body.embed #panes>.pane{display:none}
 body.embed #panes>.pane.embed-show{display:block}
 body.embed .beat.embed-hide{display:none!important}
-body.embed .drawbtn{display:none!important}   /* a drawer in a chrome-less iframe is a soft-lock */   /* &beat=n pins a single beat */
+body.embed .drawbtn{display:none!important}   /* a drawer in a chrome-less iframe is a soft-lock */
+/* "chrome-less" has to mean it: the masthead, the place chip and the sound toggle belong to
+   the site, not to a chapter someone embedded in their own page. */
+body.embed #mast,body.embed #rail-dock,body.embed #soundbtn,body.embed #homechip{display:none!important}
+body.embed #panes{padding-top:0}   /* &beat=n pins a single beat */
 #embed-cred{position:fixed;bottom:10px;right:12px;z-index:60;font-family:var(--mono);font-size:12px;
   letter-spacing:.02em;color:#fff;background:rgba(20,22,28,.72);padding:3px 9px;border-radius:999px;
   text-decoration:none;text-shadow:0 1px 2px rgba(0,0,0,.6);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
@@ -2046,7 +2072,7 @@ body.ch-bedrock #mast{opacity:1!important}
             <div class="chartwrap"><div class="plate">
               <div id="seasonring" hidden>
                 <div class="sr-head">
-                  <span class="sr-title" id="sr-title">When hot days happen</span>
+                  <h3 class="sr-title" id="sr-title">When hot days happen</h3>
                   <span class="sr-toggle" role="group" aria-label="Which years to show">
                     <button type="button" id="sr-then" aria-pressed="false">1951&ndash;80</button>
                     <button type="button" id="sr-now" class="on" aria-pressed="true">last 30 years</button>
@@ -2075,7 +2101,7 @@ body.ch-bedrock #mast{opacity:1!important}
                   </div>
                 </div>
                 <p class="sr-sr" id="sr-sr"></p>
-                <p class="receipt" id="sr-alt">ERA5 &middot; smoothed &plusmn;7 days</p>
+                <p class="receipt" id="sr-alt">ERA5 &middot; smoothed &plusmn;7 days &middot; 29 Feb counted with 28 Feb</p>
               </div>
               <div id="recwin"></div>
               <div class="legend" id="rw-legend">
@@ -3836,7 +3862,7 @@ var __RING=(function(){
   for(var m=0;m<12;m++){
    var m1=pt(MS[m],R_ARC_A+6),m2=pt(MS[m],R_ARC_A+12);
    svg.appendChild(el("line",{x1:m1[0].toFixed(1),y1:m1[1].toFixed(1),x2:m2[0].toFixed(1),y2:m2[1].toFixed(1),
-     stroke:"rgba(242,231,204,.30)","stroke-width":"1"}));
+     stroke:"rgba(242,231,204,.55)","stroke-width":"1.2"}));   /* 3:1 floor for graphics */
    var lp=pt(MS[m]+15,R_ARC_A+24);
    var t=el("text",{x:lp[0].toFixed(1),y:lp[1].toFixed(1),fill:"rgba(242,231,204,.55)","font-size":"11.5",
      "text-anchor":"middle","dominant-baseline":"middle","letter-spacing":".06em"});
