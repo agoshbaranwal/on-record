@@ -114,12 +114,12 @@
   body.thm-ink .rung[aria-current="true"] .dot{background:var(--act)}
   /* THREE READERS SAID THEY COULD NOT TELL WHERE THEY WERE, and the rail printed one
      label with six anonymous ticks under it. Every chapter is named, all the time. */
-  .rung .lab{opacity:.62;transform:none;transition:opacity .22s ease}
+  .rung .lab{opacity:.92;transform:none;transition:opacity .22s ease}
   /* on a cream or orange sky, half-opacity ink is unreadable — the rail vanished on two chapters */
-  body.thm-ink .rung .lab{opacity:.78}
+  body.thm-ink .rung .lab{opacity:.95}
   body.thm-ink #ladder:hover .rung .lab,body.thm-ink #ladder:focus-within .rung .lab{opacity:1}
   .rung[aria-current="true"] .lab{opacity:1}
-  #ladder:hover .rung .lab,#ladder:focus-within .rung .lab{opacity:.8}
+  #ladder:hover .rung .lab,#ladder:focus-within .rung .lab{opacity:1}
   #ladder:hover .rung[aria-current="true"] .lab,#ladder:focus-within .rung[aria-current="true"] .lab{opacity:1}
   /* The rail has now grown a box THREE times, each defending the same thing: the sky runs
      bright at the horizon, so pale text on it disappears. A wash behind the text is the wrong
@@ -321,7 +321,6 @@ html{scroll-padding-top:0}
 .thm-ink #ladder .lab{color:var(--ink-2)!important;text-shadow:none!important}
 .thm-ink #ladder .idx{color:var(--act)!important;text-shadow:none!important}
 .thm-ink .rung[aria-current="true"] .lab,.thm-ink .rung.on .lab{color:var(--ink)!important}
-.thm-ink #ladder::after{background:rgba(62,18,8,.25)}
 .thm-ink #homechip{color:var(--ink)!important;border-color:rgba(62,18,8,.45)!important;
   background:rgba(244,244,241,.55)!important;text-shadow:none!important}
 @media(max-width:940px){
@@ -691,9 +690,6 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 #ladder{position:fixed;right:0;top:50%;transform:translateY(-50%);display:flex;
   flex-direction:column;align-items:flex-end;gap:0;z-index:7;padding:10px 0 10px 18px}
 
-#ladder::after{content:"";position:absolute;right:38px;top:44px;bottom:44px;width:1px;
-  background:rgba(242,231,204,.26)}                    /* the rail itself */
-.thm-ink #ladder::after{background:rgba(62,18,8,.30)}
 /* legibility comes from a halo, not a slab: dark chambers get a dark halo, ink chambers a light one */
 /* a tight halo first, then the soft one: on the bright band of the Sky and Morning skies the
    soft glow alone left the chapter names as pale ghosts */
@@ -714,7 +710,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 .rung .rof{display:none}
 .rung[aria-current=true] .rof{display:inline;opacity:.6}
 .rung[aria-current=true] .rnum{opacity:.85;color:var(--amber)}
-.rung .lab{font-weight:500;font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+.rung .lab{font-weight:600;font-size:13px;letter-spacing:.11em;text-transform:uppercase;
   color:var(--bone-2);display:block;transition:color .3s}
 .rung .fact{display:block;font-size:13px;color:var(--bone-3);margin-top:3px;
   letter-spacing:.01em;transition:color .3s}
