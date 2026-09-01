@@ -116,15 +116,19 @@
   .rung[aria-current="true"] .lab{opacity:1}
   #ladder:hover .rung .lab,#ladder:focus-within .rung .lab{opacity:.8}
   #ladder:hover .rung[aria-current="true"] .lab,#ladder:focus-within .rung[aria-current="true"] .lab{opacity:1}
-  .rung .lab,.rung .fact{text-shadow:0 1px 3px rgba(var(--glass),.85),0 0 10px rgba(var(--glass),.7)}
-  body.thm-ink .rung .lab,body.thm-ink .rung .fact{
-    text-shadow:0 1px 3px rgba(246,245,242,.9),0 0 10px rgba(246,245,242,.75)}
+  /* The rail has now grown a box THREE times, each defending the same thing: the sky runs
+     bright at the horizon, so pale text on it disappears. A wash behind the text is the wrong
+     answer — it is a slab with a soft edge, and it reads as a panel the page has nowhere else.
+     The right answer is an outline ON the letters, the way a subtitle survives any film: a
+     tight dark ring on light text, a tight light ring on ink text. No background, ever. */
+  .rung .lab,.rung .fact{text-shadow:
+    0 0 3px rgba(3,12,14,.95),0 1px 2px rgba(3,12,14,.92),
+    1px 0 2px rgba(3,12,14,.6),-1px 0 2px rgba(3,12,14,.6),0 -1px 2px rgba(3,12,14,.6)}
+  body.thm-ink .rung .lab,body.thm-ink .rung .fact{text-shadow:
+    0 0 3px rgba(250,248,242,.96),0 1px 2px rgba(250,248,242,.92),
+    1px 0 2px rgba(250,248,242,.7),-1px 0 2px rgba(250,248,242,.7),0 -1px 2px rgba(250,248,242,.7)}
   #ladder .subs{padding-right:2px}
-  /* THE SKY GOES BRIGHT MID-GRADIENT ON TWO CHAPTERS and the rail disappeared into it — a
-     halo cannot save light text on a light sky. A feathered wash gives the column ground
-     without putting a slab back: invisible on the dark chapters, decisive on the bright ones. */
-  #ladder{background:linear-gradient(to left,rgba(4,14,16,.80) 0,rgba(4,14,16,.62) 62%,rgba(4,14,16,0) 100%)}
-  body.thm-ink #ladder{background:linear-gradient(to left,rgba(247,244,236,.88) 0,rgba(247,244,236,.66) 62%,rgba(247,244,236,0) 100%)}
+  #ladder,body.thm-ink #ladder{background:none}
 }
 @media(prefers-reduced-motion:reduce){
   #ladder::after,.rung .dot,.rung .lab{transition:none}
