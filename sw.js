@@ -6,7 +6,7 @@
    so the browser always detects an update and every older cache is purged — no
    stale copy can linger (the trap that must never recur). There is no push and
    no notification code here: the site cannot send notifications. */
-const BUILD = "20260901075146-b58019e7";
+const BUILD = "20260901075146-6c7e3c67";
 const CACHE = "onrecord-" + BUILD;
 const SHELL = ["./", "./index.html", "./reuse.html", "./manifest.webmanifest",
   "./data/perday-seville.json", "./data/impact.json",   // site-data is inlined into index.html; only these are fetched at runtime

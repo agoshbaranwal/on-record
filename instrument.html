@@ -2025,7 +2025,7 @@ body.ch-bedrock #mast{opacity:1!important}
           <!-- BEAT 2 — the then-vs-now count: the chapter's one number -->
           <div class="beat">
           <div class="sheet">
-            <h2 id="g-count-h2"><span id="g-h2">Seville</span>: <b class="num" id="g-then">34</b> <span id="g-hotw">hot</span> days a year in 1951&ndash;80, <b class="num" id="g-now">66</b> in the last 10 years.</h2>
+            <h2 id="g-count-h2"><span id="g-h2">Seville</span>: <b class="num" id="g-then">34</b> days a year above <span id="g-thr">35&nbsp;&deg;C</span> in 1951&ndash;80, <b class="num" id="g-now">66</b> in the last 10 years.</h2>
             <div id="g-fact"><p class="gb-say">Days at or above 35&nbsp;&deg;C in Seville. Set your city to see yours.</p></div>
             <p class="take-mini" id="g-take" hidden>Save:
               <button type="button" data-ga="card">Image</button> &middot;
@@ -2111,7 +2111,7 @@ body.ch-bedrock #mast{opacity:1!important}
               </div>
             </div>
             <p class="beat-cue">Next: Hot nights</p>
-            <p id="cmp-note">Each city has its own temperature threshold, so the &times; column is the one that compares. Averages: 1951&ndash;80 vs the last ten years. ERA5 via Open-Meteo.</p>
+            <p id="cmp-note">Each city is counted against its own temperature, so the bar shows how many times the count multiplied. Averages: 1951&ndash;80 vs the last ten years. ERA5 via Open-Meteo.</p>
           </div>
         </div>
       </section>
@@ -3670,7 +3670,7 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
  el("band-whisper").innerHTML=srcShort(LO)+" says "+
    Math.round(LO.remaining_now_gt)+" Gt, "+srcShort(HIe)+" says "+Math.round(HIe.remaining_now_gt)+
    " Gt — about "+_wk+" week"+(_wk==="1"?"":"s")+" apart at this rate. "+
-   "The band is that gap, drawn to scale.";
+   "";
   band.setAttribute("aria-label","Two independent carbon budgets agree to within about "+
    Math.abs(Math.round(HIe.remaining_now_gt-LO.remaining_now_gt))+" gigatonnes — activate for detail.");
  }
@@ -3991,10 +3991,12 @@ var __RING=(function(){
   var T=document.getElementById("sr-title");if(T&&title)T.textContent=title;
   var tn=document.getElementById("sr-then"),nw=document.getElementById("sr-now");
   if(tn)tn.textContent=eraA;
-  if(nw)nw.textContent=R.eraB||"last 30 years";
+  /* the bars above this card say "the last 10 years". Printing "1996-2025" beside them made
+     a reader work out that these are different windows; naming the window says it outright. */
+  if(nw)nw.textContent="last 30 years";
   var ka=document.getElementById("sr-ka"),kb=document.getElementById("sr-kb");
   if(ka)ka.textContent=eraA;
-  if(kb)kb.textContent=R.eraB||"last 30 years";
+  if(kb)kb.textContent="last 30 years";
   function mark(w){
    if(tn){tn.classList.toggle("on",w===0);tn.setAttribute("aria-pressed",w===0?"true":"false");}
    if(nw){nw.classList.toggle("on",w===1);nw.setAttribute("aria-pressed",w===1?"true":"false");}}
@@ -4064,11 +4066,14 @@ function buildGround(V){
     (function st(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/900);
      elx.textContent=String(Math.round(to*(1-Math.pow(1-k,3))));
      if(k<1)b.__raf.push(requestAnimationFrame(st));})(performance.now());},delay);}
+   if(CUSTOM){el("g-then").textContent=String(Math.round(thenN));
+    el("g-now").textContent=String(Math.round(nowN));return;}
    try{var io=b.__io=new IntersectionObserver(function(es){
     for(var q=0;q<es.length;q++)if(es[q].isIntersecting&&!done){done=true;io.disconnect();
      cnt(el("g-then"),Math.round(thenN),0);cnt(el("g-now"),Math.round(nowN),250);}},{threshold:.5});
    io.observe(b);}catch(e){}})();}
- if(el("g-hotw"))el("g-hotw").textContent="hot";
+ /* the number and the temperature it counted travel together, always */
+ if(el("g-thr"))el("g-thr").innerHTML=(CUSTOM?THR.hot.toFixed(1):"35")+"\u00A0\u00B0C";
  /* the ring follows whatever record is on screen: a live fetch, the instant table, or the
     worked example — one renderer, three sources, never a picture of somewhere else. */
  try{ if(window.__RING){
@@ -6277,7 +6282,9 @@ window.__HOME=__HOME;
     set("rc-2-s","Nights at or above 25 \u00B0C in Seville, the example \u2014 set your city and this becomes yours.");
     var rs=el("recap-say");if(rs)rs.textContent="Four things this page measured, each from a named source.";
    }
-   set("rc-3-n",Math.round(P.global_want_action_pct)+"% want government action");
+   /* the row preview must quote the number the chapter actually opens with, or the reader
+      guesses against the wrong question and is told they were wrong. */
+   set("rc-3-n",Math.round(P.world.actual)+" in 100 would give 1% of their income");
    set("rc-3-s","Of every 100 people worldwide, "+Math.round(P.world.actual)+" would give 1% of their income and "+Math.round(P.global_want_action_pct)+"% want stronger government action (Andre et al. 2024, 125 countries) \u2014 most underestimate both.");
    var yl=yearsStr(RNOW);
    set("rc-4-n",yl+" years of budget left");
@@ -6300,7 +6307,10 @@ window.__HOME=__HOME;
     design); a cooled record reads "fewer" as plainly as "more". */
  function cmpStats(rows){
   var w=mean(rows,1951,1980),n=mean(rows,LF-9,LF);
-  return {w:w,n:n,wR:Math.round(w),nR:Math.round(n)};
+  /* the multiple is the comparable quantity; over a near-zero baseline it is noise, so it
+     falls back to 1 and the card's headline says "from almost none" instead. */
+  var mult=(w<1)?1:(n>=w? n/Math.max(.01,w) : w/Math.max(.01,n));
+  return {w:w,n:n,wR:Math.round(w),nR:Math.round(n),mult:mult,up:n>=w};
  }
  function cmpHead(s){
   if(s.w<1)return s.nR+" from almost none";        /* a multiple over ~zero would be noise */
@@ -6310,17 +6320,18 @@ window.__HOME=__HOME;
  function cmpCard(hostId,name,rows,thr,exampleBadge,mx){
   var host=el(hostId);if(!host)return;
   var s=cmpStats(rows);
-  mx=Math.max(mx||0,1);                 /* ONE scale across both cards, passed in by buildCompare */
+  mx=Math.max(mx||0,1);   /* one scale, now in multiples — a unit both cities genuinely share */
   host.innerHTML=
    '<p class="cmp-name">'+name+'</p>'+
    (exampleBadge?'<p class="cmp-badge">the example \u2014 set your city above</p>':'')+
    '<p class="cmp-x num">'+cmpHead(s)+'</p>'+
    '<p class="cmp-counts">days above '+(+thr).toFixed(1)+' \u00B0C: '+s.wR+' \u2192 '+s.nR+' a year</p>'+
+   /* one bar, and it measures the MULTIPLE — the only quantity two cities on different
+      thresholds can share. Their raw counts are printed above, each with its own temperature. */
    '<div class="cmp-bars" aria-hidden="true">'+
-    '<i style="width:'+Math.max(1,s.w/mx*100).toFixed(1)+'%"></i>'+
-    '<i class="now" style="width:'+Math.max(1,s.n/mx*100).toFixed(1)+'%"></i></div>'+
-   '<div class="cmp-ax" aria-hidden="true"><span>0</span><span>1951\u201380 \u25b8 now, days a year</span><span>'+
-     Math.round(mx)+'</span></div>';
+    '<i class="now" style="width:'+Math.max(2,Math.min(100,s.mult/mx*100)).toFixed(1)+'%"></i></div>'+
+   '<div class="cmp-ax" aria-hidden="true"><span>1\u00D7</span><span>times as many, then \u25b8 now</span><span>'+
+     (mx>=10?Math.round(mx):mx.toFixed(1))+'\u00D7</span></div>';
  }
  function instantRows(c){var r=[];for(var i=0;i<c.d.length;i++)r.push({year:c.y0+i,n:c.d[i]});return r;}
  function buildCompare(){
@@ -6345,7 +6356,7 @@ window.__HOME=__HOME;
   /* the shared maximum: both cards are drawn against the bigger city's count, so a longer
      bar means more days — which is what a reader assumes a bar means */
   var sa=cmpStats(aRows),sb=cmpStats(bRows);
-  var shared=Math.max(sa.w,sa.n,sb.w,sb.n,1);
+  var shared=Math.max(sa.mult,sb.mult,1.2);   /* multiples, not raw counts */
   cmpCard("cmp-a",aName,aRows,aThr,aEx,shared);
   cmpCard("cmp-b-body",c.n,bRows,c.th,false,shared);
  }

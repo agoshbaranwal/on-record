@@ -69,7 +69,7 @@ CARD = (f"Seville: {_was} hot days a year in 1951\u201380, {_now} now. "
         f"Check your own city.")
 ALT = f"On Record card: in Seville, days at or above 35C rose from {_was} a year to {_now}."
 head_meta = (
-    "<title>On Record \u2014 how much hotter is your city?</title>"
+    "<title>On Record \u2014 how many hot days does your city get?</title>"
     '<meta name="description" content="' + DESC + '">'
     '<link rel="canonical" href="' + OG + '">'
     '<meta property="og:type" content="website">'
