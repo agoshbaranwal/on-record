@@ -492,7 +492,7 @@ head_meta = (
     # PWA: installable, offline-capable (network-first SW), zero tracking
     '<link rel="manifest" href="manifest.webmanifest">'
     '<meta name="theme-color" content="#05171A">'
-    '<link rel="icon" href="og/icon-192.png"><link rel="apple-touch-icon" href="og/icon-192.png">'
+    '<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%3E%3Cg%20stroke%3D%22%23F2E7CC%22%20stroke-width%3D%223.1%22%3E%3Cpath%20d%3D%22M7%208V24%22%2F%3E%3Cpath%20d%3D%22M12.5%208V24%22%2F%3E%3Cpath%20d%3D%22M18%208V24%22%2F%3E%3Cpath%20d%3D%22M23.5%208V24%22%2F%3E%3C%2Fg%3E%3Cpath%20d%3D%22M4.6%2023L25.9%209%22%20stroke%3D%22%23FF6B52%22%20stroke-width%3D%223.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"><link rel="apple-touch-icon" href="og/icon-192.png">'
 )
 doc = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
        '<meta name="viewport" content="width=device-width, initial-scale=1">'

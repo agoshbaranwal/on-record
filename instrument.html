@@ -49,6 +49,10 @@
    which capped every row at 24 characters — 427px of row under an 1180px card, and a screen
    two-thirds empty to its right. The row is a band, not a paragraph. */
 .q>.q-h{max-width:none}
+/* the mark sits on the wordmark's own baseline and takes its colour from it */
+.word{display:flex;align-items:center;gap:.55em;white-space:nowrap}
+.word .mk{width:1.7em;height:1.7em;flex:0 0 auto;overflow:visible;color:var(--bone-2)}
+body.thm-ink .word .mk{color:var(--ink-2)}
 #seasonring{margin:6px 0 22px}
 .sr-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
 .sr-title{font-size:15px;color:var(--bone);font-weight:500;margin:0}
@@ -1898,7 +1902,7 @@ body.ch-bedrock #mast{opacity:1!important}
     <!-- #budget-band removed: it restated the dial number a fourth time, permanently. -->
     <header id="mast">
       <div>
-        <p class="word">On Record</p>
+        <p class="word"><svg class="mk" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><g fill="none" stroke-linecap="round"><g stroke="currentColor" stroke-width="3.1"><path d="M7 8V24"/><path d="M12.5 8V24"/><path d="M18 8V24"/><path d="M23.5 8V24"/></g><path d="M4.6 23L25.9 9" stroke="#FF6B52" stroke-width="3.6"/></g></svg>On Record</p>
         <h1 class="plain" id="mast-tag">Hot days and nights in your city</h1>
         <!-- the place chip docks to the rail: the sky gutter is chrome's own column -->
       </div>
