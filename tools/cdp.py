@@ -46,7 +46,7 @@ def _free_port():
     s = socket.socket(); s.bind(("127.0.0.1", 0)); p = s.getsockname()[1]; s.close(); return p
 
 class Chrome:
-    def __init__(self, width=1280, height=900, reduced_motion=False, mobile=False, extra=()):
+    def __init__(self, width=1280, height=900, reduced_motion=False, mobile=False, extra=(), gpu=False):
         self.w, self.h = width, height
         self.port = _free_port()
         self.profile = tempfile.mkdtemp(prefix="cdp-")
@@ -60,6 +60,12 @@ class Chrome:
                 "--disable-dev-shm-usage", "--disable-extensions",
                 "--disable-background-networking", "--disable-sync",
                 "--disable-component-update", "--disable-domain-reliability"]
+        if gpu:
+            # WebGL never initialises under --disable-gpu, so every measurement taken with it
+            # is blind to the site's own sky — the most expensive thing on the page.
+            args = [a for a in args if a != "--disable-gpu"]
+            args += ["--use-angle=swiftshader", "--enable-unsafe-swiftshader",
+                     "--enable-features=Vulkan,UseSkiaRenderer"]
         if reduced_motion: args.append("--force-prefers-reduced-motion")
         args += list(extra)
         # its own process group, so close() can take the renderers down with the leader

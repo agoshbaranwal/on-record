@@ -649,7 +649,7 @@ a{color:inherit}
    The card is a calm, dismissible information reward for coming back, never a nag. */
 #sincecard{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);z-index:14;
   width:min(440px,calc(100vw - 32px));opacity:0;pointer-events:none;transition:opacity .5s ease,transform .5s ease;
-  background:rgba(var(--glass),.92);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
+  background:rgba(var(--glass),.97);
   border:1px solid rgba(242,231,204,.16);border-radius:12px;padding:16px 18px 15px;
   box-shadow:0 10px 40px rgba(0,0,0,.4);color:var(--bone-2)}
 #sincecard.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
@@ -688,7 +688,7 @@ body.embed #mast,body.embed #rail-dock,body.embed #soundbtn,body.embed #homechip
 body.embed #panes{padding-top:0}   /* &beat=n pins a single beat */
 #embed-cred{position:fixed;bottom:10px;right:12px;z-index:60;font-family:var(--mono);font-size:12px;
   letter-spacing:.02em;color:#fff;background:rgba(20,22,28,.72);padding:3px 9px;border-radius:999px;
-  text-decoration:none;text-shadow:0 1px 2px rgba(0,0,0,.6);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+  text-decoration:none;text-shadow:0 1px 2px rgba(0,0,0,.6)}
 #embed-cred:hover,#embed-cred:focus-visible{background:rgba(20,22,28,.85);outline:none}
 /* ?kiosk: the real instrument, idle-quiet — cursor hides, chrome dims, nothing new appears */
 body.kiosk.idle{cursor:none}
@@ -820,7 +820,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 .thm-ink .drawbtn{color:var(--ink-2);border-color:rgba(62,18,8,.35);text-shadow:0 1px 5px rgba(244,244,241,.7),0 0 12px rgba(244,244,241,.55)}
 .thm-ink .drawbtn:hover{color:var(--ink);border-color:rgba(62,18,8,.6)}
 .plate{background:rgba(var(--glass),.42);border:1px solid var(--bone-hair);border-radius:4px;
-  padding:14px 16px;backdrop-filter:blur(3px)}
+  padding:14px 16px}
 .thm-ink .plate{background:rgba(255,251,240,.5);border-color:var(--ink-hair)}
 svg{display:block;width:100%;height:auto}
 
@@ -1576,7 +1576,7 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 #band .band-tag{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
   font-family:var(--mono);font-size:12px;letter-spacing:.05em;color:var(--bone);white-space:nowrap;
   background:rgba(var(--glass),.5);padding:3px 12px 3px 12px;border-radius:999px;pointer-events:none;
-  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);text-shadow:var(--halo)}
+  text-shadow:var(--halo)}
 #band .band-tag::after{content:"  ⓘ";opacity:.75}
 #band:hover .band-tag,#band.band-open .band-tag,#band:focus-visible .band-tag{background:rgba(var(--glass),.78)}
 #band .whisper{position:absolute;left:50%;top:100%;transform:translate(-50%,10px);
@@ -1617,7 +1617,7 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
   .rung{padding:8px 0;width:auto;flex:0 0 auto;scroll-snap-align:center}
   .rung .pill{position:static;width:auto;height:auto;overflow:visible;clip-path:none;
     padding:5px 11px;border:1px solid rgba(242,231,204,.22);border-radius:999px;
-    background:rgba(3,15,17,.80);backdrop-filter:blur(3px);white-space:nowrap;
+    background:rgba(3,15,17,.92);white-space:nowrap;
     font-size:13px;color:var(--bone-2);text-shadow:none;display:block}
   .rung[aria-current="true"] .pill,.rung.on .pill{color:var(--bone);
     border-color:rgba(242,231,204,.55);background:rgba(3,15,17,.94)}
@@ -1642,7 +1642,7 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
     padding:0 12px;gap:7px;
     justify-content:center;border:1px solid rgba(242,231,204,.22);
     border-radius:999px;background:rgba(var(--glass),.62);
-    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+}
   #soundbtn #soundlab{position:static;width:auto;height:auto;margin:0;clip:auto;overflow:visible;
     font-size:11px;letter-spacing:.08em;white-space:nowrap}
   .thm-ink #soundbtn{background:rgba(250,246,236,.7);border-color:rgba(62,18,8,.2)}
@@ -1770,7 +1770,7 @@ body.embed #qlead{display:none}
   padding:17px 14px 17px 12px;border-top:1px solid var(--bone-hair);
   font-weight:400;cursor:pointer;transition:background .18s ease;
   /* a plate, so a row never has to be read through the sky behind it */
-  background:rgba(var(--glass),.34);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+  background:rgba(var(--glass),.80)}
 .thm-ink .q-h{background:rgba(250,246,236,.42)}
 .q-num{flex:0 0 2.1rem;font-family:var(--mono);font-size:12px;font-style:italic;
   color:var(--amber);opacity:.85;letter-spacing:.02em}
@@ -1778,7 +1778,7 @@ body.embed #qlead{display:none}
 /* THE OPEN ROW PINS ITSELF. While you read a chapter its number and its question stay on
    screen, so "where am I" has an answer at every scroll position, not just at the top. */
 .q.open>.q-h{position:sticky;top:0;z-index:7;
-  background:rgba(var(--glass),.93);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  background:rgba(var(--glass),.98);
   border-bottom:1px solid var(--bone-hair);box-shadow:0 6px 22px rgba(0,0,0,.30)}
 .thm-ink .q.open>.q-h{background:rgba(250,246,236,.95);box-shadow:0 6px 22px rgba(62,18,8,.12)}
 @media(max-width:940px){.q.open>.q-h{box-shadow:0 4px 16px rgba(0,0,0,.34)}}
