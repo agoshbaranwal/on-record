@@ -68,7 +68,10 @@ body.thm-ink .word .mk{color:var(--ink-2)}
 .sr-figure{position:relative;flex:0 1 326px;width:min(326px,100%);container-type:inline-size;margin:0 auto}
 #sr-svg{display:block;width:100%;height:auto}
 .sr-centre{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;text-align:center;pointer-events:none}
+  justify-content:center;text-align:center;pointer-events:none;
+  /* --sr-shift is set from the city's own season: the stack leans away from the drawing.
+     0 until the ring has data, so a ring that never renders is not shoved off-centre. */
+  transform:translateY(var(--sr-shift,0))}
 /* 40cqw broke 'days of hot season' onto two lines and the taller stack then ran into the
    drawing; at the legible size it needs the room. */
 .sr-centre>*{max-width:56cqw}
@@ -347,7 +350,12 @@ html{scroll-padding-top:0}
 #cmp-sel{width:100%;background:rgba(3,15,17,.55);color:var(--bone);font:inherit;font-size:15px;
   border:1px solid rgba(242,231,204,.25);border-radius:8px;padding:9px 10px;margin:0 0 12px}
 #cmp-sel:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
-#cmp-note{margin-top:16px;font-size:13px;line-height:1.55;color:var(--bone-3);max-width:64ch}
+/* the chapter's answer, above its own small print */
+#cmp-spread{margin-top:18px;font-size:17px;line-height:1.5;color:var(--bone);max-width:52ch}
+#cmp-spread b{font-family:var(--mono);font-weight:500;color:var(--amber);font-variant-numeric:tabular-nums}
+.thm-ink #cmp-spread{color:var(--ink)}
+.thm-ink #cmp-spread b{color:var(--act)}
+#cmp-note{margin-top:10px;font-size:13px;line-height:1.55;color:var(--bone-3);max-width:64ch}
 @media(max-width:640px){#cmp-grid{grid-template-columns:1fr}.cmp-x{font-size:28px}}
 @media(prefers-reduced-motion:reduce){.cmp-bars i{transition:none}}
 
@@ -2193,6 +2201,7 @@ body.ch-bedrock #mast{opacity:1!important}
               </div>
             </div>
             <p class="beat-cue">Next: Hot nights</p>
+            <p id="cmp-spread"></p>
             <p id="cmp-note">Each city is counted against its own temperature, so the bar shows how many times the count multiplied. Averages: 1951&ndash;80 vs the last ten years. ERA5 via Open-Meteo.</p>
           </div>
         </div>
@@ -2421,6 +2430,7 @@ body.ch-bedrock #mast{opacity:1!important}
           <h2 class="page-what"><b class="pw-name">Summary</b><span class="sr-only">. </span><span class="pw-say" id="recap-say">Four numbers from this page.</span></h2>
           <ol id="recap-list">
             <li><b id="rc-1-n">&mdash;</b><span id="rc-1-s">Your town&rsquo;s hot days, then and now.</span></li>
+            <li><b id="rc-5-n">&mdash;</b><span id="rc-5-s">How many of the cities on this page have more hot days.</span></li>
             <li><b id="rc-2-n">&mdash;</b><span id="rc-2-s">Hot nights a year in Delhi, the example &mdash; Set your city and this becomes yours.</span></li>
             <li><b id="rc-3-n">&mdash;</b><span id="rc-3-s">How many people around you want action.</span></li>
             <li><b id="rc-4-n">&mdash;</b><span id="rc-4-s">How long the world&rsquo;s carbon budget lasts at today&rsquo;s pace.</span></li>
@@ -2659,16 +2669,16 @@ function classify(t,place){
   longL="Today sits in the top 1% of "+dl+"s in "+n+" years of record — about the "+P()+".";}
  else if(pct!=null&&pct>=P95){cls="extreme";tier="B";
   shortL="among the hottest "+dl+"s on record";
-  longL="Today is around the "+P()+" of "+n+" years for this date — among the hottest "+dl+"s on record.";}
+  longL="Today is among the hottest "+dl+"s on record for this date.";}   /* the percentile is in #g-receipt, verbatim */
  else if(pct!=null&&pct>=WARM){cls="warm";tier="C";
   shortL="a warm day for the date";
-  longL="A warm one for "+dl+" — about the "+P()+" of "+n+" years"+(recS?" — but short of the record ("+recS+", "+recy+").":".");}
+  longL="A warm one for "+dl+(recS?", but short of the record ("+recS+", "+recy+").":".");}
  else if(pct!=null&&pct<=COOL){cls="cool";tier="C";
   shortL="a cool day for the date";
-  longL="A cool "+dl+" by the record — about the "+P()+" of "+n+" years."+(recS?" The record holds at "+recS+" ("+recy+").":"");}
+  longL="A cool "+dl+" by the record."+(recS?" The record holds at "+recS+" ("+recy+").":"");}
  else if(pct!=null){cls="ordinary";tier="C";
   shortL="an ordinary day by the record";
-  longL="An ordinary day by the record — about the "+P()+" of "+n+" years for this date. Nothing here broke.";}
+  longL="An ordinary day by the record for this date. Nothing here broke.";}
  else {cls="unknown";tier="C";shortL=null;longL=null;}
  /* THE DOT is computed straight from its published, falsifiable definition — today reached at least
     the 95th percentile for this date, OR tied/passed a same-date record — NEVER from the class label,
@@ -3169,7 +3179,7 @@ function enterChamber(i){
  var ROWS=[
   {id:"night",q:"What about the nights?",num:"rc-2-n",say:"rc-2-s",where:true},
   {id:"compare",q:"Is it like this everywhere?",
-   sub:"your city next to another city",take:cmp},
+   num:"rc-5-n",where:"the cities on this page",take:cmp},
   {id:"sky",q:"How long can the world keep emitting?",num:"rc-4-n",say:"rc-4-s",where:"Worldwide"},
   {id:"firstlight",q:"What do other people think?",num:"rc-3-n",say:"rc-3-s",sayEnd:true,where:"Worldwide"},
   {id:"morning",q:"What actually helps?",sub:"actions, and what each one cuts"},
@@ -3717,8 +3727,8 @@ function calc(){NUM.budget=Math.round(LO.remaining_now_gt);
      setTimeout(function(){g.classList.add("on");},20);}else g.classList.add("on");
    }
    var perMonth=target/12, days=1/(target/365);
-   if(cap)cap.innerHTML="Each block is one month at "+(target<10?target.toFixed(1):Math.round(target))+
-    " billion tonnes a year \u2014 about <b>"+perMonth.toFixed(1)+" billion tonnes</b> a block."+
+   if(cap)cap.innerHTML="Each block is one month \u2014 about <b>"+perMonth.toFixed(1)+
+    " billion tonnes</b>."+   /* the rate is on the big number's label and on the dial */
     (mHi>mLo?" The hollow blocks are where the two budgets disagree.":"")+
     " The world emits a billion tonnes every <b>"+(days<1?(days*24).toFixed(0)+" hours":days.toFixed(0)+" days")+"</b>.";
   })();
@@ -4090,6 +4100,16 @@ var __RING=(function(){
   if(_rc)_rc.innerHTML="ERA5 &middot; "+eraA+" vs "+eraYears+" &middot; smoothed &plusmn;7 days &middot; 29 Feb counted with 28 Feb";
   sA=season(A);sB=season(B);
   if(!sA||!sB){hide();return;}          /* a place with almost no hot days has no season to draw */
+  /* THE CENTRE STACK MOVES AWAY FROM THE SEASON. Day 0 is at the top and the ring runs
+     clockwise, so sin(angle of the season's midpoint) is how far below the centre its mass
+     sits: +1 a July peak (northern summer, bottom of the ring), -1 a January one (southern).
+     Shift the label the other way. A season centred left or right gets no shift and needs
+     none. General by construction: it reads the city's own data, not a hemisphere. */
+  var _cen=host.querySelector(".sr-centre");
+  if(_cen){
+    var _mid=(sB[1]+sB[0]/2)%365;
+    _cen.style.setProperty("--sr-shift",(-Math.sin(ang(_mid))*9).toFixed(1)+"%");
+  }
   mx=0;for(var i=0;i<365;i++){if(A[i]>mx)mx=A[i];if(B[i]>mx)mx=B[i];}
   if(mx<=0){hide();return;}
   peak=0;var pv=-1;for(i=0;i<365;i++)if(B[i]>pv){pv=B[i];peak=i;}
@@ -5319,10 +5339,14 @@ function buildNightExample(){
  if(_xs)_xs.innerHTML="Hot nights <b>"+Math.round(nThen)+" \u2192 "+Math.round(nNow)+
   "</b> a year. Hot days <b>"+Math.round(dThen)+" \u2192 "+Math.round(dNow)+
   "</b>. A hot day in Delhi is one at or above 35&nbsp;&deg;C.";
+ /* was: "Days at or above 35 °C in Delhi went down by about 10 a year since 1951–80.
+    Nights that never fall below 25 °C went up by about 16 a year over the same period."
+    Both thresholds and the baseline are printed in the line above and in the receipt
+    below; the sentence only has to carry the two movements. */
  el("n-ex-lead").innerHTML=
-  "Days at or above 35&nbsp;&deg;C in Delhi went "+(dD<0?"<b>down</b>":"<b>up</b>")+" by about <b>"+
-  Math.abs(dD)+" a year</b> since 1951&ndash;80. Nights that never fall below 25&nbsp;&deg;C went "+
-  "<b>up</b> by about <b>"+Math.abs(nD)+" a year</b> over the same period. Haze over the "+
+  "Delhi&rsquo;s hot days went "+(dD<0?"<b>down</b>":"<b>up</b>")+" by about <b>"+
+  Math.abs(dD)+" a year</b>. Its hot nights went "+
+  "<b>up</b> by about <b>"+Math.abs(nD)+"</b>. Haze over the "+
   "Indo-Gangetic Plain blocks sunlight and holds Delhi&rsquo;s afternoon highs down "+
   "(Padma Kumari et al. 2007).";
  el("n-rec-ex").innerHTML="Delhi &middot; days &ge;35&nbsp;&deg;C: <b>"+(+dThen).toFixed(1)+"&rarr;"+(+dNow).toFixed(1)+
@@ -6386,7 +6410,9 @@ window.__HOME=__HOME;
    /* the row preview must quote the number the chapter actually opens with, or the reader
       guesses against the wrong question and is told they were wrong. */
    set("rc-3-n",Math.round(P.world.actual)+" in 100 would give 1% of their income");
-   set("rc-3-s","Of every 100 people worldwide, "+Math.round(P.world.actual)+" would give 1% of their income and "+Math.round(P.global_want_action_pct)+"% want stronger government action (Andre et al. 2024, 125 countries) \u2014 most underestimate both.");
+   /* was six figures, two of them the row's own value said again. Both statistics are
+      printed in the chapter above this line; what the line is for is the finding. */
+   set("rc-3-s","Most people underestimate both \u2014 how many would give, and how many want stronger government action. Andre et al. 2024, 125 countries.");
    var yl=yearsStr(RNOW);
    set("rc-4-n",yl+" years of budget left");
    /* was: "At today's 42 billion tonnes a year, that is how long the world can keep emitting
@@ -6463,6 +6489,29 @@ window.__HOME=__HOME;
   var shared=Math.max(sa.mult,sb.mult,1.2);   /* multiples, not raw counts */
   cmpCard("cmp-a",aName,aRows,aThr,aEx,shared);
   cmpCard("cmp-b-body",c.n,bRows,c.th,false,shared);
+  spread(slugs);
+ }
+ /* THE CHAPTER'S OWN QUESTION, ANSWERED. Counted with cmpStats — the same 1951–80 vs
+    last-ten-years means the two cards are drawn from — over every city the page ships. */
+ function spread(slugs){
+  var host=el("cmp-spread");if(!host||!D||!D.instant)return;
+  var up=0,down=0,fell=[];
+  slugs.forEach(function(sl){
+   var c=D.instant[sl];if(!c||!c.d)return;
+   var st=cmpStats(instantRows(c));
+   if(st.n>st.w)up++; else if(st.n<st.w){down++;fell.push(c.n);}
+  });
+  var tot=up+down;if(!tot){host.innerHTML="";return;}
+  fell.sort();
+  var names=fell.length>1?fell.slice(0,-1).join(", ")+" and "+fell[fell.length-1]:fell[0];
+  /* a sentence does not open on a numeral */
+  var WORD=["No","One","Two","Three","Four","Five","Six","Seven","Eight","Nine"];
+  var lead=down<WORD.length?WORD[down]:String(down);
+  host.innerHTML="Of the <b>"+tot+"</b> cities on this page, <b>"+up+
+   "</b> have more hot days a year than in 1951&ndash;80."+
+   (down?" "+lead+(down===1?" has":" have")+" fewer: "+names+".":"");
+  /* the row's value, from the same count — the chapter had no number on it at all */
+  var rn=el("rc-5-n");if(rn)rn.textContent=up+" of "+tot+" have more hot days";
  }
  (function(){var sel=el("cmp-sel");
   if(sel)sel.addEventListener("change",function(){buildCompare();});})();
