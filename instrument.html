@@ -1772,8 +1772,13 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
   padding-bottom:30px;
   display:block}
 #answer{max-width:1180px}
+/* The ring column spans BOTH rows and is the taller of the two, so `auto auto` stretched
+   the left column's rows to reach it and parked the slack between them — a measured 93px
+   hole between the sourcing line and "Sources" on the page's first screen. max-content
+   holds row 1 to what it contains and 1fr gives row 2 the remainder, so the slack falls
+   below the last line, where it is the card's breathing room and not a gap mid-sentence. */
 .ans-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,420px);
-  grid-template-rows:auto auto;gap:14px 30px;align-items:start}
+  grid-template-rows:max-content 1fr;gap:14px 30px;align-items:start;align-content:start}
 .ans-left{min-width:0;grid-column:1;grid-row:1}
 .ans-right{min-width:0;grid-column:2;grid-row:1/span 2}
 .ans-foot{min-width:0;grid-column:1;grid-row:2}
