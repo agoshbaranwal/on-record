@@ -421,6 +421,7 @@ html{scroll-padding-top:0}
   box-shadow:0 10px 40px rgba(0,0,0,.28)}
 .sheet--wide{max-width:980px}
 .sheet .sheet{background:none;border:0;box-shadow:none;padding:0;-webkit-backdrop-filter:none;backdrop-filter:none}
+.rr-cite{margin:10px 0 0}   /* one citation under the group, where three inline ones used to be */
 /* inside a sheet the halo hacks are unnecessary — and they blur the very text they saved */
 .sheet,.sheet *{text-shadow:none!important}
 .thm-ink .sheet{background:rgba(246,245,242,.94);border-color:rgba(62,18,8,.10);
@@ -2344,15 +2345,16 @@ body.ch-bedrock #mast{opacity:1!important}
               <div class="rr-row rr-foot">
                 <span class="rr-head"><span class="rr-label">Live car-free, or car-light.</span><span class="rr-t">2.4 t</span></span>
                 <span class="rr-bar" style="--w:96%" aria-hidden="true"><i></i></span>
-                <span class="rr-note">Best case, where public transport exists. <span class="rr-src">Wynes &amp; Nicholas 2017</span></span></div>
+                <span class="rr-note">Best case, where public transport exists.</span></div>
               <div class="rr-row rr-foot">
                 <span class="rr-head"><span class="rr-label">Skip one transatlantic round-trip.</span><span class="rr-t">1.6 t</span></span>
                 <span class="rr-bar" style="--w:64%" aria-hidden="true"><i></i></span>
-                <span class="rr-note">Per flight you skip. <span class="rr-src">Wynes &amp; Nicholas 2017</span></span></div>
+                <span class="rr-note">Per flight you skip.</span></div>
               <div class="rr-row rr-foot">
                 <span class="rr-head"><span class="rr-label">Eat plant-based.</span><span class="rr-t">0.8 t</span></span>
                 <span class="rr-bar" style="--w:32%" aria-hidden="true"><i></i></span>
-                <span class="rr-note">Average for switching to plant-based food. <span class="rr-src">Wynes &amp; Nicholas 2017</span></span></div>
+                <span class="rr-note">Average for switching to plant-based food.</span></div>
+            <p class="receipt rr-cite">All three: Wynes &amp; Nicholas 2017.</p>
             <div id="rr-panel" class="rr-panel" hidden></div>
             <div id="rr-pledge" class="rr-pledge" hidden></div>
             <p class="share-lead">Save a card with your city&rsquo;s numbers:</p>
@@ -4078,7 +4080,12 @@ var __RING=(function(){
   var hide=function(){host.hidden=true;};
   if(!R||!R.a||!R.b){hide();return;}
   A=smooth(R.a);B=smooth(R.b);N=R.years||30;eraA=R.eraA||"1951–80";
-  eraYears=R.eraB||"";eraB="last 30 years";title0=title||"";
+  /* The bars beside this ring compare 1951–80 with 2016–2025; the ring compares it with
+     1996–2025. Calling the ring's era "last 30 years" while the bars printed real years made
+     two DIFFERENT windows look like one. The years were already computed for the receipt —
+     the toggle, the centre and the key say them too. "last 30 years" stays as the fallback
+     for a place whose ring arrives without a year range. */
+  eraYears=R.eraB||"";eraB=eraYears||"last 30 years";title0=title||"";
   var _rc=document.getElementById("sr-alt");
   if(_rc)_rc.innerHTML="ERA5 &middot; "+eraA+" vs "+eraYears+" &middot; smoothed &plusmn;7 days &middot; 29 Feb counted with 28 Feb";
   sA=season(A);sB=season(B);
@@ -6382,7 +6389,10 @@ window.__HOME=__HOME;
    set("rc-3-s","Of every 100 people worldwide, "+Math.round(P.world.actual)+" would give 1% of their income and "+Math.round(P.global_want_action_pct)+"% want stronger government action (Andre et al. 2024, 125 countries) \u2014 most underestimate both.");
    var yl=yearsStr(RNOW);
    set("rc-4-n",yl+" years of budget left");
-   set("rc-4-s","At today\u2019s "+Math.round(B.rate_now_gt)+" billion tonnes a year, that is how long the world can keep emitting for a 50% chance of staying under 1.5 \u00B0C. GCB 2025 and IGCC 2025, brought to today.");
+   /* was: "At today's 42 billion tonnes a year, that is how long the world can keep emitting
+      for a 50% chance of staying under 1.5 °C. GCB 2025 and IGCC 2025, brought to today." —
+      the rate and both source names are printed again in the card immediately below it. */
+   set("rc-4-s","Both published budgets are brought to today, and both are stated for a 50% chance of staying under 1.5 \u00B0C.");
   }catch(e){}
  }
  try{fillRecap();}catch(e){}
