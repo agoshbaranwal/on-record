@@ -113,12 +113,17 @@ class Chrome:
 
     def sleep(self, s): time.sleep(s)
 
-    def shot(self, path, clip=None):
+    def shot(self, path, clip=None, beyond=False):
+        """PNG of the viewport, or of clip = (x, y, w, h) in PAGE coordinates —
+        getBoundingClientRect() plus scrollX/scrollY, not the viewport-relative
+        rect. Chrome paints nothing outside the current viewport unless
+        beyond=True, so a clip of a section you have scrolled to comes back as
+        blank paper without it (cost two blind runs on yoga-site, 6 Sep 2026).
+        Scroll the target into view first when its reveal-on-scroll matters."""
         p = {"format": "png"}
         if clip:
-            # viewport coordinates (what getBoundingClientRect returns), not document ones
             p["clip"] = {"x": clip[0], "y": clip[1], "width": clip[2], "height": clip[3], "scale": 1}
-            p["captureBeyondViewport"] = False
+            p["captureBeyondViewport"] = bool(beyond)
         r = self.send("Page.captureScreenshot", **p)
         open(path, "wb").write(base64.b64decode(r["data"]))
         return path

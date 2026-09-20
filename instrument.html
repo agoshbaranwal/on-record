@@ -57,7 +57,8 @@ body.thm-ink .word .mk{color:var(--ink-2)}
 .sr-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
 .sr-title{font-size:15px;color:var(--bone);font-weight:500;margin:0}
 .sr-toggle{margin-left:auto;display:flex;gap:6px}
-.sr-toggle button{font-family:var(--mono);font-size:12px;padding:6px 12px;border-radius:999px;
+.sr-toggle button{font-family:var(--mono);font-size:12px;padding:6px 14px;min-height:36px;
+  display:inline-flex;align-items:center;justify-content:center;border-radius:999px;
   border:1px solid rgba(242,231,204,.28);background:none;color:var(--bone-2);cursor:pointer;
   transition:background .2s ease,color .2s ease,border-color .2s ease}
 .sr-toggle button.on{background:#FF6B52;border-color:#FF6B52;color:#2A0B05}
@@ -68,12 +69,14 @@ body.thm-ink .word .mk{color:var(--ink-2)}
 #sr-svg{display:block;width:100%;height:auto}
 .sr-centre{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
   justify-content:center;text-align:center;pointer-events:none}
-.sr-centre>*{max-width:40cqw}
+/* 40cqw broke 'days of hot season' onto two lines and the taller stack then ran into the
+   drawing; at the legible size it needs the room. */
+.sr-centre>*{max-width:56cqw}
 .sr-centre b{font-size:min(30px,10.5cqw);font-weight:500;color:#FF6B52;line-height:1;font-variant-numeric:tabular-nums}
-.sr-era{font-family:var(--mono);font-size:min(11px,3.5cqw);color:#FF6B52;margin-top:5px;letter-spacing:.04em}
-.sr-unit{font-family:var(--mono);font-size:min(10px,3.2cqw);letter-spacing:.06em;
-  line-height:1.45;color:var(--bone-2);margin-top:6px}
-.sr-was{font-family:var(--mono);font-size:min(11px,3.5cqw);color:var(--cool-ink);margin-top:3px}
+.sr-era{font-family:var(--mono);font-size:clamp(12px,3.5cqw,13px);color:#FF6B52;margin-top:3px;letter-spacing:.04em}
+.sr-unit{font-family:var(--mono);font-size:clamp(12px,3.4cqw,13px);letter-spacing:.04em;
+  line-height:1.3;color:var(--bone-2);margin-top:4px}
+.sr-was{font-family:var(--mono);font-size:clamp(12px,3.5cqw,13px);color:var(--cool-ink);margin-top:2px}
 .sr-side{flex:1 1 178px;min-width:172px;max-width:420px}
 .sr-sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
   clip:rect(0 0 0 0);white-space:nowrap;border:0}
@@ -142,7 +145,25 @@ body.thm-ink .word .mk{color:var(--ink-2)}
     0 0 3px rgba(250,248,242,.96),0 1px 2px rgba(250,248,242,.92),
     1px 0 2px rgba(250,248,242,.7),-1px 0 2px rgba(250,248,242,.7),0 -1px 2px rgba(250,248,242,.7)}
   #ladder .subs{padding-right:2px}
-  #ladder,body.thm-ink #ladder{background:none}
+  /* item 17 · THE RAIL GETS GROUND WHERE THE SKY TURNS CREAM.
+     Measured on the Carbon-budget chapter: bone labels on a cream sky, 1.01:1 — the
+     rail was not faint, it was INVISIBLE, on the one control that answers "where am I".
+     The halo had already been strengthened twice and cannot win: a 2px shadow cannot
+     carry 13px letter-spaced text over a background of its own luminance. The veil that
+     saves the body text (textDim) is column-shaped and stops before this gutter.
+     So: ground, faded to nothing on its left and at both ends — an edge vignette, not
+     the slab behind a list that read as a smudge. Dark chapters barely show it. */
+  #ladder{background:linear-gradient(to left,
+      rgba(var(--glass),.82) 0%,rgba(var(--glass),.74) 68%,rgba(var(--glass),0) 100%);
+    -webkit-mask-image:linear-gradient(to bottom,transparent,#000 14%,#000 86%,transparent);
+    mask-image:linear-gradient(to bottom,transparent,#000 14%,#000 86%,transparent)}
+  body.thm-ink #ladder{background:linear-gradient(to left,
+      rgba(250,248,243,.86) 0%,rgba(250,248,243,.78) 68%,rgba(250,248,243,0) 100%)}
+  /* the rail's BOX overlapped the reading column by 42px and swallowed clicks meant for
+     a chapter row (.q-btn::after makes the whole row the target, and the rail sits over
+     it at z-index 7). Only the rungs need to be clickable. */
+  #ladder{pointer-events:none}
+  .rung,.subrung,#ladder a,#ladder button{pointer-events:auto}
 }
 @media(prefers-reduced-motion:reduce){
   #ladder::after,.rung .dot,.rung .lab{transition:none}
@@ -214,12 +235,15 @@ html #ladder .rgroup.open .subs{max-height:220px;opacity:1;margin:1px 0 7px}
    The mast was capped at 1400px and centered; the content and the rail were not —
    chrome and column hung on different grids and the diagnosis called the result
    "~750px of dead sky". One gutter token now frames the whole stage. */
-:root{--gut:max(38px,calc((100vw - 1400px)/2))}
+:root{--gut:max(38px,calc((100vw - 1400px)/2));
+  /* the fixed rail measures 234px at its widest label ('Carbon budget'); every beat
+     reserved 172px for it, so the last 62px of every line ran underneath. */
+  --rail-w:248px}
 @media(min-width:1600px){
   /* The beats already self-centre (max-width:1400px;margin:0 auto), so the wide-screen
      frame is theirs — adding a pane gutter on top double-framed it. The one card that
      was ever misaligned was a DOM nesting error in the Morning split, fixed at source. */
-  .beat{padding-right:172px}
+  .beat{padding-right:var(--rail-w)}
   html #ladder{right:var(--gut)}
   html #rail-dock{right:var(--gut)}
   html #soundbtn{right:var(--gut)}
@@ -231,7 +255,10 @@ html #ladder .rgroup.open .subs{max-height:220px;opacity:1;margin:1px 0 7px}
 /* item 13 · the 24-city wall becomes a chip cloud */
 html #gq-bar .cb-chips,html #pk-bar .cb-chips{display:flex;flex-wrap:wrap;gap:8px}
 html #gq-bar .cb-chip,html #pk-bar .cb-chip{min-height:36px;width:auto;padding:7px 14px;border-radius:999px;font-size:13px}
-@media(pointer:coarse){html #gq-bar .cb-chip,html #pk-bar .cb-chip{min-height:44px}}
+@media(pointer:coarse){html #gq-bar .cb-chip,html #pk-bar .cb-chip{min-height:44px}
+  /* a finger is 44px wide whatever the control is called */
+  html #homechip,html #homenow-change,html .sr-toggle button,html .drawbtn,
+  html #soundbtn,html #dclose{min-height:44px}}
 /* item 15 · Bedrock's definition rows align at the top, two-line labels included */
 dl.lim{display:grid;grid-template-columns:minmax(130px,max-content) 1fr;column-gap:18px;row-gap:16px}
 dl.lim dt{grid-column:1;align-self:start;text-align:right}
@@ -614,6 +641,15 @@ a{color:inherit}
   display:flex;justify-content:space-between;align-items:flex-start;gap:30px;
   max-width:1400px;margin:0 auto;padding:22px 38px}
 #mast a,#mast button{pointer-events:auto}
+/* The page's own title measured 2.68:1 against the sky behind it (desktop) and the
+   wordmark 3.56:1 — both below the floor, on the first thing anyone reads. The sky's
+   text veil starts below the masthead, so the title had nothing but a text-shadow.
+   A soft top-down scrim, fading to nothing before the first card: the standard device
+   for type over a photograph, and invisible on the chapters whose sky is already dark. */
+#mast::before{content:"";position:absolute;left:0;right:0;top:0;height:calc(100% + 34px);
+  z-index:-1;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(var(--glass),.66),rgba(var(--glass),.40) 52%,rgba(var(--glass),0))}
+body.thm-ink #mast::before{background:linear-gradient(to bottom,rgba(250,248,243,.74),rgba(250,248,243,.44) 52%,rgba(250,248,243,0))}
 /* the three mast controls were loose inline-blocks with their own margins, so the two-line
 
 
@@ -745,7 +781,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
      reader physically could not flick through to see what was here. Skimming is the first thing a
      stranger does; the page forbade it. Snap still settles a beat you land on. */
   display:flex;flex-direction:column;justify-content:center;
-  max-width:1400px;margin:0 auto;padding:16vh 172px 12vh 38px}
+  max-width:1400px;margin:0 auto;padding:16vh var(--rail-w) 12vh 38px}
 .beat .lead{font-size:clamp(17px,1.6vw,21px);line-height:1.55;color:var(--bone-2);
   max-width:52ch;text-wrap:pretty;text-shadow:var(--halo);font-weight:450}
 .thm-ink .beat .lead{color:var(--ink-2);text-shadow:none}
@@ -763,7 +799,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 .pane:has(>h2){box-sizing:border-box;min-height:100svh;min-height:100vh;
   scroll-snap-align:start;scroll-snap-stop:normal;
   display:flex;flex-direction:column;justify-content:center;
-  max-width:1400px;margin:0 auto;padding:16vh 172px 12vh 38px}
+  max-width:1400px;margin:0 auto;padding:16vh var(--rail-w) 12vh 38px}
 .pane:not(.q):has(>h2)>*{opacity:0;transform:translateY(16px);
   transition:opacity .5s ease,transform .5s cubic-bezier(.16,.84,.28,1);
   transition-delay:calc(var(--i,0)*60ms)}
@@ -790,16 +826,21 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 #g-bars .gb-track{position:relative;flex:1;height:15px;background:rgba(242,231,204,.10);border-radius:3px;overflow:hidden}
 #g-bars .gb-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:3px;transition:width 1.05s cubic-bezier(.3,.7,.2,1)}
 .beat.seen #g-bars .gb-fill{width:var(--w)}
-#g-bars .gb-then{background:rgba(242,231,204,.32)}
-#g-bars .gb-now{background:var(--amber)}
+/* THE SITE-WIDE PAIR, APPLIED. These two bars and the season ring beside them draw the
+   same then/now comparison; the bars were grey/amber while the ring was blue/coral, so
+   one screen taught the reader two colour languages for one idea. Amber is the
+   INTERFACE accent (links, controls, chapter numbers) and does not encode data. */
+#g-bars .gb-then{background:var(--data-cool)}
+#g-bars .gb-now{background:var(--data-warm)}
 #g-bars .gb-num{flex:0 0 auto;min-width:2.6ch;font-family:var(--mono);font-size:15px;font-weight:500;
   color:var(--bone-2);font-variant-numeric:tabular-nums}
-#g-bars .gb-num.on{color:var(--amber)}
+#g-bars .gb-num.on{color:var(--data-warm)}
+#g-bars .gb-row:first-child .gb-num{color:var(--cool-ink)}   /* the cool era, named in its own colour */
 #g-bars .gb-ax{display:flex;justify-content:space-between;gap:8px;margin:6px 0 0 90px;
-  padding-right:calc(2.6ch + 12px);font-family:var(--mono);font-size:11px;letter-spacing:.03em;
+  padding-right:calc(2.6ch + 12px);font-family:var(--mono);font-size:12px;letter-spacing:.03em;
   color:var(--bone-4);text-shadow:var(--halo)}
 #g-bars .gb-ax span:nth-child(2){text-align:center}
-#g-bars .gb-delta{margin:8px 0 0 90px;font-family:var(--mono);font-size:15px;font-weight:500;color:var(--amber);letter-spacing:.01em;text-shadow:var(--halo)}
+#g-bars .gb-delta{margin:8px 0 0 90px;font-family:var(--mono);font-size:15px;font-weight:500;color:var(--data-warm);letter-spacing:.01em;text-shadow:var(--halo)}
 #g-bars .gb-delta.gb-ease{color:var(--bone-2);font-weight:500}   /* a DECLINE is not an alarm — neutral, never amber */
 #g-fact .gb-say{font-size:15px;line-height:1.55;color:var(--bone);max-width:52ch;margin-top:14px;text-shadow:var(--halo)}
 #g-fact .gb-say b{color:var(--bone);font-weight:500}
@@ -1195,10 +1236,10 @@ svg{display:block;width:100%;height:auto}
 /* the honest label that stops "example" reading as "default" */
 .place-tag{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--amber);
   margin:2px 0 8px;text-shadow:var(--halo)}
-#homechip{display:inline-block;vertical-align:middle;margin:0;font-family:var(--mono);
+#homechip{display:inline-flex;align-items:center;vertical-align:middle;margin:0;font-family:var(--mono);
   font-size:12px;letter-spacing:.08em;pointer-events:auto;max-width:26ch;overflow:hidden;
   text-overflow:ellipsis;white-space:nowrap;
-  border:1px solid rgba(242,231,204,.26);border-radius:999px;padding:4px 10px;
+  border:1px solid rgba(242,231,204,.26);border-radius:999px;padding:4px 14px;min-height:36px;
   background:rgba(var(--glass),.34);color:var(--bone-2);cursor:pointer}
 #homechip.unset{color:var(--amber);border-color:rgba(240,188,98,.5)}
 #homechip:hover,#homechip:focus-visible{color:var(--bone);border-color:var(--amber);outline:none}
@@ -1614,9 +1655,13 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
     -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 30px),transparent);
     mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 30px),transparent)}
   #ladder::-webkit-scrollbar{display:none}
-  .rung{padding:8px 0;width:auto;flex:0 0 auto;scroll-snap-align:center}
+  /* the block above sets padding:14px 10px "≥44px hit target around each dot (Phase 10)"
+     and this rule used to undo it — measured 38px. The chip carries its own padding now,
+     so the rung only has to keep the target 44px tall. */
+  .rung{padding:4px 0;width:auto;flex:0 0 auto;scroll-snap-align:center;
+    min-height:44px;display:flex;align-items:center}
   .rung .pill{position:static;width:auto;height:auto;overflow:visible;clip-path:none;
-    padding:5px 11px;border:1px solid rgba(242,231,204,.22);border-radius:999px;
+    padding:9px 13px;border:1px solid rgba(242,231,204,.22);border-radius:999px;
     background:rgba(3,15,17,.92);white-space:nowrap;
     font-size:13px;color:var(--bone-2);text-shadow:none;display:block}
   .rung[aria-current="true"] .pill,.rung.on .pill{color:var(--bone);
@@ -1638,13 +1683,21 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
      screen it floated on; on a phone it is the icon, with the label left for screen readers */
   /* it used to float in the reading column at top:54px and cover four words of whatever line
      was passing under it. It belongs with the other fixed control, above the chapter strip. */
-  #soundbtn{right:14px;top:auto;bottom:96px;width:auto;min-width:44px;height:36px;min-height:36px;
-    padding:0 12px;gap:7px;
+  /* IN the strip, not above it. At bottom:96px this pill floated in the middle of the
+     scrolling column and covered whatever passed under it — measured on chapter row 4,
+     whose entire width is the tap target, so part of that row could not be opened.
+     Docked into the strip's own band it covers nothing: #panes already reserves 104px. */
+  #soundbtn{right:8px;top:auto;bottom:14px;width:44px;min-width:44px;height:44px;min-height:44px;
+    padding:0;gap:0;
     justify-content:center;border:1px solid rgba(242,231,204,.22);
-    border-radius:999px;background:rgba(var(--glass),.62);
-}
-  #soundbtn #soundlab{position:static;width:auto;height:auto;margin:0;clip:auto;overflow:visible;
-    font-size:11px;letter-spacing:.08em;white-space:nowrap}
+    border-radius:999px;background:rgba(var(--glass),.92)}
+  /* the label is the icon's job here; the words stay for screen readers */
+  #soundbtn #soundlab{position:absolute;width:1px;height:1px;margin:-1px;padding:0;
+    overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  /* the strip stops before the button instead of scrolling underneath it */
+  #ladder{padding-right:62px;
+    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 92px),transparent calc(100% - 62px));
+    mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 92px),transparent calc(100% - 62px))}
   .thm-ink #soundbtn{background:rgba(250,246,236,.7);border-color:rgba(62,18,8,.2)}
   /* #hzn-hi/#hzn-lo deliberately bleed 38px past each edge, so a small `right` on the label
      puts the budget numbers OFF-SCREEN on a phone (measured: right edge at 420px on a 390px
@@ -1756,7 +1809,7 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 .thm-ink #answer #homepick{border-top-color:var(--ink-hair)}
 
 /* ── the eyebrow above the questions ──────────────────────────────────────── */
-#qlead{max-width:1400px;margin:0 auto;padding:0 172px 8px 38px;
+#qlead{max-width:1400px;margin:0 auto;padding:0 var(--rail-w) 8px 38px;
   font-family:var(--mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;
   color:var(--bone-3);text-shadow:var(--halo)}
 .thm-ink #qlead{color:var(--ink-3);text-shadow:none}
@@ -1764,7 +1817,7 @@ body.embed #qlead{display:none}
 
 /* ── a question row ───────────────────────────────────────────────────────── */
 #panes>.pane.q{display:block;min-height:0;overflow:visible;
-  max-width:1400px;margin:0 auto;padding:0 172px 0 38px;scroll-margin-top:10px}
+  max-width:1400px;margin:0 auto;padding:0 var(--rail-w) 0 38px;scroll-margin-top:10px}
 #panes>.pane.q:last-of-type{padding-bottom:12vh}
 .q-h{position:relative;margin:0;font-weight:500;display:flex;align-items:baseline;gap:0 14px;
   padding:17px 14px 17px 12px;border-top:1px solid var(--bone-hair);
@@ -1802,7 +1855,7 @@ body.embed .q.open>.q-h,body.kiosk .q.open>.q-h{position:static}
 .thm-ink .q-val b{color:var(--act)}
 .q-val .q-where{font-family:var(--mono);font-size:12px;color:var(--bone-3);display:block;margin-top:2px}
 .thm-ink .q-val .q-where{color:var(--ink-3)}
-.q-sub{font-family:var(--mono);font-size:12.5px;letter-spacing:.01em}
+.q-sub{font-family:var(--mono);font-size:13px;letter-spacing:.01em}
 .q-chev{flex:0 0 auto;width:11px;height:11px;margin-left:2px;align-self:center;
   border-right:1.5px solid var(--bone-3);border-bottom:1.5px solid var(--bone-3);
   transform:rotate(45deg) translate(-2px,-2px);transition:transform .22s ease}
@@ -1813,12 +1866,20 @@ body.embed .q.open>.q-h,body.kiosk .q.open>.q-h{position:static}
 .q.open>.q-h .q-val{opacity:.55}
 
 /* ── an opened row: the chapter, in place ─────────────────────────────────── */
+/* A chapter's body hangs off its question, not off the page edge. Flush-left, a 660px
+   reading card under a 1114px question bar read as two unrelated blocks; indented to where
+   the question text starts, it reads as that question's answer. The eyebrow column
+   (2.1rem) + the header's own padding and gap. Phones keep every pixel of width. */
 .q-body{transition:none;padding:4px 0 10px}
+@media(min-width:941px){.q-body{padding-left:calc(2.1rem + 26px)}}
 .q-body .beat,.q-body .pane-screen{min-height:0;max-width:none;margin:0;display:block;
   content-visibility:visible;contain-intrinsic-size:auto;scroll-snap-align:none}
 .q-body .beat,.q-body .beats>.beat,.q-body .pane>.beat,
 #p-sky .q-body .beats>.beat:first-child{padding:0 0 22px 0}
-.q-body .sheet{max-width:900px}
+/* A card is as wide as its CONTENT, not as wide as the page. This was max-width:900px
+   on every .sheet in an opened chapter, over prose already capped at ~60ch: measured
+   51% fill on Sources — 440px of empty card to the right of every line. The reading
+   width (660) carries prose; --wide (980) is for the cards that hold a wide chart. */
 .q-body .sheet--wide{max-width:980px}
 .q-body .q-say{display:block;max-width:64ch;margin:0 0 14px;font-size:16px;line-height:1.55;
   color:var(--bone-2);text-shadow:var(--halo)}
@@ -1849,11 +1910,13 @@ body.ch-bedrock #mast{opacity:1!important}
   #answer .sr-figure{width:min(252px,70vw)}
   #answer .sr-head{margin-bottom:6px;gap:8px}
   #answer .sr-title{font-size:14px}
-  #answer .sr-toggle button{padding:5px 10px;font-size:11px}
+  /* the control that switches the chart's era, and the key that names its two colours,
+     were the smallest type on the phone at 11px. They are the chart's instructions. */
+  #answer .sr-toggle button{padding:7px 12px;font-size:12px}
   #answer #g-bars{margin-top:10px}
   #g-bars .gb-ax{flex-wrap:wrap}
   #g-bars .gb-ax span:nth-child(2){order:3;flex:1 0 100%;text-align:left;margin-top:2px}
-  #answer .sr-key{gap:6px 14px;font-size:11px}
+  #answer .sr-key{gap:6px 14px;font-size:12px}
   #answer .ans-ring{padding:10px 12px 12px}
   /* the phone's chapter strip is fixed to the bottom — the card must not end under it */
   #p-ground .beats>.beat.ans-beat{padding-top:calc(var(--mast-h,120px) + 8px);padding-bottom:78px}
@@ -2182,7 +2245,7 @@ body.ch-bedrock #mast{opacity:1!important}
         <div class="beats">
           <!-- BEAT 1 — the plain finding -->
           <div class="beat">
-          <div class="sheet sheet--wide">
+          <div class="sheet">
             <h2 class="page-what"><b class="pw-name">Public opinion</b><span class="sr-only">. </span><span class="pw-say">What people in 125 countries said they would give, and what they think their neighbours would give.</span></h2>
             <h2 tabindex="-1">How many people would give 1% of their income?</h2>
             <p class="lead">Researchers asked people in 125 countries if they would give <b>1% of their income</b> every month. Guess the answer first.</p>
@@ -2365,7 +2428,7 @@ body.ch-bedrock #mast{opacity:1!important}
              the opener held 17 words under four headings. The limits list also had NO heading at
              all, so a skimmer met eight admissions cold. -->
         <div class="beat">
-          <div class="sheet sheet--wide">
+          <div class="sheet">
             <h2 class="page-what"><b class="pw-name">Sources</b><span class="sr-only">. </span><span class="pw-say">Where every number comes from.</span></h2>
             <h2 tabindex="-1">Where the numbers come from</h2>
             <div class="hww" id="hww"></div>
