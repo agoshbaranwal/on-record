@@ -2009,6 +2009,8 @@ figure.who.who-in{margin:16px 0 14px}
 .bt-why{margin:0 0 22px;padding-bottom:20px;border-bottom:1px solid var(--bone-hair)}
 .bt-say{font-size:16px;line-height:1.55;color:var(--bone-2);max-width:56ch;margin:14px 0 0}
 .q-say-b{display:block;margin:12px 0 0}
+#pg-give[hidden]{display:none!important}
+#pg-give.give-here{margin:14px 0 0;padding:12px 14px;border:1px solid rgba(126,214,196,.32);border-radius:6px;font-size:14px;line-height:1.55}
 .thm-ink .bt-say{color:var(--ink-2)}   /* a card still in view when the page turns light takes ink too */
 .q-say-b[hidden]{display:none}
 /* the survey and the country chart were drawn for a dark sky; on the morning card they need ink */
@@ -2059,6 +2061,33 @@ ul.safe li::before{content:"";position:absolute;left:3px;top:18px;width:7px;heig
   #panes>#p-ground.bt-pane{padding-top:calc(var(--mast-h,120px) + 8px)}
   figure.who blockquote{font-size:17px}
 }
+
+/* ══ BEAT 4 ON THE DARK ════════════════════════════════════════════════════════
+   Every part of the old Morning chapter was coloured for a cream page in ink tokens.
+   Inside the beat those tokens now point at their dark-theme equivalents — one place, not
+   forty rules — and the handful of colours hard-coded for cream get dark ones. --act (the
+   morning's deep green) becomes a teal that reads as text on a dark card; where it was a
+   button or chip background, those keep a deep teal with cream text. */
+#p-morning{--ink:var(--bone);--ink-2:var(--bone-2);--ink-3:var(--bone-3);--ink-hair:var(--bone-hair);--act:#7ED6C4}
+#p-morning .rr-row.rr-default{border-color:rgba(126,214,196,.38);background:rgba(126,214,196,.06)}
+#p-morning .rr-chip,#p-morning .rr-btns .rr-primary,#p-morning .sharecard button:not(.share-minor){background:#1F6B5E;color:#F2E7CC}
+#p-morning .rr-bar,#p-morning .twobar .tb-track{background:rgba(242,231,204,.10)}
+#p-morning .twobar .tb-good{background:#5FB3A1}
+#p-morning .twobar .tb-coal{background:rgba(242,231,204,.36)}
+#p-morning .li{background:rgba(242,231,204,.04);box-shadow:none}
+#p-morning .scale{background:rgba(126,214,196,.16)}
+#p-morning .scale .rest{background:repeating-linear-gradient(90deg,rgba(126,214,196,.34) 0 2px,transparent 2px 6px)}
+#p-morning .scale .tick{background:rgba(242,231,204,.5)}
+#p-morning .scale .thr{background:rgba(242,231,204,.8)}
+#p-morning .scale .dot,#p-morning .scale .dot.past{box-shadow:0 0 0 2px #0B1D20}
+#p-morning .scale .redu{background:rgba(242,231,204,.42)}
+#p-morning .scale .redu::before{border-right-color:rgba(242,231,204,.6)}
+#p-morning .scale .mk.thrlab{color:rgba(242,231,204,.78)}
+#p-morning .action,#p-morning .rr-panel{border-color:rgba(126,214,196,.32);background:rgba(242,231,204,.04)}
+#p-morning .rr-field input,#p-morning .rr-field select,#p-morning .rr-preview,#p-morning .sharefallback textarea{
+  background:rgba(var(--glass),.62);color:var(--bone);border-color:var(--bone-hair)}
+#p-morning .rr-reps a{border-bottom-color:rgba(126,214,196,.36)}
+#p-morning .rr-pledge .rr-keep:hover{background:rgba(126,214,196,.10)}
 
 /* the sources chapter used to hide the mast; it is a row now, so the mast stays */
 body.ch-bedrock #mast{opacity:1!important}
@@ -3219,7 +3248,11 @@ var CH=[
  {id:"ground",lab:"What changed",fact:"",ink:false},
  {id:"night",lab:"What it means",fact:"",ink:false},
  {id:"sky",lab:"Why, and how long",rail:"Why, how long",fact:"",ink:false},
- {id:"morning",lab:"What you can do",fact:"",ink:true},
+ /* NO MODE SWITCH. This beat used to turn the whole page to ink-on-cream (ink:true) for the
+    old Morning chapter's daylight — inside one story it read as the site changing mode on
+    the reader ("why does the screen suddenly go light?"). It keeps the dark now, under the
+    retired First-light chapter's dawn sky: still the hopeful end, without the white flash. */
+ {id:"morning",sky:"firstlight",lab:"What you can do",fact:"",ink:false},
  {id:"bedrock",lab:"Sources",fact:"",ink:false}
 ];
 /* how hard the sky darkens behind the text column, per chapter — lighter sky needs more.
@@ -3532,6 +3565,16 @@ function enterChamber(i){
  /* sharing your city's numbers IS one of the ways to change it — it moves into "Change it"
     before Personal changes folds, so folding a chart never hides the share card */
  var chg=mBeats[0]&&mBeats[0].querySelector(".sheet"),pcs=mBeats[1]&&mBeats[1].querySelector(".sheet");
+ /* the letter, vote-plan and pledge panels are what the "Change it" levers OPEN — they lived in
+    Personal changes, so once that card folded, "Start here: write to your representative"
+    opened a panel inside a closed card. They sit right under the levers now. */
+ var menu=chg&&chg.querySelector(".rr-menu");
+ ["rr-panel","rr-pledge"].forEach(function(k){var n=el(k);
+  if(n&&menu&&menu.parentNode)menu.parentNode.insertBefore(n,menu.nextSibling);
+  else if(n&&chg)chg.appendChild(n);});
+ /* where to give, beside the Donate lever — shown when it is tapped */
+ var giv=el("pg-give");if(giv&&menu&&menu.parentNode){giv.hidden=true;giv.classList.add("give-here");
+  menu.parentNode.insertBefore(giv,menu.nextSibling);}
  if(chg&&pcs)["share-lead","sharecard","share-ax","share-fallback"].forEach(function(k){
   var n=pcs.querySelector("."+k)||pcs.querySelector("#"+k);if(n)chg.appendChild(n);});
  foldCard(mBeats[1],"fc-personal");
@@ -5038,7 +5081,7 @@ if(window.ResizeObserver)new ResizeObserver(function(){requestAnimationFrame(fun
    '<div class="rr-reps"><b>Who represents you?</b> '+(function(){var L=LN();
      return L.named?("This letter quotes <b>"+L.place+"</b>’s own measured record — the place this page is drawn for."):
       L.dev?("This letter quotes the record for your location. Your device could not match it to a city within 90 km, so fill in <b>[your city]</b> before sending."):
-      ("This letter uses Seville’s record, the example. Set your city at the top of Hot days and it will quote yours.");})()+'<br>'+
+      ("This letter uses Seville’s record, the example. Set your city at the top of the page and it will quote yours.");})()+'<br>'+
   (cv?('&middot; '+((hm3&&hm3.name)||'Where you are')+' — '+cv[0]+(cv[1]?(': <a href="https://'+cv[1]+'" target="_blank" rel="noopener">'+cv[1]+'<span class="sr-only"> (opens in new tab)</span></a>'):'')+'<br>'):'')+
   '&middot; Somewhere else? Search &ldquo;[your country] find my representative&rdquo; — every democracy publishes a directory.</div>';
   ["rr-to","rr-own","rr-name","rr-pc"].forEach(function(id){var e=el(id);if(e)e.addEventListener("input",refreshPrev);});
@@ -5123,12 +5166,15 @@ if(window.ResizeObserver)new ResizeObserver(function(){requestAnimationFrame(fun
   var a=b.getAttribute("data-act");
   if(a==="letter")openLetter();
   else if(a==="vote")openPlan("vote");
-  else if(a==="talk"){var conv=el("share-btn");if(conv){var beat=conv.closest(".beat");
-   if(beat){beat.scrollIntoView({behavior:"auto",block:"start"});flashRing(beat);}
-   var st=el("sr-status");if(st)st.textContent="Jumped to the card about talking to people.";}}
-  else if(a==="give"){var i=CH.findIndex(function(c){return c.id==="firstlight";});if(i>=0)scrollToChamber(i);
-   setTimeout(function(){var g=el("pg-give");if(g){g.scrollIntoView({behavior:"auto",block:"center"});flashRing(g);}
-    var st=el("sr-status");if(st)st.textContent="Here is where to give — vetted funds, about a tonne of CO₂ per dollar.";},reduce?0:700);}});
+  /* "see below": the share card sits under these levers now, in the same card */
+  else if(a==="talk"){var sc=document.querySelector(".sharecard"),sl=document.querySelector(".share-lead")||sc;
+   if(sl){sl.scrollIntoView({behavior:"auto",block:"center"});flashRing(sc||sl);}
+   var st=el("sr-status");if(st)st.textContent="Jumped to the card you can share with someone.";}
+  /* the vetted funds sit under these levers now; they used to be inside a chapter that is
+     now a folded "every country" panel, where a jump to them landed on nothing */
+  else if(a==="give"){var g=el("pg-give");if(g){g.hidden=false;
+    g.scrollIntoView({behavior:"auto",block:"center"});flashRing(g);}
+   var st2=el("sr-status");if(st2)st2.textContent="Here is where to give — vetted funds, about a tonne of CO₂ per dollar.";}});
  recall();
 })();
 
