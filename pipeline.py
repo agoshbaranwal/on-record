@@ -467,26 +467,29 @@ body = (tpl.replace("/*__FONTS__*/", css)
 (ROOT / "onrecord-heat-mockup.html").write_text(body)
 # ---- link-preview / OG meta (a real static preview image lives at og/seville.png, baked from the same card engine) ----
 OG = "https://agoshbaranwal.github.io/on-record/"
-_was = round(mean_over(g35, 1951, 1980))                    # same decade means the card/noscript use — never hand-typed
+# the page's yardstick is the reader's birth decade; until they pick, the 1990s stand in — the
+# preview a stranger sees must show the same example the page opens with (instrument.html __DEC.EX)
+EXDEC = 1990
+_was = round(mean_over(g35, EXDEC, EXDEC + 9))               # same decade means the card/noscript use — never hand-typed
 _now = round(mean_over(g35, LAST_FULL - 9, LAST_FULL))
-DESC = ("We counted it from the weather record &mdash; every day since 1940. Pick your place and the page redraws around it: your hot days, your nights, your sky. Every number shows where it came from.")
-CARD = (f"Seville: {_was} days a year above 35 \u00B0C in 1951\u201380, {_now} now. "
-        f"Check your own city.")
-ALT = f"On Record card: in Seville, days at or above 35C rose from {_was} a year to {_now}."
+DESC = ("Pick the decade you were born and your city, and see how its hot days have changed since then &mdash; counted from the weather record, every day since 1940. Every number shows where it came from.")
+CARD = (f"Seville had {_was} days a year above 35 \u00B0C in the 1990s. In the last ten years: {_now}. "
+        f"How much hotter has your city got since you were born?")
+ALT = f"On Record card: in Seville, days at or above 35C went from {_was} a year in the 1990s to {_now} in the last ten years."
 head_meta = (
-    "<title>On Record \u2014 how many hot days does your city get?</title>"
+    "<title>On Record \u2014 how much hotter has your city got since you were born?</title>"
     '<meta name="description" content="' + DESC + '">'
     '<link rel="canonical" href="' + OG + '">'
     '<meta property="og:type" content="website">'
     '<meta property="og:site_name" content="On Record">'
-    '<meta property="og:title" content="On Record — how many hot days does your city get?">'
+    '<meta property="og:title" content="On Record — how much hotter has your city got since you were born?">'
     '<meta property="og:description" content="' + CARD + '">'
     '<meta property="og:url" content="' + OG + '">'
     '<meta property="og:image" content="' + OG + 'og/seville.png">'
     '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
     '<meta property="og:image:alt" content="' + ALT + '">'
     '<meta name="twitter:card" content="summary_large_image">'
-    '<meta name="twitter:title" content="On Record — how many hot days does your city get?">'
+    '<meta name="twitter:title" content="On Record — how much hotter has your city got since you were born?">'
     '<meta name="twitter:description" content="' + CARD + '">'
     '<meta name="twitter:image" content="' + OG + 'og/seville.png">'
     # PWA: installable, offline-capable (network-first SW), zero tracking
@@ -515,9 +518,9 @@ def _bake(doc):
         return round(sum(v) / len(v)) if v else 0
     _P = out["perception_gap"]
     subs = {"lead-gt": "%d\u2013%d" % (round(_est[0]["remaining_now_gt"]), round(_hi["remaining_now_gt"])),
-            "g-then": str(round(mean_over(g35, 1951, 1980))),
+            "g-then": str(round(mean_over(g35, EXDEC, EXDEC + 9))),
             "g-now": str(round(mean_over(g35, LAST_FULL - 9, LAST_FULL))),
-            "rc-1-n": f"{round(mean_over(g35,1951,1980))} \u2192 {round(mean_over(g35,LAST_FULL-9,LAST_FULL))} days a year",
+            "rc-1-n": f"{round(mean_over(g35,EXDEC,EXDEC+9))} \u2192 {round(mean_over(g35,LAST_FULL-9,LAST_FULL))} days a year",
             "n-big": "+%d " % round(out["delhi_honesty"]["receipts"]["warm_nights_now"] - out["delhi_honesty"]["receipts"]["warm_nights_then"]),
             "rc-2-n": "%d \u2192 %d nights a year" % (round(out["delhi_honesty"]["receipts"]["warm_nights_then"]), round(out["delhi_honesty"]["receipts"]["warm_nights_now"])),
             "rc-3-n": f"{round(_P['global_want_action_pct'])}% want action",

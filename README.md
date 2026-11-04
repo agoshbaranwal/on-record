@@ -1,8 +1,12 @@
-# On Record — a living atmosphere
+# On Record
 
-The world's remaining carbon budget, drawn as a living sky — with one city's
-86-year temperature record on the ground beneath it. Every number traces to a
-named open source; nothing is hand-typed.
+**How much hotter has your city got since you were born?** Pick the decade you
+were born and your city: the page compares that decade with the last ten years,
+from the weather record (every day since 1940), then tells it as one story in
+four parts — what changed, what it means for a body, why it is happening and how
+long the world has, and what you can do. Every number traces to a named open
+source; nothing is hand-typed. The sky behind it is the world's remaining carbon
+budget, drawn live.
 
 **Live in two tiers:**
 - every visitor's browser fetches today's forecast (Open-Meteo, CC-BY) and the

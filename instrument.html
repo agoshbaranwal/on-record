@@ -965,7 +965,7 @@ svg{display:block;width:100%;height:auto}
 #n-diverge .nd-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:3px;
   transition:width 1.05s cubic-bezier(.3,.7,.2,1)}
 .beat.seen #n-diverge .nd-fill{width:var(--w)}
-#n-diverge .nd-then{background:rgba(242,231,204,.32)}
+#n-diverge .nd-then{background:var(--data-cool)}   /* the birth decade, in the site's cool-era colour — as on the answer */
 #n-diverge .nd-now-d{background:var(--amber)}
 #n-diverge .nd-now-n{background:#FF6B52}
 #n-diverge .nd-num{flex:0 0 auto;min-width:2.6ch;font-family:var(--mono);font-size:15px;font-weight:500;
@@ -1179,6 +1179,22 @@ svg{display:block;width:100%;height:auto}
 .ib-ask{overflow-y:auto;max-height:calc(100vh - 190px);max-height:calc(100dvh - 190px);
   overscroll-behavior:contain;scrollbar-gutter:stable}
 #pk-btns{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 10px}
+/* the birth-decade chips: a control, so they take the interface accent, never a data colour */
+.dchips{margin:18px 0 0}
+.dchips .dc-lab{display:block;font-size:14px;color:var(--bone-2);margin:0 0 8px}
+.dchips .dc-row{display:flex;flex-wrap:wrap;gap:6px}
+.dchips .dc{min-height:36px;padding:6px 12px;border-radius:999px;border:1px solid rgba(242,231,204,.30);
+  background:rgba(var(--glass),.45);color:var(--bone-2);font:inherit;font-size:14px;cursor:pointer;
+  font-variant-numeric:tabular-nums;transition:background .15s,border-color .15s,color .15s}
+.dchips .dc:hover{border-color:rgba(242,231,204,.62);color:var(--bone)}
+.dchips .dc.ex{border-color:rgba(240,188,98,.55);color:var(--bone)}
+.dchips .dc.on{background:var(--amber);border-color:var(--amber);color:#2A1A05;font-weight:500}
+.dchips .dc:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+@media(pointer:coarse){.dchips .dc{min-height:44px;padding:6px 13px}}
+.dc-note{font-size:12px;color:var(--bone-3);margin:8px 0 0}
+.thm-ink .dchips .dc-lab{color:var(--ink-2)}
+.thm-ink .dchips .dc{background:rgba(250,246,236,.7);border-color:var(--ink-hair);color:var(--ink-2)}
+.thm-ink .dchips .dc.on{background:var(--act);border-color:var(--act);color:#F6F5F2}
 #pk-ask [hidden]{display:none!important}
 #pk-geo{font-family:var(--mono);font-size:13px;letter-spacing:.09em;text-transform:uppercase;
   min-height:46px;padding:11px 18px;border:1px solid var(--amber);border-radius:8px;
@@ -1801,6 +1817,8 @@ html #intro.gone .ib,html #intro.gone .ib.on{pointer-events:none}
 #answer #g-count-h2 #g-h2{color:var(--amber)}
 .thm-ink #answer #g-count-h2 #g-h2{color:var(--act)}
 #answer #g-fact{margin-top:16px}
+#answer #g-count-h2 .h2b{display:block;margin-top:.18em}
+#answer #g-count-h2{max-width:22ch}
 #answer #g-bars{max-width:420px}
 #answer .place-tag{margin:8px 0 0}
 #answer #g-freq{margin-top:10px}
@@ -1906,6 +1924,94 @@ body.embed .q.open>.q-h,body.kiosk .q.open>.q-h{position:static}
 .q-body .page-what .pw-say{font-size:inherit}
 .thm-ink .q-body .q-say{color:var(--ink-2);text-shadow:none}
 .q-body .beat:not(.seen) .sheet>*{opacity:1;transform:none}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   ONE STORY, FOUR BEATS
+   A beat is a stack of cards read in order, not a screen per card: the old .beat was
+   min-height:100vh with 16vh of padding, which turned twelve cards into 13 screens.
+   The pane carries the column; its cards stack with a modest gap.
+   ══════════════════════════════════════════════════════════════════════════════ */
+#panes>.bt-pane{max-width:1400px;margin:0 auto;padding:56px var(--rail-w) 0 38px;display:block}
+#panes>#p-ground.bt-pane{padding-top:calc(var(--mast-h,150px) + 14px)}
+.bt-pane>.beats>.beat{min-height:0;max-width:none;margin:0;padding:0 0 18px;display:block;
+  content-visibility:visible;contain-intrinsic-size:auto;scroll-snap-align:none}
+.bt-pane .beat:not(.seen) .sheet>*{opacity:1;transform:none}
+#answer{max-width:660px}
+/* the beat's number and name, in the same voice the rail uses */
+.bt-num{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--bone-3);margin:0 0 12px}
+.bt-num em{font-style:italic;color:var(--amber);opacity:.9;margin-right:6px}
+.bt-num em i{font-style:italic;opacity:.6}
+.thm-ink .bt-num{color:var(--ink-3)}
+.thm-ink .bt-num em{color:var(--act)}
+.bt-h{font-size:clamp(22px,2.2vw,28px);line-height:1.15;letter-spacing:-.01em;margin:0 0 4px;max-width:none}
+/* a sourced sentence, quoted: the words are the source's, the link says whose */
+figure.who{margin:14px 0 4px;padding:2px 0 2px 16px;border-left:2px solid rgba(242,231,204,.38);border-radius:0}
+figure.who blockquote{margin:0;font-size:clamp(17px,1.45vw,20px);line-height:1.45;color:var(--bone);max-width:44ch}
+figure.who figcaption{margin-top:8px;font-size:12px;letter-spacing:.02em;color:var(--bone-3)}
+figure.who figcaption a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+figure.who.who-in{margin:16px 0 14px}
+.thm-ink figure.who{border-left-color:var(--ink-hair)}
+.thm-ink figure.who blockquote{color:var(--ink)}
+.thm-ink figure.who figcaption{color:var(--ink-3)}
+/* beat 1: the decade control and "is it just here?" under the answer */
+#g-decpick{margin:20px 0 0}
+.aw{margin:22px 0 0;padding-top:18px;border-top:1px solid var(--bone-hair)}
+.aw-h{font-size:17px;line-height:1.3;margin:0 0 6px}
+#answer #cmp-spread,.aw #cmp-spread{margin:0;font-size:16px;line-height:1.55;max-width:56ch}
+.aw-more{display:inline-flex;align-items:center;min-height:36px;background:none;border:0;padding:6px 0;
+  margin-top:6px;font:inherit;font-size:14px;color:var(--amber);cursor:pointer;
+  text-decoration:underline;text-underline-offset:3px}
+.aw-more:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:2px}
+.thm-ink .aw-more{color:var(--act)}
+.aw-cmp,.fl-all,.fold{margin-top:12px}
+#answer .ans-foot{margin-top:20px}
+/* beat 3: the why, at the top of the years card */
+.bt-why{margin:0 0 22px;padding-bottom:20px;border-bottom:1px solid var(--bone-hair)}
+.bt-say{font-size:16px;line-height:1.55;color:var(--bone-2);max-width:56ch;margin:14px 0 0}
+.q-say-b{display:block;margin:12px 0 0}
+.q-say-b[hidden]{display:none}
+/* the survey and the country chart were drawn for a dark sky; on the morning card they need ink */
+/* on a light card, anything without a colour of its own inherits ink — the survey's claim and its
+   "Guess again" were cream-on-cream because they only ever had a dark sky to inherit from */
+.thm-ink .bt-pane .sheet{color:var(--ink)}
+.thm-ink #wg-claim{color:var(--ink)}
+.thm-ink #wg-again{color:var(--ink-2)}
+.thm-ink #fl-all .pgaxis,.thm-ink #fl-all #pg-guessed,.thm-ink #fl-all #ask-hint{color:var(--ink-3);text-shadow:none}
+.thm-ink #fl-all .kick,.thm-ink #fl-all .sep89{color:var(--ink-2);text-shadow:none}
+.thm-ink #wg-ask label{color:var(--ink-2);text-shadow:none}
+.thm-ink #wg-in{background:#FFFDF8;color:var(--ink);border-color:rgba(62,18,8,.30)}
+.thm-ink #wg-in:focus{border-color:#9A6512}
+.thm-ink #wg-go{color:#7A4E0C;border-color:#B07A22;background:rgba(201,138,46,.12)}
+.thm-ink #wg-go:hover,.thm-ink #wg-go:focus-visible{background:rgba(201,138,46,.24)}
+.thm-ink #wg-out{color:var(--ink);text-shadow:none}
+.thm-ink #wg-out b,.thm-ink #wg-key b{color:#8A570E}
+.thm-ink #wg-key{color:var(--ink-3)}
+.thm-ink #wg-key .kx{color:var(--ink-2)}
+.thm-ink #wg-dots i{background:rgba(62,18,8,.14)}
+.thm-ink #wg-dots i.yes,.thm-ink #wg-dots i.extra{background:#C98A2E}
+.thm-ink #wg-dots i.mark{outline-color:rgba(62,18,8,.62)}
+.thm-ink #wg-dots i.over{background:rgba(62,18,8,.34)}
+.thm-ink #pg-sel{background:#FFFDF8;color:var(--ink);border-bottom-color:rgba(62,18,8,.35)}
+.thm-ink #pgfield .pgthread{stroke:rgba(62,18,8,.20)}
+.thm-ink .beat.seen #pgfield .pgthread,.thm-ink #pgfield.lit .pgthread{stroke:rgba(176,104,30,.45)}
+.thm-ink #pgfield .pgguess{fill:rgba(40,78,130,.55)}
+.thm-ink #pgfield .pgtrue,.thm-ink .beat.seen #pgfield .pgtrue,.thm-ink #pgfield.lit .pgtrue{fill:#C2701F;filter:none}
+.thm-ink #pgfield .pgrow-you .pgthread,.thm-ink .beat.seen #pgfield .pgrow-you .pgthread{stroke:rgba(140,74,10,.9)}
+/* beat 4: the WHO's own words, as a list */
+ul.safe{list-style:none;margin:10px 0 14px;padding:0;max-width:56ch}
+ul.safe li{position:relative;padding:10px 0 10px 22px;border-top:1px solid var(--bone-hair);
+  font-size:16px;line-height:1.45;color:var(--bone)}
+ul.safe li:last-child{border-bottom:1px solid var(--bone-hair)}
+ul.safe li::before{content:"";position:absolute;left:3px;top:18px;width:7px;height:7px;border-radius:50%;
+  background:var(--amber)}
+.thm-ink ul.safe li{color:var(--ink);border-color:var(--ink-hair)}
+.thm-ink ul.safe li::before{background:var(--act)}
+@media(max-width:940px){#panes>.bt-pane{padding-left:20px;padding-right:20px;padding-top:40px}}
+@media(max-width:640px){
+  #panes>#p-ground.bt-pane{padding-top:calc(var(--mast-h,120px) + 8px)}
+  figure.who blockquote{font-size:17px}
+}
 
 /* the sources chapter used to hide the mast; it is a row now, so the mast stays */
 body.ch-bedrock #mast{opacity:1!important}
@@ -2118,7 +2224,7 @@ body.ch-bedrock #mast{opacity:1!important}
           <!-- BEAT 2 — the then-vs-now count: the chapter's one number -->
           <div class="beat">
           <div class="sheet">
-            <h2 id="g-count-h2"><span id="g-h2">Seville</span>: <b class="num" id="g-then">34</b> days a year above <span id="g-thr">35&nbsp;&deg;C</span> in 1951&ndash;80, <b class="num" id="g-now">66</b> in the last 10 years.</h2>
+            <h2 id="g-count-h2">In the <span id="g-dec">1990s</span><span id="g-decwho"></span>, <span id="g-h2">Seville</span> had <b class="num" id="g-then">33</b> days a year above <span id="g-thr">35&nbsp;&deg;C</span>. <span class="h2b">In the last ten years: <b class="num" id="g-now">66</b>.</span></h2>
             <div id="g-fact"><p class="gb-say">Days at or above 35&nbsp;&deg;C in Seville. Set your city to see yours.</p></div>
             <p class="take-mini" id="g-take" hidden>Save:
               <button type="button" data-ga="card">Image</button> &middot;
@@ -2498,8 +2604,12 @@ body.ch-bedrock #mast{opacity:1!important}
              statement for the places whose record fell, and the charter does not bend for a
              better hook — but a question is honest, personal, and still pulls. -->
         <section class="ib ib-ask" data-beat="0" id="pk-ask">
-          <h2 class="ib-h">How many hot days does your city get now, compared with 1951&ndash;80?</h2>
-          <p class="ib-p">We counted every day since 1940. Pick your city and the page shows your hot days and nights.<span class="ib-chip">the ERA5 weather archive &middot; 1940 &rarr; today</span></p>
+          <h2 class="ib-h">How much hotter has your city got since you were born?</h2>
+          <p class="ib-p">Pick the decade you were born and your city to see how its hot days have changed since then.<span class="ib-chip">the ERA5 weather archive &middot; 1940 &rarr; today</span></p>
+          <!-- THE DECADE COMES FIRST: choosing a city closes this screen, so a decade asked for
+               after it would never be seen. Optional — skip it and the 1990s stand in, labelled. -->
+          <div id="pk-dec" class="dchips"></div>
+          <p class="dc-note">Kept on this device. Never sent anywhere.</p>
           <div id="pk-btns">
             <button type="button" id="pk-geo" class="btn-fill">Use my location</button>
             <button type="button" id="pk-list">Pick a city instead</button>
@@ -2537,12 +2647,15 @@ var D=window.D,Q=new URLSearchParams(location.search);
 /* ── Phase 9 — reuse modes. Read + flag as EARLY as possible so the chrome never flashes ──
    ?embed=<chamber>  chrome-less single chamber for an <iframe> (writes NO localStorage);
    ?kiosk=1          auto-cycling projector/lobby loop. embed wins if both are present. */
-var EMBED=Q.has("embed")?(function(){var id=(Q.get("embed")||"").trim();
-  return ["sky","ground","night","firstlight","morning","bedrock"].indexOf(id)>=0?id:"sky";})():null;
+/* chapters retired into a beat: a link to one lands on the beat that now holds it */
+var CHALIAS={firstlight:"morning",compare:"ground",recap:"ground",today:"night"};
+var EMBED=Q.has("embed")?(function(){var id=(Q.get("embed")||"").trim();id=CHALIAS[id]||id;
+  return ["sky","ground","night","morning","bedrock"].indexOf(id)>=0?id:"ground";})():null;
 var KIOSK=(!EMBED)&&Q.has("kiosk")&&Q.get("kiosk")!=="0";
 try{if(EMBED)document.body.classList.add("embed");if(KIOSK)document.body.classList.add("kiosk");}catch(e){}
 /* capture the ORIGINAL hash now — enterChamber(0) stamps "#p-sky" over it before the intro/boot read it */
 var HASH0=location.hash.replace("#p-","").replace("#","").trim();
+HASH0=CHALIAS[HASH0]||HASH0;
 function el(id){return document.getElementById(id);}
 function flashRing(node){if(!node)return;node.classList.remove("flash-ring");void node.offsetWidth;  // reflow so it re-fires
  node.classList.add("flash-ring");setTimeout(function(){node.classList.remove("flash-ring");},1100);}
@@ -2552,6 +2665,57 @@ var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)
 var OFFLINE=false;   /* Phase 8 — set true when the SW serves a cached copy or the device is offline; freezes the live estimates so we never invent numbers we can't confirm */
 function mean(s,a,b){var v=s.filter(function(r){return r.year>=a&&r.year<=b;}).map(function(r){return r.n;});
  return v.reduce(function(x,y){return x+y;},0)/v.length;}
+/* ── THE YARDSTICK IS A LIFE ──────────────────────────────────────────────────────
+   "1951–80" meant nothing to a reader; "the decade you were born" means everything. Every
+   then-vs-now on the page compares the reader's birth decade with the last ten years —
+   decade against decade, because one year is noise (Seville's 1970s averaged 22 hot days,
+   its 1980s 37). Kept on this device only, never sent anywhere. Until the reader picks,
+   the 1990s stand in — the decade the world's median person was born in — and the page
+   says so. ?born=1980 shows a decade for one visit without claiming it is the reader's
+   own (a shared link carries the sharer's decade, not the viewer's birth). */
+var __DEC=(function(){
+ var KEY="onrecord.decade.v1",EX=1990,LO=1940,HI=2010,v=null,mine=false,subs=[];
+ function ok(d){return d>=LO&&d<=HI&&d%10===0;}
+ try{var s0=parseInt(localStorage.getItem(KEY),10);if(ok(s0)){v=s0;mine=true;}}catch(e){}
+ try{var q0=parseInt(String(Q.get("born")||"").replace(/s$/i,""),10);if(ok(q0)&&q0!==v){v=q0;mine=false;}}catch(e){}
+ return {
+  get:function(){return v!=null?v:EX;},
+  /* the reader's own choice — only then may the page say "the decade you were born" */
+  chosen:function(){return mine;},
+  set:function(d){d=parseInt(d,10);if(!ok(d))return;var same=(d===v&&mine);v=d;mine=true;
+   try{localStorage.setItem(KEY,String(d));}catch(e){}
+   if(!same)for(var i=0;i<subs.length;i++)try{subs[i](d);}catch(e){}},
+  on:function(f){subs.push(f);},
+  lab:function(d){return (d==null?(v!=null?v:EX):d)+"s";},
+  /* a decade that runs into the last ten years understates the change — say so */
+  overlaps:function(lf){var d=(v!=null?v:EX);return d+9>=lf-9;},
+  EX:EX,LO:LO,HI:HI};
+})();
+window.__DEC=__DEC;
+function decMean(rows){var d=__DEC.get();return mean(rows,d,d+9);}
+/* ONE control for the birth decade, wherever the page asks for it. "on" = the reader's own
+   choice; "ex" = the example decade standing in until they choose. */
+function decadeChips(host,label){
+ if(!host||host.getAttribute("data-built"))return;
+ var h='<span class="dc-lab" id="'+host.id+'-lab">'+label+'</span><span class="dc-row">';
+ for(var d=__DEC.LO;d<=__DEC.HI;d+=10)
+  h+='<button type="button" class="dc" data-dec="'+d+'" aria-pressed="false">'+d+'s</button>';
+ host.innerHTML=h+'</span>';
+ host.setAttribute("role","group");host.setAttribute("aria-labelledby",host.id+"-lab");
+ host.setAttribute("data-built","1");
+ host.addEventListener("click",function(e){
+  var b=e.target&&e.target.closest?e.target.closest(".dc"):null;if(!b)return;
+  e.stopPropagation();__DEC.set(+b.getAttribute("data-dec"));__DECUI();});
+}
+function __DECUI(){
+ var d=__DEC.get(),mine=__DEC.chosen();
+ Array.prototype.forEach.call(document.querySelectorAll(".dc"),function(b){
+  var on=(+b.getAttribute("data-dec")===d);
+  b.classList.toggle("on",on&&mine);b.classList.toggle("ex",on&&!mine);
+  b.setAttribute("aria-pressed",String(on&&mine));});
+}
+window.__DECUI=__DECUI;
+try{decadeChips(document.getElementById("pk-dec"),"You were born in the");__DECUI();}catch(e){}
 var STOPS=[[-2.5,5,48,97],[-1.5,33,102,172],[-1,67,147,195],[-0.5,146,197,222],[-0.15,209,229,240],
 [0,244,244,241],[0.15,253,219,199],[0.5,244,165,130],[1,214,96,77],[1.5,178,24,43],[2.2,140,26,23],[3.2,103,0,13]];
 var T_MIN=-2.5,T_MAX=3.2,T_SPAN=T_MAX-T_MIN;
@@ -3001,15 +3165,14 @@ var __ATMO=(function(){
 /* ============ chambers & navigation ============ */
 var LF=DH.days_ge35_per_year[DH.days_ge35_per_year.length-1].year; // last complete year in the data
 var CH=[
- /* P1 — ANSWER FIRST. The chapters are the reader's own questions, in the order a
-    person asks them, and each is a row that opens where it stands. `sky` names the
-    atmosphere a chapter borrows when it has no weather of its own. */
- {id:"ground",lab:"Your city",fact:"",ink:false},
- {id:"night",lab:"Nights",fact:"",ink:false},
- {id:"compare",sky:"ground",lab:"Other cities",fact:"",ink:false},
- {id:"sky",lab:"Carbon budget",fact:"",ink:false},
- {id:"firstlight",lab:"Other people",fact:"",ink:false},
- {id:"morning",lab:"What helps",fact:"",ink:true},
+ /* ONE STORY, FOUR BEATS — the reader's questions in the order a person asks them, then
+    the sources. The ids are the old chapter ids, so every link, sky and hook still lands:
+    the ground sky for what changed, the night for what it means, the budget sky for why,
+    morning for what you can do. */
+ {id:"ground",lab:"What changed",fact:"",ink:false},
+ {id:"night",lab:"What it means",fact:"",ink:false},
+ {id:"sky",lab:"Why, and how long",rail:"Why, how long",fact:"",ink:false},
+ {id:"morning",lab:"What you can do",fact:"",ink:true},
  {id:"bedrock",lab:"Sources",fact:"",ink:false}
 ];
 /* how hard the sky darkens behind the text column, per chapter — lighter sky needs more.
@@ -3032,10 +3195,12 @@ CH.forEach(function(c,i){
  var wrap=document.createElement("div");wrap.className="rgroup";
  var b=document.createElement("a");b.className="rung";b.href="#p-"+c.id;
  b.setAttribute("aria-current",i===0?"true":"false");
- b.innerHTML='<span class="pill"><span class="lab"><em class="rnum">'+("0"+(i+1)).slice(-2)+
-  '<span class="rof">/'+("0"+CH.length).slice(-2)+'</span></em> '+c.lab+
+ var _nb=CH.length-1,_app=(c.id==="bedrock");   /* four beats; Sources is the appendix */
+ b.innerHTML='<span class="pill"><span class="lab">'+(_app?'':'<em class="rnum">'+("0"+(i+1)).slice(-2)+
+  '<span class="rof">/'+("0"+_nb).slice(-2)+'</span></em> ')+(c.rail||c.lab)+
   '</span><span class="fact">'+c.fact+'</span></span><span class="dot"></span>';
- b.setAttribute("aria-label","Chapter "+(i+1)+" of "+CH.length+": "+c.lab);
+ if(_app)b.classList.add("rung-app");
+ b.setAttribute("aria-label",_app?"Sources":("Part "+(i+1)+" of "+_nb+": "+c.lab));
  b.addEventListener("click",function(e){e.preventDefault();scrollToChamber(i);});
  wrap.appendChild(b);
  if(SUBS[c.id]){var sd=document.createElement("div");sd.className="subs";
@@ -3119,10 +3284,19 @@ function enterChamber(i){
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   P1 · ANSWER FIRST
-   The finding is the page. Screen 1 answers the question the masthead asks, with
-   the two numbers and both drawings on it. Every other chapter becomes a question
-   you can open where you stand — nothing is a screen you must pass to leave.
+   ONE STORY, FOUR BEATS
+   The page was seven chapters across three subjects — your city, the world's carbon,
+   an opinion survey — and none of its 96 sentences said what heat does to a person.
+   Your testers said the pages didn't connect. Same material, one order, the reader's
+   questions in the order a person asks them:
+     1 What changed       is it really getting hotter here?
+     2 What it means      so what?
+     3 Why, and how long  why is this happening, and is it too late?
+     4 What you can do    what do I do with this?
+   A story you open one row at a time is not a story, so the beats are open and read
+   in order. Sources stays one tap away at the end, outside the story.
+   The section ids are the old chapter ids (p-ground, p-night, p-sky, p-morning,
+   p-bedrock), so every link, sky and script that keys off them still lands.
    Runs inside the site's own IIFE, so CH / enterChamber / el are in scope.
    ═══════════════════════════════════════════════════════════════════════════ */
 (function(){
@@ -3131,165 +3305,208 @@ function enterChamber(i){
  function mv(node,host,first){if(!node||!host)return null;
   if(first&&host.firstChild)host.insertBefore(node,host.firstChild);else host.appendChild(node);
   return node;}
+ function mk(tag,cls,html,id){var e=document.createElement(tag);if(cls)e.className=cls;
+  if(id)e.id=id;if(html!=null)e.innerHTML=html;return e;}
+ function chIndex(id){for(var i=0;i<CH.length;i++)if(CH[i].id===id)return i;return -1;}
+ var NB=CH.length-1;   /* four beats; Sources is the appendix and carries no number */
+ function eyebrow(id){var i=chIndex(id);
+  return mk("p","bt-num",'<em>'+("0"+(i+1)).slice(-2)+'<i>/'+("0"+NB).slice(-2)+'</i></em> '+CH[i].lab);}
+ /* a card: the same .beat > .sheet unit the scroll reader and the reveal already know */
+ function card(host,cls,id){var b=mk("div","beat"+(cls?" "+cls:""));var sh=mk("div","sheet",null,id);
+  b.appendChild(sh);host.appendChild(b);return sh;}
+ /* a beat's own box, emptied of the old chapter shell */
+ function beatPane(id,label){var sec=el("p-"+id);
+  if(!sec){sec=mk("section","pane");sec.id="p-"+id;}
+  while(sec.firstChild)sec.removeChild(sec.firstChild);
+  sec.classList.add("bt-pane");sec.setAttribute("aria-label",label);
+  var inner=mk("div","beats");sec.appendChild(inner);panes.appendChild(sec);return inner;}
+ function quote(text,src,href,cls){
+  return mk("figure","who"+(cls?" "+cls:""),'<blockquote>“'+text+'”</blockquote>'+
+   '<figcaption>'+(href?'<a href="'+href+'" target="_blank" rel="noopener">'+src+'</a>':src)+'</figcaption>');}
+ /* DETAIL, ONE TAP AWAY. The summary (bars, a verdict) carries the point; the full chart is
+    there for whoever wants the evidence — folded, never deleted. */
+ function fold(node,openLab,closeLab,id){if(!node||!node.parentNode)return null;
+  var bt=mk("button","aw-more",openLab);bt.type="button";
+  bt.setAttribute("aria-expanded","false");bt.setAttribute("aria-controls",id);
+  var box=mk("div","fold",null,id);box.hidden=true;
+  node.parentNode.insertBefore(bt,node);node.parentNode.insertBefore(box,node);box.appendChild(node);
+  bt.addEventListener("click",function(){var on=box.hidden;box.hidden=!on;
+   bt.setAttribute("aria-expanded",String(on));bt.textContent=on?closeLab:openLab;
+   /* the charts size themselves to their box; a box that was hidden measured 0 */
+   if(on)try{window.dispatchEvent(new Event("resize"));}catch(e){}});
+  return box;}
+ var WHO="https://www.who.int/news-room/fact-sheets/detail/climate-change-heat-and-health";
+ var WHOSRC="World Health Organization · Heat and health, 2026";
 
- /* ── 1 · the answer ─────────────────────────────────────────────────────────
-    The count beat becomes the whole answer: it is already in the scroll reader's
-    section list, so it keeps its reveal, its chapter and its place in the rail. */
+ /* ── gather every part BEFORE any old chapter is emptied ─────────────────── */
  var gbeats=pg.querySelector(".beats");
  var bPick=gbeats.children[0],bCount=gbeats.children[1],bToday=gbeats.children[2];
- var cmp=el("cmp-beat");
- var sheet=bCount.querySelector(".sheet");
- bCount.classList.add("ans-beat");
- sheet.className="sheet sheet--wide";sheet.id="answer";
- var grid=document.createElement("div");grid.className="ans-grid";
- grid.innerHTML='<div class="ans-left"></div><div class="ans-right">'+
-   '<div class="plate ans-ring"></div></div><div class="ans-foot"></div>';
- sheet.appendChild(grid);
- var L=grid.querySelector(".ans-left"),R=grid.querySelector(".ans-ring"),
-     F=grid.querySelector(".ans-foot");
- var anum=document.createElement("p");anum.className="ans-num";
- /* the answer is chapter 1 of 7 and says so in the same shape every row below it uses */
- anum.innerHTML='<em>01<i>/'+("0"+CH.length).slice(-2)+'</i></em> Your city';
- L.appendChild(anum);
- mv(el("g-count-h2"),L);
- mv(bPick.querySelector(".place-tag"),L);
- mv(el("g-fact"),L);
- /* one line of provenance on the answer; the date-relative receipts belong to the
-    question they answer, which is "how hot is it today", not "how hot is my city" */
- var ar=document.createElement("p");ar.className="receipt";ar.id="ans-receipt";
- ar.textContent="ERA5 via Open-Meteo \u00B7 daily highs since 1940";
- L.appendChild(ar);
- /* the controls sit under the answer on a wide screen and under the ring on a phone,
-    so the drawing is never pushed off the first screen by a button */
- mv(bCount.querySelector(".drawbtn"),F);
- mv(el("g-take"),F);
- mv(el("homepick"),F);
- mv(el("seasonring"),R);
- /* retired, not deleted: applyToday() writes the answer's own bars and paragraph through
-    nodes that live in here, so the beat must stay reachable — just never visible. */
- var tsheet=bToday.querySelector(".sheet");
- mv(el("g-freq"),tsheet);mv(el("g-receipt"),tsheet);
- bToday.hidden=true;bToday.style.display="none";
+ var countSheet=bCount.querySelector(".sheet"),todaySheet=bToday.querySelector(".sheet");
+ var cmp=el("cmp-beat"),ring=el("seasonring");
+ var nightSheet=el("p-night").querySelector(".sheet");
+ var skyBeats=el("p-sky").querySelectorAll(":scope>.beats>.beat");
+ var flBeats=el("p-firstlight").querySelectorAll(":scope>.beats>.beat");
+ var mBeats=el("p-morning").querySelectorAll(".beat");
+ var placeTag=bPick.querySelector(".place-tag"),homepick=el("homepick");
+ /* BY REFERENCE, NOW: emptying a chapter's box detaches everything in it, and a detached
+    element is invisible to getElementById — looked up afterwards, these came back null and
+    the headline, the bars and the "is it just here?" line silently vanished. */
+ var countH2=el("g-count-h2"),gFact=el("g-fact"),gTake=el("g-take"),gFreq=el("g-freq"),
+     gRec=el("g-receipt"),cmpSpread=el("cmp-spread"),cmpGrid=el("cmp-grid"),cmpNote=el("cmp-note"),
+     countDraw=countSheet.querySelector(".drawbtn");
+ /* every chapter's old eyebrow ("Hot nights. Hot nights a year…") — the beat number says it now */
+ document.querySelectorAll("#panes .page-what").forEach(function(p){if(p.parentNode)p.parentNode.removeChild(p);});
+ document.querySelectorAll(".beat-cue").forEach(function(c){if(c.parentNode)c.parentNode.removeChild(c);});
+
+ /* ── BEAT 1 · WHAT CHANGED ──────────────────────────────────────────────── */
+ var b1=beatPane("ground","What changed");
+ var a=card(b1,"","answer");
+ a.appendChild(eyebrow("ground"));
+ mv(countH2,a);
+ mv(placeTag,a);
+ mv(gFact,a);
+ var ar=mk("p","receipt","ERA5 via Open-Meteo · daily highs since 1940","ans-receipt");a.appendChild(ar);
+ /* the decade is the yardstick, so the control that changes it sits beside the number it changes */
+ var gdp=mk("div","dchips",null,"g-decpick");a.appendChild(gdp);
+ decadeChips(gdp,"The decade you were born");__DECUI();
+ /* "is it just here?" — the reader's next question, answered in one line */
+ var aw=mk("div","aw");a.appendChild(aw);
+ aw.appendChild(mk("h3","aw-h","Is it just here?"));
+ mv(cmpSpread,aw);
+ var awb=mk("button","aw-more","Compare with another city");awb.type="button";
+ awb.setAttribute("aria-expanded","false");awb.setAttribute("aria-controls","aw-cmp");aw.appendChild(awb);
+ var awc=mk("div","aw-cmp",null,"aw-cmp");awc.hidden=true;aw.appendChild(awc);
+ mv(cmpGrid,awc);mv(cmpNote,awc);
+ awb.addEventListener("click",function(){var on=awc.hidden;awc.hidden=!on;
+  awb.setAttribute("aria-expanded",String(on));awb.textContent=on?"Hide the comparison":"Compare with another city";});
+ var foot=mk("div","ans-foot");a.appendChild(foot);
+ mv(countDraw,foot);mv(gTake,foot);mv(homepick,foot);
+
+ /* ── BEAT 2 · WHAT IT MEANS ─────────────────────────────────────────────── */
+ var b2=beatPane("night","What it means");
+ var lede=card(b2,"bt-lede");
+ lede.appendChild(eyebrow("night"));
+ lede.appendChild(mk("h2","bt-h","What heat does to a body"));
+ lede.appendChild(quote("The strain put on the body as it tries to cool itself also stresses the heart and kidneys.",WHOSRC,WHO));
+ /* the nights: the reader's own count, then why a night that stays hot matters */
+ var nb=mk("div","beat");nb.appendChild(nightSheet);b2.appendChild(nb);
+ var nd=el("n-diverge");
+ var nq=quote("Extended periods of high day and nighttime temperature conditions create cumulative stress on the human body.",WHOSRC,WHO,"who-in");
+ if(nd&&nd.parentNode)nd.parentNode.insertBefore(nq,nd.nextSibling);else nightSheet.appendChild(nq);
+ var dch=el("delhi");dch=dch&&dch.closest(".chartwrap");
+ var dfold=fold(dch,"See all 86 years","Hide the 86 years","fold-nights");
+ if(dfold){var drc=el("delhi-receipt");if(drc)dfold.appendChild(drc);}
+ /* the season: its own card now. Beside the bars it drew a DIFFERENT window (30-year eras)
+    next to a decade — two "nows" on one screen. Here it answers its own question. */
+ var rs=card(b2,"bt-ring");
+ rs.appendChild(mk("h2","bt-h","A longer hot season"));
+ mv(ring,rs);
+ /* today, against every same date since 1940 — the reason to come back tomorrow */
+ bToday.hidden=false;bToday.style.display="";
+ var tb=mk("div","beat");tb.appendChild(todaySheet);b2.appendChild(tb);
+ mv(gFreq,todaySheet);mv(gRec,todaySheet);
+ var tcw=todaySheet.querySelector(".chartwrap");
+ var tfold=fold(tcw,"See every year for this date","Hide the chart","fold-today");
+ if(tfold){todaySheet.querySelectorAll(".finder").forEach(function(f){tfold.appendChild(f);});}
+
+ /* ── BEAT 3 · WHY, AND HOW LONG ─────────────────────────────────────────── */
+ var b3=beatPane("sky","Why, and how long");
+ var yb=skyBeats[0],db=skyBeats[1];
+ var ysheet=yb&&yb.querySelector(".sheet");
+ if(yb)b3.appendChild(yb);if(db)b3.appendChild(db);
+ if(ysheet){
+  /* THE BRIDGE, and the line it must not cross. The planet's warming has a settled cause;
+     whether one city's record comes from it is a question for an attribution study, and
+     the charter says this page shows the record, not the cause. Both sentences, plainly. */
+  var why=mk("div","bt-why");
+  why.appendChild(eyebrow("sky"));
+  why.appendChild(quote("It is unequivocal that human influence has warmed the atmosphere, ocean and land.",
+   "IPCC · Sixth Assessment Report, 2021","https://www.ipcc.ch/report/ar6/wg1/chapter/summary-for-policymakers/"));
+  why.appendChild(mk("p","bt-say","Whether one city’s record comes from it takes a separate study, so this page shows the record and doesn’t claim the cause. "+
+   "Here is how long the world has: to keep warming under 1.5 °C, only so much more carbon dioxide can go into the air."));
+  ysheet.insertBefore(why,ysheet.firstChild);
+  var s4=el("rc-4-s");if(s4){s4.className="receipt q-say-b";var yc=el("skycount");
+   if(yc&&yc.parentNode)yc.parentNode.insertBefore(s4,yc.nextSibling);}
+ }
+
+ /* ── BEAT 4 · WHAT YOU CAN DO ───────────────────────────────────────────── */
+ var b4=beatPane("morning","What you can do");
+ /* stay safe in the heat that is now normal here — every line is the WHO's own words */
+ var sf=card(b4,"bt-safe");
+ sf.appendChild(eyebrow("morning"));
+ sf.appendChild(mk("h2","bt-h","Stay safe in the heat"));
+ sf.appendChild(mk("p","lead","What the World Health Organization advises:"));
+ sf.appendChild(mk("ul","safe",
+  "<li>“Avoid going outside and doing strenuous activity during the hottest time of day.”</li>"+
+  "<li>“Drink water regularly.”</li>"+
+  "<li>“Take cool showers or baths.”</li>"+
+  "<li>“Regularly check in with vulnerable people in your circle” — especially people over 65, and anyone with heart, lung or kidney conditions.</li>"+
+  "<li>“Never leave children or animals in parked vehicles for any amount of time.”</li>"));
+ sf.appendChild(mk("p","receipt",'<a href="'+WHO+'" target="_blank" rel="noopener">'+WHOSRC+'</a> · the full guidance, and the signs of heatstroke'));
+ /* change it: the levers, then the reason to speak up, then the personal changes */
+ if(mBeats[0]){b4.appendChild(mBeats[0]);
+  var ah=mBeats[0].querySelector("h2:not(.page-what)");if(ah)ah.textContent="Change it";}
+ if(flBeats[0])b4.appendChild(flBeats[0]);
+ if(flBeats[1]){
+  /* every surveyed country: good, and a detour — one tap away */
+  var cw=flBeats[0]?flBeats[0].querySelector(".sheet"):null;
+  var cb=mk("button","aw-more","See every country surveyed");cb.type="button";
+  cb.setAttribute("aria-expanded","false");cb.setAttribute("aria-controls","fl-all");
+  var cbox=mk("div","fl-all",null,"fl-all");cbox.hidden=true;
+  var csheet=flBeats[1].querySelector(".sheet");
+  while(csheet&&csheet.firstChild)cbox.appendChild(csheet.firstChild);
+  if(cw){cw.appendChild(cb);cw.appendChild(cbox);
+   /* the finding waits for the guess — the old row held it back for exactly this reason */
+   var s3=el("rc-3-s");if(s3){s3.className="receipt q-say-b";s3.hidden=true;cw.insertBefore(s3,cb);
+    var wo=el("wg-out");if(wo&&window.MutationObserver)new MutationObserver(function(){
+     s3.hidden=!(wo.textContent||"").trim();}).observe(wo,{childList:true,subtree:true,characterData:true});}}
+  cb.addEventListener("click",function(){var on=cbox.hidden;cbox.hidden=!on;
+   cb.setAttribute("aria-expanded",String(on));cb.textContent=on?"Hide the countries":"See every country surveyed";
+   if(on)try{window.dispatchEvent(new Event("resize"));}catch(e){}});
+  if(flBeats[1].parentNode)flBeats[1].parentNode.removeChild(flBeats[1]);
+ }
+ for(var mi=1;mi<mBeats.length;mi++)b4.appendChild(mBeats[mi]);
+
+ /* ── SOURCES · one tap away, outside the story ──────────────────────────── */
+ var bd=el("p-bedrock");
+ bd.classList.add("q");bd.setAttribute("aria-label","How do you know this?");
+ var bdy=mk("div","q-body",null,"qb-bedrock");bdy.hidden=true;
+ while(bd.firstChild)bdy.appendChild(bd.firstChild);
+ var bh=mk("h2","q-h");
+ bh.innerHTML='<button class="q-btn" type="button" aria-expanded="false" aria-controls="qb-bedrock">How do you know this?</button>'+
+  '<span class="q-val q-sub" id="qv-bedrock">sources and limits</span><span class="q-chev" aria-hidden="true"></span>';
+ bd.appendChild(bh);bd.appendChild(bdy);panes.appendChild(bd);
+ var bbtn=bh.querySelector(".q-btn");
+ function setSources(on,scroll){
+  bd.classList.toggle("open",on);bdy.hidden=!on;bbtn.setAttribute("aria-expanded",String(on));
+  if(on)bdy.querySelectorAll(".beat,.pane-screen").forEach(function(x){x.classList.add("seen");});
+  if(on&&scroll){var y=window.pageYOffset+bd.getBoundingClientRect().top-10;
+   try{window.scrollTo({top:y,behavior:"auto"});}catch(e){window.scrollTo(0,y);}}}
+ bbtn.addEventListener("click",function(){setSources(!bd.classList.contains("open"),true);});
+
+ /* ── retire what the story no longer needs ──────────────────────────────── */
+ ["p-firstlight","p-recap"].forEach(function(id){var x=el(id);if(x&&x.parentNode)x.parentNode.removeChild(x);});
+ if(cmp&&cmp.parentNode)cmp.parentNode.removeChild(cmp);
  if(bPick.parentNode)bPick.parentNode.removeChild(bPick);
-
- /* ── 2 · the questions ───────────────────────────────────────────────────── */
- var lead=document.createElement("p");lead.id="qlead";lead.textContent="";
- panes.appendChild(lead);
-
- var ROWS=[
-  {id:"night",q:"What about the nights?",num:"rc-2-n",say:"rc-2-s",where:true},
-  {id:"compare",q:"Is it like this everywhere?",
-   num:"rc-5-n",where:"the cities on this page",take:cmp},
-  {id:"sky",q:"How long can the world keep emitting?",num:"rc-4-n",say:"rc-4-s",where:"Worldwide"},
-  {id:"firstlight",q:"What do other people think?",num:"rc-3-n",say:"rc-3-s",sayEnd:true,where:"Worldwide"},
-  {id:"morning",q:"What actually helps?",sub:"actions, and what each one cuts"},
-  {id:"bedrock",q:"How do you know this?",sub:"sources and limits"}
- ];
-
- ROWS.forEach(function(r){
-  var sec=el("p-"+r.id);
-  if(!sec){sec=document.createElement("section");sec.id="p-"+r.id;sec.className="pane";}
-  sec.classList.add("q");sec.setAttribute("aria-label",r.q);
-  var body=document.createElement("div");body.className="q-body";body.id="qb-"+r.id;
-  body.hidden=true;
-  while(sec.firstChild)body.appendChild(sec.firstChild);
-  if(r.take)body.appendChild(r.take);
-  var h=document.createElement("h2");h.className="q-h";   /* a chapter is level 2 */
-  /* the number is the SAME number the rail prints for this chapter — three readers said they
-     could not tell where they were, and a rail number that matches nothing on the page is why */
-  var _ci=chIndex(r.id),_nm=("0"+(_ci+1)).slice(-2);
-  h.innerHTML='<em class="q-num" aria-hidden="true">'+_nm+'<i>/'+("0"+CH.length).slice(-2)+'</i></em>'+
-   '<button class="q-btn" type="button" aria-expanded="false" aria-controls="qb-'+
-   r.id+'"><span class="sr-only">Chapter '+(_ci+1)+' of '+CH.length+'. </span>'+r.q+'</button>'+
-   '<span class="q-val" id="qv-'+r.id+'"></span>'+
-   '<span class="q-chev" aria-hidden="true"></span>';
-  sec.appendChild(h);sec.appendChild(body);
-  panes.appendChild(sec);
-  var val=h.querySelector(".q-val");
-  if(r.num){var n=el(r.num);if(n)val.appendChild(n);
-   if(r.where)val.insertAdjacentHTML("beforeend",'<span class="q-where" id="qw-'+r.id+'">'+
-    (r.where===true?"":r.where)+'</span>');}
-  else if(r.sub){val.className="q-val q-sub";val.textContent=r.sub;}
-  /* the sourcing sentence opens the section — except where the section asks the reader
-     to guess first, and the sentence would hand them the answer */
-  if(r.say){var sy=el(r.say);if(sy){sy.className="q-say"+(r.sayEnd?" q-say-end":"");mv(sy,body,!r.sayEnd);}}
-  r.sec=sec;r.body=body;r.btn=h.querySelector(".q-btn");
- });
-
- /* the summary's four numbers are the row values now — the reader meets each one
-    beside the question it answers, and its sourcing sentence opens that section. */
- var rcp=el("p-recap");if(rcp&&rcp.parentNode)rcp.parentNode.removeChild(rcp);
- /* the contents page is gone: the answer is the front page */
-
- /* one place tag per card: the night sheet carried the same "Example: Delhi" twice */
+ /* one place tag per card */
  document.querySelectorAll(".sheet").forEach(function(sh){
   var t=sh.querySelectorAll(".place-tag");
   for(var i=1;i<t.length;i++)if(t[i].parentNode)t[i].parentNode.removeChild(t[i]);});
- /* "Next: …" belonged to a scroll you had to complete */
- document.querySelectorAll(".beat-cue").forEach(function(c){
-  if(c.parentNode)c.parentNode.removeChild(c);});
+ /* the reveal is for things arriving in view; a beat reached by reading is not hidden first */
+ document.querySelectorAll(".bt-pane .beat").forEach(function(b){b.classList.add("seen");});
 
- /* ── 3 · open / close ───────────────────────────────────────────────────── */
- function chIndex(id){for(var i=0;i<CH.length;i++)if(CH[i].id===id)return i;return -1;}
- var openId=null;
- function setOpen(id,scroll){
-  ROWS.forEach(function(r){
-   var on=(r.id===id);
-   r.sec.classList.toggle("open",on);
-   r.body.hidden=!on;
-   r.btn.setAttribute("aria-expanded",String(on));
-   if(on)r.body.querySelectorAll(".beat,.pane-screen").forEach(function(b){b.classList.add("seen");});
-  });
-  openId=id||null;
-  var i=id?chIndex(id):0;
-  if(i>=0)enterChamber(i);
-  if(id&&id==="today"&&typeof groundOverture==="function")try{groundOverture();}catch(e){}
-  if(id&&scroll!==false){
-   var sec=el("p-"+id);
-   /* clear the fixed sound button, which sits in the top corner on a phone */
-   var pad=(window.innerWidth<=640)?64:10;
-   var y=window.pageYOffset+sec.getBoundingClientRect().top-pad;
-   try{window.scrollTo({top:y,behavior:"auto"});}catch(e){window.scrollTo(0,y);}
-  }
- }
- ROWS.forEach(function(r){
-  r.btn.addEventListener("click",function(){setOpen(r.id===openId?null:r.id,true);});
- });
-
- /* the rail opens what it points at — the open section is where you are */
+ /* the rail goes where it points: a beat scrolls to its top, Sources opens */
+ chamberAnchor=function(i){return el("p-"+CH[i].id);};
  var lad=el("ladder");
  if(lad)lad.addEventListener("click",function(e){
-  var a=e.target&&e.target.closest?e.target.closest(".rung"):null;if(!a)return;
-  var rungs=lad.querySelectorAll(".rung"),i=-1,k;
-  for(k=0;k<rungs.length;k++)if(rungs[k]===a)i=k;
-  if(i<0)return;
-  setOpen(i<=0?null:CH[i].id,false);
+  var r=e.target&&e.target.closest?e.target.closest(".rung"):null;if(!r)return;
+  if(r.getAttribute("href")==="#p-bedrock"){e.preventDefault();e.stopPropagation();setSources(true,true);}
  },true);
- /* the rail's anchor is the question, not the first card inside it */
- chamberAnchor=function(i){var p=el("p-"+CH[i].id);if(!p)return null;
-  return p.classList.contains("q")?p:(p.querySelector(".beat")||p);};
-
- /* ── 4 · the values that follow the reader's place ──────────────────────── */
- function sync(){
-  try{
-   var h=(window.__HOME&&__HOME.get&&__HOME.get())||null;
-   var V=(window.__HOME&&__HOME.record&&__HOME.record())||null;
-   var w=el("qw-night");
-   if(w&&h)w.textContent=(V&&V.G)?h.name:"Seville, the example";
-  }catch(e){}
- }
- window.__P1={sync:sync,open:setOpen};
- sync();setTimeout(sync,800);setTimeout(sync,2600);
-
- /* a link to a chapter opens that chapter — the boot's deep-link jump scrolls to a row,
-    and a row that is still shut is not an arrival */
+ window.__P1={sync:function(){},open:function(id){if(id==="bedrock")setSources(true,true);}};
  try{var dl=(Q.get("chamber")||(typeof HASH0==="string"?HASH0:"")).trim();
-  if(dl)ROWS.forEach(function(r){if(r.id===dl)setOpen(dl,false);});}catch(e){}
-
- /* reuse modes ask for one chapter and nothing else: give them the whole chapter */
- try{if(Q.get("embed")||Q.get("kiosk"))ROWS.forEach(function(r){r.body.hidden=false;
-  r.sec.classList.add("open");
-  r.body.querySelectorAll(".beat").forEach(function(b){b.classList.add("seen");});});}catch(e){}
+  if(dl==="bedrock")setSources(true,false);}catch(e){}
+ /* reuse modes show a chapter whole */
+ try{if(Q.get("embed")||Q.get("kiosk"))setSources(true,false);}catch(e){}
 })();
 /* watch the scroll: reveal each beat as it enters, and let the centred chapter drive the sky.
    A rAF-throttled scroll reader (not IntersectionObserver) so behaviour is deterministic and
@@ -4170,6 +4387,7 @@ var __RING=(function(){
 })();
 window.__RING=__RING;   /* the inline script has its own scope; the ring is reached by name */
 function buildGround(V){
+ window.__LASTGV=V||null;     /* a new birth decade redraws the record that is on screen */
  var CUSTOM=!!(V&&V.custom);
  var RWc=CUSTOM?V.RW:RW,Sc=CUSTOM?V.S:S,Gc=CUSTOM?V.G:G;
  var PLACE=CUSTOM?V.place:"Seville";
@@ -4177,9 +4395,12 @@ function buildGround(V){
  el("recwin").innerHTML="";
  /* a baked record has no day-by-day archive; its legend was naming five lines of an empty box */
  if(el("rw-legend"))el("rw-legend").hidden=!RWc;
- var thenN=mean(Gc.days_ge35_per_year,1951,1980),nowN=mean(Gc.days_ge35_per_year,LF-9,LF);
- var wnThen=mean(Gc.warm_nights_ge25_per_year,1951,1980),wnNow=mean(Gc.warm_nights_ge25_per_year,LF-9,LF);
+ var thenN=decMean(Gc.days_ge35_per_year),nowN=mean(Gc.days_ge35_per_year,LF-9,LF);
+ var wnThen=decMean(Gc.warm_nights_ge25_per_year),wnNow=mean(Gc.warm_nights_ge25_per_year,LF-9,LF);
  if(el("g-h2"))el("g-h2").textContent=PLACE;
+ if(el("g-dec"))el("g-dec").textContent=__DEC.lab();
+ if(el("g-decwho"))el("g-decwho").textContent=__DEC.get()===1940?", the earliest decade on record":
+  (__DEC.chosen()?", the decade you were born":"");
  if(el("g-then")){
   el("g-then").textContent=thenN.toFixed(0);el("g-now").textContent=nowN.toFixed(0);
   /* the then-count lands first, the now-count 250ms later — the site's one sentence, in motion */
@@ -4195,7 +4416,9 @@ function buildGround(V){
     (function st(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/900);
      elx.textContent=String(Math.round(to*(1-Math.pow(1-k,3))));
      if(k<1)b.__raf.push(requestAnimationFrame(st));})(performance.now());},delay);}
-   if(CUSTOM){el("g-then").textContent=String(Math.round(thenN));
+   /* a new birth decade changes ONE number; counting "the last ten years" up from zero again
+      would say it changed too. Redraws for a decade set both at once. */
+   if(CUSTOM||window.__DECREDRAW){el("g-then").textContent=String(Math.round(thenN));
     el("g-now").textContent=String(Math.round(nowN));return;}
    try{var io=b.__io=new IntersectionObserver(function(es){
     for(var q=0;q<es.length;q++)if(es[q].isIntersecting&&!done){done=true;io.disconnect();
@@ -4310,6 +4533,7 @@ function buildGround(V){
 
  /* ---- everything today-dependent renders through here (snapshot now, live later) ---- */
  applyToday=function(t){
+  window.__LASTT=t;
   var isRec=t.tmax!=null&&t.comparable!=null&&t.rec!=null&&t.comparable>t.rec;
   var lr=ladder.querySelectorAll(".rung")[1]&&ladder.querySelectorAll(".rung")[1].querySelector(".fact");
   if(lr)lr.textContent=PLACE+" · "+(t.tmax!=null?t.tmax.toFixed(1)+"° today":"on its own record");
@@ -4329,11 +4553,14 @@ function buildGround(V){
   var DAYW=Math.abs(gD)===1?"day":"days";        // "1 fewer … day", not "days", at the ±1 boundary
   el("g-fact").innerHTML=
    '<div id="g-bars" aria-hidden="true">'+
-    '<div class="gb-row"><span class="gb-lab">1951–80</span><span class="gb-track"><i class="gb-fill gb-then" style="--w:'+(gThen/gMax*100).toFixed(1)+'%"></i></span><span class="gb-num">'+gThen+'</span></div>'+
+    '<div class="gb-row"><span class="gb-lab">'+__DEC.lab()+'</span><span class="gb-track"><i class="gb-fill gb-then" style="--w:'+(gThen/gMax*100).toFixed(1)+'%"></i></span><span class="gb-num">'+gThen+'</span></div>'+
     '<div class="gb-row"><span class="gb-lab">'+(LF-9)+'–'+LF+'</span><span class="gb-track"><i class="gb-fill gb-now" style="--w:'+(gNow/gMax*100).toFixed(1)+'%"></i></span><span class="gb-num on">'+gNow+'</span></div>'+
     '<div class="gb-ax"><span></span><span>'+HOTW+' days a year</span><span></span></div>'+
    '</div>'+
-   '<p class="gb-caveat"></p>'+
+   /* a birth decade that runs into the last ten years shares years with it — say which,
+      because the comparison then understates the change */
+   '<p class="gb-caveat">'+(function(){var d0=__DEC.get(),a=Math.max(d0,LF-9),b=Math.min(d0+9,LF);
+     return (a<=b)?("The "+__DEC.lab()+" and the last ten years share "+a+"\u2013"+b+", so this understates the change."):"";})()+'</p>'+
    /* LEAN ON THE GLOBAL PICTURE: where the local count did NOT rise, the local record can't carry the
       alarm — so pull in the planet's own sourced figure (never a local causal claim). General: fires for
       any flat/cooled place (default Seville rose, so it never shows there). */
@@ -4352,7 +4579,7 @@ function buildGround(V){
     "today is a forecast, not yet measured":
     "forecast adjusted "+(t.bias<0?"+":"−")+Math.abs(t.bias).toFixed(1)+
     " °C for the measured reanalysis offset · newest observation "+F.newest_obs)+
-   " · compared against 1951–80 and "+(LF-9)+"–"+LF;
+   "";
   if(RWc&&t.dateISO){
   var off=(function(){var d=new Date(t.dateISO+"T00:00:00Z");
    var a=CUSTOM?new Date(V.anchorISO+"T00:00:00Z"):new Date(Date.UTC(+t.dateISO.slice(0,4),5,8));
@@ -4425,12 +4652,13 @@ buildGround(null);
 
 /* ============ NIGHT ============ */
 var buildNight=function(NV){
+ window.__LASTNV=NV||null;
  var CUSTOM=!!(NV&&NV.custom),place,thrH,thrN,days,nights,dThen,dNow,nThen,nNow;
  if(CUSTOM){place=NV.place;thrH=NV.thrHot;thrN=NV.thrNight;
   days=NV.days.filter(function(r){return r.year<=LF;});
   nights=NV.nights.filter(function(r){return r.year<=LF;});
-  dThen=mean(days,1951,1980);dNow=mean(days,LF-9,LF);
-  nThen=mean(nights,1951,1980);nNow=mean(nights,LF-9,LF);
+  dThen=decMean(days);dNow=mean(days,LF-9,LF);
+  nThen=decMean(nights);nNow=mean(nights,LF-9,LF);
  }else{
   /* ONE CITY RUNS DOWN THE WHOLE PAGE. This branch used to draw DELHI while the answer at
      the top of the page said Seville — three cold readers named that as the single worst
@@ -4440,8 +4668,8 @@ var buildNight=function(NV){
   place="Seville";thrH=35;thrN=25;
   days=G.days_ge35_per_year.filter(function(r){return r.year<=LF;});
   nights=G.warm_nights_ge25_per_year.filter(function(r){return r.year<=LF;});
-  dThen=mean(days,1951,1980);dNow=mean(days,LF-9,LF);
-  nThen=mean(nights,1951,1980);nNow=mean(nights,LF-9,LF);}
+  dThen=decMean(days);dNow=mean(days,LF-9,LF);
+  nThen=decMean(nights);nNow=mean(nights,LF-9,LF);}
  var dayFell=dNow<dThen-1,thrHs=CUSTOM?thrH.toFixed(1):"35",thrNs=CUSTOM?thrN.toFixed(1):"25";
  /* Delhi's card is the proof that a record which FALLS is drawn as honestly as one that rises.
     It is redundant the moment the reader's own city already shows it. */
@@ -4449,12 +4677,12 @@ var buildNight=function(NV){
  try{if(typeof buildNightExample==="function")buildNightExample();}catch(e){}
  var dN=Math.round(nNow-nThen);
  el("n-big").innerHTML=(dN>=0?"+":"&minus;")+Math.abs(dN)+
-  "<small> "+(dN>=0?"more":"fewer")+" hot nights a year in "+place+(NV&&NV.custom?"":", the example")+"<br>than the 1951&ndash;80 average</small>";
+  "<small> "+(dN>=0?"more":"fewer")+" hot nights a year in "+place+(NV&&NV.custom?"":", the example")+"<br>than in the "+__DEC.lab()+"</small>";
  try{var _nt=el("p-night").querySelector(".place-tag");
   if(_nt)_nt.textContent="Example: "+place;}catch(e){}
  if(el("n-h2"))el("n-h2").innerHTML=dayFell?
   ("In "+place+", hot days fell and hot nights rose."):
-  ("Hot nights in "+place+": about "+Math.round(nThen)+" a year in 1951\u201380, "+
+  ("Hot nights in "+place+": about "+Math.round(nThen)+" a year in the "+__DEC.lab()+", "+
    Math.round(nNow)+" now.");
  /* the same arithmetic the answer card uses: round the two counts, then subtract. Subtracting
     first printed +18 beside the card's +17 for the identical quantity. */
@@ -4470,7 +4698,7 @@ var buildNight=function(NV){
    '<span class="nd-num'+(cls==='nd-then'?'':' on')+'">'+v+'</span></div>';};
   el("n-diverge").innerHTML=
    '<div class="nd-grp">'+
-    _bar("1951\u201380",_nT,"nd-then")+_bar((LF-9)+"\u2013"+LF,_nN,"nd-now-n")+'</div>'+
+    _bar(__DEC.lab(),_nT,"nd-then")+_bar((LF-9)+"\u2013"+LF,_nN,"nd-now-n")+'</div>'+
    '<p class="nd-ax"><span></span><span>hot nights a year</span><span></span></p>';
   /* the bars fill on the shared .seen reveal; an opened row is marked seen at once */
   try{var _bt=el("n-diverge").closest(".beat");if(_bt)_bt.classList.add("seen");}catch(e){}
@@ -4487,7 +4715,7 @@ var buildNight=function(NV){
    ("The days "+dVerb+"."));
  el("delhi-receipt").innerHTML="days ≥"+thrHs+" °C: <b>"+Math.round(dThen)+"→"+Math.round(dNow)+
   "</b>/yr · nights ≥"+thrNs+" °C: <b>"+Math.round(nThen)+"→"+Math.round(nNow)+"</b>/yr · "+
-  "1951–80 vs "+(LF-9)+"–"+LF+" · ERA5 · faint line = one year, bold line = 11-year average";
+  __DEC.lab()+" vs "+(LF-9)+"–"+LF+" · ERA5 · faint line = one year, bold line = 11-year average";
  var dTrend=dayFell?"— edging down":(dNow>dThen+1?"— climbing":"— flat");
  var nTrend=nNow>nThen+1?"— climbing":(nNow<nThen-1?"— edging down":"— flat");
  var lr2=ladder.querySelectorAll(".rung")[2]&&ladder.querySelectorAll(".rung")[2].querySelector(".fact");
@@ -4849,7 +5077,9 @@ var __ART=(function(){
  function put(x,str,ax,ay,px,font,color,al,lsp){x.__ox=ax;x.__oy=ay;T(x,str,px,font,color,al,lsp);}
 
  function recs(){
-  var was=R(mean(G.days_ge35_per_year,1951,1980)),now=R(mean(G.days_ge35_per_year,2016,2025));
+  var was=R(decMean(G.days_ge35_per_year)),now=R(mean(G.days_ge35_per_year,2016,2025));
+  /* the card says the decade, and says it is the sharer's own only when they chose it */
+  var DL=__DEC.lab(),DWHO=__DEC.chosen()?(" · I was born in the "+DL):"";
   var lo=B.estimates[0],hi=B.estimates[1];   // sorted ascending; lo is the lower ledger
   function sname(e){return /IGCC/i.test(e.label||"")?"IGCC 2025":"GCB 2025";}
   var yrsLo=(lo.remaining_now_gt/B.rate_now_gt),yrsHi=(hi.remaining_now_gt/B.rate_now_gt);
@@ -4861,37 +5091,37 @@ var __ART=(function(){
     var hm=window.__HOME&&__HOME.get(),V=window.__HOME&&__HOME.record&&__HOME.record();
     if(hm&&!hm.ex&&V&&V.G){
      var LFy=V.G.days_ge35_per_year[V.G.days_ge35_per_year.length-1].year;
-     var w2=R(mean(V.G.days_ge35_per_year,1951,1980)),n2=R(mean(V.G.days_ge35_per_year,LFy-9,LFy));
+     var w2=R(decMean(V.G.days_ge35_per_year)),n2=R(mean(V.G.days_ge35_per_year,LFy-9,LFy));
      var verb=n2>w2?"rose":n2<w2?"fell":"held steady at";
      var nm=hm.name,NM=nm.toUpperCase();
      return {key:"seville",kind:"climb",place:NM,title:nm+", on record",
       hero:String(n2),wasN:w2,label:"days a year above "+V.thr.hot.toFixed(1)+" °C — hotter than 95% of its 1951–80 days",
-      sub:(LFy-9)+"–"+LFy+" average · was "+w2+" a year in 1951–80",
+      sub:(LFy-9)+"–"+LFy+" average"+DWHO,wasLab:DL,
       series:V.G.days_ge35_per_year,
       nights:V.G.warm_nights_ge25_per_year,anomS:V.S,thrHot:V.thr.hot,thrNight:V.thr.night,
       src:"ERA5 via Open-Meteo · "+nm+" · daily max ≥ "+V.thr.hot.toFixed(1)+" °C",url:BASE+"?chamber=ground",
       cite:"In "+nm+", days above "+V.thr.hot.toFixed(1)+" °C (its own 1951–80 95th percentile) "+
-       (verb==="held steady at"?("held steady at about "+n2+" a year"):(verb+" from "+w2+" a year (1951–80 average) to "+n2+" ("+(LFy-9)+"–"+LFy+")"))+
+       (verb==="held steady at"?("held steady at about "+n2+" a year"):(verb+" from "+w2+" a year (the "+DL+" average) to "+n2+" ("+(LFy-9)+"–"+LFy+")"))+
        ". Source: ERA5 reanalysis via Open-Meteo. On Record — "+BASE+"?chamber=ground"};
     }
     return {key:"seville",kind:"climb",place:"SEVILLE",title:"Seville, on record",
     hero:String(now),wasN:was,label:"days a year at or above 35 °C",
-    sub:"2016–25 average · was "+was+" a year in 1951–80",
+    sub:"2016–25 average"+DWHO,wasLab:DL,
     series:G.days_ge35_per_year.filter(function(r){return r.year<=LASTFULL;}),
     nights:G.warm_nights_ge25_per_year,anomS:S,thrHot:35,thrNight:25,
     src:"ERA5 via Open-Meteo · Seville · daily max ≥ 35 °C",url:BASE+"?chamber=ground",
-    cite:"In Seville, days at or above 35 °C rose from "+was+" a year (1951–80 average) to "+now+" (2016–25). Source: ERA5 reanalysis via Open-Meteo. On Record — "+BASE+"?chamber=ground"};})(),
+    cite:"In Seville, days at or above 35 °C rose from "+was+" a year (the "+DL+" average) to "+now+" (2016–25). Source: ERA5 reanalysis via Open-Meteo. On Record — "+BASE+"?chamber=ground"};})(),
    night:(function(){
     var hm=window.__HOME&&__HOME.get(),V=window.__HOME&&__HOME.record&&__HOME.record();
     function mk(nm,rows,thr,LFy){
-     var w2=R(mean(rows,1951,1980)),n2=R(mean(rows,LFy-9,LFy));
+     var w2=R(decMean(rows)),n2=R(mean(rows,LFy-9,LFy));
      var verb=n2>w2?"rose":n2<w2?"fell":"held steady";
      return {key:"night",kind:"climb",place:nm.toUpperCase(),title:nm+"’s nights, on record",
       hero:String(n2),wasN:w2,label:"hot nights a year — above "+thr.toFixed(1)+" °C",
-      sub:(LFy-9)+"–"+LFy+" average · was "+w2+" a year in 1951–80",
+      sub:(LFy-9)+"–"+LFy+" average",wasLab:DL,
       series:rows,nights:rows,anomS:null,thrHot:thr,thrNight:thr,
       src:"ERA5 via Open-Meteo · "+nm+" · nights ≥ "+thr.toFixed(1)+" °C",url:BASE+"?chamber=night",
-      cite:"In "+nm+", nights above "+thr.toFixed(1)+" °C "+verb+" from "+w2+" a year (1951–80 average) to "+
+      cite:"In "+nm+", nights above "+thr.toFixed(1)+" °C "+verb+" from "+w2+" a year (the "+DL+" average) to "+
        n2+" ("+(LFy-9)+"–"+LFy+"). We show the record, not the cause. Source: ERA5 via Open-Meteo. On Record — "+BASE+"?chamber=night"};}
     if(hm&&!hm.ex&&V&&V.G){
      var LFy=V.G.warm_nights_ge25_per_year[V.G.warm_nights_ge25_per_year.length-1].year;
@@ -4917,7 +5147,8 @@ var __ART=(function(){
     site's central promise at exactly the moment someone chose to share it. */
  var REC=null,RECGEN=-1;
  function rec(k){
-  var g=window.__HOME&&__HOME.rev?__HOME.rev():0;
+  /* ...and when the birth decade changes: the card's "was N" is that decade's average */
+  var g=(window.__HOME&&__HOME.rev?__HOME.rev():0)+":"+__DEC.get()+":"+(__DEC.chosen()?1:0);
   if(!REC||g!==RECGEN){REC=recs();RECGEN=g;}
   return REC[k];}
 
@@ -4940,7 +5171,7 @@ var __ART=(function(){
   s.forEach(function(d){if(d.n>mx)mx=d.n;});mx=Math.ceil((mx+6)/10)*10;
   var m=story?70:64;
   if(story){
-   put(x,"was "+r.wasN+" a year in 1951–80  →",m,330,34,MONO,INK2,"left",0);
+   put(x,"was "+r.wasN+" a year in "+(r.wasLab?"the "+r.wasLab:"1951–80")+"  →",m,330,34,MONO,INK2,"left",0);
    put(x,r.hero,m,640,290,MONO,HOT,"left",0);
    put(x,r.label,m,724,46,SG,INK,"left",0);
    put(x,r.sub,m,776,28,MONO,INK2,"left",0);
@@ -4949,7 +5180,7 @@ var __ART=(function(){
    return;
   }
   // landscape: hero left, chart right
-  put(x,"was "+r.wasN+" in 1951–80  →",m,150,26,MONO,INK2,"left",0);
+  put(x,"was "+r.wasN+" in "+(r.wasLab?"the "+r.wasLab:"1951–80")+"  →",m,150,26,MONO,INK2,"left",0);
   put(x,r.hero,m,340,190,MONO,HOT,"left",0);
   put(x,r.label,m,388,30,SG,INK,"left",0);
   put(x,r.sub,m,420,20,MONO,INK2,"left",0);
@@ -6436,7 +6667,7 @@ window.__HOME=__HOME;
     Honesty: the x-multiple is the only cross-town comparable (thresholds differ by
     design); a cooled record reads "fewer" as plainly as "more". */
  function cmpStats(rows){
-  var w=mean(rows,1951,1980),n=mean(rows,LF-9,LF);
+  var w=decMean(rows),n=mean(rows,LF-9,LF);
   /* the multiple is the comparable quantity; over a near-zero baseline it is noise, so it
      falls back to 1 and the card's headline says "from almost none" instead. */
   var mult=(w<1)?1:(n>=w? n/Math.max(.01,w) : w/Math.max(.01,n));
@@ -6508,14 +6739,27 @@ window.__HOME=__HOME;
   var WORD=["No","One","Two","Three","Four","Five","Six","Seven","Eight","Nine"];
   var lead=down<WORD.length?WORD[down]:String(down);
   host.innerHTML="Of the <b>"+tot+"</b> cities on this page, <b>"+up+
-   "</b> have more hot days a year than in 1951&ndash;80."+
+   "</b> have more hot days a year than in the "+__DEC.lab()+"."+
    (down?" "+lead+(down===1?" has":" have")+" fewer: "+names+".":"");
   /* the row's value, from the same count — the chapter had no number on it at all */
   var rn=el("rc-5-n");if(rn)rn.textContent=up+" of "+tot+" have more hot days";
+  var nt=el("cmp-note");if(nt)nt.innerHTML="Each city is counted against its own temperature, so the bar shows how many times the count multiplied. Averages: the "+__DEC.lab()+" vs the last ten years. ERA5 via Open-Meteo.";
  }
  (function(){var sel=el("cmp-sel");
   if(sel)sel.addEventListener("change",function(){buildCompare();});})();
  try{buildCompare();}catch(e){}
+ /* A NEW BIRTH DECADE REDRAWS WHAT IS ON SCREEN — the answer, the nights and every city —
+    from the records already loaded. Nothing is fetched again: the decade is a lens on the
+    same 86 years, not a new question to the archive. */
+ __DEC.on(function(){
+  window.__DECREDRAW=true;
+  try{if(window.__LASTGV!==undefined){buildGround(window.__LASTGV);
+   if(window.__LASTT&&typeof applyToday==="function")applyToday(window.__LASTT);}}catch(e){}
+  window.__DECREDRAW=false;
+  try{if(typeof buildNight==="function")buildNight(window.__LASTNV||null);}catch(e){}
+  try{buildCompare();}catch(e){}
+  try{if(window.__DECUI)__DECUI();}catch(e){}
+ });
 
 /* the cue under each beat advances to the next beat — it always looked like a link */
 (function(){
@@ -6726,7 +6970,7 @@ window.addEventListener("keydown",function(e){
     else if(!e.shiftKey&&document.activeElement===z){a.focus();e.preventDefault();}}}
   return;}});
 /* deep link: ?chamber= or #p-<id> jumps to a chapter and skips the intro */
-var startCh=(Q.get("chamber")||HASH0).trim();
+var startCh=(Q.get("chamber")||HASH0).trim();startCh=CHALIAS[startCh]||startCh;
 var si=CH.findIndex(function(c){return c.id===startCh;});
 if(si>0){endIntroSafe();
  requestAnimationFrame(function(){
