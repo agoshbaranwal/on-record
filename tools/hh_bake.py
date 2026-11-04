@@ -28,6 +28,11 @@ UA = {"User-Agent": "on-record/1.0 (open climate site; agoshbaranwal@gmail.com)"
 P = ROOT / "data" / "instant-places.json"
 T = json.loads(P.read_text())
 CACHED_ONLY = "--cached-only" in sys.argv
+# the nightly job must never be held up: stop cleanly after a budget (minutes), keeping what is done.
+# On a shared GitHub runner the archive answers "too many requests" every minute or two (measured
+# 4 Nov 2026: ~70 s a city); the waits are fine, the budget is what bounds them.
+BUDGET_S = 60 * float(next((a.split("=")[1] for a in sys.argv if a.startswith("--budget-min=")), "10"))
+T0 = time.time(); WAITS = [0]
 # the last ten FULL years: ERA5 publishes with a ~6-day lag, so a year is full from mid-January
 _t = datetime.date.today()
 LAST_FULL = _t.year - 1 if _t >= datetime.date(_t.year, 1, 12) else _t.year - 2
@@ -52,9 +57,10 @@ def fetch(slug, la, lo, tag, y0, y1):
     if CACHED_ONLY: return None
     url = ("https://archive-api.open-meteo.com/v1/archive?latitude=%s&longitude=%s&start_date=%d-01-01"
            "&end_date=%d-12-31&daily=wet_bulb_temperature_2m_max&timezone=auto" % (la, lo, y0, y1))
-    for _ in range(6):
+    for _ in range(4):
+        if time.time() - T0 > BUDGET_S: raise Limited("time budget spent")
         try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=120) as r:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=90) as r:
                 rem = r.headers.get("X-RateLimit-Remaining"); j = json.loads(r.read().decode())
             f.write_text(json.dumps(j))
             try:
@@ -63,10 +69,12 @@ def fetch(slug, la, lo, tag, y0, y1):
             return j
         except urllib.error.HTTPError as e:
             msg = e.read().decode()[:160]
+            print("   %s %s: %s" % (slug, e.code, msg), flush=True)
             if "Daily" in msg or "Hourly" in msg: raise Limited(msg)
-            time.sleep(65)
-        except Exception:
-            time.sleep(20)
+            WAITS[0] += 1; time.sleep(61)
+        except Exception as e:
+            print("   %s: %s" % (slug, str(e)[:120]), flush=True)
+            time.sleep(15)
     raise Limited("gave up on " + slug)
 
 def bake(slug, la, lo):

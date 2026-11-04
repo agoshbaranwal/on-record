@@ -14,7 +14,9 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - name: hot, humid days for the stored cities (only when a city is missing or the year rolled over)
-        run: python tools/hh_bake.py --if-needed || echo "hh_bake did not finish; the page counts them live"
+        timeout-minutes: 32
+        continue-on-error: true
+        run: python tools/hh_bake.py --if-needed --budget-min=28 || echo "hh_bake did not finish; the page counts them live"
       - name: run the pipeline (stdlib only, no installs)
         run: python pipeline.py
       - name: commit refreshed data + site
