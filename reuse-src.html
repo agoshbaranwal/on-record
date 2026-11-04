@@ -192,7 +192,7 @@ hr{border:0;border-top:1px solid var(--hair);margin:34px 0}
     <div class="card">
       <h3>The ground — Seville's heat</h3>
       <span class="lab">In plain words</span>
-      <p>In Seville, the number of days each year at or above 35 °C rose from about <b class="num" data-rd="sev_days_was">–</b> (<span data-rd="eras_then">–</span> average) to about <b class="num" data-rd="sev_days_now">–</b> (<span data-rd="eras_now">–</span>). Nights at or above 25 °C went from roughly <b class="num" data-rd="sev_nights_was">–</b> to <b class="num" data-rd="sev_nights_now">–</b> a year. We compare the city only to <strong>its own past</strong>.</p>
+      <p>In Seville, the number of days each year at or above 35 °C rose from about <b class="num" data-rd="sev_days_was">–</b> (<span data-rd="eras_then">–</span> average) to about <b class="num" data-rd="sev_days_now">–</b> (<span data-rd="eras_now">–</span>). Nights at or above 25 °C went from roughly <b class="num" data-rd="sev_nights_was">–</b> to <b class="num" data-rd="sev_nights_now">–</b> a year. We compare the city only to <strong>its own past</strong>. On the site, each reader compares the decade <em>they</em> were born in with the last ten years; to cite a figure, use the fixed span above, which does not depend on who is reading.</p>
       <span class="lab">Source</span>
       <p>ERA5, the ECMWF's hour-by-hour reconstruction of weather since 1940 (~30 km grid), read via Open-Meteo (CC-BY).</p>
       <span class="lab">What we did to it</span>
@@ -244,12 +244,11 @@ hr{border:0;border-top:1px solid var(--hair);margin:34px 0}
       <div class="row">
         <span><label for="emb-ch">Chamber</label>
           <select id="emb-ch">
-            <option value="sky">Sky — the carbon budget</option>
-            <option value="ground" selected>Ground — Seville's heat</option>
-            <option value="night">Night — Delhi's hot nights</option>
-            <option value="firstlight">First light — the perception gap</option>
-            <option value="morning">Morning — what's turning</option>
-            <option value="bedrock">Bedrock — the sources</option>
+            <option value="ground" selected>What changed — hot days since the decade you were born</option>
+            <option value="night">What it means — hot nights, and what heat does to a body</option>
+            <option value="sky">Why, and how long — the carbon budget</option>
+            <option value="morning">What you can do</option>
+            <option value="bedrock">Sources</option>
           </select></span>
         <label class="chk"><input type="checkbox" id="emb-still"> Single still (one card, no scroll)</label>
       </div>
@@ -258,20 +257,20 @@ hr{border:0;border-top:1px solid var(--hair);margin:34px 0}
         <pre id="emb-code"></pre>
       </figure>
       <noscript><p class="note">The snippet builder needs JavaScript. Without it, embed any chapter directly:
-        <code>&lt;iframe src="https://agoshbaranwal.github.io/on-record/?embed=ground"&gt;&lt;/iframe&gt;</code> — swap <code>ground</code> for <code>sky</code>, <code>night</code>, or <code>firstlight</code>.</p></noscript>
+        <code>&lt;iframe src="https://agoshbaranwal.github.io/on-record/?embed=ground"&gt;&lt;/iframe&gt;</code> — swap <code>ground</code> for <code>night</code>, <code>sky</code> or <code>morning</code>.</p></noscript>
     </div>
 
-    <p class="note">The four narrative chambers are the ones worth framing:</p>
+    <p class="note">The site is one story in four parts. Each can be framed on its own:</p>
     <table>
-      <thead><tr><th>Chapter</th><th>?embed=</th><th>What it shows</th></tr></thead>
+      <thead><tr><th>Part</th><th>?embed=</th><th>What it shows</th></tr></thead>
       <tbody>
-        <tr><td><b>Sky</b></td><td class="num">sky</td><td>The world's remaining carbon budget as a living sky, counting down</td></tr>
-        <tr><td><b>Ground</b></td><td class="num">ground</td><td>Seville's heat, every year since 1940, against its own past</td></tr>
-        <tr><td><b>Night</b></td><td class="num">night</td><td>Delhi's hot nights rising while hot days fall</td></tr>
-        <tr><td><b>First light</b></td><td class="num">firstlight</td><td>The gap between how much people care and how much we think they do</td></tr>
+        <tr><td><b>What changed</b></td><td class="num">ground</td><td>A city's hot days in the reader's birth decade against the last ten years (Seville by default)</td></tr>
+        <tr><td><b>What it means</b></td><td class="num">night</td><td>Hot nights, a longer hot season, and what heat does to a body, in the WHO's words</td></tr>
+        <tr><td><b>Why, and how long</b></td><td class="num">sky</td><td>The world's remaining carbon budget as a living sky, counting down</td></tr>
+        <tr><td><b>What you can do</b></td><td class="num">morning</td><td>Staying safe in the heat, and the levers that change things</td></tr>
       </tbody>
     </table>
-    <p class="note">Morning and Bedrock can be embedded too (the param accepts all six), but they're the action layer and the source ledger — better linked than framed.</p>
+    <p class="note">Sources can be embedded too (<code>?embed=bedrock</code>), but a source list is better linked than framed. Older links that name <code>firstlight</code> still work and open “What you can do”.</p>
     <div class="note">
       <div>· The <b>title</b>, <b>figcaption credit</b>, and <b>?embed=</b> are the only parts to change.</div>
       <div>· <code>loading="lazy"</code> keeps your page fast; the sky only starts when scrolled into view.</div>
@@ -432,14 +431,13 @@ var RD = /*__REUSE_DATA__*/ null;
 
   // 2 — embed snippet generator
   var CH={
+    ground:"hot days since the decade you were born",
+    night:"hot nights, and what heat does to a body",
     sky:"the world's carbon budget, drawn as a living sky",
-    ground:"Seville's heat, on its own record",
-    night:"Delhi's hot nights rising while hot days fall",
-    firstlight:"the gap between how much people care and how much we think they do",
-    morning:"what's already turning, and where one person has leverage",
+    morning:"staying safe in the heat, and what changes things",
     bedrock:"every number, every source"
   };
-  var LBL={sky:"Sky",ground:"Ground",night:"Night",firstlight:"First light",morning:"Morning",bedrock:"Bedrock"};
+  var LBL={ground:"What changed",night:"What it means",sky:"Why, and how long",morning:"What you can do",bedrock:"Sources"};
   function snippet(id,still){
     var src=SITE+"?embed="+id+(still?"&beat=1":"");
     var title="On Record — "+LBL[id]+": "+CH[id];
@@ -492,9 +490,9 @@ var RD = /*__REUSE_DATA__*/ null;
       json:{claim:"Delhi nights ≥25 °C ~"+RD.delhi_nights_was+"→"+RD.delhi_nights_now+"/yr; days ≥35 °C ~"+RD.delhi_days_was+"→"+RD.delhi_days_now+"/yr ("+RD.eras_then+" vs "+RD.eras_now+")",measurement_source:"ERA5 (ECMWF) via Open-Meteo, CC-BY",computed_by:"On Record",permalink:SITE+"?chamber=night",accessed:ISO,computation_license:"CC BY 4.0"}
     },
     perception:{
-      plain:"About "+RD.want_action+"% of people worldwide want their government to do more on climate, yet most people guess the share is far lower. Source: Andre, Boneva, Chopra & Falk (2024), Nature Climate Change; per-country data via Our World in Data (CC BY 4.0); shown by On Record (agoshbaranwal.github.io/on-record/?chamber=firstlight), accessed "+D+".",
-      note:"Andre, Boneva, Chopra & Falk (2024), Nature Climate Change; global support for government climate action ~"+RD.want_action+"%; per-country figures via Our World in Data (CC BY 4.0); On Record, "+SITE+"?chamber=firstlight (accessed "+D+").",
-      json:{claim:"~"+RD.want_action+"% worldwide want more government climate action; people systematically underestimate this share",measurement_source:"Andre, Boneva, Chopra & Falk (2024), Nature Climate Change; per-country via Our World in Data (CC BY 4.0)",computed_by:"On Record (display only)",permalink:SITE+"?chamber=firstlight",accessed:ISO,computation_license:"CC BY 4.0"}
+      plain:"About "+RD.want_action+"% of people worldwide want their government to do more on climate, yet most people guess the share is far lower. Source: Andre, Boneva, Chopra & Falk (2024), Nature Climate Change; per-country data via Our World in Data (CC BY 4.0); shown by On Record (agoshbaranwal.github.io/on-record/?chamber=morning), accessed "+D+".",
+      note:"Andre, Boneva, Chopra & Falk (2024), Nature Climate Change; global support for government climate action ~"+RD.want_action+"%; per-country figures via Our World in Data (CC BY 4.0); On Record, "+SITE+"?chamber=morning (accessed "+D+").",
+      json:{claim:"~"+RD.want_action+"% worldwide want more government climate action; people systematically underestimate this share",measurement_source:"Andre, Boneva, Chopra & Falk (2024), Nature Climate Change; per-country via Our World in Data (CC BY 4.0)",computed_by:"On Record (display only)",permalink:SITE+"?chamber=morning",accessed:ISO,computation_license:"CC BY 4.0"}
     }
   };
   function showCite(k){

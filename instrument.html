@@ -148,20 +148,25 @@ body.thm-ink .word .mk{color:var(--ink-2)}
     0 0 3px rgba(250,248,242,.96),0 1px 2px rgba(250,248,242,.92),
     1px 0 2px rgba(250,248,242,.7),-1px 0 2px rgba(250,248,242,.7),0 -1px 2px rgba(250,248,242,.7)}
   #ladder .subs{padding-right:2px}
-  /* item 17 · THE RAIL GETS GROUND WHERE THE SKY TURNS CREAM.
-     Measured on the Carbon-budget chapter: bone labels on a cream sky, 1.01:1 — the
-     rail was not faint, it was INVISIBLE, on the one control that answers "where am I".
-     The halo had already been strengthened twice and cannot win: a 2px shadow cannot
-     carry 13px letter-spaced text over a background of its own luminance. The veil that
-     saves the body text (textDim) is column-shaped and stops before this gutter.
-     So: ground, faded to nothing on its left and at both ends — an edge vignette, not
-     the slab behind a list that read as a smudge. Dark chapters barely show it. */
-  #ladder{background:linear-gradient(to left,
-      rgba(var(--glass),.82) 0%,rgba(var(--glass),.74) 68%,rgba(var(--glass),0) 100%);
-    -webkit-mask-image:linear-gradient(to bottom,transparent,#000 14%,#000 86%,transparent);
-    mask-image:linear-gradient(to bottom,transparent,#000 14%,#000 86%,transparent)}
-  body.thm-ink #ladder{background:linear-gradient(to left,
-      rgba(250,248,243,.86) 0%,rgba(250,248,243,.78) 68%,rgba(250,248,243,0) 100%)}
+  /* THE RAIL IS PILLS (Agosh's pick, 4 Nov). The September "ground" — a soft-edged dark
+     slab faded at its left and both ends — read as a smudge on the teal sky ("horrendous").
+     The problem it solved is real: bone labels on the Carbon-budget sky's cream band
+     measured 1.01:1. So every stop carries its own small dark pill: readable on any sky,
+     crisp-edged, and the same object the phone's strip already uses. One line each,
+     always — the active pill used to wrap "WHY, HOW LONG" onto a second line. */
+  #ladder{background:none}
+  .rung{padding:4px 0}
+  .rung .lab{display:inline-block;white-space:nowrap;padding:6px 13px 6px 12px;border-radius:999px;
+    background:rgba(4,16,18,.86);border:1px solid rgba(242,231,204,.16);text-shadow:none!important;
+    transition:border-color .2s ease,background-color .2s ease,opacity .22s ease}
+  .rung .lab .rnum{margin-right:2px}
+  .rung:hover .lab,.rung:focus-visible .lab{border-color:rgba(242,231,204,.48);background:rgba(4,16,18,.92)}
+  .rung:focus-visible{outline:none}
+  .rung:focus-visible .lab{outline:2px solid var(--amber);outline-offset:2px}
+  .rung[aria-current="true"] .lab{border-color:rgba(240,188,98,.66);background:rgba(4,16,18,.95)}
+  body.thm-ink .rung .lab{background:rgba(250,248,243,.94);border-color:rgba(62,18,8,.15)}
+  body.thm-ink .rung:hover .lab,body.thm-ink .rung:focus-visible .lab{border-color:rgba(62,18,8,.4)}
+  body.thm-ink .rung[aria-current="true"] .lab{border-color:rgba(21,80,72,.62);background:#FBF9F4}
   /* the rail's BOX overlapped the reading column by 42px and swallowed clicks meant for
      a chapter row (.q-btn::after makes the whole row the target, and the rail sits over
      it at z-index 7). Only the rungs need to be clickable. */
@@ -765,6 +770,7 @@ body.kiosk.idle #soundbtn{opacity:0;pointer-events:none}
 .rung .rof{display:none}
 .rung[aria-current=true] .rof{display:inline;opacity:.6}
 .rung[aria-current=true] .rnum{opacity:.85;color:var(--amber)}
+body.thm-ink .rung[aria-current=true] .rnum{color:var(--act);opacity:1}
 .rung .lab{font-weight:600;font-size:13px;letter-spacing:.11em;text-transform:uppercase;
   color:var(--bone-2);display:block;transition:color .3s}
 .rung .fact{display:block;font-size:13px;color:var(--bone-3);margin-top:3px;
@@ -1965,11 +1971,45 @@ figure.who.who-in{margin:16px 0 14px}
 .aw-more:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:2px}
 .thm-ink .aw-more{color:var(--act)}
 .aw-cmp,.fl-all,.fold{margin-top:12px}
+/* a folded card is a slim row: its title, and a chevron that says it opens */
+.fc-h{margin:0;max-width:none}
+/* `.pane h2{max-width:24ch}` (a headline's measure) outranked .fc-h and parked the chevron
+   mid-card; a folded card's title row spans the card */
+.bt-pane .sheet h2.fc-h{max-width:none;width:100%}
+.fc-btn{display:flex;width:100%;align-items:center;justify-content:space-between;gap:14px;
+  background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;text-align:left;cursor:pointer;min-height:44px}
+.fc-btn::after{content:"";flex:0 0 auto;width:10px;height:10px;margin-right:6px;
+  border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;opacity:.7;
+  transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s ease}
+.fc-btn[aria-expanded="true"]::after{transform:rotate(225deg) translate(-2px,-2px)}
+.fc-btn:focus-visible{outline:2px solid var(--amber);outline-offset:4px;border-radius:4px}
+.thm-ink .fc-btn:focus-visible{outline-color:var(--act)}
+.sheet.fc-closed{padding-top:14px;padding-bottom:14px}
+.sheet.fc-closed .fc-h{font-size:clamp(19px,1.7vw,22px)}
+.fc-body{margin-top:12px}
+@media(prefers-reduced-motion:reduce){.fc-btn::after{transition:none}}
+/* Sources — the one row left — wears the same card as the folded cards above it; it was the
+   old flat row, indented for a chapter number it no longer has */
+#panes>#p-bedrock.q{padding-top:0}
+#p-bedrock>.q-h{max-width:660px;display:flex;align-items:center;gap:14px;box-sizing:border-box;
+  padding:14px clamp(24px,3vw,38px);border:1px solid rgba(242,231,204,.11);border-radius:16px;
+  background:rgba(6,18,20,.90);box-shadow:0 10px 40px rgba(0,0,0,.28)}
+#p-bedrock>.q-h .q-btn{flex:1 1 auto;font-size:clamp(19px,1.7vw,22px);min-height:44px}
+#p-bedrock>.q-h .q-val{flex:0 1 auto;margin-left:auto;max-width:none;text-align:right}
+#p-bedrock>.q-h .q-chev{margin-left:4px}
+#p-bedrock.open>.q-h{border-radius:16px 16px 0 0}
+.thm-ink #p-bedrock>.q-h{background:rgba(246,245,242,.94);border-color:rgba(62,18,8,.10);
+  box-shadow:0 10px 40px rgba(62,18,8,.08)}
+@media(max-width:940px){#p-bedrock>.q-h{display:flex;grid-template-columns:none;padding:12px 18px}}
+@media(max-width:640px){#p-bedrock>.q-h .q-val{display:none}
+  #p-bedrock>.q-h{padding:12px 20px 12px 16px}   /* the cards' own 16px inset, chevron on their line */
+  #p-bedrock>.q-h .q-chev{position:static;align-self:center;margin-right:-2px}}  /* the old rows pinned it absolutely at right:9px */
 #answer .ans-foot{margin-top:20px}
 /* beat 3: the why, at the top of the years card */
 .bt-why{margin:0 0 22px;padding-bottom:20px;border-bottom:1px solid var(--bone-hair)}
 .bt-say{font-size:16px;line-height:1.55;color:var(--bone-2);max-width:56ch;margin:14px 0 0}
 .q-say-b{display:block;margin:12px 0 0}
+.thm-ink .bt-say{color:var(--ink-2)}   /* a card still in view when the page turns light takes ink too */
 .q-say-b[hidden]{display:none}
 /* the survey and the country chart were drawn for a dark sky; on the morning card they need ink */
 /* on a light card, anything without a colour of its own inherits ink — the survey's claim and its
@@ -1979,6 +2019,13 @@ figure.who.who-in{margin:16px 0 14px}
 .thm-ink #wg-again{color:var(--ink-2)}
 .thm-ink #fl-all .pgaxis,.thm-ink #fl-all #pg-guessed,.thm-ink #fl-all #ask-hint{color:var(--ink-3);text-shadow:none}
 .thm-ink #fl-all .kick,.thm-ink #fl-all .sep89{color:var(--ink-2);text-shadow:none}
+/* the chart's own labels and the bold figures were cream-on-cream on the light card — the
+   vetted funds' NAMES among them, which is the one line there that tells you where to give */
+.thm-ink #fl-all .pgaxis span:nth-child(2){color:var(--ink-2)}
+.thm-ink #pgfield .pglab{fill:rgba(62,18,8,.72)}
+.thm-ink #pgfield .pglab-you{fill:#7A3F06}
+.thm-ink #fl-all .kick b{color:#8A570E}
+.thm-ink #fl-all .sep89 b,.thm-ink #pg-give b{color:var(--ink)}
 .thm-ink #wg-ask label{color:var(--ink-2);text-shadow:none}
 .thm-ink #wg-in{background:#FFFDF8;color:var(--ink);border-color:rgba(62,18,8,.30)}
 .thm-ink #wg-in:focus{border-color:#9A6512}
@@ -3323,6 +3370,21 @@ function enterChamber(i){
  function quote(text,src,href,cls){
   return mk("figure","who"+(cls?" "+cls:""),'<blockquote>“'+text+'”</blockquote>'+
    '<figcaption>'+(href?'<a href="'+href+'" target="_blank" rel="noopener">'+src+'</a>':src)+'</figcaption>');}
+ /* A CARD, FOLDED TO ITS TITLE. The page was 9.3 phone screens with everything open; Agosh chose
+    to fold the extras — today's reading, personal changes, what's improving. The card's own h2
+    becomes the disclosure button (a heading that opens, the accessible pattern), and everything
+    after it waits one tap away. Nothing is deleted. */
+ function foldCard(beat,id){if(!beat)return;var sh=beat.querySelector(".sheet");if(!sh)return;
+  var h=sh.querySelector("h2");if(!h)return;
+  var bt=mk("button","fc-btn",h.innerHTML);bt.type="button";
+  bt.setAttribute("aria-expanded","false");bt.setAttribute("aria-controls",id);
+  h.innerHTML="";h.appendChild(bt);h.classList.add("fc-h");h.removeAttribute("tabindex");
+  var body=mk("div","fc-body",null,id);body.hidden=true;
+  while(h.nextSibling)body.appendChild(h.nextSibling);
+  sh.appendChild(body);sh.classList.add("fc","fc-closed");
+  bt.addEventListener("click",function(){var on=body.hidden;body.hidden=!on;
+   bt.setAttribute("aria-expanded",String(on));sh.classList.toggle("fc-closed",!on);
+   if(on)try{window.dispatchEvent(new Event("resize"));}catch(e){}});}
  /* DETAIL, ONE TAP AWAY. The summary (bars, a verdict) carries the point; the full chart is
     there for whoever wants the evidence — folded, never deleted. */
  function fold(node,openLab,closeLab,id){if(!node||!node.parentNode)return null;
@@ -3408,6 +3470,7 @@ function enterChamber(i){
  var tcw=todaySheet.querySelector(".chartwrap");
  var tfold=fold(tcw,"See every year for this date","Hide the chart","fold-today");
  if(tfold){todaySheet.querySelectorAll(".finder").forEach(function(f){tfold.appendChild(f);});}
+ foldCard(tb,"fc-today");
 
  /* ── BEAT 3 · WHY, AND HOW LONG ─────────────────────────────────────────── */
  var b3=beatPane("sky","Why, and how long");
@@ -3466,6 +3529,13 @@ function enterChamber(i){
   if(flBeats[1].parentNode)flBeats[1].parentNode.removeChild(flBeats[1]);
  }
  for(var mi=1;mi<mBeats.length;mi++)b4.appendChild(mBeats[mi]);
+ /* sharing your city's numbers IS one of the ways to change it — it moves into "Change it"
+    before Personal changes folds, so folding a chart never hides the share card */
+ var chg=mBeats[0]&&mBeats[0].querySelector(".sheet"),pcs=mBeats[1]&&mBeats[1].querySelector(".sheet");
+ if(chg&&pcs)["share-lead","sharecard","share-ax","share-fallback"].forEach(function(k){
+  var n=pcs.querySelector("."+k)||pcs.querySelector("#"+k);if(n)chg.appendChild(n);});
+ foldCard(mBeats[1],"fc-personal");
+ foldCard(mBeats[2],"fc-improving");
 
  /* ── SOURCES · one tap away, outside the story ──────────────────────────── */
  var bd=el("p-bedrock");
@@ -4753,13 +4823,15 @@ var buildNight=function(NV){
    var at={d:p,fill:"none",stroke:c,"stroke-width":w,"stroke-opacity":op||1,"stroke-linejoin":"round"};
    if(cls)at["class"]=cls;
    svg.appendChild(E("path",at));}
-  line(days,"#8FC0EA",.75,.18);line(nights,"#EE9E80",.75,.2);
+  /* hot days are this chart's CONTEXT; blue means "the decade you were born" on the bars right
+     above it, so days are drawn neutral and the nights — the subject — keep the colour */
+   line(days,"#CFC6AE",.75,.16);line(nights,"#EE9E80",.75,.2);
   var rd=roll(days,11),rn=roll(nights,11);
-  line(rd,"#8FC0EA",narrow?3:2.6,1,"dr");line(rn,"#EE9E80",narrow?3.6:3,1,"dr");
+  line(rd,"#CFC6AE",narrow?3:2.6,1,"dr");line(rn,"#EE9E80",narrow?3.6:3,1,"dr");
   if(!narrow){
    var dv=rd[rd.length-8]||rd[rd.length-1],nv=rn[rn.length-8]||rn[rn.length-1];
    svg.appendChild(txt({x:x(dv.year),y:y(dv.n)-12,"text-anchor":"middle","font-size":12,
-    fill:"#8FC0EA","font-family":MONO},"hot days "+dTrend,true));
+    fill:"#CFC6AE","font-family":MONO},"hot days "+dTrend,true));
    svg.appendChild(txt({x:x(nv.year),y:y(nv.n)-14,"text-anchor":"middle","font-size":12,
     fill:"#EE9E80","font-family":MONO},"hot nights "+nTrend,true));}
   host.appendChild(svg);}
@@ -6512,7 +6584,11 @@ window.__HOME=__HOME;
     if(st)st.textContent="your browser couldn't fix a position just now — pick a city below, or try again.";}});});
  (function(){var hl=el("homelink");if(!hl)return;
   hl.addEventListener("click",function(){
-   var u=location.origin+location.pathname+(hl.getAttribute("data-link")||"");
+   var lp=hl.getAttribute("data-link")||"";
+   /* the link carries the sharer's birth decade, so whoever receives it sees the same comparison —
+      shown as a decade, never as THEIR birth (a ?born= link sets __DEC without claiming it) */
+   if(window.__DEC&&__DEC.chosen())lp+=(lp.indexOf("?")>=0?"&":"?")+"born="+__DEC.lab();
+   var u=location.origin+location.pathname+lp;
    function ok(){hl.textContent="link copied ✓";setTimeout(function(){hl.textContent="Copy link";},1800);}
    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(u).then(ok,function(){prompt("Copy this link:",u);});
    else prompt("Copy this link:",u);});})();
