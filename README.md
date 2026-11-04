@@ -1,12 +1,21 @@
 # On Record
 
-**How much hotter has your city got since you were born?** Pick the decade you
-were born and your city: the page compares that decade with the last ten years,
-from the weather record (every day since 1940), then tells it as one story in
-four parts — what changed, what it means for a body, why it is happening and how
-long the world has, and what you can do. Every number traces to a named open
-source; nothing is hand-typed. The sky behind it is the world's remaining carbon
-budget, drawn live.
+**What will a child born today face, and what has already changed since 1975?**
+The page opens on the next generation in the reader's country — lifetime
+heatwaves, crop failures and floods, from Grant et al. 2025 (Nature, per-country
+tables, CC BY) and Thiery et al. 2021 (Science) — then what is different since
+1975 in their city (hot days, hot and humid days, hot nights, the 1970s against
+the last ten years, from the weather record) and in the world (glaciers, reefs,
+record years). The city's full record, what heat means for a body, why it is
+happening and how long the world has, and what you can do follow. Before the
+reader picks a city, their device's time zone names their country — on the
+device, with nothing sent anywhere — and the city shown is a labelled example.
+Every number traces to a named open source; nothing is hand-typed. The sky
+behind it is the world's remaining carbon budget, drawn live.
+
+Data tools: `tools/futures_bake.py` (the per-country table + time zones →
+`data/futures.json`, once), `tools/hh_bake.py` (hot, humid days for the stored
+cities; the nightly job runs it when a city is missing or the year rolls over).
 
 **Live in two tiers:**
 - every visitor's browser fetches today's forecast (Open-Meteo, CC-BY) and the

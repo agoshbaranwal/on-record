@@ -192,7 +192,7 @@ hr{border:0;border-top:1px solid var(--hair);margin:34px 0}
     <div class="card">
       <h3>The ground — Seville's heat</h3>
       <span class="lab">In plain words</span>
-      <p>In Seville, the number of days each year at or above 35 °C rose from about <b class="num" data-rd="sev_days_was">–</b> (<span data-rd="eras_then">–</span> average) to about <b class="num" data-rd="sev_days_now">–</b> (<span data-rd="eras_now">–</span>). Nights at or above 25 °C went from roughly <b class="num" data-rd="sev_nights_was">–</b> to <b class="num" data-rd="sev_nights_now">–</b> a year. We compare the city only to <strong>its own past</strong>. On the site, each reader compares the decade <em>they</em> were born in with the last ten years; to cite a figure, use the fixed span above, which does not depend on who is reading.</p>
+      <p>In Seville, the number of days each year at or above 35 °C rose from about <b class="num" data-rd="sev_days_was">–</b> (<span data-rd="eras_then">–</span> average) to about <b class="num" data-rd="sev_days_now">–</b> (<span data-rd="eras_now">–</span>). Nights at or above 25 °C went from roughly <b class="num" data-rd="sev_nights_was">–</b> to <b class="num" data-rd="sev_nights_now">–</b> a year. We compare the city only to <strong>its own past</strong>. On the site, every city's 1970s are set against its last ten years; to cite a figure, use the fixed span above.</p>
       <span class="lab">Source</span>
       <p>ERA5, the ECMWF's hour-by-hour reconstruction of weather since 1940 (~30 km grid), read via Open-Meteo (CC-BY).</p>
       <span class="lab">What we did to it</span>
@@ -244,7 +244,9 @@ hr{border:0;border-top:1px solid var(--hair);margin:34px 0}
       <div class="row">
         <span><label for="emb-ch">Chamber</label>
           <select id="emb-ch">
-            <option value="ground" selected>What changed — hot days since the decade you were born</option>
+            <option value="future" selected>A child born today — what the next generation will face</option>
+            <option value="since">Since 1975 — what is already different</option>
+            <option value="ground">Your city's record — hot days, the 1970s against the last ten years</option>
             <option value="night">What it means — hot nights, and what heat does to a body</option>
             <option value="sky">Why, and how long — the carbon budget</option>
             <option value="morning">What you can do</option>
@@ -257,14 +259,16 @@ hr{border:0;border-top:1px solid var(--hair);margin:34px 0}
         <pre id="emb-code"></pre>
       </figure>
       <noscript><p class="note">The snippet builder needs JavaScript. Without it, embed any chapter directly:
-        <code>&lt;iframe src="https://agoshbaranwal.github.io/on-record/?embed=ground"&gt;&lt;/iframe&gt;</code> — swap <code>ground</code> for <code>night</code>, <code>sky</code> or <code>morning</code>.</p></noscript>
+        <code>&lt;iframe src="https://agoshbaranwal.github.io/on-record/?embed=future"&gt;&lt;/iframe&gt;</code> — swap <code>future</code> for <code>since</code>, <code>ground</code>, <code>night</code>, <code>sky</code> or <code>morning</code>.</p></noscript>
     </div>
 
-    <p class="note">The site is one story in four parts. Each can be framed on its own:</p>
+    <p class="note">The site is one story in six parts. Each can be framed on its own:</p>
     <table>
       <thead><tr><th>Part</th><th>?embed=</th><th>What it shows</th></tr></thead>
       <tbody>
-        <tr><td><b>What changed</b></td><td class="num">ground</td><td>A city's hot days in the reader's birth decade against the last ten years (Seville by default)</td></tr>
+        <tr><td><b>A child born today</b></td><td class="num">future</td><td>What a child born today will face in the reader's country: lifetime heatwaves, crop failures and floods (Grant et al. 2025, Thiery et al. 2021), and the world's ice, reefs and coasts (IPCC)</td></tr>
+        <tr><td><b>Since 1975</b></td><td class="num">since</td><td>A city's hot days, hot and humid days and hot nights, the 1970s against the last ten years, and the world's glaciers, reefs and record years</td></tr>
+        <tr><td><b>Your city's record</b></td><td class="num">ground</td><td>A city's hot days in the 1970s against the last ten years, with the comparison and the full record (Seville by default)</td></tr>
         <tr><td><b>What it means</b></td><td class="num">night</td><td>Hot nights, a longer hot season, and what heat does to a body, in the WHO's words</td></tr>
         <tr><td><b>Why, and how long</b></td><td class="num">sky</td><td>The world's remaining carbon budget as a living sky, counting down</td></tr>
         <tr><td><b>What you can do</b></td><td class="num">morning</td><td>Staying safe in the heat, and the levers that change things</td></tr>

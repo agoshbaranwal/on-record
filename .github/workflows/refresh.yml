@@ -13,6 +13,8 @@ jobs:
         with: { fetch-depth: 0 }     # full history so impact.json's commit count is honest (not a shallow "1")
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
+      - name: hot, humid days for the stored cities (only when a city is missing or the year rolled over)
+        run: python tools/hh_bake.py --if-needed || echo "hh_bake did not finish; the page counts them live"
       - name: run the pipeline (stdlib only, no installs)
         run: python pipeline.py
       - name: commit refreshed data + site

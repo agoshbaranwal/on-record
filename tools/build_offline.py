@@ -37,6 +37,11 @@ _d = json.loads((ROOT / "data" / "site-data.json").read_text())
 _inst = ROOT / "data" / "instant-places.json"
 if _inst.exists():
     _d["instant"] = json.loads(_inst.read_text())
+# what a child born today will face, per country (Grant et al. 2025, CC BY) + the time-zone table
+# that names the reader's country on their own device — baked once by tools/futures_bake.py
+_fut = ROOT / "data" / "futures.json"
+if _fut.exists():
+    _d["fut"] = json.loads(_fut.read_text())
 _today = datetime.date.fromisoformat(_d["_meta"]["today"])
 _arch = datetime.date.fromisoformat(_d["_meta"]["archive_end"])
 try:
@@ -60,31 +65,31 @@ LAST_FULL = _strp["year0"] + len(_strp["anom"]) - 1
 def _meanov(y0, y1):
     v = [r["n"] for r in _gen if y0 <= r["year"] <= y1]
     return sum(v) / len(v) if v else 0
-# the page's yardstick is the reader's birth decade; until they pick, the 1990s stand in — the
-# preview a stranger sees must show the same example the page opens with (instrument.html __DEC.EX)
-EXDEC = 1990
+# the page's yardstick is fixed at the 1970s — "the last 50 years" (instrument.html __DEC.EX)
+EXDEC = 1970
 _was = round(_meanov(EXDEC, EXDEC + 9)); _now = round(_meanov(LAST_FULL - 9, LAST_FULL))
 OG = "https://agoshbaranwal.github.io/on-record/"
-DESC = ("Pick the decade you were born and your city, and see how its hot days have changed since then &mdash; counted from the weather record, every day since 1940. Every number shows where it came from.")
-CARD = (f"Seville had {_was} days a year above 35 \u00B0C in the 1990s. In the last ten years: {_now}. "
-        f"How much hotter has your city got since you were born?")
-ALT = f"On Record card: in Seville, days at or above 35C went from {_was} a year in the 1990s to {_now} in the last ten years."
+DESC = ("What a child born today will face in your country, and what has already changed in your city since 1975 &mdash; from the weather record and the studies that measure it. Every number shows where it came from.")
+# the card is the page's lead, and its numbers are the study's own (Thiery et al. 2021, Science)
+CARD = ("A child born today will live through about 30 heatwaves in a lifetime; someone born in 1960, about 4. "
+        "See what has changed where you live since 1975, and what is next.")
+ALT = "On Record card: a child born in 2020 will live through about 30 heatwaves in a lifetime, against about 4 for someone born in 1960 (Thiery et al., Science, 2021)."
 head_meta = (
-    "<title>On Record \u2014 how much hotter has your city got since you were born?</title>"
+    "<title>On Record \u2014 what a child born today will face</title>"
     '<meta name="description" content="' + DESC + '">'
     '<link rel="canonical" href="' + OG + '">'
     '<meta property="og:type" content="website">'
     '<meta property="og:site_name" content="On Record">'
-    '<meta property="og:title" content="On Record — how much hotter has your city got since you were born?">'
+    '<meta property="og:title" content="On Record — what a child born today will face">'
     '<meta property="og:description" content="' + CARD + '">'
     '<meta property="og:url" content="' + OG + '">'
-    '<meta property="og:image" content="' + OG + 'og/seville.png">'
+    '<meta property="og:image" content="' + OG + 'og/born-today.png">'
     '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
     '<meta property="og:image:alt" content="' + ALT + '">'
     '<meta name="twitter:card" content="summary_large_image">'
-    '<meta name="twitter:title" content="On Record — how much hotter has your city got since you were born?">'
+    '<meta name="twitter:title" content="On Record — what a child born today will face">'
     '<meta name="twitter:description" content="' + CARD + '">'
-    '<meta name="twitter:image" content="' + OG + 'og/seville.png">'
+    '<meta name="twitter:image" content="' + OG + 'og/born-today.png">'
     '<link rel="manifest" href="manifest.webmanifest">'
     '<meta name="theme-color" content="#05171A">'
     '<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cstyle%3E.h%7Bfill%3A%233E1208%7D%40media%28prefers-color-scheme%3Adark%29%7B.h%7Bfill%3A%23F2E7CC%7D%7D%3C%2Fstyle%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%227%22%20fill%3D%22%23FF6B52%22%2F%3E%3Crect%20class%3D%22h%22%20x%3D%222%22%20y%3D%2215.15%22%20width%3D%2228%22%20height%3D%221.7%22%20rx%3D%22.85%22%2F%3E%3C%2Fsvg%3E"><link rel="apple-touch-icon" href="og/icon-192.png">'

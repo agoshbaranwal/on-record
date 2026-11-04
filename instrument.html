@@ -1938,7 +1938,7 @@ body.embed .q.open>.q-h,body.kiosk .q.open>.q-h{position:static}
    The pane carries the column; its cards stack with a modest gap.
    ══════════════════════════════════════════════════════════════════════════════ */
 #panes>.bt-pane{max-width:1400px;margin:0 auto;padding:56px var(--rail-w) 0 38px;display:block}
-#panes>#p-ground.bt-pane{padding-top:calc(var(--mast-h,150px) + 14px)}
+#panes>#p-future.bt-pane{padding-top:calc(var(--mast-h,150px) + 14px)}
 .bt-pane>.beats>.beat{min-height:0;max-width:none;margin:0;padding:0 0 18px;display:block;
   content-visibility:visible;contain-intrinsic-size:auto;scroll-snap-align:none}
 .bt-pane .beat:not(.seen) .sheet>*{opacity:1;transform:none}
@@ -2008,6 +2008,59 @@ figure.who.who-in{margin:16px 0 14px}
 /* beat 3: the why, at the top of the years card */
 .bt-why{margin:0 0 22px;padding-bottom:20px;border-bottom:1px solid var(--bone-hair)}
 .bt-say{font-size:16px;line-height:1.55;color:var(--bone-2);max-width:56ch;margin:14px 0 0}
+/* ══ A CHILD BORN TODAY · SINCE 1975 (4 Nov 2026) ═══════════════════════════════
+   Two beats made of small cards inside the sheet: a big then → next pair, one plain line, its
+   source. Then is the cool ink, now and next the warm one — the site's one colour law. */
+#future-card,#since-card{max-width:760px}
+#future-card{background:rgba(28,10,6,.93);border-color:rgba(255,138,112,.16)}
+.gn-h{font-size:clamp(27px,3.1vw,40px);line-height:1.06;letter-spacing:-.015em;margin:0 0 12px;max-width:20ch}
+.gn-body{display:grid;gap:12px;margin-top:14px}
+.gn-card{background:rgba(242,231,204,.05);border:1px solid rgba(242,231,204,.10);border-radius:14px;padding:14px 16px}
+#future-card .gn-card{background:rgba(255,138,112,.06);border-color:rgba(255,138,112,.15)}
+.gn-q{font-size:14px;font-weight:700;line-height:1.35;color:var(--bone-2);margin:0 0 6px}
+.gn-tz{font-weight:400;color:var(--bone-3)}
+.gn-pair{display:flex;align-items:flex-end;gap:14px;flex-wrap:nowrap}
+.gn-pair>div{display:flex;flex-direction:column;min-width:0}
+.gn-pair i{flex:0 0 auto;font-style:normal;color:var(--bone-3);font-size:22px;padding-bottom:20px;align-self:flex-start;margin-top:14px}
+.gn-v{font-size:clamp(42px,5vw,58px);line-height:1;font-weight:400;letter-spacing:-.035em}
+.gn-pair span{font-size:12.5px;color:var(--bone-3);margin-top:4px}
+.gn-then,.si-then{color:var(--cool-ink)}
+.gn-hot,.si-up{color:#FF8A70}
+.gn-one{font-size:clamp(26px,3vw,34px);line-height:1.06;letter-spacing:-.02em;color:#FF8A70;margin:0}
+.gn-sub{font-size:13.5px;line-height:1.4;color:var(--bone-2);margin:5px 0 0}
+.gn-src{font-size:12px;line-height:1.45;color:var(--bone-3);margin:8px 0 0}
+.gn-src a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.gn-big{font-size:clamp(16px,1.5vw,19px);line-height:1.45;margin:0;color:var(--bone)}
+.gn-big .gn-bn{display:block;font-size:clamp(40px,4.6vw,54px);line-height:1;font-weight:400;letter-spacing:-.035em;color:#FF8A70;margin:0 0 6px}
+.gn-big b{font-weight:700}
+.gn-row{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:4px 18px;font-size:14px;color:var(--bone-2)}
+.gn-row b{color:var(--bone);font-weight:700}
+.gn-also{font-size:13.5px;line-height:1.4;color:var(--bone-2);margin:14px 0 4px}
+.gn-also-l{list-style:none;margin:0;padding:0}
+.gn-also-l li{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid rgba(242,231,204,.10);font-size:15px}
+.gn-also-l b{color:#FF8A70;font-weight:700;white-space:nowrap}
+.gn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+#si-body .gn-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.gn-good{background:#F0BC62;color:#2A1A08;border-radius:14px;padding:14px 16px}
+.gn-good p{margin:0;font-size:16px;line-height:1.45}
+.gn-good b{font-size:clamp(22px,2.4vw,28px);letter-spacing:-.02em;font-weight:700}
+.gn-good .gn-src{color:rgba(42,26,8,.78);margin-top:8px}
+.si-k{font-size:13px;color:var(--bone-3);margin:0 0 4px}
+.si-k i{font-style:normal}
+.si-row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:11px 0;border-top:1px solid rgba(242,231,204,.10)}
+.si-l b{display:block;font-size:16px;font-weight:700;color:var(--bone)}
+.si-l span{display:block;font-size:12.5px;line-height:1.4;color:var(--bone-3);margin-top:2px;max-width:36ch}
+.si-n{display:flex;align-items:baseline;gap:8px;white-space:nowrap}
+.si-n>span{font-size:clamp(28px,3.2vw,36px);line-height:1;letter-spacing:-.025em}
+.si-n i{font-style:normal;color:var(--bone-3)}
+.si-flat{color:var(--bone)}
+.si-ch{font-style:normal;font-size:12px;color:var(--bone-2);border:1px solid rgba(242,231,204,.22);border-radius:999px;padding:2px 9px;margin-left:4px;align-self:center}
+.si-ch.up{color:#FF8A70;border-color:rgba(255,138,112,.45)}
+.si-ch.down{color:var(--cool-ink);border-color:rgba(127,178,212,.45)}
+.si-wait{font-size:14px;line-height:1.5;color:var(--bone-2);margin:6px 0 0}
+#future-card #homepick{margin:0 0 4px}
+@media(max-width:640px){.gn-grid,#si-body .gn-grid{grid-template-columns:1fr}
+  .si-row{flex-direction:column;align-items:flex-start;gap:6px}}
 .q-say-b{display:block;margin:12px 0 0}
 #pg-give[hidden]{display:none!important}
 #pg-give.give-here{margin:14px 0 0;padding:12px 14px;border:1px solid rgba(126,214,196,.32);border-radius:6px;font-size:14px;line-height:1.55}
@@ -2267,7 +2320,7 @@ body.ch-bedrock #mast{opacity:1!important}
             <div id="homepick">
               <!-- once a place is set, the whole picker collapses to this one line: the reader
                    answered "Set your city" in the cold-open and must not be asked again. -->
-              <p id="homenow" hidden>Drawn for <b id="homenow-name"></b>
+              <p id="homenow" hidden>Your city: <b id="homenow-name"></b>
                 <button type="button" id="homenow-change" aria-expanded="false" aria-controls="homepick-body">Change city</button>
                 <button type="button" id="homelink" hidden>Copy link</button></p>
               <div id="homepick-body">
@@ -2300,7 +2353,7 @@ body.ch-bedrock #mast{opacity:1!important}
           <!-- BEAT 2 — the then-vs-now count: the chapter's one number -->
           <div class="beat">
           <div class="sheet">
-            <h2 id="g-count-h2">In the <span id="g-dec">1990s</span><span id="g-decwho"></span>, <span id="g-h2">Seville</span> had <b class="num" id="g-then">33</b> days a year above <span id="g-thr">35&nbsp;&deg;C</span>. <span class="h2b">In the last ten years: <b class="num" id="g-now">66</b>.</span></h2>
+            <h2 id="g-count-h2">In the <span id="g-dec">1970s</span><span id="g-decwho"></span>, <span id="g-h2">Seville</span> had <b class="num" id="g-then">33</b> days a year above <span id="g-thr">35&nbsp;&deg;C</span>. <span class="h2b">In the last ten years: <b class="num" id="g-now">66</b>.</span></h2>
             <div id="g-fact"><p class="gb-say">Days at or above 35&nbsp;&deg;C in Seville. Set your city to see yours.</p></div>
             <p class="take-mini" id="g-take" hidden>Save:
               <button type="button" data-ga="card">Image</button> &middot;
@@ -2726,7 +2779,7 @@ var D=window.D,Q=new URLSearchParams(location.search);
 /* chapters retired into a beat: a link to one lands on the beat that now holds it */
 var CHALIAS={firstlight:"morning",compare:"ground",recap:"ground",today:"night"};
 var EMBED=Q.has("embed")?(function(){var id=(Q.get("embed")||"").trim();id=CHALIAS[id]||id;
-  return ["sky","ground","night","morning","bedrock"].indexOf(id)>=0?id:"ground";})():null;
+  return ["future","since","sky","ground","night","morning","bedrock"].indexOf(id)>=0?id:"future";})():null;
 var KIOSK=(!EMBED)&&Q.has("kiosk")&&Q.get("kiosk")!=="0";
 try{if(EMBED)document.body.classList.add("embed");if(KIOSK)document.body.classList.add("kiosk");}catch(e){}
 /* capture the ORIGINAL hash now — enterChamber(0) stamps "#p-sky" over it before the intro/boot read it */
@@ -2750,10 +2803,11 @@ function mean(s,a,b){var v=s.filter(function(r){return r.year>=a&&r.year<=b;}).m
    says so. ?born=1980 shows a decade for one visit without claiming it is the reader's
    own (a shared link carries the sharer's decade, not the viewer's birth). */
 var __DEC=(function(){
- var KEY="onrecord.decade.v1",EX=1990,LO=1940,HI=2010,v=null,mine=false,subs=[];
+ /* FIXED AT THE 1970s. Agosh, 4 Nov 2026: "how things are different in the last 50 years" — and he
+    chose a fixed 'then' over the birth-decade picker ("one less control to understand"). The picker
+    and its saved choice are retired; this object keeps its shape so every caller still works. */
+ var EX=1970,LO=1940,HI=2010,v=null,mine=false,subs=[];
  function ok(d){return d>=LO&&d<=HI&&d%10===0;}
- try{var s0=parseInt(localStorage.getItem(KEY),10);if(ok(s0)){v=s0;mine=true;}}catch(e){}
- try{var q0=parseInt(String(Q.get("born")||"").replace(/s$/i,""),10);if(ok(q0)&&q0!==v){v=q0;mine=false;}}catch(e){}
  return {
   get:function(){return v!=null?v:EX;},
   /* the reader's own choice — only then may the page say "the decade you were born" */
@@ -2791,7 +2845,7 @@ function __DECUI(){
   b.setAttribute("aria-pressed",String(on&&mine));});
 }
 window.__DECUI=__DECUI;
-try{decadeChips(document.getElementById("pk-dec"),"You were born in the");__DECUI();}catch(e){}
+/* (the cold-open's decade chips are retired with the cold-open itself) */
 var STOPS=[[-2.5,5,48,97],[-1.5,33,102,172],[-1,67,147,195],[-0.5,146,197,222],[-0.15,209,229,240],
 [0,244,244,241],[0.15,253,219,199],[0.5,244,165,130],[1,214,96,77],[1.5,178,24,43],[2.2,140,26,23],[3.2,103,0,13]];
 var T_MIN=-2.5,T_MAX=3.2,T_SPAN=T_MAX-T_MIN;
@@ -3129,6 +3183,9 @@ var __ATMO=(function(){
   morning:function(){return {r:ramp8([[0,"#9FBCC6"],[.15,"#B4CBCC"],[.32,"#D2DDD0"],[.50,"#EBE3C9"],
    [.64,"#F6EAC6"],[.73,"#F4E2B6"],[.86,"#DCD6AC"],[1,"#C4C8A2"]]),                 // a believable mid-morning: blue above, warmth at the horizon
    prm:[.60,.85,0,.20],sun:C("#FFF2CE"),aux:[.78,.5,0,0],lif:[.20,0,.06,0]};},
+  /* a child born today: a dusk that has kept its heat — ember at the horizon, no blue */
+  future:function(){return {r:ramp8([[0,"#5A1C0C"],[.10,"#3A140A"],[.24,"#26100A"],[.42,"#170B08"],
+   [.62,"#0F0907"],[.80,"#0B0706"],[.92,"#090605"],[1,"#070505"]]),prm:[.20,.30,.12,.22],sun:C("#E0582A"),aux:[.70,.12,0,0],lif:[.25,0,.05,0]};},
   bedrock:function(){return {r:ramp8([[0,"#15140F"],[.22,"#121310"],[.40,"#0F110E"],[.58,"#0D0F0D"],
    [.72,"#0C100F"],[.84,"#0B100F"],[.93,"#0A0E0D"],[1,"#090D0C"]]),prm:[0,0,.10,.25],sun:C("#000000"),aux:[.88,0,0,0],lif:[0,.9,0,0]};},
   voidst:function(){return {r:ramp8([[0,"#020409"],[.3,"#02050A"],[.5,"#02060B"],[.65,"#03070C"],
@@ -3245,7 +3302,11 @@ var CH=[
     the sources. The ids are the old chapter ids, so every link, sky and hook still lands:
     the ground sky for what changed, the night for what it means, the budget sky for why,
     morning for what you can do. */
- {id:"ground",lab:"What changed",fact:"",ink:false},
+ /* 4 Nov 2026: the page opens on what a child born today will face, then what is already different
+    since 1975 — the two questions Agosh asked as a layman. The city's full record follows. */
+ {id:"future",sky:"future",lab:"A child born today",rail:"Born today",fact:"",ink:false},
+ {id:"since",sky:"ground",lab:"Since 1975",fact:"",ink:false},
+ {id:"ground",lab:"Your city\u2019s record",rail:"Your city",fact:"",ink:false},
  {id:"night",lab:"What it means",fact:"",ink:false},
  {id:"sky",lab:"Why, and how long",rail:"Why, how long",fact:"",ink:false},
  /* NO MODE SWITCH. This beat used to turn the whole page to ink-on-cream (ink:true) for the
@@ -3257,7 +3318,7 @@ var CH=[
 ];
 /* how hard the sky darkens behind the text column, per chapter — lighter sky needs more.
    Morning is ink-on-pale (dark text) so it gets none; night/bedrock are already dark. */
-var TEXTDIM={sky:.63,ground:.56,night:.32,firstlight:.42,morning:0,bedrock:.28};
+var TEXTDIM={future:.5,sky:.63,ground:.56,night:.32,firstlight:.42,morning:0,bedrock:.28};
 /* These were tuned against the desktop layout, where the words occupy a narrow left column and
    the veil only has to cover that. On a phone the text is full-width and runs straight across the
    brightest band of the sky, so the same veil leaves the lead paragraph and the big number sitting
@@ -3364,6 +3425,158 @@ function enterChamber(i){
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   A CHILD BORN TODAY · SINCE 1975
+   Agosh, 4 Nov 2026, after three rounds of "this doesn't land": "As a layman, I want to see how
+   things are different in the last 50 years and, more importantly, what they will f*** up for
+   the next generation." So the page now opens on the next generation, then the last 50 years,
+   and only then the city's full record that used to lead.
+   - The NEXT GENERATION is per COUNTRY, from Grant et al. 2025 (Nature, CC BY): for each of
+     177 countries, the share of each birth cohort that will live an UNPRECEDENTED lifetime of an
+     extreme — exposure with less than a 1-in-10,000 chance in a world without human-caused
+     warming ("near-impossible without climate change"). The world lifetime count is Thiery et al.
+     2021 (Science). Neither is computed here; both are the studies' own numbers, credited.
+   - The LAST 50 YEARS is per CITY, counted from the same ERA5 record the rest of the page uses,
+     1970s against the last ten full years — and the world's ice, reefs and record years, each
+     quoted from the body that measures it.
+   - The reader's COUNTRY: the place they chose; before they choose, the country their device's
+     time zone belongs to (tz database, on this device — nothing is sent anywhere to work it out).
+   A metric that went DOWN is shown as plainly as one that went up: that is the charter.
+   ═══════════════════════════════════════════════════════════════════════════ */
+var __GEN=(function(){
+ var F=(D&&D.fut)||null;
+ var TZ=null,TZA=null,A2=null;
+ function tables(){if(TZ||!F)return;TZ={};TZA={};A2={};
+  String(F.tz||"").split(";").forEach(function(r){var p=r.split("|");if(p.length>=4&&p[1])TZ[p[0]]=[p[1],+p[2],+p[3]];});
+  String(F.tzl||"").split(";").forEach(function(r){var p=r.split(">");if(p.length===2)TZA[p[0]]=p[1];});
+  String(F.a2||"").split(";").forEach(function(r){var p=r.split(":");if(p.length===2)A2[p[0]]=p[1];});}
+ /* the device's own zone → its country and the zone's coordinates. A zone is a country, not a
+    city: it may pick the COUNTRY the next generation is shown for, and an EXAMPLE city labelled
+    as one, never "your city". */
+ function zone(){var z="";try{z=Intl.DateTimeFormat().resolvedOptions().timeZone||"";}catch(e){}
+  tables();if(!TZ||!z)return null;z=TZA[z]||z;var r=TZ[z];
+  return r?{tz:z,iso3:r[0],lat:r[1],lon:r[2]}:null;}
+ function a2to3(cc){tables();return (cc&&A2&&A2[String(cc).toUpperCase()])||null;}
+ function cname(c){return (F&&F.n&&c&&F.n[c])||null;}
+ function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+ function cap(s){s=String(s||"");return s.charAt(0).toUpperCase()+s.slice(1);}
+ /* whose country: the reader's choice, else the zone's (an example city never lends its own
+    country to the reader — Seville standing in does not make the reader Spanish) */
+ function country(){var h=window.__HOME&&__HOME.get();
+  var c=(h&&(h.ctry||(!h.ex?h.iso3:null)))||null,guessed=!!(h&&h.ex&&h.ctry);
+  if(!c&&!h){var z=zone();if(z){c=z.iso3;guessed=true;}}
+  return {code:c,name:cname(c),row:(F&&F.c&&c&&F.c[c])||null,guessed:guessed};}
+ var L={
+  thiery:'<a href="https://doi.org/10.1126/science.abi7339" target="_blank" rel="noopener">Thiery et al., Science, 2021</a>',
+  grant:'<a href="https://doi.org/10.1038/s41586-025-08907-1" target="_blank" rel="noopener">Grant et al., Nature, 2025</a>',
+  ar6:'<a href="https://www.ipcc.ch/report/ar6/wg1/chapter/summary-for-policymakers/" target="_blank" rel="noopener">IPCC, 2021</a>',
+  sr15:'<a href="https://www.ipcc.ch/sr15/chapter/spm/" target="_blank" rel="noopener">IPCC 1.5&nbsp;&deg;C report, 2018</a>',
+  wgms:'<a href="https://wmo.int/news/media-centre/glacier-melt-will-unleash-avalanche-of-cascading-impacts" target="_blank" rel="noopener">World Glacier Monitoring Service, via WMO, 2025</a>',
+  noaa:'<a href="https://www.nesdis.noaa.gov/news/worlds-fourth-mass-coral-bleaching-event-likely-ended-2025" target="_blank" rel="noopener">NOAA Coral Reef Watch, 2025</a>',
+  wmo:'<a href="https://wmo.int/publication-series/state-of-global-climate/state-of-global-climate-2025" target="_blank" rel="noopener">WMO State of the Global Climate, 2026</a>',
+  era5:'ERA5 via Open-Meteo'};
+ var HZN={cf:"crop failures",rf:"river floods",dr:"droughts",wf:"wildfires",tc:"tropical cyclones"};
+ function card(q,v,sub,src,cls){return '<div class="gn-card'+(cls?" "+cls:"")+'"><p class="gn-q">'+q+'</p>'+
+  '<p class="gn-one">'+v+'</p>'+(sub?'<p class="gn-sub">'+sub+'</p>':'')+(src?'<p class="gn-src">'+src+'</p>':'')+'</div>';}
+ function pair(q,a,al,b,bl,src,down){return '<div class="gn-card"><p class="gn-q">'+q+'</p>'+
+  '<div class="gn-pair"><div><b class="gn-v gn-then">'+a+'</b><span>'+al+'</span></div><i aria-hidden="true">&rarr;</i>'+
+  '<div><b class="gn-v '+(down?"gn-then":"gn-hot")+'">'+b+'</b><span>'+bl+'</span></div></div>'+
+  (src?'<p class="gn-src">'+src+'</p>':'')+'</div>';}
+
+ /* ── 01 · what a child born today will face ─────────────────────────────── */
+ function renderFuture(){
+  var host=el("fu-body");if(!host)return;
+  var C=country(),R=C.row,hw=R&&R.hw,h=[];
+  h.push(pair("Heatwaves in a lifetime, world average","4","born in 1960","30","born in 2020, on today&rsquo;s path",L.thiery));
+  if(hw&&hw["25"]&&hw["25"][1]!=null){
+   var also=[];
+   ["cf","rf","dr","tc","wf"].forEach(function(k){var r=R[k]&&R[k]["25"];
+    if(r&&r[1]!=null&&r[1]>=5&&r[0]!=null&&r[1]>r[0])also.push([k,r[0],r[1]]);});
+   also.sort(function(a,b){return b[2]-a[2];});also=also.slice(0,2);
+   var p15=hw["15"]&&hw["15"][1],p35=hw["35"]&&hw["35"][1];
+   h.push('<div class="gn-card gn-ctry"><p class="gn-q">In '+esc(C.name)+
+    (C.guessed?' <span class="gn-tz">(from your device&rsquo;s time zone)</span>':'')+'</p>'+
+    '<p class="gn-big"><span class="gn-bn">'+hw["25"][1]+'%</span> of children born in 2020 will live through a lifetime of heatwaves that would be near-impossible without climate change, if the world warms 2.5&nbsp;&deg;C, close to today&rsquo;s path.</p>'+
+    '<ul class="gn-row"><li>Born in 1960: <b>'+(hw["25"][0]!=null?hw["25"][0]+'%':'&ndash;')+'</b></li>'+
+    (p15!=null?'<li>At 1.5&nbsp;&deg;C: <b>'+p15+'%</b></li>':'')+(p35!=null?'<li>At 3.5&nbsp;&deg;C: <b>'+p35+'%</b></li>':'')+'</ul>'+
+    (also.length?'<p class="gn-also">The same for other extremes, born 1960 &rarr; born 2020, at 2.5&nbsp;&deg;C:</p><ul class="gn-also-l">'+
+     also.map(function(a){return '<li><span>'+cap(HZN[a[0]])+'</span><b>'+a[1]+'% &rarr; '+a[2]+'%</b></li>';}).join("")+'</ul>':'')+
+    '<p class="gn-src">'+L.grant+'</p></div>');
+  } else {
+   /* no row for this country in the study — say so, and give the world's own figure */
+   h.push('<div class="gn-card gn-ctry"><p class="gn-q">Children everywhere'+(C.name?' <span class="gn-tz">(the study has no figure for '+esc(C.name)+')</span>':'')+'</p>'+
+    '<p class="gn-big"><span class="gn-bn">52%</span> of children born in 2020 will live through a lifetime of heatwaves that would be near-impossible without climate change, even if warming stops at 1.5&nbsp;&deg;C. At 3.5&nbsp;&deg;C: <b>92%</b>.</p>'+
+    '<ul class="gn-row"><li>Born in 1960: <b>16%</b></li></ul><p class="gn-src">'+L.grant+'</p></div>');
+  }
+  h.push('<div class="gn-grid">'+
+   card("Arctic sea ice in summer","Practically gone","at least once before 2050 &mdash; likely, even if emissions fall fast",L.ar6)+
+   card("Coral reefs","Over 99% lost","if the world warms 2&nbsp;&deg;C; 70&ndash;90% even at 1.5&nbsp;&deg;C",L.sr15)+
+   card("Floods that came once a century","Every year","at more than half of the world&rsquo;s measured coasts, by 2100",L.ar6)+'</div>');
+  h.push('<div class="gn-good"><p><b>18, not 30.</b> Heatwaves in a lifetime for a child born today, if the world holds warming to 1.5&nbsp;&deg;C. '+
+   'Getting there would spare 613 million of today&rsquo;s children a lifetime of extreme heatwaves.</p>'+
+   '<p class="gn-src">'+L.thiery+' &middot; '+L.grant+'</p></div>');
+  host.innerHTML=h.join("");}
+
+ /* ── 02 · what's different since 1975 ──────────────────────────────────── */
+ function hhSeries(o,meta){if(!o||o.tw==null)return null;var a0=(meta&&meta.a0)||1951,b0=o.b0||(meta&&meta.b0)||2016,g=[],i;
+  for(i=0;i<(o.ka||[]).length;i++)g.push({year:a0+i,n:o.ka[i]});
+  for(i=0;i<(o.kb||[]).length;i++)g.push({year:b0+i,n:o.kb[i]});
+  return {thr:o.tw,G:g,win:[b0,b0+(o.kb||[]).length-1]};}
+ function cityRecord(){
+  var h=window.__HOME&&__HOME.get();if(!h)return null;
+  var V=__HOME.record&&__HOME.record(),G=null,thr=null,hh=null,abs=false;
+  if(V&&V.G&&V.G.days_ge35_per_year){G=V.G;thr=V.thr||null;hh=V.hh||null;}
+  else if(h.ex==="seville"&&D&&D.seville_generational){G=D.seville_generational;thr={hot:35,night:25};abs=true;
+   var I=D.instant&&D.instant._hh;hh=I&&I.seville?hhSeries(I.seville,I):null;}
+  if(!G)return null;
+  /* one window for every row: the last ten years the humid count also covers, else the record's own */
+  var w=(hh&&hh.win)||[LF-9,LF];
+  function m(rows,a,b){var v=rows.filter(function(r){return r.year>=a&&r.year<=b;});
+   if(v.length<Math.min(5,b-a+1))return null;return v.reduce(function(s,r){return s+r.n;},0)/v.length;}
+  var rows=[];
+  if(hh)rows.push({k:"hh",lab:"Hot, humid days a year",sub:"as muggy as the worst 1 in 20 days of 1951&ndash;80 here",
+   then:m(hh.G,1970,1979),now:m(hh.G,w[0],w[1])});
+  rows.push({k:"hot",lab:"Hot days a year",sub:abs?"35&nbsp;&deg;C or hotter":(thr?thr.hot.toFixed(1)+"&nbsp;&deg;C or hotter, the hottest 1 in 20 days of 1951&ndash;80 here":""),
+   then:m(G.days_ge35_per_year,1970,1979),now:m(G.days_ge35_per_year,w[0],w[1])});
+  rows.push({k:"nt",lab:"Hot nights a year",sub:abs?"never cooling below 25&nbsp;&deg;C":(thr?"never cooling below "+thr.night.toFixed(1)+"&nbsp;&deg;C":""),
+   then:m(G.warm_nights_ge25_per_year,1970,1979),now:m(G.warm_nights_ge25_per_year,w[0],w[1])});
+  rows=rows.filter(function(r){return r.then!=null&&r.now!=null;});
+  rows.sort(function(a,b){return (b.now-b.then)-(a.now-a.then);});
+  return {name:h.name,ex:!!h.ex,rows:rows,win:w,hhMissing:!hh};}
+ function renderSince(){
+  var host=el("si-body");if(!host)return;
+  var h=window.__HOME&&__HOME.get(),R=cityRecord(),out=[];
+  var pend=!!(el("p-ground")&&el("p-ground").classList.contains("fetching"));
+  if(!R||!R.rows.length){
+   out.push('<div class="gn-card si-city"><p class="gn-q">In '+esc(h&&h.name||"your city")+'</p><p class="si-wait">'+
+    (pend?"Fetching its 86-year record from the weather archive&hellip;":"Its record isn&rsquo;t ready. Pick a city above to see its own numbers.")+'</p></div>');
+  } else {
+   var rl=R.rows.map(function(r){var d=r.now-r.then,same=Math.abs(d)<Math.max(1,r.then*.1);
+    var word=same?"about the same":(d>0?"more":"fewer");
+    return '<div class="si-row"><div class="si-l"><b>'+r.lab+'</b><span>'+r.sub+'</span></div>'+
+     '<div class="si-n"><span class="si-then">'+Math.round(r.then)+'</span><i aria-hidden="true">&rarr;</i>'+
+     '<span class="'+(d>0&&!same?"si-up":"si-flat")+'">'+Math.round(r.now)+'</span>'+
+     '<em class="si-ch'+(same?"":(d>0?" up":" down"))+'">'+word+'</em></div></div>';}).join("");
+   out.push('<div class="gn-card si-city"><p class="gn-q">In '+esc(R.name)+(R.ex?' <span class="gn-tz">(an example: set your own city above)</span>':'')+'</p>'+
+    '<p class="si-k"><span class="si-then">1970s</span> <i aria-hidden="true">&rarr;</i> <span class="si-up">'+R.win[0]+'&ndash;'+R.win[1]+'</span></p>'+rl+
+    (R.hhMissing&&pend?'<p class="si-wait">Hot, humid days: still counting&hellip;</p>':'')+
+    '<p class="gn-src">'+L.era5+' &middot; each line uses this city&rsquo;s own 1951&ndash;80 record as the yardstick</p>'+
+    '<button type="button" class="aw-more" id="si-full">See '+esc(R.name)+'&rsquo;s full record</button></div>');
+  }
+  out.push('<div class="gn-grid">'+
+   card("Ice lost from the world&rsquo;s glaciers","9,000 billion tonnes","since 1975, when the record begins",L.wgms)+
+   card("Coral reefs hit by bleaching heat","84%","of all reef area, 2023&ndash;25. The first worldwide bleaching was in 1998",L.noaa)+
+   card("The hottest years ever measured","The last 11","2015 to 2025, every one of them",L.wmo)+
+   card("The whole planet in 2024","1.55&nbsp;&deg;C hotter","than before factories: the first year past 1.5&nbsp;&deg;C",L.wmo)+'</div>');
+  host.innerHTML=out.join("");
+  var fb=el("si-full");if(fb)fb.addEventListener("click",function(){var g=el("p-ground");
+   if(g)try{g.scrollIntoView({behavior:"auto",block:"start"});}catch(e){}});}
+ function render(){try{renderFuture();}catch(e){}try{renderSince();}catch(e){}}
+ document.addEventListener("onrecord:drawn",render);
+ return {zone:zone,a2to3:a2to3,country:country,render:render,cityRecord:cityRecord};
+})();
+window.__GEN=__GEN;
+
+/* ═══════════════════════════════════════════════════════════════════════════
    ONE STORY, FOUR BEATS
    The page was seven chapters across three subjects — your city, the world's carbon,
    an opinion survey — and none of its 96 sentences said what heat does to a person.
@@ -3453,17 +3666,30 @@ function enterChamber(i){
  document.querySelectorAll("#panes .page-what").forEach(function(p){if(p.parentNode)p.parentNode.removeChild(p);});
  document.querySelectorAll(".beat-cue").forEach(function(c){if(c.parentNode)c.parentNode.removeChild(c);});
 
- /* ── BEAT 1 · WHAT CHANGED ──────────────────────────────────────────────── */
- var b1=beatPane("ground","What changed");
+ /* ── 01 · A CHILD BORN TODAY ────────────────────────────────────────────── */
+ var b0=beatPane("future","A child born today");
+ var fu=card(b0,"bt-future","future-card");
+ fu.appendChild(eyebrow("future"));
+ fu.appendChild(mk("h2","bt-h gn-h","What a child born today will face"));
+ /* the ONE place picker, at the top: the first thing the page settles is whose place it is */
+ mv(homepick,fu);
+ fu.appendChild(mk("div","gn-body",null,"fu-body"));
+ /* ── 02 · SINCE 1975 ───────────────────────────────────────────────────── */
+ var b0b=beatPane("since","Since 1975");
+ var sc=card(b0b,"bt-since","since-card");
+ sc.appendChild(eyebrow("since"));
+ sc.appendChild(mk("h2","bt-h gn-h","What\u2019s different since 1975"));
+ sc.appendChild(mk("div","gn-body",null,"si-body"));
+
+ /* ── 03 · THE CITY'S FULL RECORD (the old first beat) ─────────────────── */
+ var b1=beatPane("ground","Your city\u2019s record");
  var a=card(b1,"","answer");
  a.appendChild(eyebrow("ground"));
  mv(countH2,a);
  mv(placeTag,a);
  mv(gFact,a);
  var ar=mk("p","receipt","ERA5 via Open-Meteo · daily highs since 1940","ans-receipt");a.appendChild(ar);
- /* the decade is the yardstick, so the control that changes it sits beside the number it changes */
- var gdp=mk("div","dchips",null,"g-decpick");a.appendChild(gdp);
- decadeChips(gdp,"The decade you were born");__DECUI();
+ /* (the birth-decade chips are retired: the yardstick is fixed at the 1970s) */
  /* "is it just here?" — the reader's next question, answered in one line */
  var aw=mk("div","aw");a.appendChild(aw);
  aw.appendChild(mk("h3","aw-h","Is it just here?"));
@@ -3475,7 +3701,7 @@ function enterChamber(i){
  awb.addEventListener("click",function(){var on=awc.hidden;awc.hidden=!on;
   awb.setAttribute("aria-expanded",String(on));awb.textContent=on?"Hide the comparison":"Compare with another city";});
  var foot=mk("div","ans-foot");a.appendChild(foot);
- mv(countDraw,foot);mv(gTake,foot);mv(homepick,foot);
+ mv(countDraw,foot);mv(gTake,foot);
 
  /* ── BEAT 2 · WHAT IT MEANS ─────────────────────────────────────────────── */
  var b2=beatPane("night","What it means");
@@ -3615,7 +3841,8 @@ function enterChamber(i){
   var r=e.target&&e.target.closest?e.target.closest(".rung"):null;if(!r)return;
   if(r.getAttribute("href")==="#p-bedrock"){e.preventDefault();e.stopPropagation();setSources(true,true);}
  },true);
- window.__P1={sync:function(){},open:function(id){if(id==="bedrock")setSources(true,true);}};
+ window.__P1={sync:function(){try{__GEN.render();}catch(e){}},open:function(id){if(id==="bedrock")setSources(true,true);}};
+ try{__GEN.render();}catch(e){}
  try{var dl=(Q.get("chamber")||(typeof HASH0==="string"?HASH0:"")).trim();
   if(dl==="bedrock")setSources(true,false);}catch(e){}
  /* reuse modes show a chapter whole */
@@ -3699,11 +3926,10 @@ function endIntroSafe(){
     four-part cold-open with four dots — never a fifth part asking a question already settled.
     __HOME does not exist yet at parse time, so we read the same keys it does. */
  (function(){var pk=el("pk-ask");if(!pk)return;
-  var answered=false;
-  try{answered=EMBED||KIOSK||!!Q.get("place")||!!Q.get("loc")||
-   !!localStorage.getItem("onrecord.home.v1")||localStorage.getItem("onrecord.ask.v1")==="answered";}
-  catch(e){answered=EMBED||KIOSK||!!Q.get("place")||!!Q.get("loc");}
-  if(answered&&pk.parentNode)pk.parentNode.removeChild(pk);})();
+  /* NO GATE (4 Nov 2026). Agosh chose "guess from the time zone" over "ask for a city first":
+     a first visit opens straight on the story, drawn for the country the device's own time zone
+     belongs to, with the picker one tap away at the top. The ask beat is dropped for everyone. */
+  if(pk.parentNode)pk.parentNode.removeChild(pk);})();
  var beats=Array.prototype.slice.call(stackEl.querySelectorAll(".ib"));
  if(!beats.length){
   /* A RETURNING READER WITH A SAVED PLACE lands here: the ask-beat is dropped, so the
@@ -5476,6 +5702,8 @@ buildTakeaway();
   B.estimates.map(function(e){return [e.label,String(e.gt),e.anchor.replace("counted from ",""),
    String(e.elapsed_gt),String(e.remaining_now_gt),e.years_at_now.toFixed(2),e.odds];}));
  el("srcs").innerHTML=
+  "<div><b>A child born today</b>Thiery et al. 2021, Science &mdash; heatwaves in a lifetime, world average<br>Grant et al. 2025, Nature &mdash; the share for your country, Supplementary Tables 1&ndash;18 (CC BY 4.0)<br>IPCC AR6 2021 (Arctic ice, coastal floods) &middot; IPCC SR1.5 2018 (coral reefs)</div>"+
+  "<div><b>Since 1975</b>ERA5 via Open-Meteo &mdash; hot, humid days from the daily highest wet-bulb temperature<br>World Glacier Monitoring Service via WMO, 2025 &middot; NOAA Coral Reef Watch, 2025<br>WMO State of the Global Climate 2025 (published 2026)</div>"+
   "<div><b>Carbon budget</b>IGCC 2025 — Forster et al., ESSD (130 Gt from 2026)<br>Global Carbon Budget 2025 — GCP (170 Gt from 2025; 42.2 Gt/yr)<br>US EPA 2023 — social cost of carbon (~$190/t, 2% discount)</div>"+
   "<div><b>Hot days</b>ERA5 via Open-Meteo (CC-BY), daily, 1940→<br>forecast: Open-Meteo, quantile-adjusted<br>NOAA GML — CO₂ ("+Math.round(N.co2_ppm)+" ppm, "+N.co2_date+")</div>"+
   "<div><b>What people think</b>Andre, Boneva, Chopra &amp; Falk 2024, Nature Climate Change<br>per-country via Our World in Data (CC-BY)</div>"+
@@ -5491,6 +5719,8 @@ buildTakeaway();
     nothing softened; it just has a shape now. */
  el("limits").innerHTML=
   "<dl class='lim'>"+
+  "<dt>A child born today</dt><dd>Those figures are the studies&rsquo; projections, not this page&rsquo;s sums: the lifetime count is a world average (Thiery et al. 2021), and your country&rsquo;s share is Grant et al. 2025&rsquo;s, at 1.5, 2.5 and 3.5&nbsp;&deg;C of warming by 2100. Until you set a city, your country is the one your device&rsquo;s time zone belongs to, worked out on your device.</dd>"+
+  "<dt>Hot, humid days</dt><dd>Counted from each day&rsquo;s highest wet-bulb temperature in ERA5, against the city&rsquo;s own 1951&ndash;80 95th percentile, never a fixed 31 or 35&nbsp;&deg;C that a 28&nbsp;km grid cannot see. ERA5 had fewer observations before 1979, especially in the tropics, so the older decades there are less certain: read a large tropical change as its direction, not to the day.</dd>"+
   "<dt>The grid is coarse</dt><dd>One value per 28&nbsp;km cell, not a weather station near you. Each city is one cell, not an average across the city.</dd>"+
   "<dt>The pre-industrial baseline</dt><dd>The 0.88 °C offset is stated, not measured.</dd>"+
   "<dt>The budgets are moving</dt><dd>Revised yearly; we hold the 2025 burn rate — an assumption, flagged.</dd>"+
@@ -5717,6 +5947,7 @@ var __PLACE=(function(){
  var MONS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
  function compute(aj,fc,name){
   var d=aj.daily,N=d.time.length,date=d.time,tx=d.temperature_2m_max,tn=d.temperature_2m_min;
+  var tw=d.wet_bulb_temperature_2m_max||null,oldTw=[];
   var md={},annual={},oldTx=[],oldTn=[],i,y;
   /* one slot per calendar day, Jan 1 = 0 */
   var DOY={},ringA=[],ringB=[],_ml=[31,28,31,30,31,30,31,31,30,31,30,31],_s=0;
@@ -5727,7 +5958,7 @@ var __PLACE=(function(){
   for(i=0;i<N;i++){if(tx[i]==null)continue;y=+date[i].slice(0,4);
    var k=date[i].slice(5);(md[k]=md[k]||[]).push([y,tx[i]]);
    (annual[y]=annual[y]||[]).push(tx[i]);
-   if(y>=1951&&y<=1980){oldTx.push(tx[i]);if(tn[i]!=null)oldTn.push(tn[i]);}}
+   if(y>=1951&&y<=1980){oldTx.push(tx[i]);if(tn[i]!=null)oldTn.push(tn[i]);if(tw&&tw[i]!=null)oldTw.push(tw[i]);}}
   if(oldTx.length<3650)throw new Error("record too thin");
   oldTx.sort(function(a,b){return a-b;});oldTn.sort(function(a,b){return a-b;});
   var thrHot=Math.round(qtile(oldTx,95)*10)/10,thrNight=Math.round(qtile(oldTn,95)*10)/10;
@@ -5741,6 +5972,14 @@ var __PLACE=(function(){
   }
    if(tn[i]!=null&&tn[i]>=thrNight)cN[y]=(cN[y]||0)+1;}
   function series(c){var out=[];for(var y2=1940;y2<=LF;y2++)out.push({year:y2,n:c[y2]||0});return out;}
+  /* HOT, HUMID DAYS: the day's highest wet-bulb temperature (heat and humidity in one number) at or
+     above this place's own 1951-80 95th percentile — the same rule as the hot days, never a fixed
+     31 or 35 C, which a reanalysis grid cannot see (tools/hh_bake.py bakes the same for the stored cities) */
+  var hh=null;
+  if(tw&&oldTw.length>=3650){oldTw.sort(function(a,b){return a-b;});
+   var thrW=Math.round(qtile(oldTw,95)*10)/10,cW={};
+   for(i=0;i<N;i++)if(tw[i]!=null&&tw[i]>=thrW){y=+date[i].slice(0,4);cW[y]=(cW[y]||0)+1;}
+   hh={thr:thrW,G:series(cW),win:null};}
   /* the window: 25 days back to 25 days ahead of today */
   var WN=51,anchorMs=Date.now()-25*864e5,anchorISO=new Date(anchorMs).toISOString().slice(0,10);
   var labels=[],keys=[];
@@ -5783,7 +6022,7 @@ var __PLACE=(function(){
     RW:{labels:labels,spaghetti:spag,old_normal_1951_1980:oldB,new_normal_last30:newB,
         record_envelope:env,new_normal_label:(LF-29)+"–"+LF},
     S:{year0:1940,anom:anom},
-    G:{days_ge35_per_year:series(cH),warm_nights_ge25_per_year:series(cN)},
+    G:{days_ge35_per_year:series(cH),warm_nights_ge25_per_year:series(cN)},hh:hh,
    ring:{a:ringA,b:ringB,eraA:"1951\u201380",eraB:(LF-29)+"\u2013"+LF,years:30},
     thr:{hot:thrHot,night:thrNight,
      hotLabel:"hotter than 95% of its own 1951\u201380 days (above "+thrHot.toFixed(1)+" °C)",
@@ -5831,10 +6070,16 @@ var __PLACE=(function(){
    if(_ra&&_rb)_rg={a:_ra,b:_rb,eraA:(T._ring&&T._ring.eraA)||"1951\u201380",
                     eraB:(T._ring&&T._ring.eraB)||"last 30 years",years:(T._ring&&T._ring.years)||30};
   }catch(e){}
+  /* hot, humid days, baked by tools/hh_bake.py for the two windows the page compares */
+  var _hh=null;
+  try{var _HM=T._hh||{};if(best.tw!=null&&best.ka&&best.kb){var _g=[],_q,_a0=_HM.a0||1951,_b0=best.b0||2016;
+   for(_q=0;_q<best.ka.length;_q++)_g.push({year:_a0+_q,n:best.ka[_q]});
+   for(_q=0;_q<best.kb.length;_q++)_g.push({year:_b0+_q,n:best.kb[_q]});
+   _hh={thr:best.tw,G:_g,win:[_b0,_b0+best.kb.length-1]};}}catch(e){}
   var _hl="hotter than 95% of its own 1951\u201380 days (above "+best.th.toFixed(1)+"\u00A0\u00B0C)";
   var _nl="below "+best.tn.toFixed(1)+"\u00A0\u00B0C (warmer than 95% of its own 1951\u201380 nights)";
   return {V:{custom:true,place:name,RW:null,ring:_rg,
-             G:{days_ge35_per_year:days,warm_nights_ge25_per_year:nights},
+             G:{days_ge35_per_year:days,warm_nights_ge25_per_year:nights},hh:_hh,
              S:{year0:best.y0,anom:anom},
              thr:{hot:best.th,night:best.tn,hotLabel:_hl,nightLabel:_nl},
              baked:true,bakedName:best.n},
@@ -5847,7 +6092,7 @@ var __PLACE=(function(){
   var end=new Date(Date.now()-6*864e5).toISOString().slice(0,10);
   Promise.all([
    fetchRetry("https://archive-api.open-meteo.com/v1/archive?latitude="+lat+"&longitude="+lon+
-    "&start_date=1940-01-01&end_date="+end+"&daily=temperature_2m_max,temperature_2m_min&timezone=auto",3),
+    "&start_date=1940-01-01&end_date="+end+"&daily=temperature_2m_max,temperature_2m_min,wet_bulb_temperature_2m_max&timezone=auto",3),
    fetchRetry("https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+
     "&daily=temperature_2m_max&forecast_days=1&timezone=auto",3)
   ]).then(function(rr){
@@ -6265,7 +6510,7 @@ var __HOME=(function(){
  function normalize(h){
   var o={src:h.src||"example",slug:h.slug||null,ex:h.ex||null,
    name:h.name||"your city",full:h.full||h.name||"your city",
-   lat:r2(+h.lat),lon:r2(+h.lon),tz:h.tz||devTZ(),iso3:h.iso3||null};
+   lat:r2(+h.lat),lon:r2(+h.lon),tz:h.tz||devTZ(),iso3:h.iso3||null,ctry:h.ctry||null};
   if(!isFinite(o.lat)||!isFinite(o.lon))return null;
   o.lat=Math.max(-89,Math.min(89,o.lat));o.lon=Math.max(-180,Math.min(180,o.lon));
   if(o.src==="device"){o.slug=null;o.ex=null;o.nearName=!!h.nearName;
@@ -6300,7 +6545,7 @@ var __HOME=(function(){
  function withCityName(h,cb){
   if(h.src!=="device"||cityDbTried&&!CITYDB){cb(h);return;}
   function apply(){var f=nearestCity(h.lat,h.lon);
-   if(f){h.name=f.name;h.full=f.full;h.iso3=iso3of(f.cc);h.nearName=true;}
+   if(f){h.name=f.name;h.full=f.full;h.iso3=iso3of(f.cc)||(window.__GEN&&__GEN.a2to3(f.cc))||null;h.nearName=true;}
    cb(h);}
   if(CITYDB){apply();return;}
   cityDbTried=true;
@@ -6382,15 +6627,16 @@ var __HOME=(function(){
   var bars=document.querySelectorAll(".cb-chip");
   for(var j=0;j<bars.length;j++)bars[j].setAttribute("aria-pressed",String(bars[j].getAttribute("data-slug")===h.slug));
   try{var _mt=el("mast-tag");
-   if(_mt)_mt.textContent=(h.ex||!h.name||h.name==="your city")?"Hot days and nights in your city":
-    ("Hot days and nights in "+h.name);}catch(e){}
+   if(_mt)_mt.textContent=(h.ex||!h.name||h.name==="your city")?"What\u2019s changed, and what\u2019s next":
+    ("What\u2019s changed in "+h.name+", and what\u2019s next");}catch(e){}
   try{if(window.__MINI)__MINI();}catch(e){}
   try{if(typeof buildNightExample==="function")buildNightExample();}catch(e){}
   try{if(typeof buildTakeaway==="function")buildTakeaway();}catch(e){}
   try{if(typeof fillRecap==="function")fillRecap();}catch(e){}
   try{if(typeof buildCompare==="function")buildCompare();}catch(e){}
   try{if(window.__renderRecents)__renderRecents();}catch(e){}
-  try{if(window.__P1&&__P1.sync)__P1.sync();}catch(e){}}
+  try{if(window.__P1&&__P1.sync)__P1.sync();}catch(e){}
+  try{if(window.__GEN)__GEN.render();}catch(e){}}
  /* THE ONE MUTATOR. Stars + first light + labels are pure local work and land immediately;
     the ground record is a multi-second archive fetch, so it goes last and asynchronously. */
  function set(h,opts){
@@ -6419,7 +6665,7 @@ var __HOME=(function(){
      takes seconds; the answer heading is renamed synchronously above, so travel to it NOW
      rather than when the network says so. */
   if(opts.scroll!==false)try{
-   var _an=document.getElementById("answer");
+   var _an=document.getElementById("future-card");
    if(_an){
     var _mh=parseInt((getComputedStyle(document.documentElement).getPropertyValue("--mast-h")||"140"),10)||140;
     var _y=Math.max(0,window.pageYOffset+_an.getBoundingClientRect().top-_mh-10);
@@ -6471,7 +6717,22 @@ var __HOME=(function(){
    if(old&&isFinite(old.lat)&&isFinite(old.lon)){s={src:"device",lat:old.lat,lon:old.lon,tz:devTZ()};drop(KOLD);}}
   if(s&&s.ex){s=null;drop(KEY);}   /* a persisted EXAMPLE is legacy poison — the ask must return */
   if(s&&isFinite(s.lat)&&isFinite(s.lon)){set(s,{scroll:false});return;}
-  HOME=normalize(EXAMPLES.seville);labelsRefresh();pgSync(HOME);}
+  /* FIRST VISIT (4 Nov 2026): the device's time zone names the reader's COUNTRY, on this device,
+     with nothing sent anywhere. The next generation is shown for that country; the city beside it
+     is an EXAMPLE from the same country — labelled as one, never "your city" — or, where we hold
+     no city there, the nearest one we do. Spain keeps Seville, the example the build bakes. */
+  var g=tzExample();
+  if(g&&g.ex!=="seville"){set(g,{persist:false,scroll:false});return;}
+  HOME=g||normalize(EXAMPLES.seville);labelsRefresh();pgSync(HOME);}
+ function tzExample(){
+  var z=window.__GEN&&__GEN.zone();if(!z||!z.iso3)return null;
+  if(z.iso3==="ESP"){var sv={};for(var k in EXAMPLES.seville)sv[k]=EXAMPLES.seville[k];sv.ctry="ESP";return normalize(sv);}
+  var best=null,i;
+  for(i=0;i<WORLD_CITIES.length;i++)if(WORLD_CITIES[i].c===z.iso3){best=WORLD_CITIES[i];break;}
+  if(!best){var bd=1e9;for(i=0;i<WORLD_CITIES.length;i++){var w=WORLD_CITIES[i],d=km(z.lat,z.lon,w.la,w.lo);
+   if(d<bd){bd=d;best=w;}}}
+  if(!best)return null;
+  var h=fromCity(best,"tz");h.ex="tz";h.ctry=z.iso3;return normalize(h);}
  /* the record __PLACE just computed for this home, so the Morning letter and the share card
     can quote the reader's OWN numbers instead of the example's */
  var LASTV=null;
@@ -6672,7 +6933,8 @@ window.__HOME=__HOME;
    var p=g.results[0];if(st)st.classList.remove("err");
    H.markAsked();
    H.set({src:"search",name:p.name,full:p.name+(p.country?", "+p.country:""),
-          lat:p.latitude,lon:p.longitude,tz:p.timezone||null,iso3:alpha3(p.country)},{scroll:true});})
+          lat:p.latitude,lon:p.longitude,tz:p.timezone||null,
+          iso3:alpha3(p.country)||(window.__GEN&&__GEN.a2to3(p.country_code))||null},{scroll:true});})
   .catch(function(){if(st){st.textContent="search failed — try again";st.classList.add("err");}});}
  if(go){go.addEventListener("click",doSearch);}
  if(qi){qi.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();doSearch();}});}

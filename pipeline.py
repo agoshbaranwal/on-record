@@ -439,9 +439,14 @@ print(f"  seville_ring: {sum(_rA)} \u2192 {sum(_rB)} hot days per 30-year era")
 _inst = DATA / "instant-places.json"
 if _inst.exists():
     out["instant"] = json.loads(_inst.read_text())
+# what a child born today will face, per country (Grant et al. 2025, CC BY) + the time-zone table
+# that names the reader's country on their own device. Static: baked once by tools/futures_bake.py.
+_fut = DATA / "futures.json"
+if _fut.exists():
+    out["fut"] = json.loads(_fut.read_text())
 # data keys the page cannot render without — _KEEP guards ELEMENTS, and an element whose
 # data has gone missing still passes that check while drawing nothing.
-for _k in ("seville_ring", "instant", "seville_generational", "seville_stripes"):
+for _k in ("seville_ring", "instant", "seville_generational", "seville_stripes", "fut"):
     assert _k in out and out[_k], f"site-data.json would ship without {_k}"
 assert "_ring" in out["instant"], "the instant table lost its ring metadata"
 (DATA / "site-data.json").write_text(json.dumps(out, separators=(",", ":")))
@@ -465,33 +470,33 @@ body = (tpl.replace("/*__FONTS__*/", css)
            .replace("/*__DATA__*/ null", json.dumps(out, separators=(",", ":")))
            .replace("/*__NOSCRIPT__*/", ns))
 (ROOT / "onrecord-heat-mockup.html").write_text(body)
-# ---- link-preview / OG meta (a real static preview image lives at og/seville.png, baked from the same card engine) ----
+# ---- link-preview / OG meta (a static preview image lives at og/born-today.png: the page's lead, the study's own numbers) ----
 OG = "https://agoshbaranwal.github.io/on-record/"
-# the page's yardstick is the reader's birth decade; until they pick, the 1990s stand in — the
-# preview a stranger sees must show the same example the page opens with (instrument.html __DEC.EX)
-EXDEC = 1990
+# the page's yardstick is fixed at the 1970s — "the last 50 years" (instrument.html __DEC.EX)
+EXDEC = 1970
 _was = round(mean_over(g35, EXDEC, EXDEC + 9))               # same decade means the card/noscript use — never hand-typed
 _now = round(mean_over(g35, LAST_FULL - 9, LAST_FULL))
-DESC = ("Pick the decade you were born and your city, and see how its hot days have changed since then &mdash; counted from the weather record, every day since 1940. Every number shows where it came from.")
-CARD = (f"Seville had {_was} days a year above 35 \u00B0C in the 1990s. In the last ten years: {_now}. "
-        f"How much hotter has your city got since you were born?")
-ALT = f"On Record card: in Seville, days at or above 35C went from {_was} a year in the 1990s to {_now} in the last ten years."
+DESC = ("What a child born today will face in your country, and what has already changed in your city since 1975 &mdash; from the weather record and the studies that measure it. Every number shows where it came from.")
+# the card is the page's lead, and its numbers are the study's own (Thiery et al. 2021, Science)
+CARD = ("A child born today will live through about 30 heatwaves in a lifetime; someone born in 1960, about 4. "
+        "See what has changed where you live since 1975, and what is next.")
+ALT = "On Record card: a child born in 2020 will live through about 30 heatwaves in a lifetime, against about 4 for someone born in 1960 (Thiery et al., Science, 2021)."
 head_meta = (
-    "<title>On Record \u2014 how much hotter has your city got since you were born?</title>"
+    "<title>On Record \u2014 what a child born today will face</title>"
     '<meta name="description" content="' + DESC + '">'
     '<link rel="canonical" href="' + OG + '">'
     '<meta property="og:type" content="website">'
     '<meta property="og:site_name" content="On Record">'
-    '<meta property="og:title" content="On Record — how much hotter has your city got since you were born?">'
+    '<meta property="og:title" content="On Record — what a child born today will face">'
     '<meta property="og:description" content="' + CARD + '">'
     '<meta property="og:url" content="' + OG + '">'
-    '<meta property="og:image" content="' + OG + 'og/seville.png">'
+    '<meta property="og:image" content="' + OG + 'og/born-today.png">'
     '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
     '<meta property="og:image:alt" content="' + ALT + '">'
     '<meta name="twitter:card" content="summary_large_image">'
-    '<meta name="twitter:title" content="On Record — how much hotter has your city got since you were born?">'
+    '<meta name="twitter:title" content="On Record — what a child born today will face">'
     '<meta name="twitter:description" content="' + CARD + '">'
-    '<meta name="twitter:image" content="' + OG + 'og/seville.png">'
+    '<meta name="twitter:image" content="' + OG + 'og/born-today.png">'
     # PWA: installable, offline-capable (network-first SW), zero tracking
     '<link rel="manifest" href="manifest.webmanifest">'
     '<meta name="theme-color" content="#05171A">'
